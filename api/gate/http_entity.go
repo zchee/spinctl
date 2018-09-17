@@ -10,6 +10,5 @@
 package gate
 
 type HttpEntity struct {
-
 	Body *interface{} `json:"body,omitempty"`
 }

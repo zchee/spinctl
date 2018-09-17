@@ -10,13 +10,14 @@
 package gate
 
 import (
-	"io/ioutil"
-	"net/url"
-	"net/http"
-	"strings"
-	"golang.org/x/net/context"
-	"time"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
+	"golang.org/x/net/context"
 )
 
 // Linger please
@@ -26,21 +27,20 @@ var (
 
 type AuditEventsMvcEndpointApiService service
 
-
 /* AuditEventsMvcEndpointApiService findByPrincipalAndAfterAndType
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "principal" (string) principal
-     @param "after" (time.Time) after
-     @param "type_" (string) type
- @return interface{}*/
-func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGET(ctx context.Context, localVarOptionals map[string]interface{}) (interface{},  *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "principal" (string) principal
+    @param "after" (time.Time) after
+    @param "type_" (string) type
+@return interface{}*/
+func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGET(ctx context.Context, localVarOptionals map[string]interface{}) (interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  interface{}
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     interface{}
 	)
 
 	// create path and map variables
@@ -70,7 +70,7 @@ func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGE
 		localVarQueryParams.Add("type", parameterToString(localVarTempParam, ""))
 	}
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -82,7 +82,7 @@ func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGE
 	localVarHttpHeaderAccepts := []string{
 		"application/vnd.spring-boot.actuator.v1+json",
 		"application/json",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -108,24 +108,23 @@ func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGE
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
 
 /* AuditEventsMvcEndpointApiService findByPrincipalAndAfterAndType
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "principal" (string) principal
-     @param "after" (time.Time) after
-     @param "type_" (string) type
- @return interface{}*/
-func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGET1(ctx context.Context, localVarOptionals map[string]interface{}) (interface{},  *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "principal" (string) principal
+    @param "after" (time.Time) after
+    @param "type_" (string) type
+@return interface{}*/
+func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGET1(ctx context.Context, localVarOptionals map[string]interface{}) (interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  interface{}
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     interface{}
 	)
 
 	// create path and map variables
@@ -155,7 +154,7 @@ func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGE
 		localVarQueryParams.Add("type", parameterToString(localVarTempParam, ""))
 	}
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -167,7 +166,7 @@ func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGE
 	localVarHttpHeaderAccepts := []string{
 		"application/vnd.spring-boot.actuator.v1+json",
 		"application/json",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -193,7 +192,5 @@ func (a *AuditEventsMvcEndpointApiService) FindByPrincipalAndAfterAndTypeUsingGE
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
-

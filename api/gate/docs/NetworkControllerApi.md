@@ -1,6 +1,6 @@
 # \NetworkControllerApi
 
-All URIs are relative to *https://spinnaker-api.example.com*
+All URIs are relative to *https://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

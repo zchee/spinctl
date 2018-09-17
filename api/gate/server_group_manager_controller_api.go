@@ -10,13 +10,14 @@
 package gate
 
 import (
-	"io/ioutil"
-	"net/url"
-	"net/http"
-	"strings"
-	"golang.org/x/net/context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
+
+	"golang.org/x/net/context"
 )
 
 // Linger please
@@ -26,18 +27,17 @@ var (
 
 type ServerGroupManagerControllerApiService service
 
-
 /* ServerGroupManagerControllerApiService Retrieve a list of server group managers for an application
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param application application
- @return []HashMap*/
-func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplicationUsingGET(ctx context.Context, application string) ([]HashMap,  *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param application application
+@return []HashMap*/
+func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplicationUsingGET(ctx context.Context, application string) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  []HashMap
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     []HashMap
 	)
 
 	// create path and map variables
@@ -48,9 +48,8 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -61,7 +60,7 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -87,7 +86,5 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
-

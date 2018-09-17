@@ -1,6 +1,6 @@
 # \BuildControllerApi
 
-All URIs are relative to *https://spinnaker-api.example.com*
+All URIs are relative to *https://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,11 +12,15 @@ Method | HTTP request | Description
 
 
 # **GetBuildMastersUsingGET**
-> []interface{} GetBuildMastersUsingGET(ctx, )
+> []interface{} GetBuildMastersUsingGET(ctx, type_)
 Get build masters
 
 ### Required Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **type_** | **string**| type | 
 
 ### Return type
 
