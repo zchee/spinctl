@@ -1,3 +1,3 @@
 # spinctl
 
-spinctl is a command-line tool that managing the spinnaker via gate swagger API.
+spinctl is a command-line tool that management of Spinnaker via gate API.
