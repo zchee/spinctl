@@ -10,7 +10,6 @@
 package gate
 
 type ResponseEntity struct {
-
 	Body *interface{} `json:"body,omitempty"`
 
 	StatusCode string `json:"statusCode,omitempty"`

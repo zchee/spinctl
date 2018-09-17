@@ -10,13 +10,14 @@
 package gate
 
 import (
-	"io/ioutil"
-	"net/url"
-	"net/http"
-	"strings"
-	"golang.org/x/net/context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
+
+	"golang.org/x/net/context"
 )
 
 // Linger please
@@ -26,24 +27,23 @@ var (
 
 type ImageControllerApiService service
 
-
 /* ImageControllerApiService Retrieve a list of images, filtered by cloud provider, region, and account
- The query parameter &#x60;q&#x60; filters the list of images by image name
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "provider" (string) provider
-     @param "q" (string) q
-     @param "region" (string) region
-     @param "account" (string) account
-     @param "count" (int32) count
- @return []HashMap*/
-func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, localVarOptionals map[string]interface{}) ([]HashMap,  *http.Response, error) {
+The query parameter &#x60;q&#x60; filters the list of images by image name
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "provider" (string) provider
+    @param "q" (string) q
+    @param "region" (string) region
+    @param "account" (string) account
+    @param "count" (int32) count
+@return []HashMap*/
+func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, localVarOptionals map[string]interface{}) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  []HashMap
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     []HashMap
 	)
 
 	// create path and map variables
@@ -85,7 +85,7 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, loca
 		localVarQueryParams.Add("count", parameterToString(localVarTempParam, ""))
 	}
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -96,7 +96,7 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, loca
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -122,25 +122,24 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, loca
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
 
 /* ImageControllerApiService Find tags
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param account account
- @param repository repository
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "provider" (string) provider
-     @param "xRateLimitApp" (string) X-RateLimit-App
- @return []interface{}*/
-func (a *ImageControllerApiService) FindTagsUsingGET(ctx context.Context, account string, repository string, localVarOptionals map[string]interface{}) ([]interface{},  *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param account account
+@param repository repository
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "provider" (string) provider
+    @param "xRateLimitApp" (string) X-RateLimit-App
+@return []interface{}*/
+func (a *ImageControllerApiService) FindTagsUsingGET(ctx context.Context, account string, repository string, localVarOptionals map[string]interface{}) ([]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  []interface{}
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     []interface{}
 	)
 
 	// create path and map variables
@@ -163,7 +162,7 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx context.Context, accoun
 	localVarQueryParams.Add("account", parameterToString(account, ""))
 	localVarQueryParams.Add("repository", parameterToString(repository, ""))
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -174,7 +173,7 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx context.Context, accoun
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -203,26 +202,25 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx context.Context, accoun
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
 
 /* ImageControllerApiService Get image details
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param account account
- @param region region
- @param imageId imageId
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "provider" (string) provider
-     @param "xRateLimitApp" (string) X-RateLimit-App
- @return []HashMap*/
-func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context, account string, region string, imageId string, localVarOptionals map[string]interface{}) ([]HashMap,  *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param account account
+@param region region
+@param imageId imageId
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "provider" (string) provider
+    @param "xRateLimitApp" (string) X-RateLimit-App
+@return []HashMap*/
+func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context, account string, region string, imageId string, localVarOptionals map[string]interface{}) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  []HashMap
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     []HashMap
 	)
 
 	// create path and map variables
@@ -246,7 +244,7 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context,
 		localVarQueryParams.Add("provider", parameterToString(localVarTempParam, ""))
 	}
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -257,7 +255,7 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context,
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -286,7 +284,5 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context,
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
-

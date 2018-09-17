@@ -10,13 +10,14 @@
 package gate
 
 import (
-	"io/ioutil"
-	"net/url"
-	"net/http"
-	"strings"
-	"golang.org/x/net/context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
+
+	"golang.org/x/net/context"
 )
 
 // Linger please
@@ -26,17 +27,16 @@ var (
 
 type WebhookControllerApiService service
 
-
 /* WebhookControllerApiService Retrieve a list of preconfigured webhooks in Orca
  * @param ctx context.Context for authentication, logging, tracing, etc.
  @return []interface{}*/
-func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx context.Context) ([]interface{},  *http.Response, error) {
+func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx context.Context) ([]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  []interface{}
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     []interface{}
 	)
 
 	// create path and map variables
@@ -46,9 +46,8 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx context.
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -59,7 +58,7 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx context.
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -85,25 +84,25 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx context.
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
 
 /* WebhookControllerApiService Endpoint for posting webhooks to Spinnaker&#39;s webhook service
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param type_ type
- @param source source
- @param event event
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "xHubSignature" (string) X-Hub-Signature
-     @param "xEventKey" (string) X-Event-Key
- @return */
-func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, type_ string, source string, event interface{}, localVarOptionals map[string]interface{}) ( *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param type_ type
+@param source source
+@param event event
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "xHubSignature" (string) X-Hub-Signature
+    @param "xEventKey" (string) X-Event-Key
+@return interface{}*/
+func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, type_ string, source string, event interface{}, localVarOptionals map[string]interface{}) (interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     interface{}
 	)
 
 	// create path and map variables
@@ -116,14 +115,14 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, typ
 	localVarFormParams := url.Values{}
 
 	if err := typeCheckParameter(localVarOptionals["xHubSignature"], "string", "xHubSignature"); err != nil {
-		return nil, err
+		return successPayload, nil, err
 	}
 	if err := typeCheckParameter(localVarOptionals["xEventKey"], "string", "xEventKey"); err != nil {
-		return nil, err
+		return successPayload, nil, err
 	}
 
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -134,7 +133,7 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, typ
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -151,19 +150,22 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, typ
 	localVarPostBody = &event
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
-		return nil, err
+		return successPayload, nil, err
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
-		return localVarHttpResponse, err
+		return successPayload, localVarHttpResponse, err
 	}
 	defer localVarHttpResponse.Body.Close()
 	if localVarHttpResponse.StatusCode >= 300 {
 		bodyBytes, _ := ioutil.ReadAll(localVarHttpResponse.Body)
-		return localVarHttpResponse, reportError("Status: %v, Body: %s", localVarHttpResponse.Status, bodyBytes)
+		return successPayload, localVarHttpResponse, reportError("Status: %v, Body: %s", localVarHttpResponse.Status, bodyBytes)
 	}
 
-	return localVarHttpResponse, err
-}
+	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
+		return successPayload, localVarHttpResponse, err
+	}
 
+	return successPayload, localVarHttpResponse, err
+}

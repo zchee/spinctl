@@ -10,12 +10,13 @@
 package gate
 
 import (
-	"io/ioutil"
-	"net/url"
-	"net/http"
-	"strings"
-	"golang.org/x/net/context"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
+
+	"golang.org/x/net/context"
 )
 
 // Linger please
@@ -25,19 +26,18 @@ var (
 
 type ArtifactControllerApiService service
 
-
 /* ArtifactControllerApiService Retrieve the list of artifact accounts configured in Clouddriver.
- * @param ctx context.Context for authentication, logging, tracing, etc.
- @param optional (nil or map[string]interface{}) with one or more of:
-     @param "xRateLimitApp" (string) X-RateLimit-App
- @return []HashMap*/
-func (a *ArtifactControllerApiService) AllUsingGET(ctx context.Context, localVarOptionals map[string]interface{}) ([]HashMap,  *http.Response, error) {
+* @param ctx context.Context for authentication, logging, tracing, etc.
+@param optional (nil or map[string]interface{}) with one or more of:
+    @param "xRateLimitApp" (string) X-RateLimit-App
+@return []HashMap*/
+func (a *ArtifactControllerApiService) AllUsingGET(ctx context.Context, localVarOptionals map[string]interface{}) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
-		localVarPostBody interface{}
-		localVarFileName string
-		localVarFileBytes []byte
-	 	successPayload  []HashMap
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+		successPayload     []HashMap
 	)
 
 	// create path and map variables
@@ -52,7 +52,7 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx context.Context, localVar
 	}
 
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{ "application/json",  }
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -63,7 +63,7 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx context.Context, localVar
 	// to determine the Accept header
 	localVarHttpHeaderAccepts := []string{
 		"*/*",
-		}
+	}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -92,7 +92,5 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx context.Context, localVar
 		return successPayload, localVarHttpResponse, err
 	}
 
-
 	return successPayload, localVarHttpResponse, err
 }
-

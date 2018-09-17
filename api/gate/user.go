@@ -10,7 +10,6 @@
 package gate
 
 type User struct {
-
 	AccountNonExpired bool `json:"accountNonExpired,omitempty"`
 
 	AccountNonLocked bool `json:"accountNonLocked,omitempty"`
