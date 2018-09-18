@@ -24,7 +24,7 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
-func NewDefaultCilCommand(args []string) *cobra.Command {
+func NewDefaultCommand(args []string) *cobra.Command {
 	return NewCommand(os.Stdin, os.Stdout, os.Stderr, args)
 }
 
