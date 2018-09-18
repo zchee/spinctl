@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Command spinctl is a command-line tool that management of Spinnaker via gate API.
+// Command spinctl is a command-line tool to manage Spinnaker via gate API.
 package main
 
 import (

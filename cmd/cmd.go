@@ -33,7 +33,7 @@ func NewCommand(sin io.Reader, sout, serr io.Writer, args []string) *cobra.Comma
 
 	cmd := &cobra.Command{
 		Use:          "spinctl",
-		Short:        "spinctl is a command-line tool that management of Spinnaker via gate API.",
+		Short:        "spinctl is a command-line tool to manage Spinnaker via gate API.",
 		SilenceUsage: true,
 	}
 
