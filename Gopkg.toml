@@ -2,7 +2,9 @@
   package = "github.com/zchee/spinctl"
 
 required = []
-ignored = []
+ignored = [
+  "google.golang.org/appengine*"
+]
 
 [prune]
   go-tests = true
@@ -15,4 +17,8 @@ ignored = []
 
 [[constraint]]
   name = "golang.org/x/oauth2"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
   branch = "master"
