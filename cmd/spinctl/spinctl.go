@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	c := cmd.NewDefaultCilCommand(os.Args[1:])
+	c := cmd.NewDefaultCommand(os.Args[1:])
 	if err := c.Execute(); err != nil {
 		os.Exit(1)
 	}
