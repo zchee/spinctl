@@ -42,4 +42,4 @@ _testmain.go
 coverage.*
 
 # binary
-spinctl
+/spinctl
