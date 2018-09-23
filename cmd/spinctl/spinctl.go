@@ -6,13 +6,17 @@
 package main
 
 import (
+	"context"
 	"os"
 
 	"github.com/zchee/spinctl/cmd"
 )
 
 func main() {
-	c := cmd.NewDefaultCommand(os.Args[1:])
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	c := cmd.NewDefaultCommand(ctx, os.Args[1:])
 	if err := c.Execute(); err != nil {
 		os.Exit(1)
 	}
