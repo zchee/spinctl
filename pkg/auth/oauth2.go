@@ -47,6 +47,7 @@ func AuthenticateOAuth2(ctx context.Context) (*oauth2.Token, error) {
 	cs := &http.Server{
 		Addr: oauth2CallbackAddr,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// TODO(zchee): state validation
 			fmt.Fprintln(w, r.FormValue("code"))
 		}),
 	}
