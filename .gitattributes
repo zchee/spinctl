@@ -1,6 +1,7 @@
 # spinctl project gitattributes file
 # https://github.com/github/linguist#using-gitattributes
 
-doc.go linguist-documentation
-*.pb.go linguist-generated
-vendor/* linguist-vendored
+doc.go     linguist-documentation
+*.pb.go    linguist-generated
+vendor/*   linguist-vendored
+api/gate/* linguist-generated
