@@ -59,7 +59,7 @@ func WithHTTPClient(hc *http.Client) Option {
 	}
 }
 
-func New(opts ...Option) *Client {
+func NewClient(opts ...Option) *Client {
 	conf := defaultGateConfiguration
 	for _, o := range opts {
 		o(conf)
