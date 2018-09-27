@@ -3124,7 +3124,7 @@ paths:
       tags:
       - "pipeline-controller"
       summary: "Evaluate a pipeline expression using the provided execution as context"
-      operationId: "evaluateExpressionForExecutionUsingPOST"
+      operationId: "evaluateExpressionForExecutionViaPOSTUsingPOST_1"
       consumes:
       - "application/json"
       produces:
@@ -3136,12 +3136,13 @@ paths:
         required: true
         type: "string"
         x-exportParamName: "Id"
-      - name: "expression"
-        in: "query"
-        description: "expression"
+      - in: "body"
+        name: "pipelineExpression"
+        description: "pipelineExpression"
         required: true
-        type: "string"
-        x-exportParamName: "Expression"
+        schema:
+          type: "object"
+        x-exportParamName: "PipelineExpression"
       responses:
         200:
           description: "OK"
