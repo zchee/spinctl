@@ -7,18 +7,25 @@ package cmd
 import (
 	"context"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	"go.uber.org/zap"
 
+	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
 type application struct {
 	client *spinnaker.Client
+	log    *zap.Logger
+
+	expand bool
 }
 
 func NewCmdApplication(ctx context.Context, client *spinnaker.Client) *cobra.Command {
 	a := &application{
 		client: client,
+		log:    logger.FromContext(ctx),
 	}
 
 	cmd := &cobra.Command{
@@ -29,54 +36,51 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client) *cobra.Com
 			return err
 		},
 	}
+
+	flags := cmd.PersistentFlags()
+	flags.BoolVarP(&a.expand, "expand", "x", false, "expand application.")
+
 	cmd.AddCommand(&cobra.Command{
-		Use:   "get",
+		Use:   "get <application name>",
 		Short: "Get the specified application.",
-		RunE: func(*cobra.Command, []string) error {
-			return a.runGet(ctx)
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cmd.ValidateArgs(args)
+
+			name := args[0]
+			a.log.Debug("cmdGet",
+				zap.String("name", name),
+				zap.Bool("a.expand", a.expand),
+			)
+
+			return a.client.GetApplication(ctx, name, a.expand)
 		},
 	})
 	cmd.AddCommand(&cobra.Command{
 		Use:   "list",
 		Short: "List all applications.",
-		RunE: func(*cobra.Command, []string) error {
-			return a.runList(ctx)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := cobra.NoArgs(cmd, args); err != nil {
+				return err
+			}
+
+			return a.client.ListApplications(ctx)
 		},
 	})
 	cmd.AddCommand(&cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
 		RunE: func(*cobra.Command, []string) error {
-			return a.runSave(ctx)
+			return errors.New("not implements yet")
 		},
 	})
 	cmd.AddCommand(&cobra.Command{
 		Use:   "delete",
 		Short: "Delete the specified application.",
 		RunE: func(*cobra.Command, []string) error {
-			return a.runDelete(ctx)
+			return errors.New("not implements yet")
 		},
 	})
 
 	return cmd
-}
-
-func (a *application) init(ctx context.Context, cmd *cobra.Command, args []string) error {
-	return nil
-}
-
-func (a *application) runGet(ctx context.Context) error {
-	return nil
-}
-
-func (a *application) runList(ctx context.Context) error {
-	return a.client.ListApplications(ctx)
-}
-
-func (a *application) runSave(ctx context.Context) error {
-	return nil
-}
-
-func (a *application) runDelete(ctx context.Context) error {
-	return nil
 }
