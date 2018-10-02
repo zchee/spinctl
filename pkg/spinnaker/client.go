@@ -100,12 +100,12 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 		var err error
 		if tok = authcfg.OAuth2Config.Token; tok != nil {
 			conf := &oauth2.Config{
-				ClientID:     authcfg.OAuth2Config.ClientId,
+				ClientID:     authcfg.OAuth2Config.ClientID,
 				ClientSecret: authcfg.OAuth2Config.ClientSecret,
 				Scopes:       authcfg.OAuth2Config.Scopes,
 				Endpoint: oauth2.Endpoint{
-					AuthURL:  authcfg.OAuth2Config.AuthUrl,
-					TokenURL: authcfg.OAuth2Config.TokenUrl,
+					AuthURL:  authcfg.OAuth2Config.AuthURL,
+					TokenURL: authcfg.OAuth2Config.TokenURL,
 				},
 			}
 			tokSrc := conf.TokenSource(ctx, tok)

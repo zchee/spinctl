@@ -20,17 +20,17 @@ import (
 
 // OAuth2Config implements a OAuth2.0 authentication data for Spinnaker.
 type OAuth2Config struct {
-	ClientId     string        `yaml:"clientId"`
+	ClientID     string        `yaml:"clientId"`
 	ClientSecret string        `yaml:"clientSecret"`
-	AuthUrl      string        `yaml:"authUrl"`
-	TokenUrl     string        `yaml:"tokenUrl"`
+	AuthURL      string        `yaml:"authUrl"`
+	TokenURL     string        `yaml:"tokenUrl"`
 	Scopes       []string      `yaml:"scopes"`
 	Token        *oauth2.Token `yaml:"token,omitempty"`
 }
 
 // IsValid checks whethere the OAuth2Config is valid.
 func (o OAuth2Config) IsValid() bool {
-	return o.ClientId != "" && o.ClientSecret != "" && o.TokenUrl != "" && o.AuthUrl != "" && len(o.Scopes) != 0
+	return o.ClientID != "" && o.ClientSecret != "" && o.TokenURL != "" && o.AuthURL != "" && len(o.Scopes) != 0
 }
 
 func AuthenticateOAuth2(ctx context.Context) (*oauth2.Token, error) {
