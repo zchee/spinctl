@@ -14,7 +14,7 @@ GO_PGKS_ABS := $(shell go list -f '${GO_PATH}/src/{{.ImportPath}}' ./...)
 
 all: build
 
-$(APP): ${GO_PKGS}
+$(APP): ${GO_PGKS_ABS}
 	go build -v -x -o $@ ${PKG_ROOT}/cmd/${APP}
 
 build: ${APP}  ## build spinctl binary
