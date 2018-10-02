@@ -5,10 +5,18 @@
 package spinnaker
 
 import (
+	"context"
 	"net/http"
 	"net/http/cookiejar"
 
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+	"golang.org/x/oauth2"
+
 	"github.com/zchee/spinctl/api/gate"
+	"github.com/zchee/spinctl/pkg/auth"
+	"github.com/zchee/spinctl/pkg/config"
+	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/version"
 )
 
@@ -18,6 +26,7 @@ const (
 
 type Client struct {
 	client *gate.APIClient
+	cfg    *config.Config
 }
 
 var defaultGateConfiguration = &gate.Configuration{
@@ -67,7 +76,60 @@ func NewClient(opts ...Option) *Client {
 	cookieJar, _ := cookiejar.New(nil)
 	conf.HTTPClient.Jar = cookieJar
 
-	return &Client{
-		client: gate.NewAPIClient(conf),
+	cfg := config.New()
+	if !cfg.Exists() {
+		cfg.Create()
 	}
+	if ep := cfg.Gate.Endpoint; ep != "" {
+		conf.BasePath = ep
+	}
+
+	c := &Client{
+		client: gate.NewAPIClient(conf),
+		cfg:    cfg,
+	}
+
+	return c
+}
+
+func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
+	authcfg := c.cfg.AuthConfig
+
+	if authcfg != nil && authcfg.Enable {
+		tok := &oauth2.Token{}
+		var err error
+		if tok = authcfg.OAuth2Config.Token; tok != nil {
+			conf := &oauth2.Config{
+				ClientID:     authcfg.OAuth2Config.ClientId,
+				ClientSecret: authcfg.OAuth2Config.ClientSecret,
+				Scopes:       authcfg.OAuth2Config.Scopes,
+				Endpoint: oauth2.Endpoint{
+					AuthURL:  authcfg.OAuth2Config.AuthUrl,
+					TokenURL: authcfg.OAuth2Config.TokenUrl,
+				},
+			}
+			tokSrc := conf.TokenSource(ctx, tok)
+			tok, err = tokSrc.Token()
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			tok, err = auth.AuthenticateOAuth2(ctx)
+			if err != nil {
+				return nil, err
+			}
+			if !tok.Valid() {
+				return nil, errors.Wrapf(err, "token is invalid: %v", tok)
+			}
+		}
+		logger.FromContext(ctx).Debug("Authenticate", zap.Any("tok", tok))
+
+		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
+		authcfg.OAuth2Config.Token = tok
+		if err := c.cfg.Write(); err != nil {
+			return nil, err
+		}
+	}
+
+	return ctx, nil
 }
