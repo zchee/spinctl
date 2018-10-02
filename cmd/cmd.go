@@ -7,13 +7,12 @@ package cmd
 import (
 	"context"
 	"io"
-	"log"
 	"os"
 
 	"github.com/spf13/cobra"
+	"go.uber.org/zap/zapcore"
 
-	"github.com/zchee/spinctl/api/gate"
-	"github.com/zchee/spinctl/pkg/auth"
+	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
@@ -31,14 +30,7 @@ func NewCommand(ctx context.Context, in io.Reader, out, er io.Writer, args []str
 	flags := cmd.PersistentFlags()
 	flags.Parse(args)
 
-	tok, err := auth.AuthenticateOAuth2(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if !tok.Valid() {
-		log.Fatalf("token is invalid: %v", tok)
-	}
-	ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
+	ctx = logger.NewContext(ctx, logger.NewZapLogger(zapcore.DebugLevel))
 
 	client := spinnaker.NewClient()
 	cmd.AddCommand(NewCmdApplication(ctx, client))
