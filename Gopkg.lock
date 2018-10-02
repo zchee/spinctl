@@ -159,7 +159,7 @@
     "oauth2/v2",
   ]
   pruneopts = "NUT"
-  revision = "5da02d31af7d15cc65a207f8a46a6e3c50d41178"
+  revision = "5dae35f858443b7779382d80661dbbb2dce23176"
 
 [[projects]]
   digest = "1:e2da54c7866453ac5831c61c7ec5d887f39328cac088c806553303bff4048e6f"
