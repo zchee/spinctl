@@ -17,6 +17,11 @@ import (
 	"github.com/zchee/spinctl/pkg/internal/pretty"
 )
 
+const (
+	envZapDebug = "SPINCTL_ZAP_DEBUG"
+	envLogLevel = "SPINCTL_LOG_LEVEL"
+)
+
 func init() {
 	if err := zap.RegisterEncoder("debug", func(encoderConfig zapcore.EncoderConfig) (zapcore.Encoder, error) {
 		return NewConsoleEncoder(encoderConfig), nil
@@ -27,7 +32,7 @@ func init() {
 
 func NewZapLogger(l zapcore.Level, opts ...zap.Option) *zap.Logger {
 	var cfg zap.Config
-	if _, ok := os.LookupEnv("SPINCTL_ZAP_DEBUG"); !ok {
+	if _, ok := os.LookupEnv(envZapDebug); !ok {
 		cfg = zap.NewDevelopmentConfig()
 	} else {
 		cfg = zap.NewDevelopmentConfig()
@@ -40,7 +45,7 @@ func NewZapLogger(l zapcore.Level, opts ...zap.Option) *zap.Logger {
 	cfg.EncoderConfig.EncodeTime = nil
 	cfg.Level.SetLevel(zapcore.DPanicLevel) // not show logs normally
 
-	if envlv := os.Getenv("SPINCTL_LOG_LEVEL"); envlv != "" {
+	if envlv := os.Getenv(envLogLevel); envlv != "" {
 		var lv zapcore.Level
 		if err := lv.UnmarshalText([]byte(envlv)); err == nil {
 			cfg.Level.SetLevel(lv)
