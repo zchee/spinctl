@@ -25,3 +25,7 @@ jq ' ' < "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION-raw.json" > "$PKG_R
 rm -f "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION-raw.json"
 
 goimports -w api/gate
+
+git add api/gate
+git add api/swagger-spec/"gate-$SPINNAKER_VERSION.json"
+git commit -m "api/gate: regeerate gate API from spinnaker $SPINNAKER_VERSION"
