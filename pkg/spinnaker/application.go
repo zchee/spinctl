@@ -7,16 +7,17 @@ package spinnaker
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
 )
 
 func (c *Client) ListApplications(ctx context.Context) error {
-	apps, _, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
-	if err != nil {
+	apps, resp, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
+	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrap(err, "failed to get all applications")
 	}
-	// TODO(zchee): handle response status
+	defer resp.Body.Close()
 
 	fmt.Printf("apps: %#v\n", apps)
 
