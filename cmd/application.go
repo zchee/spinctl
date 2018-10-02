@@ -24,6 +24,10 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client) *cobra.Com
 	cmd := &cobra.Command{
 		Use:   "application",
 		Short: "manage the Spinnaker applications.",
+		PersistentPreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = a.client.Authenticate(ctx)
+			return err
+		},
 	}
 	cmd.AddCommand(&cobra.Command{
 		Use:   "get",
