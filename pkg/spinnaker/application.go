@@ -12,6 +12,23 @@ import (
 	"github.com/pkg/errors"
 )
 
+func (c *Client) GetApplication(ctx context.Context, name string, expand bool) error {
+	opts := make(map[string]interface{})
+	if expand {
+		opts["expand"] = true
+	}
+
+	app, resp, err := c.client.ApplicationControllerApi.GetApplicationUsingGET(ctx, name, opts)
+	if err != nil || resp.StatusCode != http.StatusOK {
+		return errors.Wrapf(err, "failed to get %s application", name)
+	}
+	defer resp.Body.Close()
+
+	fmt.Printf("app: %#v\n", app)
+
+	return nil
+}
+
 func (c *Client) ListApplications(ctx context.Context) error {
 	apps, resp, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
 	if err != nil || resp.StatusCode != http.StatusOK {
