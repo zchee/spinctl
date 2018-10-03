@@ -1,0 +1,99 @@
+version: 2
+
+defaults: &defaults
+  working_directory: /go/src/github.com/zchee/spinctl
+
+jobs:
+  fetch:
+    <<: *defaults
+    docker:
+      - image: golang:1.11.1-stretch
+    steps:
+      - checkout
+      - run:
+          name: Remove global .gitconfig
+          command: |
+            if [ -f ~/.gitconfig ]; then rm ~/.gitconfig; fi
+      - restore_cache:
+          keys:
+            - vendor-{{ checksum "Gopkg.lock" }}
+      - run:
+          name: Install dependencies
+          command: |
+            if [ ! -d vendor ]; then
+              make dep/ensure
+            fi
+      - save_cache:
+          key: vendor-{{ checksum "Gopkg.lock" }}
+          paths:
+            - /go/src/github.com/zchee/spinctl/vendor
+      - persist_to_workspace:
+          root: /go/src/github.com/zchee/spinctl
+          paths:
+            - "vendor/*"
+
+  test:
+    <<: *defaults
+    docker:
+      - image: golang:1.11.1-stretch
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /go/src/github.com/zchee/spinctl
+      - run:
+          name: Test and collect coverages
+          command: |
+            make coverage
+      - run:
+          name: Upload coverages to codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+
+  lint:
+    <<: *defaults
+    docker:
+      - image: golang:1.11.1-stretch
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /go/src/github.com/zchee/spinctl
+      - run:
+          name: Run lint for sources
+          command: |
+            make lint
+
+  reviewdog:
+    <<: *defaults
+    docker:
+      - image: golang:1.11.1-stretch
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /go/src/github.com/zchee/spinctl
+      - run:
+          name: Run test
+          command: |
+            make reviewdog
+
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - fetch:
+          context: org-global
+      - test:
+          context: org-global
+          requires:
+            - fetch
+      - lint:
+          context: org-global
+          requires:
+            - fetch
+      - reviewdog:
+          context: org-global
+          requires:
+            - fetch
+          filters:
+            branches:
+              ignore:
+                - master
