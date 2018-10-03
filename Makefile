@@ -19,7 +19,6 @@ $(APP): ${GO_PGKS_ABS}
 
 build: ${APP}  ## build spinctl binary
 
-
 LINTERS = deadcode dupl errcheck goconst gocyclo golint gosec ineffassign interfacer maligned megacheck structcheck unconvert varcheck 
 lint: golangci-lint  ## Run all linters
 
@@ -28,6 +27,17 @@ $(GO_PATH)/bin/golangci-lint:
 
 golangci-lint: $(GO_PATH)/bin/golangci-lint
 	golangci-lint run --no-config --issues-exit-code=0 --deadline=30m --disable-all $(foreach tool,$(LINTERS),--enable=$(tool)) $(GO_PGKS_ABS)
+
+dep: dep/get dep/ensure  ## Fetch vendor packages via dep ensure
+
+dep/get:
+	@go get -u github.com/golang/dep/cmd/dep
+
+dep/ensure:
+	dep ensure -v -vendor-only
+
+dep/update:  ## Update vendor packages
+	dep ensure -v -update
 
 # ----------------------------------------------------------------------------
 # help
