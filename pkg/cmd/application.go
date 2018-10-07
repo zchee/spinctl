@@ -18,8 +18,6 @@ import (
 type application struct {
 	client *spinnaker.Client
 	log    *zap.Logger
-
-	expand bool
 }
 
 func NewCmdApplication(ctx context.Context, client *spinnaker.Client) *cobra.Command {
@@ -31,34 +29,62 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client) *cobra.Com
 	cmd := &cobra.Command{
 		Use:   "application",
 		Short: "manage the Spinnaker applications.",
-		PersistentPreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = a.client.Authenticate(ctx)
-			return err
-		},
 	}
 
-	flags := cmd.PersistentFlags()
-	flags.BoolVarP(&a.expand, "expand", "x", false, "expand application.")
+	cmd.AddCommand(a.newCmdApplicationGet(ctx))
+	cmd.AddCommand(a.newCmdApplicationList(ctx))
+	cmd.AddCommand(a.newCmdApplicationSave(ctx))
+	cmd.AddCommand(a.newCmdApplicationDelete(ctx))
 
-	cmd.AddCommand(&cobra.Command{
+	return cmd
+}
+
+type applicationGet struct {
+	expand bool
+}
+
+func (a *application) newCmdApplicationGet(ctx context.Context) *cobra.Command {
+	get := &applicationGet{}
+
+	cmd := &cobra.Command{
 		Use:   "get <application name>",
 		Short: "Get the specified application.",
 		Args:  cobra.ExactArgs(1),
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = a.client.Authenticate(ctx)
+			return err
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cmd.ValidateArgs(args)
 
 			name := args[0]
-			a.log.Debug("cmdGet",
+			a.log.Debug("CmdApplicationGet",
 				zap.String("name", name),
-				zap.Bool("a.expand", a.expand),
+				zap.Bool("expand", get.expand),
 			)
 
-			return a.client.GetApplication(ctx, name, a.expand)
+			return a.client.GetApplication(ctx, name, get.expand)
 		},
-	})
-	cmd.AddCommand(&cobra.Command{
+	}
+
+	f := cmd.Flags()
+	f.BoolVarP(&get.expand, "expand", "x", false, "expand application description.")
+
+	return cmd
+}
+
+type applicationList struct{}
+
+func (a *application) newCmdApplicationList(ctx context.Context) *cobra.Command {
+	_ = &applicationList{}
+
+	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all applications.",
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = a.client.Authenticate(ctx)
+			return err
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cobra.NoArgs(cmd, args); err != nil {
 				return err
@@ -66,21 +92,47 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client) *cobra.Com
 
 			return a.client.ListApplications(ctx)
 		},
-	})
-	cmd.AddCommand(&cobra.Command{
+	}
+
+	return cmd
+}
+
+type applicationSave struct{}
+
+func (a *application) newCmdApplicationSave(ctx context.Context) *cobra.Command {
+	_ = &applicationSave{}
+
+	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = a.client.Authenticate(ctx)
+			return err
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
-	})
-	cmd.AddCommand(&cobra.Command{
+	}
+
+	return cmd
+}
+
+type applicationDelete struct{}
+
+func (a *application) newCmdApplicationDelete(ctx context.Context) *cobra.Command {
+	_ = &applicationDelete{}
+
+	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "Delete the specified application.",
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = a.client.Authenticate(ctx)
+			return err
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
-	})
+	}
 
 	return cmd
 }
