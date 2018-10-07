@@ -9,7 +9,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/zchee/spinctl/cmd"
+	"github.com/zchee/spinctl/pkg/cmd"
 )
 
 func main() {
