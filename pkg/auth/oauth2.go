@@ -67,12 +67,12 @@ func AuthenticateOAuth2(ctx context.Context) (*oauth2.Token, error) {
 	fmt.Fprintf(os.Stdout, "Your browser has been opened to visit:\n\n\t%s\n", authURL)
 	code := codeFromStdin()
 	if code == "" {
-		return nil, errors.New("authorization code is empty")
+		return nil, errors.New("auth: authorization code is empty")
 	}
 
 	tok, err := conf.Exchange(ctx, code) // TODO(zchee): set code_verifier param
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to converts an authorization code into a token")
+		return nil, errors.Wrap(err, "auth: failed to converts an authorization code into a token")
 	}
 
 	return tok, nil
