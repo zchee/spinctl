@@ -84,7 +84,7 @@ func NewZapSugaredLogger(lv zapcore.Level, out zapcore.WriteSyncer, opts ...zap.
 	return l.Sugar()
 }
 
-func NewRedirectZapLogger(logger *zap.Logger) func() {
+func RedirectStdLog(logger *zap.Logger) func() {
 	return zap.RedirectStdLog(logger)
 }
 
