@@ -121,7 +121,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 				return nil, errors.Wrapf(err, "token is invalid: %v", tok)
 			}
 		}
-		logger.FromContext(ctx).Debugf("Authenticate: %v", tok)
+		logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
 		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
 		authcfg.OAuth2Config.Token = tok
