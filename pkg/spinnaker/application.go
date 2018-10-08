@@ -5,7 +5,6 @@
 package spinnaker
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -26,12 +25,11 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string,
 	}
 	defer resp.Body.Close()
 
-	buf, err := parsePayload(&payload, format)
+	s, err := parsePayload(&payload, format)
 	if err != nil {
 		return err
 	}
-
-	fmt.Fprintln(out, string(buf))
+	fmt.Fprintln(out, s)
 
 	return nil
 }
@@ -43,12 +41,11 @@ func (c *Client) ListApplications(ctx context.Context, out io.Writer, format str
 	}
 	defer resp.Body.Close()
 
-	buf, err := parsePayload(&payload, format)
+	s, err := parsePayload(&payload, format)
 	if err != nil {
 		return err
 	}
-
-	fmt.Fprintln(out, string(bytes.TrimSpace(buf)))
+	fmt.Fprintln(out, s)
 
 	return nil
 }
