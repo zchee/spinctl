@@ -6,6 +6,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/spf13/cobra"
 
@@ -18,12 +19,19 @@ func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 
 func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:          "spinctl",
-		Short:        "spinctl is a command-line tool to manage Spinnaker via gate API.",
+		Use:          appName,
+		Short:        fmt.Sprintf("%s is a command-line tool to manage Spinnaker via gate API.", appName),
 		SilenceUsage: true,
+		PersistentPreRunE: func(*cobra.Command, []string) error {
+			return initProfiling()
+		},
+		PersistentPostRunE: func(*cobra.Command, []string) error {
+			return flushProfiling()
+		},
 	}
 
 	flags := cmd.PersistentFlags()
+	addProfilingFlags(flags)
 	flags.Parse(args)
 
 	client := spinnaker.NewClient()
