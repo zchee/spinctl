@@ -10,7 +10,6 @@ import (
 	"net/http/cookiejar"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 
 	"github.com/zchee/spinctl/api/gate"
@@ -122,7 +121,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 				return nil, errors.Wrapf(err, "token is invalid: %v", tok)
 			}
 		}
-		logger.FromContext(ctx).Debug("Authenticate", zap.Any("tok", tok))
+		logger.FromContext(ctx).Debugf("Authenticate: %v", tok)
 
 		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
 		authcfg.OAuth2Config.Token = tok
