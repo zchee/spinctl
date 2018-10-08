@@ -59,11 +59,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ad23cc427f544a97fb1bae46291baa626e430d4513e279f9ffd9171aa797b288"
+  digest = "1:75386ee8a7a1b23cef8dc0d18f689834706742fd18c3046b6d7186a4e9c18c37"
   name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "c059e472caf75dbe73903f6521a20abac245b17f"
+  revision = "2233dee583dcf88f3c8b22cb7a33f05a499800d8"
 
 [[projects]]
   branch = "master"
@@ -204,6 +204,7 @@
     "github.com/ghodss/yaml",
     "github.com/pkg/errors",
     "github.com/spf13/cobra",
+    "github.com/spf13/pflag",
     "github.com/zchee/go-xdgbasedir",
     "github.com/zchee/go-xdgbasedir/home",
     "go.uber.org/zap",
