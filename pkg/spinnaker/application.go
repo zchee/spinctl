@@ -5,14 +5,18 @@
 package spinnaker
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 
+	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 )
 
-func (c *Client) GetApplication(ctx context.Context, name string, expand bool) error {
+func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string, expand bool, format string) error {
 	opts := make(map[string]interface{})
 	if expand {
 		opts["expand"] = true
@@ -24,19 +28,63 @@ func (c *Client) GetApplication(ctx context.Context, name string, expand bool) e
 	}
 	defer resp.Body.Close()
 
-	fmt.Printf("app: %#v\n", app)
+	data, err := json.Marshal(&app)
+	if err != nil {
+		return err
+	}
+
+	var buf []byte
+	switch format {
+	case "json":
+		b := new(bytes.Buffer)
+		if err := json.Indent(b, data, "", "  "); err != nil {
+			return err
+		}
+		buf = b.Bytes()
+	case "yaml":
+		buf, err = yaml.JSONToYAML(data)
+		if err != nil {
+			return err
+		}
+	default:
+		buf = data
+	}
+
+	fmt.Fprintln(out, string(bytes.TrimSpace(buf)))
 
 	return nil
 }
 
-func (c *Client) ListApplications(ctx context.Context) error {
+func (c *Client) ListApplications(ctx context.Context, out io.Writer, format string) error {
 	apps, resp, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrap(err, "failed to get all applications")
 	}
 	defer resp.Body.Close()
 
-	fmt.Printf("apps: %#v\n", apps)
+	data, err := json.Marshal(&apps)
+	if err != nil {
+		return err
+	}
+
+	var buf []byte
+	switch format {
+	case "json":
+		b := new(bytes.Buffer)
+		if err := json.Indent(b, data, "", "  "); err != nil {
+			return err
+		}
+		buf = b.Bytes()
+	case "yaml":
+		buf, err = yaml.JSONToYAML(data)
+		if err != nil {
+			return err
+		}
+	default:
+		buf = data
+	}
+
+	fmt.Fprintln(out, string(bytes.TrimSpace(buf)))
 
 	return nil
 }
