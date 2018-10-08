@@ -63,7 +63,7 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 
 	f := cmd.Flags()
 	f.BoolVarP(&get.expand, "expand", "x", false, "expand application description.")
-	f.StringVarP(&get.outFormat, "output", "o", "json", "Output format. One of: (json|yaml)")
+	f.StringVarP(&get.outFormat, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
@@ -95,7 +95,7 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 	}
 
 	f := cmd.Flags()
-	f.StringVarP(&list.outFormat, "output", "o", "json", "Output format. One of: (json|yaml)")
+	f.StringVarP(&list.outFormat, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
