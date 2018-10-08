@@ -9,6 +9,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"go.uber.org/zap/zapcore"
 
 	"github.com/zchee/spinctl/pkg/logger"
@@ -17,13 +18,21 @@ import (
 
 const (
 	appName = "spinctl"
+
+	defaultLogLevel = zapcore.InfoLevel
 )
+
+type Options struct {
+	debug bool
+}
 
 func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 	return NewCommand(ctx, args)
 }
 
 func NewCommand(ctx context.Context, args []string) *cobra.Command {
+	opts := &Options{}
+
 	cmd := &cobra.Command{
 		Use:          appName,
 		Short:        fmt.Sprintf("%s is a command-line tool to manage Spinnaker via gate API.", appName),
@@ -36,13 +45,17 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		},
 	}
 
+	flags := cmd.PersistentFlags()
+	addFlags(flags, opts)
+	flags.Parse(args)
+
 	out := cmd.OutOrStdout()
 
-	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(zapcore.InfoLevel, zapcore.AddSync(out)))
-
-	flags := cmd.PersistentFlags()
-	addProfilingFlags(flags)
-	flags.Parse(args)
+	lv := defaultLogLevel
+	if opts.debug {
+		lv = zapcore.DebugLevel
+	}
+	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
 
 	client := spinnaker.NewClient()
 	ctx, err := client.Authenticate(ctx)
@@ -53,4 +66,10 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 
 	return cmd
+}
+
+func addFlags(flags *pflag.FlagSet, opts *Options) {
+	flags.BoolVarP(&opts.debug, "debug", "d", false, "Use debug output")
+
+	addProfilingFlags(flags)
 }
