@@ -6,8 +6,8 @@ PKG_ROOT = github.com/zchee/spinctl
 
 GO_PATH := $(shell go env GOPATH)
 GO_ALL_PGKS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./...)
-GO_PKGS := $(shell go list ./... | grep -v -e 'api/gate')
-GO_PGKS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e 'api/gate')
+GO_PKGS := $(shell go list ./... | grep -v -e 'api/gate' -e 'api/mock')
+GO_PGKS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e 'api/gate' -e 'api/mock')
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
 
