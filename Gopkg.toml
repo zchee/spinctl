@@ -19,6 +19,10 @@ ignored = []
   branch = "master"
 
 [[constraint]]
+  name = "go.uber.org/zap"
+  branch = "master"
+
+[[constraint]]
   name = "github.com/spf13/cobra"
   branch = "master"
 
