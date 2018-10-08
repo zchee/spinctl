@@ -26,11 +26,11 @@ func init() {
 	if err := zap.RegisterEncoder("debug", func(encoderConfig zapcore.EncoderConfig) (zapcore.Encoder, error) {
 		return NewConsoleEncoder(encoderConfig), nil
 	}); err != nil {
-		panic(err)
+		panic(fmt.Errorf("logger.init: %+v", err))
 	}
 }
 
-func NewZapLogger(l zapcore.Level, opts ...zap.Option) *zap.Logger {
+func newZapConfig(opts ...zap.Option) zap.Config {
 	var cfg zap.Config
 	if _, ok := os.LookupEnv(envZapDebug); !ok {
 		cfg = zap.NewDevelopmentConfig()
@@ -41,47 +41,51 @@ func NewZapLogger(l zapcore.Level, opts ...zap.Option) *zap.Logger {
 		opts = append(opts, zap.AddCaller())
 	}
 
-	cfg.DisableStacktrace = true
-	cfg.EncoderConfig.EncodeTime = nil
-	cfg.Level.SetLevel(zapcore.DPanicLevel) // not show logs normally
-
 	if envlv := os.Getenv(envLogLevel); envlv != "" {
-		var lv zapcore.Level
-		if err := lv.UnmarshalText([]byte(envlv)); err == nil {
-			cfg.Level.SetLevel(lv)
+		var elv zapcore.Level
+		if err := elv.UnmarshalText([]byte(envlv)); err == nil {
+			cfg.Level.SetLevel(elv)
 		}
 	}
 
-	zl, err := cfg.Build(opts...)
-	if err != nil {
-		panic(err)
+	return cfg
+}
+
+func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.Logger {
+	cfg := newZapConfig(opts...)
+	if !cfg.Level.Enabled(lv) {
+		cfg.Level.SetLevel(lv)
 	}
 
-	return zl
+	l, err := cfg.Build(opts...)
+	if err != nil {
+		panic(fmt.Errorf("logger.NewZapLogger: %+v", err))
+	}
+
+	return l
 }
 
-func NewRedirectZapLogger(lv zapcore.Level, opts ...zap.Option) (*zap.Logger, func()) {
-	log := NewZapLogger(lv)
-	undo := zap.RedirectStdLog(log)
+func NewZapSugaredLogger(lv zapcore.Level, out zapcore.WriteSyncer, opts ...zap.Option) *zap.SugaredLogger {
+	cfg := newZapConfig(opts...)
+	if !cfg.Level.Enabled(lv) {
+		cfg.Level.SetLevel(lv)
+	}
+	cfg.DisableCaller = true
+	cfg.DisableStacktrace = true
+	cfg.EncoderConfig.EncodeTime = nil
+	cfg.EncoderConfig.LevelKey = ""
+	cfg.EncoderConfig.LineEnding = zapcore.DefaultLineEnding
 
-	return log, undo
+	l, err := cfg.Build(opts...)
+	if err != nil {
+		panic(fmt.Errorf("logger.NewZapSugaredLogger: %+v", err))
+	}
+
+	return l.Sugar()
 }
 
-func NewZapCore(buf *SyncBuffer) zapcore.Core {
-	jsonEncoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
-		TimeKey:        "ts",
-		LevelKey:       "level",
-		NameKey:        "",
-		CallerKey:      "", // not show
-		MessageKey:     "msg",
-		StacktraceKey:  "", // not show
-		EncodeLevel:    zapcore.LowercaseLevelEncoder,
-		EncodeTime:     zapcore.EpochTimeEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-	})
-	core := zapcore.NewCore(jsonEncoder, buf, zapcore.InfoLevel)
-
-	return core
+func NewRedirectZapLogger(logger *zap.Logger) func() {
+	return zap.RedirectStdLog(logger)
 }
 
 type consoleEncoder struct {
