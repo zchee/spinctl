@@ -18,6 +18,14 @@
   version = "v1.7.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:0b86d0877c1b5a5d518f5bb51d7a27878f0c2a1e05dd96ab8790dee49d4eb5bf"
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "c7ce16629ff4cd059ed96ed06419dd3856fd3577"
+
+[[projects]]
   digest = "1:97df918963298c287643883209a2c3f642e6593379f97ab400c2a2e219ab647d"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
@@ -193,6 +201,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/fatih/color",
+    "github.com/ghodss/yaml",
     "github.com/pkg/errors",
     "github.com/spf13/cobra",
     "github.com/zchee/go-xdgbasedir",
