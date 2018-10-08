@@ -13,6 +13,10 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+const (
+	appName = "spinctl"
+)
+
 func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 	return NewCommand(ctx, args)
 }
