@@ -70,11 +70,11 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 	}
 
 	cmd := &cobra.Command{
-		Use:     "list",
+		Use:     "list <application name>",
 		Aliases: []string{"ls"},
 		Short:   "List the pipelines for the provided application.",
 		Args:    cobra.ExactArgs(1),
-		Example: fmt.Sprintf("  %s pipeline list <application name> -o yaml", appName),
+		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
