@@ -21,12 +21,6 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Wri
 		Short: "manage the Spinnaker applications.",
 	}
 
-	ctx, err := client.Authenticate(ctx)
-	if err != nil {
-		logger.FromContext(ctx).Fatalf("%v", errors.Wrap(err, "failed to Authenticate"))
-		return nil
-	}
-
 	cmd.AddCommand(newCmdApplicationGet(ctx, client, out))
 	cmd.AddCommand(newCmdApplicationList(ctx, client, out))
 	cmd.AddCommand(newCmdApplicationSave(ctx, client, out))
@@ -53,6 +47,13 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 		Use:   "get <application name>",
 		Short: "Get the specified application.",
 		Args:  cobra.ExactArgs(1),
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = get.client.Authenticate(ctx)
+			if err != nil {
+				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
+			}
+			return err
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
@@ -88,6 +89,13 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all applications.",
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = list.client.Authenticate(ctx)
+			if err != nil {
+				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
+			}
+			return err
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cobra.NoArgs(cmd, args); err != nil {
 				return err
@@ -109,7 +117,7 @@ type applicationSave struct {
 }
 
 func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &applicationSave{
+	save := &applicationSave{
 		client: client,
 		out:    out,
 	}
@@ -117,6 +125,13 @@ func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = save.client.Authenticate(ctx)
+			if err != nil {
+				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
+			}
+			return err
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
@@ -131,7 +146,7 @@ type applicationDelete struct {
 }
 
 func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &applicationDelete{
+	delete := &applicationDelete{
 		client: client,
 		out:    out,
 	}
@@ -139,6 +154,13 @@ func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out 
 	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "Delete the specified application.",
+		PreRunE: func(*cobra.Command, []string) (err error) {
+			ctx, err = delete.client.Authenticate(ctx)
+			if err != nil {
+				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
+			}
+			return err
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
