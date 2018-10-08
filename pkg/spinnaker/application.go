@@ -22,13 +22,13 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string,
 		opts["expand"] = true
 	}
 
-	app, resp, err := c.client.ApplicationControllerApi.GetApplicationUsingGET(ctx, name, opts)
+	payload, resp, err := c.client.ApplicationControllerApi.GetApplicationUsingGET(ctx, name, opts)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrapf(err, "failed to get %s application", name)
 	}
 	defer resp.Body.Close()
 
-	data, err := json.Marshal(&app)
+	data, err := json.Marshal(&payload)
 	if err != nil {
 		return err
 	}
@@ -56,13 +56,13 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string,
 }
 
 func (c *Client) ListApplications(ctx context.Context, out io.Writer, format string) error {
-	apps, resp, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
+	payload, resp, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrap(err, "failed to get all applications")
 	}
 	defer resp.Body.Close()
 
-	data, err := json.Marshal(&apps)
+	data, err := json.Marshal(&payload)
 	if err != nil {
 		return err
 	}
