@@ -6,6 +6,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"io"
 
 	"github.com/pkg/errors"
@@ -44,9 +45,10 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 	}
 
 	cmd := &cobra.Command{
-		Use:   "get <application name>",
-		Short: "Get the specified application.",
-		Args:  cobra.ExactArgs(1),
+		Use:     "get",
+		Short:   "Get the specified application.",
+		Args:    cobra.ExactArgs(1),
+		Example: fmt.Sprintf("  %s application get spin -x -o yaml", appName),
 		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = get.client.Authenticate(ctx)
 			if err != nil {
@@ -68,7 +70,7 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 
 	f := cmd.Flags()
 	f.BoolVarP(&get.expand, "expand", "x", false, "expand application description.")
-	f.StringVarP(&get.outFormat, "output", "o", "json", "Output format. One of: (json|yaml).")
+	f.StringVarP(&get.outFormat, "output", "o", "json", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
@@ -87,8 +89,10 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 	}
 
 	cmd := &cobra.Command{
-		Use:   "list",
-		Short: "List all applications.",
+		Use:     "list",
+		Short:   "List all applications.",
+		Args:    cobra.ExactArgs(0),
+		Example: fmt.Sprintf("  %s application list -o yaml", appName),
 		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = list.client.Authenticate(ctx)
 			if err != nil {
@@ -97,16 +101,15 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cobra.NoArgs(cmd, args); err != nil {
+			if err := cmd.ValidateArgs(args); err != nil {
 				return err
 			}
-
 			return list.client.ListApplications(ctx, list.out, list.outFormat)
 		},
 	}
 
 	f := cmd.Flags()
-	f.StringVarP(&list.outFormat, "output", "o", "json", "Output format. One of: (json|yaml).")
+	f.StringVarP(&list.outFormat, "output", "o", "json", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
