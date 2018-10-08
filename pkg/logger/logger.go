@@ -67,9 +67,7 @@ func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.Logger {
 
 func NewZapSugaredLogger(lv zapcore.Level, out zapcore.WriteSyncer, opts ...zap.Option) *zap.SugaredLogger {
 	cfg := newZapConfig(opts...)
-	if !cfg.Level.Enabled(lv) {
-		cfg.Level.SetLevel(lv)
-	}
+	cfg.Level.SetLevel(lv)
 	cfg.DisableCaller = true
 	cfg.DisableStacktrace = true
 	cfg.EncoderConfig.EncodeTime = nil
