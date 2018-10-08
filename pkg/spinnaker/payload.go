@@ -10,13 +10,15 @@ import (
 	"unsafe"
 
 	"github.com/ghodss/yaml"
+	"github.com/pkg/errors"
 )
 
 func parsePayload(payload interface{}, format string) (string, error) {
 	buf := new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
+	enc.SetIndent("", "  ")
 	if err := enc.Encode(&payload); err != nil {
-		return "", err
+		return "", errors.Wrap(err, "parsePayload: failed to encoding payload")
 	}
 
 	var out []byte
@@ -24,19 +26,18 @@ func parsePayload(payload interface{}, format string) (string, error) {
 	case "yaml":
 		data, err := yaml.JSONToYAML(buf.Bytes())
 		if err != nil {
-			return "", err
+			return "", errors.Wrap(err, "parsePayload: failed to convert payload to JSONToYAML")
 		}
 		out = data
 	case "raw":
-		out = buf.Bytes()
+		cb := new(bytes.Buffer)
+		if err := json.Compact(cb, buf.Bytes()); err != nil {
+			return "", errors.Wrap(err, "parsePayload: failed to compact for raw output")
+		}
+		out = cb.Bytes()
 	case "json":
 		fallthrough // json is defaut
 	default:
-		data := buf.Bytes()
-		buf.Reset() // re-use buf
-		if err := json.Indent(buf, data, "", "  "); err != nil {
-			return "", err
-		}
 		out = buf.Bytes()
 	}
 	out = bytes.TrimSpace(out)
