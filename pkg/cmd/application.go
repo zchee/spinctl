@@ -83,6 +83,7 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 
 	cmd := &cobra.Command{
 		Use:     "list",
+		Aliases: []string{"ls"},
 		Short:   "List all applications.",
 		Args:    cobra.ExactArgs(0),
 		Example: fmt.Sprintf("  %s application list -o yaml", appName),
@@ -134,8 +135,9 @@ func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out 
 	}
 
 	cmd := &cobra.Command{
-		Use:   "delete",
-		Short: "Delete the specified application.",
+		Use:     "delete",
+		Aliases: []string{"del"},
+		Short:   "Delete the specified application.",
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},

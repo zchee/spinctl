@@ -71,6 +71,7 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 
 	cmd := &cobra.Command{
 		Use:     "list",
+		Aliases: []string{"ls"},
 		Short:   "List the pipelines for the provided application.",
 		Args:    cobra.ExactArgs(1),
 		Example: fmt.Sprintf("  %s pipeline list <application name> -o yaml", appName),
@@ -126,8 +127,9 @@ func newCmdPipelineDelete(ctx context.Context, client *spinnaker.Client, out io.
 	}
 
 	cmd := &cobra.Command{
-		Use:   "delete",
-		Short: "Delete the provided pipeline.",
+		Use:     "delete",
+		Aliases: []string{"del"},
+		Short:   "Delete the provided pipeline.",
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
@@ -148,8 +150,9 @@ func newCmdPipelineExecute(ctx context.Context, client *spinnaker.Client, out io
 	}
 
 	cmd := &cobra.Command{
-		Use:   "execute",
-		Short: "Execute the provided pipeline.",
+		Use:     "execute",
+		Aliases: []string{"exec"},
+		Short:   "Execute the provided pipeline.",
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
