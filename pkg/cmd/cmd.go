@@ -9,7 +9,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"go.uber.org/zap/zapcore"
 
+	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
@@ -34,12 +36,15 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		},
 	}
 
+	out := cmd.OutOrStdout()
+
+	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(zapcore.InfoLevel, zapcore.AddSync(out)))
+
 	flags := cmd.PersistentFlags()
 	addProfilingFlags(flags)
 	flags.Parse(args)
 
 	client := spinnaker.NewClient()
-	out := cmd.OutOrStdout()
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 
