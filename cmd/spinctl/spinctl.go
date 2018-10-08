@@ -9,15 +9,24 @@ import (
 	"context"
 	"os"
 
+	"go.uber.org/zap/zapcore"
+
 	"github.com/zchee/spinctl/pkg/cmd"
+	"github.com/zchee/spinctl/pkg/logger"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	log := logger.NewZapSugaredLogger(zapcore.InfoLevel, os.Stdout)
+	ctx = logger.NewContext(ctx, log)
+
 	c := cmd.NewDefaultCommand(ctx, os.Args[1:])
 	if err := c.Execute(); err != nil {
-		os.Exit(1)
+		switch err.(type) {
+		default:
+			log.Fatal("main")
+		}
 	}
 }
