@@ -15,6 +15,8 @@ PKG_ROOT="$GO_PATH/src/github.com/zchee/spinctl"
 rm -rf "$PKG_ROOT/api/mock/gate"
 swagger-codegen generate -i "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION.json" -l go-server -D 'packageName=gatemock' -D "packageVersion=$SPINNAKER_VERSION" -o "$PKG_ROOT/api/mock/gate"
 
+rm -f "$PKG_ROOT/api/mock/gate/main.go"
+mv "$PKG_ROOT/api/mock/gate/go/routers.go" "$PKG_ROOT/api/mock/gate/go/_routers.go"
 goimports -w api/mock/gate
 
 git add api/mock/gate
