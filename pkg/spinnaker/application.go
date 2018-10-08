@@ -7,12 +7,10 @@ package spinnaker
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
-	"github.com/ghodss/yaml"
 	"github.com/pkg/errors"
 )
 
@@ -28,29 +26,12 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string,
 	}
 	defer resp.Body.Close()
 
-	data, err := json.Marshal(&payload)
+	buf, err := parsePayload(&payload, format)
 	if err != nil {
 		return err
 	}
 
-	var buf []byte
-	switch format {
-	case "json":
-		b := new(bytes.Buffer)
-		if err := json.Indent(b, data, "", "  "); err != nil {
-			return err
-		}
-		buf = b.Bytes()
-	case "yaml":
-		buf, err = yaml.JSONToYAML(data)
-		if err != nil {
-			return err
-		}
-	default:
-		buf = data
-	}
-
-	fmt.Fprintln(out, string(bytes.TrimSpace(buf)))
+	fmt.Fprintln(out, string(buf))
 
 	return nil
 }
@@ -62,26 +43,9 @@ func (c *Client) ListApplications(ctx context.Context, out io.Writer, format str
 	}
 	defer resp.Body.Close()
 
-	data, err := json.Marshal(&payload)
+	buf, err := parsePayload(&payload, format)
 	if err != nil {
 		return err
-	}
-
-	var buf []byte
-	switch format {
-	case "json":
-		b := new(bytes.Buffer)
-		if err := json.Indent(b, data, "", "  "); err != nil {
-			return err
-		}
-		buf = b.Bytes()
-	case "yaml":
-		buf, err = yaml.JSONToYAML(data)
-		if err != nil {
-			return err
-		}
-	default:
-		buf = data
 	}
 
 	fmt.Fprintln(out, string(bytes.TrimSpace(buf)))
