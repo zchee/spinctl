@@ -18,8 +18,8 @@ import (
 
 // Config implements a spinctl configarations.
 type Config struct {
-	Gate             `yaml:"gate,omitempty"`
-	*auth.AuthConfig `yaml:"auth,omitempty"`
+	Gate Gate         `yaml:"gate,omitempty"`
+	Auth *auth.Config `yaml:"auth,omitempty"`
 
 	path   string
 	exists bool
@@ -44,7 +44,7 @@ func init() {
 //  $HOME/.spinctl.yaml
 func New() *Config {
 	c := &Config{
-		AuthConfig: &auth.AuthConfig{
+		Auth: &auth.Config{
 			OAuth2Config: new(auth.OAuth2Config),
 		},
 		path: filepath.Join(xdgbasedir.ConfigHome(), "spinctl", "config.yaml"),

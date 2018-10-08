@@ -92,7 +92,7 @@ func NewClient(opts ...Option) *Client {
 }
 
 func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
-	authcfg := c.cfg.AuthConfig
+	authcfg := c.cfg.Auth
 
 	if authcfg != nil && authcfg.Enable {
 		tok := &oauth2.Token{}
