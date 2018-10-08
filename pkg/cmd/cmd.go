@@ -45,6 +45,10 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	flags.Parse(args)
 
 	client := spinnaker.NewClient()
+	ctx, err := client.Authenticate(ctx)
+	if err != nil {
+		logger.FromContext(ctx).Fatalf("%v\n", err)
+	}
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 

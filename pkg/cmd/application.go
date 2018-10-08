@@ -49,13 +49,6 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 		Short:   "Get the specified application.",
 		Args:    cobra.ExactArgs(1),
 		Example: fmt.Sprintf("  %s application get spin -x -o yaml", appName),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = get.client.Authenticate(ctx)
-			if err != nil {
-				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
-			}
-			return err
-		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
@@ -93,13 +86,6 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 		Short:   "List all applications.",
 		Args:    cobra.ExactArgs(0),
 		Example: fmt.Sprintf("  %s application list -o yaml", appName),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = list.client.Authenticate(ctx)
-			if err != nil {
-				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
-			}
-			return err
-		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
@@ -120,7 +106,7 @@ type applicationSave struct {
 }
 
 func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	save := &applicationSave{
+	_ = &applicationSave{
 		client: client,
 		out:    out,
 	}
@@ -128,13 +114,6 @@ func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = save.client.Authenticate(ctx)
-			if err != nil {
-				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
-			}
-			return err
-		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
@@ -149,7 +128,7 @@ type applicationDelete struct {
 }
 
 func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	delete := &applicationDelete{
+	_ = &applicationDelete{
 		client: client,
 		out:    out,
 	}
@@ -157,13 +136,6 @@ func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out 
 	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "Delete the specified application.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = delete.client.Authenticate(ctx)
-			if err != nil {
-				logger.FromContext(ctx).Errorf("%v\n", errors.Wrap(err, "failed to Authenticate"))
-			}
-			return err
-		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
