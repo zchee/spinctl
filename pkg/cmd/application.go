@@ -45,7 +45,7 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 	}
 
 	cmd := &cobra.Command{
-		Use:     "get",
+		Use:     "get <application name>",
 		Short:   "Get the specified application.",
 		Args:    cobra.ExactArgs(1),
 		Example: fmt.Sprintf("  %s application get spin -x -o yaml", appName),
