@@ -67,7 +67,7 @@ $(GO_PATH)/bin/golangci-lint:
 .PHONY: golangci-lint
 lint/golangci-lint: $(GO_PATH)/bin/golangci-lint  ## Run golangci-lint
 	$(call target)
-	@golangci-lint run --no-config --issues-exit-code=0 --deadline=30m --disable-all $(foreach tool,$(LINTERS),--enable=$(tool)) $(GO_PGKS_ABS)
+	@golangci-lint run --no-config --issues-exit-code=0 $(foreach pat,$(shell cat .errcheckignore),--exclude '$(pat)') --deadline=30m --disable-all $(foreach tool,$(LINTERS),--enable=$(tool)) $(GO_PGKS_ABS)
 
 
 $(GO_PATH)/bin/dep:
