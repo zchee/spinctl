@@ -46,6 +46,14 @@ func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Wri
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline.",
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
@@ -71,6 +79,14 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 		Short:   "List the pipelines for the provided application.",
 		Args:    cobra.ExactArgs(1),
 		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
@@ -101,6 +117,14 @@ func newCmdPipelineSave(ctx context.Context, client *spinnaker.Client, out io.Wr
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided pipeline.",
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
@@ -122,6 +146,14 @@ func newCmdPipelineDelete(ctx context.Context, client *spinnaker.Client, out io.
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the provided pipeline.",
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},
@@ -143,6 +175,14 @@ func newCmdPipelineExecute(ctx context.Context, client *spinnaker.Client, out io
 		Use:     "execute",
 		Aliases: []string{"exec"},
 		Short:   "Execute the provided pipeline.",
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
 		RunE: func(*cobra.Command, []string) error {
 			return errors.New("not implements yet")
 		},

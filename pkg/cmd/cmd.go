@@ -14,7 +14,7 @@ import (
 
 	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
-	version "github.com/zchee/spinctl/pkg/version"
+	"github.com/zchee/spinctl/pkg/version"
 )
 
 const (
@@ -57,13 +57,9 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	if opts.debug {
 		lv = zapcore.DebugLevel
 	}
-	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
 
+	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
 	client := spinnaker.NewClient()
-	ctx, err := client.Authenticate(ctx)
-	if err != nil {
-		logger.FromContext(ctx).Fatalf("%v\n", err)
-	}
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 	cmd.AddCommand(NewCmdPipeline(ctx, client, out))
