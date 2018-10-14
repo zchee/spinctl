@@ -33,3 +33,7 @@ ignored = []
 [[constraint]]
   name = "github.com/ghodss/yaml"
   branch = "master"
+
+[[constraint]]
+  name = "github.com/json-iterator/go"
+  branch = "master"
