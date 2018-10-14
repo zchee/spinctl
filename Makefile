@@ -11,6 +11,7 @@ GO_PGKS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep 
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
 
+CGO_ENABLED := 1
 VERSION := $(shell cat VERSION.txt)
 GITCOMMIT := $(shell git rev-parse --short HEAD)
 GITUNTRACKEDCHANGES := $(shell git status --porcelain --untracked-files=no)
@@ -38,9 +39,13 @@ endef
 
 $(APP): $(GO_ALL_PGKS)
 	$(call target)
-	go build -v -o $@ $(GO_LDFLAGS) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go build -v -o $@ $(GO_LDFLAGS) $(PKG)/cmd/$(APP)
 
-build: $(APP)  ## build spinctl binary
+build: $(APP)  ## Builds a dynamic executable.
+
+static: CGO_ENABLED=0
+static: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+static: $(APP)  ## Builds a static executable.
 
 
 .PHONY: test
