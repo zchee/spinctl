@@ -16,6 +16,6 @@ func BenchmarkFromat(b *testing.B) {
 		b.Fatal(err)
 	}
 	for i := 0; i < b.N; i++ {
-		f.Format(s)
+		_, _ = f.Format(s)
 	}
 }

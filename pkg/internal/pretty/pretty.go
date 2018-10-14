@@ -122,8 +122,8 @@ func (f *Formatter) processString(s string) string {
 
 	buf := &bytes.Buffer{}
 	encoder := json.NewEncoder(buf)
+	_ = encoder.Encode(s)
 	encoder.SetEscapeHTML(false)
-	encoder.Encode(s)
 	s = string(buf.Bytes())
 	s = strings.TrimSuffix(s, "\n")
 
