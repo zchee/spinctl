@@ -10,6 +10,7 @@ GO_PKGS := $(shell go list ./... | grep -v -e 'api/gate' -e 'api/mock')
 GO_PGKS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e 'api/gate' -e 'api/mock')
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
+GO_BENCH_FUNC ?= .
 
 CGO_ENABLED := 1
 VERSION := $(shell cat VERSION.txt)
@@ -52,6 +53,11 @@ static: $(APP)  ## Builds a static executable.
 test:  ## Run the package test
 	$(call target)
 	$(GO_TEST) -v -race -run=$(GO_TEST_FUNC) $(GO_PKGS)
+
+.PHONY: bench
+bench:  ## Take a package benchmark
+	$(call target)
+	$(GO_TEST) -v -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_PKGS)
 
 .PHONY: coverage
 coverage:  ## Take test coverage
