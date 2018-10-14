@@ -31,8 +31,7 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Wri
 }
 
 type applicationGet struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 
 	expand    bool
 	outFormat string
@@ -40,8 +39,7 @@ type applicationGet struct {
 
 func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	get := &applicationGet{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -57,7 +55,7 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdApplicationGet: name: %s, expand: %t", name, get.expand)
 
-			return get.client.GetApplication(ctx, get.out, name, get.expand, get.outFormat)
+			return client.GetApplication(ctx, get.out, name, get.expand, get.outFormat)
 		},
 	}
 
@@ -69,16 +67,14 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 }
 
 type applicationList struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 
 	outFormat string
 }
 
 func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	list := &applicationList{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -91,7 +87,7 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
 			}
-			return list.client.ListApplications(ctx, list.out, list.outFormat)
+			return client.ListApplications(ctx, list.out, list.outFormat)
 		},
 	}
 
@@ -102,14 +98,12 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 }
 
 type applicationSave struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 }
 
 func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	_ = &applicationSave{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -124,14 +118,12 @@ func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io
 }
 
 type applicationDelete struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 }
 
 func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	_ = &applicationDelete{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{

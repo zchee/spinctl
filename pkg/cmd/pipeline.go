@@ -32,8 +32,7 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer
 }
 
 type pipelineGet struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 
 	expand    bool
 	outFormat string
@@ -41,8 +40,7 @@ type pipelineGet struct {
 
 func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	_ = &pipelineGet{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -57,16 +55,14 @@ func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Wri
 }
 
 type pipelineList struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 
 	outFormat string
 }
 
 func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	list := &pipelineList{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -83,7 +79,7 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
-			return list.client.ListPipelines(ctx, list.out, name, list.outFormat)
+			return client.ListPipelines(ctx, list.out, name, list.outFormat)
 		},
 	}
 
@@ -94,14 +90,12 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 }
 
 type pipelineSave struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 }
 
 func newCmdPipelineSave(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	_ = &pipelineSave{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -116,14 +110,12 @@ func newCmdPipelineSave(ctx context.Context, client *spinnaker.Client, out io.Wr
 }
 
 type pipelineDelete struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 }
 
 func newCmdPipelineDelete(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	_ = &pipelineDelete{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
@@ -139,14 +131,12 @@ func newCmdPipelineDelete(ctx context.Context, client *spinnaker.Client, out io.
 }
 
 type pipelineExecute struct {
-	client *spinnaker.Client
-	out    io.Writer
+	out io.Writer
 }
 
 func newCmdPipelineExecute(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	_ = &pipelineExecute{
-		client: client,
-		out:    out,
+		out: out,
 	}
 
 	cmd := &cobra.Command{
