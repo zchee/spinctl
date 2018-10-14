@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  reviewdog: zchee/reviewdog@dev:0.0.1
-  executor: zchee/golang@dev:1.11.1
+  reviewdog: zchee/reviewdog@0.0.1
+  executor: zchee/golang@1.11.1
 
 defaults: &defaults
   working_directory: /go/src/github.com/zchee/spinctl
