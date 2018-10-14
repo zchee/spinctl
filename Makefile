@@ -2,7 +2,7 @@
 # global environment variables
  
 APP = spinctl
-PKG_ROOT = github.com/zchee/spinctl
+PKG = github.com/zchee/spinctl
 
 GO_PATH := $(shell go env GOPATH)
 GO_ALL_PGKS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./...)
@@ -10,6 +10,19 @@ GO_PKGS := $(shell go list ./... | grep -v -e 'api/gate' -e 'api/mock')
 GO_PGKS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e 'api/gate' -e 'api/mock')
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
+
+VERSION := $(shell cat VERSION.txt)
+GITCOMMIT := $(shell git rev-parse --short HEAD)
+GITUNTRACKEDCHANGES := $(shell git status --porcelain --untracked-files=no)
+ifneq ($(GITUNTRACKEDCHANGES),)
+	GITCOMMIT := $(GITCOMMIT)-dirty
+endif
+ifeq ($(GITCOMMIT),)
+    GITCOMMIT := ${GITHUB_SHA}
+endif
+CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GITCOMMIT) -X $(PKG)/pkg/version.version=$(VERSION)
+GO_LDFLAGS=-ldflags "-s -w $(CTIMEVAR)"
+GO_LDFLAGS_STATIC=-ldflags "-s -w $(CTIMEVAR) -extldflags -static"
 
 LINTERS := deadcode dupl errcheck goconst gocyclo golint gosec ineffassign interfacer maligned megacheck structcheck unconvert varcheck 
 
@@ -25,7 +38,7 @@ endef
 
 $(APP): $(GO_ALL_PGKS)
 	$(call target)
-	go build -v -o $@ $(PKG_ROOT)/cmd/$(APP)
+	go build -v -o $@ $(GO_LDFLAGS) $(PKG)/cmd/$(APP)
 
 build: $(APP)  ## build spinctl binary
 

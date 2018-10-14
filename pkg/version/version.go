@@ -5,5 +5,13 @@
 // Package version provides the current spinctl version.
 package version
 
-// Version is the current spinctl version.
-const Version = "0.0.1-dev"
+var (
+	// version indicates which version of the binary is running.
+	version = "dev"
+
+	// GitCommit indicates which git hash the binary was built off of.
+	gitCommit = ""
+
+	// Version is the current spinctl version.
+	Version = version + "@" + gitCommit
+)

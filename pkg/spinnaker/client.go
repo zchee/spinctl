@@ -20,7 +20,7 @@ import (
 	"github.com/zchee/spinctl/pkg/version"
 )
 
-const (
+var (
 	userAgent = "spinctl/" + version.Version
 )
 
