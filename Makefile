@@ -11,6 +11,8 @@ GO_PGKS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep 
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
 
+LINTERS := deadcode dupl errcheck goconst gocyclo golint gosec ineffassign interfacer maligned megacheck structcheck unconvert varcheck 
+
 # ----------------------------------------------------------------------------
 # defines
 
@@ -42,17 +44,16 @@ coverage:  ## Take test coverage
 lint: lint/golangci-lint  ## Run all linters
 
 $(GO_PATH)/bin/golangci-lint:
-	@go get -u -v github.com/golangci/golangci-lint/cmd/golangci-lint
+	@go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 
 .PHONY: golangci-lint
-LINTERS = deadcode dupl errcheck goconst gocyclo golint gosec ineffassign interfacer maligned megacheck structcheck unconvert varcheck 
 lint/golangci-lint: $(GO_PATH)/bin/golangci-lint  ## Run golangci-lint
 	$(call target)
-	golangci-lint run --no-config --issues-exit-code=0 --deadline=30m --disable-all $(foreach tool,$(LINTERS),--enable=$(tool)) $(GO_PGKS_ABS)
+	@golangci-lint run --no-config --issues-exit-code=0 --deadline=30m --disable-all $(foreach tool,$(LINTERS),--enable=$(tool)) $(GO_PGKS_ABS)
 
 
 $(GO_PATH)/bin/dep:
-	@go get -u -v github.com/golang/dep/cmd/dep
+	@go get -u github.com/golang/dep/cmd/dep
 
 .PHONY: dep/ensure
 dep/ensure: $(GO_PATH)/bin/dep  ## Fetch vendor packages via dep ensure
