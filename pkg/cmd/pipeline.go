@@ -33,9 +33,6 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer
 
 type pipelineGet struct {
 	out io.Writer
-
-	expand    bool
-	outFormat string
 }
 
 func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
