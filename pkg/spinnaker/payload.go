@@ -6,22 +6,26 @@ package spinnaker
 
 import (
 	"bytes"
-	"encoding/json"
 	"unsafe"
 
 	"github.com/ghodss/yaml"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 )
 
 func parsePayload(payload interface{}, format string) (string, error) {
 	buf := new(bytes.Buffer)
-	enc := json.NewEncoder(buf)
-	enc.SetIndent("", "  ")
+	enc := jsoniter.ConfigFastest.NewEncoder(buf)
+
+	// format raw prints payload directly
+	if format != "raw" {
+		enc.SetIndent("", "  ")
+	}
 	if err := enc.Encode(&payload); err != nil {
 		return "", errors.Wrap(err, "parsePayload: failed to encoding payload")
 	}
 
-	var out []byte
+	out := buf.Bytes()
 	switch format {
 	case "yaml":
 		data, err := yaml.JSONToYAML(buf.Bytes())
@@ -30,15 +34,10 @@ func parsePayload(payload interface{}, format string) (string, error) {
 		}
 		out = data
 	case "raw":
-		cb := new(bytes.Buffer)
-		if err := json.Compact(cb, buf.Bytes()); err != nil {
-			return "", errors.Wrap(err, "parsePayload: failed to compact for raw output")
-		}
-		out = cb.Bytes()
+		// nothing to do
 	case "json":
-		fallthrough // json is defaut
-	default:
-		out = buf.Bytes()
+		// nothing to do
+		// format json by defaut
 	}
 	out = bytes.TrimSpace(out)
 
