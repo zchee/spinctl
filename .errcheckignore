@@ -1,3 +1,4 @@
+flags\.Parse
 flags\.MarkHidden
-.*\.ListenAndServe()
+.*\.ListenAndServe
 .*\.WriteTo
