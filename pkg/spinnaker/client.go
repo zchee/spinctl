@@ -97,7 +97,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 	authcfg := c.cfg.Auth
 
 	if authcfg != nil && authcfg.Enable {
-		tok := &oauth2.Token{}
+		var tok *oauth2.Token
 		var err error
 		if tok = authcfg.OAuth2Config.Token; tok != nil {
 			conf := &oauth2.Config{
