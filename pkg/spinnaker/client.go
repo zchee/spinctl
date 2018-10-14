@@ -10,6 +10,7 @@ import (
 	"net/http/cookiejar"
 
 	"github.com/pkg/errors"
+	"golang.org/x/net/publicsuffix"
 	"golang.org/x/oauth2"
 
 	"github.com/zchee/spinctl/api/gate"
@@ -72,7 +73,8 @@ func NewClient(opts ...Option) *Client {
 	for _, o := range opts {
 		o(conf)
 	}
-	cookieJar, _ := cookiejar.New(nil)
+	// cookiejar.New return tuple secound variable always nil
+	cookieJar, _ := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	conf.HTTPClient.Jar = cookieJar
 
 	cfg := config.New()
