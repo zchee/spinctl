@@ -53,6 +53,7 @@ type APIClient struct {
 	BuildControllerApi                *BuildControllerApiService
 	ClusterControllerApi              *ClusterControllerApiService
 	CredentialsControllerApi          *CredentialsControllerApiService
+	EcsServerGroupEventsControllerApi *EcsServerGroupEventsControllerApiService
 	ExecutionsControllerApi           *ExecutionsControllerApiService
 	FirewallControllerApi             *FirewallControllerApiService
 	ImageControllerApi                *ImageControllerApiService
@@ -60,8 +61,11 @@ type APIClient struct {
 	JobControllerApi                  *JobControllerApiService
 	LoadBalancerControllerApi         *LoadBalancerControllerApiService
 	NetworkControllerApi              *NetworkControllerApiService
+	PipelineConfigControllerApi       *PipelineConfigControllerApiService
 	PipelineControllerApi             *PipelineControllerApiService
+	PipelineTemplatesControllerApi    *PipelineTemplatesControllerApiService
 	ProjectControllerApi              *ProjectControllerApiService
+	PubsubSubscriptionControllerApi   *PubsubSubscriptionControllerApiService
 	SearchControllerApi               *SearchControllerApiService
 	SecurityGroupControllerApi        *SecurityGroupControllerApiService
 	ServerGroupControllerApi          *ServerGroupControllerApiService
@@ -71,6 +75,7 @@ type APIClient struct {
 	TaskControllerApi                 *TaskControllerApiService
 	V2CanaryConfigControllerApi       *V2CanaryConfigControllerApiService
 	V2CanaryControllerApi             *V2CanaryControllerApiService
+	VersionControllerApi              *VersionControllerApiService
 	WebhookControllerApi              *WebhookControllerApiService
 }
 
@@ -99,6 +104,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.BuildControllerApi = (*BuildControllerApiService)(&c.common)
 	c.ClusterControllerApi = (*ClusterControllerApiService)(&c.common)
 	c.CredentialsControllerApi = (*CredentialsControllerApiService)(&c.common)
+	c.EcsServerGroupEventsControllerApi = (*EcsServerGroupEventsControllerApiService)(&c.common)
 	c.ExecutionsControllerApi = (*ExecutionsControllerApiService)(&c.common)
 	c.FirewallControllerApi = (*FirewallControllerApiService)(&c.common)
 	c.ImageControllerApi = (*ImageControllerApiService)(&c.common)
@@ -106,8 +112,11 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.JobControllerApi = (*JobControllerApiService)(&c.common)
 	c.LoadBalancerControllerApi = (*LoadBalancerControllerApiService)(&c.common)
 	c.NetworkControllerApi = (*NetworkControllerApiService)(&c.common)
+	c.PipelineConfigControllerApi = (*PipelineConfigControllerApiService)(&c.common)
 	c.PipelineControllerApi = (*PipelineControllerApiService)(&c.common)
+	c.PipelineTemplatesControllerApi = (*PipelineTemplatesControllerApiService)(&c.common)
 	c.ProjectControllerApi = (*ProjectControllerApiService)(&c.common)
+	c.PubsubSubscriptionControllerApi = (*PubsubSubscriptionControllerApiService)(&c.common)
 	c.SearchControllerApi = (*SearchControllerApiService)(&c.common)
 	c.SecurityGroupControllerApi = (*SecurityGroupControllerApiService)(&c.common)
 	c.ServerGroupControllerApi = (*ServerGroupControllerApiService)(&c.common)
@@ -117,6 +126,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.TaskControllerApi = (*TaskControllerApiService)(&c.common)
 	c.V2CanaryConfigControllerApi = (*V2CanaryConfigControllerApiService)(&c.common)
 	c.V2CanaryControllerApi = (*V2CanaryControllerApiService)(&c.common)
+	c.VersionControllerApi = (*VersionControllerApiService)(&c.common)
 	c.WebhookControllerApi = (*WebhookControllerApiService)(&c.common)
 
 	return c

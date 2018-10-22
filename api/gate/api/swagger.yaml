@@ -26,16 +26,26 @@ tags:
   description: "Load Balancer Controller"
 - name: "credentials-controller"
   description: "Credentials Controller"
+- name: "pipeline-templates-controller"
+  description: "Pipeline Templates Controller"
 - name: "security-group-controller"
   description: "Security Group Controller"
 - name: "image-controller"
   description: "Image Controller"
+- name: "pubsub-subscription-controller"
+  description: "Pubsub Subscription Controller"
+- name: "ecs-server-group-events-controller"
+  description: "Ecs Server Group Events Controller"
+- name: "version-controller"
+  description: "Version Controller"
 - name: "application-controller"
   description: "Application Controller"
 - name: "instance-controller"
   description: "Instance Controller"
 - name: "audit-events-mvc-endpoint"
   description: "Audit Events Mvc Endpoint"
+- name: "pipeline-config-controller"
+  description: "Pipeline Config Controller"
 - name: "server-group-controller"
   description: "Server Group Controller"
 - name: "network-controller"
@@ -1243,6 +1253,61 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/HashMap"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /applications/{application}/serverGroups/{account}/{serverGroupName}/events:
+    get:
+      tags:
+      - "ecs-server-group-events-controller"
+      summary: "Retrieves a list of events for a server group"
+      operationId: "getEventsUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "application"
+        in: "path"
+        description: "application"
+        required: true
+        type: "string"
+        x-exportParamName: "Application"
+      - name: "account"
+        in: "path"
+        description: "account"
+        required: true
+        type: "string"
+        x-exportParamName: "Account"
+      - name: "serverGroupName"
+        in: "path"
+        description: "serverGroupName"
+        required: true
+        type: "string"
+        x-exportParamName: "ServerGroupName"
+      - name: "region"
+        in: "query"
+        description: "region"
+        required: true
+        type: "string"
+        x-exportParamName: "Region"
+      - name: "provider"
+        in: "query"
+        description: "provider"
+        required: true
+        type: "string"
+        x-exportParamName: "Provider"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2739,6 +2804,355 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
+  /pipelineConfigs:
+    get:
+      tags:
+      - "pipeline-config-controller"
+      summary: "Get all pipeline configs."
+      operationId: "getAllPipelineConfigsUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/HashMap"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /pipelineConfigs/{pipelineConfigId}/convertToTemplate:
+    get:
+      tags:
+      - "pipeline-config-controller"
+      summary: "Convert a pipeline config to a pipeline template."
+      operationId: "convertPipelineConfigToPipelineTemplateUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "pipelineConfigId"
+        in: "path"
+        description: "pipelineConfigId"
+        required: true
+        type: "string"
+        x-exportParamName: "PipelineConfigId"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "string"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /pipelineConfigs/{pipelineConfigId}/history:
+    get:
+      tags:
+      - "pipeline-config-controller"
+      summary: "Get pipeline config history."
+      operationId: "getPipelineConfigHistoryUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "pipelineConfigId"
+        in: "path"
+        description: "pipelineConfigId"
+        required: true
+        type: "string"
+        x-exportParamName: "PipelineConfigId"
+      - name: "limit"
+        in: "query"
+        description: "limit"
+        required: false
+        type: "integer"
+        default: 20
+        format: "int32"
+        x-exportParamName: "Limit"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/HashMap"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /pipelineTemplates:
+    get:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "List pipeline templates."
+      operationId: "listUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "scopes"
+        in: "query"
+        description: "scopes"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+        x-exportParamName: "Scopes"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/HashMap"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+    post:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "Create a pipeline template."
+      operationId: "createUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "pipelineTemplate"
+        description: "pipelineTemplate"
+        required: true
+        schema:
+          type: "object"
+        x-exportParamName: "PipelineTemplate"
+      responses:
+        201:
+          description: "Created"
+        202:
+          description: "Accepted"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /pipelineTemplates/resolve:
+    get:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "Resolve a pipeline template."
+      operationId: "resolveTemplatesUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "source"
+        in: "query"
+        description: "source"
+        required: true
+        type: "string"
+        x-exportParamName: "Source"
+      - name: "executionId"
+        in: "query"
+        description: "executionId"
+        required: false
+        type: "string"
+        x-exportParamName: "ExecutionId"
+      - name: "pipelineConfigId"
+        in: "query"
+        description: "pipelineConfigId"
+        required: false
+        type: "string"
+        x-exportParamName: "PipelineConfigId"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /pipelineTemplates/{id}:
+    get:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "Get a pipeline template."
+      operationId: "getUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+    post:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "Update a pipeline template."
+      operationId: "updateUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      - in: "body"
+        name: "pipelineTemplate"
+        description: "pipelineTemplate"
+        required: true
+        schema:
+          type: "object"
+        x-exportParamName: "PipelineTemplate"
+      - name: "skipPlanDependents"
+        in: "query"
+        description: "skipPlanDependents"
+        required: false
+        type: "boolean"
+        default: false
+        x-exportParamName: "SkipPlanDependents"
+      responses:
+        201:
+          description: "Created"
+        202:
+          description: "Accepted"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+    delete:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "Delete a pipeline template."
+      operationId: "deleteUsingDELETE"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      - name: "application"
+        in: "query"
+        description: "application"
+        required: false
+        type: "string"
+        x-exportParamName: "Application"
+      responses:
+        202:
+          description: "Accepted"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        204:
+          description: "No Content"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+  /pipelineTemplates/{id}/dependents:
+    get:
+      tags:
+      - "pipeline-templates-controller"
+      summary: "List all pipelines that implement a pipeline template"
+      operationId: "listPipelineTemplateDependentsUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      - name: "recursive"
+        in: "query"
+        description: "recursive"
+        required: false
+        type: "boolean"
+        x-exportParamName: "Recursive"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
   /pipelines:
     post:
       tags:
@@ -2820,6 +3234,49 @@ paths:
           description: "OK"
           schema:
             $ref: "#/definitions/ResponseEntity"
+        201:
+          description: "Created"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /pipelines/v2/{application}/{pipelineNameOrId}:
+    post:
+      tags:
+      - "pipeline-controller"
+      summary: "Trigger a pipeline execution"
+      operationId: "invokePipelineConfigViaEchoUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "application"
+        in: "path"
+        description: "application"
+        required: true
+        type: "string"
+        x-exportParamName: "Application"
+      - name: "pipelineNameOrId"
+        in: "path"
+        description: "pipelineNameOrId"
+        required: true
+        type: "string"
+        x-exportParamName: "PipelineNameOrId"
+      - in: "body"
+        name: "trigger"
+        description: "trigger"
+        required: false
+        schema:
+          type: "object"
+        x-exportParamName: "Trigger"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/HttpEntity"
         201:
           description: "Created"
         401:
@@ -3124,7 +3581,7 @@ paths:
       tags:
       - "pipeline-controller"
       summary: "Evaluate a pipeline expression using the provided execution as context"
-      operationId: "evaluateExpressionForExecutionUsingPOST"
+      operationId: "evaluateExpressionForExecutionViaPOSTUsingPOST"
       consumes:
       - "application/json"
       produces:
@@ -3136,12 +3593,13 @@ paths:
         required: true
         type: "string"
         x-exportParamName: "Id"
-      - name: "expression"
-        in: "query"
-        description: "expression"
+      - in: "body"
+        name: "pipelineExpression"
+        description: "pipelineExpression"
         required: true
-        type: "string"
-        x-exportParamName: "Expression"
+        schema:
+          type: "object"
+        x-exportParamName: "PipelineExpression"
       responses:
         200:
           description: "OK"
@@ -3534,6 +3992,30 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
+  /pubsub/subscriptions:
+    get:
+      tags:
+      - "pubsub-subscription-controller"
+      summary: "Retrieve the list of pub/sub subscriptions configured in Echo."
+      operationId: "allUsingGET_3"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Map«string,string»"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
   /search:
     get:
       tags:
@@ -3611,7 +4093,7 @@ paths:
       - "security-group-controller"
       summary: "Retrieve a list of security groups, grouped by account, cloud provider,\
         \ and region"
-      operationId: "allUsingGET_3"
+      operationId: "allUsingGET_4"
       consumes:
       - "application/json"
       produces:
@@ -4022,6 +4504,7 @@ paths:
       tags:
       - "build-controller"
       summary: "Get build masters"
+      description: "Deprecated, use the v3 endpoint instead"
       operationId: "getBuildMastersUsingGET"
       consumes:
       - "application/json"
@@ -4053,6 +4536,7 @@ paths:
       tags:
       - "build-controller"
       summary: "Get build for build master"
+      description: "Deprecated, use the v3 endpoint instead"
       operationId: "getBuildUsingGET"
       consumes:
       - "application/json"
@@ -4090,6 +4574,7 @@ paths:
       tags:
       - "build-controller"
       summary: "Get builds for build master"
+      description: "Deprecated, use the v3 endpoint instead"
       operationId: "getBuildsUsingGET"
       consumes:
       - "application/json"
@@ -4121,6 +4606,7 @@ paths:
       tags:
       - "build-controller"
       summary: "Get jobs for build master"
+      description: "Deprecated, use the v3 endpoint instead"
       operationId: "getJobsForBuildMasterUsingGET"
       consumes:
       - "application/json"
@@ -4152,6 +4638,7 @@ paths:
       tags:
       - "build-controller"
       summary: "Get job config"
+      description: "Deprecated, use the v3 endpoint instead"
       operationId: "getJobConfigUsingGET"
       consumes:
       - "application/json"
@@ -4578,6 +5065,207 @@ paths:
           description: "Unauthorized"
         403:
           description: "Forbidden"
+  /v3/builds:
+    get:
+      tags:
+      - "build-controller"
+      summary: "Get build masters"
+      operationId: "v3GetBuildMastersUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "type"
+        required: true
+        type: "string"
+        x-exportParamName: "Type_"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /v3/builds/{buildMaster}/build/{number}:
+    get:
+      tags:
+      - "build-controller"
+      summary: "Get build for build master"
+      operationId: "v3GetBuildUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "buildMaster"
+        in: "path"
+        description: "buildMaster"
+        required: true
+        type: "string"
+        x-exportParamName: "BuildMaster"
+      - name: "number"
+        in: "path"
+        description: "number"
+        required: true
+        type: "string"
+        x-exportParamName: "Number"
+      - name: "job"
+        in: "query"
+        description: "job"
+        required: true
+        type: "string"
+        x-exportParamName: "Job"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /v3/builds/{buildMaster}/builds:
+    get:
+      tags:
+      - "build-controller"
+      summary: "Get builds for build master"
+      operationId: "v3GetBuildsUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "buildMaster"
+        in: "path"
+        description: "buildMaster"
+        required: true
+        type: "string"
+        x-exportParamName: "BuildMaster"
+      - name: "job"
+        in: "query"
+        description: "job"
+        required: true
+        type: "string"
+        x-exportParamName: "Job"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /v3/builds/{buildMaster}/job:
+    get:
+      tags:
+      - "build-controller"
+      summary: "Get job config"
+      operationId: "v3GetJobConfigUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "buildMaster"
+        in: "path"
+        description: "buildMaster"
+        required: true
+        type: "string"
+        x-exportParamName: "BuildMaster"
+      - name: "job"
+        in: "query"
+        description: "job"
+        required: true
+        type: "string"
+        x-exportParamName: "Job"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /v3/builds/{buildMaster}/jobs:
+    get:
+      tags:
+      - "build-controller"
+      summary: "Get jobs for build master"
+      operationId: "v3GetJobsForBuildMasterUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "buildMaster"
+        in: "path"
+        description: "buildMaster"
+        required: true
+        type: "string"
+        x-exportParamName: "BuildMaster"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /version:
+    get:
+      tags:
+      - "version-controller"
+      summary: "Fetch Gate's current version"
+      operationId: "getVersionUsingGET"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters: []
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Version"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
   /vpcs:
     get:
       tags:
@@ -4762,6 +5450,19 @@ definitions:
       body:
         type: "object"
         properties: {}
+  Map«string,string»:
+    type: "object"
+    additionalProperties:
+      type: "string"
+  PipelineTemplateDependent:
+    type: "object"
+    properties:
+      application:
+        type: "string"
+      pipelineConfigId:
+        type: "string"
+      pipelineName:
+        type: "string"
   ResponseEntity:
     type: "object"
     properties:
@@ -4868,4 +5569,9 @@ definitions:
         items:
           type: "string"
       username:
+        type: "string"
+  Version:
+    type: "object"
+    properties:
+      version:
         type: "string"
