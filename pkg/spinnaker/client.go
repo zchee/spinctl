@@ -68,7 +68,7 @@ func WithHTTPClient(hc *http.Client) Option {
 	}
 }
 
-func NewClient(opts ...Option) *Client {
+func NewClient(cfg *config.Config, opts ...Option) *Client {
 	conf := defaultGateConfiguration
 	for _, o := range opts {
 		o(conf)
@@ -77,20 +77,14 @@ func NewClient(opts ...Option) *Client {
 	cookieJar, _ := cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
 	conf.HTTPClient.Jar = cookieJar
 
-	cfg := config.New()
-	if !cfg.Exists() {
-		cfg.Create()
-	}
 	if ep := cfg.Gate.Endpoint; ep != "" {
 		conf.BasePath = ep
 	}
 
-	c := &Client{
+	return &Client{
 		Client: gate.NewAPIClient(conf),
 		Config: cfg,
 	}
-
-	return c
 }
 
 func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
