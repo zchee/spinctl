@@ -25,8 +25,8 @@ var (
 )
 
 type Client struct {
-	client *gate.APIClient
-	cfg    *config.Config
+	Client *gate.APIClient
+	Config *config.Config
 }
 
 var defaultGateConfiguration = &gate.Configuration{
@@ -86,27 +86,27 @@ func NewClient(opts ...Option) *Client {
 	}
 
 	c := &Client{
-		client: gate.NewAPIClient(conf),
-		cfg:    cfg,
+		Client: gate.NewAPIClient(conf),
+		Config: cfg,
 	}
 
 	return c
 }
 
 func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
-	authcfg := c.cfg.Auth
+	confAuth := c.Config.Auth
 
-	if authcfg != nil && authcfg.Enable {
+	if confAuth != nil && confAuth.Enable {
 		var tok *oauth2.Token
 		var err error
-		if tok = authcfg.OAuth2Config.Token; tok != nil {
+		if tok = confAuth.OAuth2Config.Token; tok != nil {
 			conf := &oauth2.Config{
-				ClientID:     authcfg.OAuth2Config.ClientID,
-				ClientSecret: authcfg.OAuth2Config.ClientSecret,
-				Scopes:       authcfg.OAuth2Config.Scopes,
+				ClientID:     confAuth.OAuth2Config.ClientID,
+				ClientSecret: confAuth.OAuth2Config.ClientSecret,
+				Scopes:       confAuth.OAuth2Config.Scopes,
 				Endpoint: oauth2.Endpoint{
-					AuthURL:  authcfg.OAuth2Config.AuthURL,
-					TokenURL: authcfg.OAuth2Config.TokenURL,
+					AuthURL:  confAuth.OAuth2Config.AuthURL,
+					TokenURL: confAuth.OAuth2Config.TokenURL,
 				},
 			}
 			tokSrc := conf.TokenSource(ctx, tok)
@@ -126,8 +126,8 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 		logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
 		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
-		authcfg.OAuth2Config.Token = tok
-		if err := c.cfg.Write(); err != nil {
+		confAuth.OAuth2Config.Token = tok
+		if err := c.Config.Write(); err != nil {
 			return nil, err
 		}
 	}

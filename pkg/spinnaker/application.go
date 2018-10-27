@@ -19,7 +19,7 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string,
 		opts["expand"] = true
 	}
 
-	payload, resp, err := c.client.ApplicationControllerApi.GetApplicationUsingGET(ctx, name, opts)
+	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, name, opts)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrapf(err, "failed to get %s application", name)
 	}
@@ -35,7 +35,7 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string,
 }
 
 func (c *Client) ListApplications(ctx context.Context, out io.Writer, format string) error {
-	payload, resp, err := c.client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
+	payload, resp, err := c.Client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrap(err, "failed to get all applications")
 	}

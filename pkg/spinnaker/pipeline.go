@@ -14,7 +14,7 @@ import (
 )
 
 func (c *Client) ListPipelines(ctx context.Context, out io.Writer, name, format string) error {
-	payload, resp, err := c.client.ApplicationControllerApi.GetPipelineConfigsForApplicationUsingGET(ctx, name)
+	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigsForApplicationUsingGET(ctx, name)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return errors.Wrap(err, "failed to get all applications")
 	}
