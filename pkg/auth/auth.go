@@ -6,6 +6,6 @@ package auth
 
 // Config implements a authentication config for Spinnaker.
 type Config struct {
-	Enable       bool          `yaml:"enable"`
+	Enable       bool          `yaml:"enable,omitempty"`
 	OAuth2Config *OAuth2Config `yaml:"oauth2,omitempty"`
 }

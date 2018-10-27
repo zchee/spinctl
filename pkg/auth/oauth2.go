@@ -20,11 +20,11 @@ import (
 
 // OAuth2Config implements a OAuth2.0 authentication data for Spinnaker.
 type OAuth2Config struct {
-	ClientID     string        `yaml:"clientId"`
-	ClientSecret string        `yaml:"clientSecret"`
-	AuthURL      string        `yaml:"authUrl"`
-	TokenURL     string        `yaml:"tokenUrl"`
-	Scopes       []string      `yaml:"scopes"`
+	ClientID     string        `yaml:"clientId,omitempty"`
+	ClientSecret string        `yaml:"clientSecret,omitempty"`
+	AuthURL      string        `yaml:"authUrl,omitempty"`
+	TokenURL     string        `yaml:"tokenUrl,omitempty"`
+	Scopes       []string      `yaml:"scopes,omitempty"`
 	Token        *oauth2.Token `yaml:"token,omitempty"`
 }
 
