@@ -8,7 +8,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sync"
 
+	"github.com/pkg/errors"
 	xdgbasedir "github.com/zchee/go-xdgbasedir"
 	"github.com/zchee/go-xdgbasedir/home"
 	yaml "gopkg.in/yaml.v2"
@@ -16,23 +18,36 @@ import (
 	"github.com/zchee/spinctl/pkg/auth"
 )
 
+var (
+	configPath string
+)
+
+// init sets xdgbasedir Mode to Unix for darwin GOOS.
+func init() {
+	xdgbasedir.Mode = xdgbasedir.Unix
+
+	configDirBase := xdgbasedir.ConfigHome()
+	switch {
+	case isDirExist(configDirBase):
+		configPath = filepath.Join(configDirBase, "spinctl", "config.yaml")
+	default:
+		configPath = filepath.Join(home.Dir(), ".spinctl.yaml")
+	}
+}
+
 // Config implements a spinctl configarations.
 type Config struct {
 	Gate Gate         `yaml:"gate,omitempty"`
 	Auth *auth.Config `yaml:"auth,omitempty"`
 
-	path   string
-	exists bool
+	path          string
+	exists        bool
+	dirCreateOnce sync.Once
 }
 
 // Gate implements a Spinnaker gate API configarations.
 type Gate struct {
 	Endpoint string `yaml:"endpoint,omitempty"`
-}
-
-// init sets xdgbasedir Mode to Unix for darwin GOOS.
-func init() {
-	xdgbasedir.Mode = xdgbasedir.Unix
 }
 
 // New loads the spinctl config file and returns the new Config.
@@ -44,25 +59,24 @@ func init() {
 //  $HOME/.spinctl.yaml
 func New() *Config {
 	c := &Config{
-		Auth: &auth.Config{
-			OAuth2Config: new(auth.OAuth2Config),
-		},
-		path: filepath.Join(xdgbasedir.ConfigHome(), "spinctl", "config.yaml"),
-	}
-
-	if dir := isDirExist(xdgbasedir.ConfigHome()); dir == "" {
-		// fallback to use $HOME directly
-		c.path = filepath.Join(home.Dir(), ".spinctl.yaml")
+		Auth: new(auth.Config),
+		path: configPath,
 	}
 
 	if _, err := os.Stat(c.path); err == nil {
+		c.exists = true
 		if err := c.Read(); err != nil {
+			// ignore Read error
 			return c
 		}
-		c.exists = true
 	}
 
 	return c
+}
+
+// Path returns the config filepath.
+func (c *Config) Path() string {
+	return c.path
 }
 
 // Exists returns whether the exist config file.
@@ -71,23 +85,29 @@ func (c *Config) Exists() bool {
 }
 
 // Create creates the config file.
-func (c *Config) Create() error {
-	dir := filepath.Dir(c.path)
-	// mkdir with secure permission if not exist
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		if err := os.MkdirAll(dir, 0700); err != nil {
-			return err
+func (c *Config) Create() (err error) {
+	c.dirCreateOnce.Do(func() {
+		configDir := filepath.Dir(c.path)
+		// mkdir with secure permission if not exist
+		if _, statErr := os.Stat(configDir); os.IsNotExist(statErr) {
+			if e := os.MkdirAll(configDir, 0700); e != nil {
+				err = e
+			}
 		}
+
+		// create config file(c.path) with secure permission if not exist
+		if _, statErr := os.Stat(c.path); statErr != nil && os.IsNotExist(statErr) {
+			if _, e := os.OpenFile(c.path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600); e != nil {
+				err = e
+			}
+		}
+
+		c.exists = true
+	})
+	if err != nil {
+		return errors.Wrapf(err, "failed to create config file to %s", c.path)
 	}
 
-	// create config file with secure permission if not exist
-	if _, err := os.Stat(c.path); err != nil && os.IsNotExist(err) {
-		if _, err := os.OpenFile(c.path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600); err != nil {
-			return err
-		}
-	}
-
-	c.exists = true
 	return nil
 }
 
@@ -118,10 +138,11 @@ func (c *Config) Write() error {
 }
 
 // isDirExist checks whether the dir exists and which is directory.
-func isDirExist(dir string) string {
+func isDirExist(dir string) bool {
 	d, err := os.Stat(dir)
 	if err == nil && d.IsDir() {
-		return dir
+		return true
 	}
-	return ""
+
+	return false
 }
