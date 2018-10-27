@@ -8,10 +8,13 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
+	"github.com/zchee/spinctl/pkg/config"
 	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 	"github.com/zchee/spinctl/pkg/version"
@@ -20,11 +23,12 @@ import (
 const (
 	appName = "spinctl"
 
-	defaultLogLevel = zapcore.InfoLevel
+	defaultLogLevel = zap.InfoLevel
 )
 
 type Options struct {
-	debug bool
+	debug      bool
+	configPath string
 }
 
 func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
@@ -32,8 +36,6 @@ func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 }
 
 func NewCommand(ctx context.Context, args []string) *cobra.Command {
-	opts := &Options{}
-
 	cmd := &cobra.Command{
 		Use:          appName,
 		Short:        fmt.Sprintf("%s is a command-line tool to manage Spinnaker via gate API.", appName),
@@ -48,18 +50,33 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	}
 
 	flags := cmd.PersistentFlags()
-	addFlags(flags, opts)
+
+	conf := config.New()
+	opts := &Options{}
+	addFlags(flags, conf, opts)
+
 	flags.Parse(args)
 
-	out := cmd.OutOrStdout()
-
-	lv := defaultLogLevel
-	if opts.debug {
-		lv = zapcore.DebugLevel
+	if !conf.Exists() {
+		if err := conf.Create(); err != nil {
+			cmd.Println(errors.WithStack(err))
+		}
 	}
 
+	if path := opts.configPath; path != conf.Path() {
+		conf.SetPath(path)
+	}
+	if err := conf.Read(); err != nil {
+		cmd.Println(errors.WithStack(err))
+	}
+
+	client := spinnaker.NewClient(conf)
+	out := cmd.OutOrStdout()
+	var lv = defaultLogLevel
+	if opts.debug {
+		lv = zap.DebugLevel
+	}
 	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
-	client := spinnaker.NewClient()
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 	cmd.AddCommand(NewCmdPipeline(ctx, client, out))
@@ -67,9 +84,12 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	return cmd
 }
 
-func addFlags(flags *pflag.FlagSet, opts *Options) {
-	flags.BoolVarP(&opts.debug, "debug", "d", false, "Use debug output")
+func addFlags(flags *pflag.FlagSet, conf *config.Config, opts *Options) {
 	flags.BoolP("version", "v", false, "Show the version information.")
+
+	flags.BoolVarP(&opts.debug, "debug", "d", false, "Use debug output")
+
+	flags.StringVarP(&opts.configPath, "config", "c", conf.Path(), "config file path")
 
 	addProfilingFlags(flags)
 }
