@@ -67,6 +67,11 @@ func New() *Config {
 }
 
 // Path returns the config filepath.
+func (c *Config) SetPath(path string) {
+	c.path = path
+}
+
+// Path returns the config filepath.
 func (c *Config) Path() string {
 	return c.path
 }
