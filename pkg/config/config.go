@@ -63,14 +63,6 @@ func New() *Config {
 		path: configPath,
 	}
 
-	if _, err := os.Stat(c.path); err == nil {
-		c.exists = true
-		if err := c.Read(); err != nil {
-			// ignore Read error
-			return c
-		}
-	}
-
 	return c
 }
 
