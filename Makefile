@@ -38,6 +38,8 @@ endef
 # ----------------------------------------------------------------------------
 # targets
 
+all: static
+
 $(APP): $(GO_ALL_PGKS)
 	$(call target)
 	CGO_ENABLED=$(CGO_ENABLED) go build -v -o $@ $(GO_LDFLAGS) $(PKG)/cmd/$(APP)
