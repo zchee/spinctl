@@ -109,12 +109,14 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 				return nil, err
 			}
 		} else {
-			tok, err = auth.AuthenticateOAuth2(ctx)
-			if err != nil {
-				return nil, err
-			}
-			if !tok.Valid() {
-				return nil, errors.Wrapf(err, "token is invalid: %v", tok)
+			if oc := confAuth.OAuth2Config; oc != nil {
+				tok, err = auth.AuthenticateOAuth2(ctx, oc)
+				if err != nil {
+					return nil, err
+				}
+				if !tok.Valid() {
+					return nil, errors.Wrapf(err, "token is invalid: %v", tok)
+				}
 			}
 		}
 		logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)

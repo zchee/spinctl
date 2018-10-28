@@ -33,14 +33,24 @@ func (o OAuth2Config) IsValid() bool {
 	return o.ClientID != "" && o.ClientSecret != "" && o.TokenURL != "" && o.AuthURL != "" && len(o.Scopes) != 0
 }
 
-func AuthenticateOAuth2(ctx context.Context) (*oauth2.Token, error) {
+func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, error) {
 	const oauth2CallbackAddr = ":8085"
+
 	conf := &oauth2.Config{
-		ClientID:     os.Getenv("SPINCTL_OAUTH2_CLIENT_ID"),
-		ClientSecret: os.Getenv("SPINCTL_OAUTH2_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost" + oauth2CallbackAddr,                                // TODO(zchee): avoid set localhost to Google OAuth2 Authorized redirect URIs
-		Scopes:       []string{oauth2_v2.UserinfoEmailScope, oauth2_v2.UserinfoProfileScope}, // TODO(zchee): currently only supported Google OAuth2
-		Endpoint:     oauth2_google.Endpoint,
+		ClientID:     oc.ClientID,
+		ClientSecret: oc.ClientSecret,
+		RedirectURL:  "http://localhost" + oauth2CallbackAddr, // TODO(zchee): avoid set localhost to Google OAuth2 Authorized redirect URIs
+		Scopes:       oc.Scopes,
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  oc.AuthURL,
+			TokenURL: oc.TokenURL,
+		},
+	}
+	if conf.Scopes == nil {
+		conf.Scopes = []string{oauth2_v2.UserinfoEmailScope, oauth2_v2.UserinfoProfileScope} // TODO(zchee): currently only supported Google OAuth2
+	}
+	if conf.Endpoint.AuthURL == "" || conf.Endpoint.TokenURL == "" {
+		conf.Endpoint = oauth2_google.Endpoint // TODO(zchee): currently only supported Google OAuth2
 	}
 
 	// for OAuth2 callback handler
