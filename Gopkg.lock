@@ -106,6 +106,14 @@
   version = "v1.0.3"
 
 [[projects]]
+  digest = "1:4813df37133f1c4ab0db4feee0fa3db22560c02ab4a500160b4ced643a775622"
+  name = "github.com/zchee/go-open"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "7c55f90ec56417e7aabebc2d6c5301e97fc79d87"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:37a83c5cc07c55375a3cf488a2c9b513536302531b3156cd7c89fa6abaaeab9c"
   name = "github.com/zchee/go-xdgbasedir"
   packages = [
@@ -176,9 +184,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a9bc64e1206f3d5ce2ac71e397ddfe81065ac706929d34fcb3f0a48e74cd6e3b"
+  digest = "1:68ca1f18d986adc1d25a28aa732806ee8f1c874cc5b606e4ba67ddd3eeb89e20"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows",
+  ]
   pruneopts = "NUT"
   revision = "4497e2df6f9e69048a54498c7affbbec3294ad47"
 
@@ -255,6 +266,7 @@
     "github.com/pkg/errors",
     "github.com/spf13/cobra",
     "github.com/spf13/pflag",
+    "github.com/zchee/go-open",
     "github.com/zchee/go-xdgbasedir",
     "github.com/zchee/go-xdgbasedir/home",
     "go.uber.org/zap",

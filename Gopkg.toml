@@ -37,3 +37,7 @@ ignored = []
 [[constraint]]
   name = "github.com/json-iterator/go"
   branch = "master"
+
+[[constraint]]
+  name = "github.com/zchee/go-open"
+  version = "1.0.0"
