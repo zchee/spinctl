@@ -27,6 +27,10 @@ GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 
 VET_LINTERS := asmdecl assign atomic bools buildtag cgocall copylocks httpresponse loopclosure lostcancel nilfunc nilness pkgfact shift stdmethods structtag tests unreachable unsafeptr  # composites -composites.whitelist '' findcall -findcall.name '' printf -printf.funcs '' unusedresult -unusedresult.funcs '' -unusedresult.stringmethods ''
 GOLANGCI_LINTERS := deadcode dupl errcheck goconst gocyclo golint gosec ineffassign interfacer maligned megacheck structcheck unconvert varcheck 
+GOLANGCI_EXCLUDE :=
+ifneq ($(wildcard '.errcheckignore'),)
+	GOLANGCI_EXCLUDE = $(foreach pat,$(shell cat .errcheckignore),--exclude '$(pat)')
+endif
 
 IMAGE_REGISTRY := quay.io/zchee
 
@@ -59,13 +63,11 @@ install:  ## Installs the executable or package.
 
 
 .PHONY: test
-test: BUILDTAGS+=cgo
 test:  ## Run the package test.
 	$(call target)
 	$(GO_TEST) -v -race -tags "$(BUILDTAGS)" -run=$(GO_TEST_FUNC) $(GO_PKGS)
 
 .PHONY: bench
-bench: BUILDTAGS+=cgo
 bench:  ## Take a package benchmark.
 	$(call target)
 	$(GO_TEST) -v -race -tags "$(BUILDTAGS)" -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_PKGS)
@@ -76,7 +78,7 @@ coverage:  ## Take test coverage.
 	$(GO_TEST) -v -race -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS)
 
 
-lint: lint/fmt lint/govet lint/golint lint/golangci-lint  ## Run all linters.
+lint: lint/fmt lint/govet lint/golint lint/vet lint/golangci-lint  ## Run all linters.
 
 .PHONY: lint/fmt
 lint/fmt:  ## Verifies all files have been `gofmt`ed.
@@ -86,7 +88,7 @@ lint/fmt:  ## Verifies all files have been `gofmt`ed.
 .PHONY: lint/govet
 lint/govet:  ## Verifies `go vet` passes.
 	$(call target)
-	@go vet $(shell $(GO) list ./... | grep -v vendor) | grep -v '.pb.go:' | tee /dev/stderr
+	@go vet -all $(GO_PKGS) | tee /dev/stderr
 
 $(GO_PATH)/bin/golint:
 	@go get -u golang.org/x/lint/golint
@@ -94,7 +96,7 @@ $(GO_PATH)/bin/golint:
 .PHONY: lint/golint
 lint/golint: $(GO_PATH)/bin/golint  ## Verifies `golint` passes.
 	$(call target)
-	@golint ./... | grep -v '.pb.go' | grep -v vendor | tee /dev/stderr
+	@golint -min_confidence=0.3 -set_exit_status $(GO_PKGS)
 
 $(GO_PATH)/bin/vet:
 	@go get -u golang.org/x/tools/go/analysis/cmd/vet golang.org/x/tools/go/analysis/passes/...
@@ -109,7 +111,7 @@ $(GO_PATH)/bin/golangci-lint:
 .PHONY: golangci-lint
 lint/golangci-lint: $(GO_PATH)/bin/golangci-lint  ## Run golangci-lint.
 	$(call target)
-	@golangci-lint run --no-config --issues-exit-code=0 $(foreach pat,$(shell cat .errcheckignore),--exclude '$(pat)') --deadline=30m --disable-all $(foreach tool,$(GOLANGCI_LINTERS),--enable=$(tool)) $(GO_PKGS_ABS)
+	@golangci-lint run --no-config --issues-exit-code=0 $(GOLANGCI_EXCLUDE) --deadline=30m --disable-all $(foreach tool,$(GOLANGCI_LINTERS),--enable=$(tool)) $(GO_PKGS_ABS)
 
 
 $(GO_PATH)/bin/dep:
