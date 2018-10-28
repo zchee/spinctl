@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	open "github.com/zchee/go-open"
 	"golang.org/x/oauth2"
 	oauth2_google "golang.org/x/oauth2/google"
 	oauth2_v2 "google.golang.org/api/oauth2/v2"
@@ -75,6 +76,9 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 		// TODO(zchee): set code_challenge param
 	)
 	fmt.Fprintf(os.Stdout, "Your browser has been opened to visit:\n\n\t%s\n", authURL)
+	if err := open.RunContext(ctx, authURL); err != nil {
+		return nil, err
+	}
 	code := codeFromStdin()
 	if code == "" {
 		return nil, errors.New("auth: authorization code is empty")
