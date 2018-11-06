@@ -3,8 +3,8 @@
  
 GO_PATH = $(shell go env GOPATH)
 PKG = $(subst $(GO_PATH)/src/,,$(CURDIR))
-GO_PKGS := $(shell go list ./... | grep -v -e '.pb.go')
-GO_PKGS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e '.pb.go')
+GO_PKGS := $(shell go list ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/mock')
+GO_PKGS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/mock')
 
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
@@ -18,10 +18,7 @@ GIT_UNTRACKED_CHANGES:= $(shell git status --porcelain --untracked-files=no)
 ifneq ($(GIT_UNTRACKED_CHANGES),)
 	GIT_COMMIT := $(GIT_COMMIT)-dirty
 endif
-ifeq ($(GIT_COMMIT),)
-    GIT_COMMIT := ${GITHUB_SHA}
-endif
-CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GITCOMMIT) -X $(PKG)/pkg/version.version=$(VERSION)
+CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GIT_COMMIT) -X $(PKG)/pkg/version.version=$(VERSION)
 GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 
