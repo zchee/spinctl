@@ -17,7 +17,7 @@ PKG_ROOT="$GO_PATH/src/github.com/zchee/spinctl"
 rm -rf "$PKG_ROOT/api/gate"
 swagger-codegen generate --auth "cookie: SESSION=$SESSION" -i "$ENDPOINT/v2/api-docs" -l go -D 'packageName=gate' -D "packageVersion=$SPINNAKER_VERSION" -o "$PKG_ROOT/api/gate"
 
-curl -v -H "cookie: SESSION=$SESSION" -o "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION-raw.json" "$ENDPOINT/v2/api-docs"
+curl -sv -H "cookie: SESSION=$SESSION" -o "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION-raw.json" "$ENDPOINT/v2/api-docs"
 if [[ -f "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION.json" ]]; then
   rm -f "$PKG_ROOT/api/swagger-spec/gate-$SPINNAKER_VERSION.json"
 fi
