@@ -24,6 +24,7 @@ endif
 CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GIT_COMMIT) -X $(PKG)/pkg/version.version=$(VERSION)
 GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
+GO_BUILDTAGS := osusergo
 
 VETLITE_LINTERS ?= asmdecl assign atomic bools buildtag cgocall copylocks httpresponse loopclosure lostcancel nilfunc pkgfact shift stdmethods structtag tests unmarshal unreachable unsafeptr ## composites composites.whitelist printf printf.funcs unusedresult unusedresult.funcs unusedresult.stringmethods
 GOLANGCI_ENABLE_LINTERS ?= deadcode,depguard,dupl,errcheck,goconst,gocritic,gocyclo,gofmt,goimports,golint,gosec,gosimple,govet,ineffassign,interfacer,maligned,misspell,nakedret,prealloc,scopelint,staticcheck,structcheck,unconvert,unparam,unused,varcheck
@@ -55,13 +56,13 @@ debug:
 
 $(APP): $(wildcard *.go) $(wildcard */**/*.go) VERSION.txt
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go build -tags "$(BUILDTAGS)" -v $(GO_LDFLAGS) -o $(APP) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go build -tags "$(GO_BUILDTAGS)" -v $(GO_LDFLAGS) -o $(APP) $(PKG)/cmd/$(APP)
 
 build: $(APP)  ## Builds a dynamic executable or package.
 
 static: CGO_ENABLED=0
 static: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
-static: BUILDTAGS+=static
+static: GO_BUILDTAGS+=static
 static: $(APP)  ## Builds a static executable or package.
 
 .PHONY: install
