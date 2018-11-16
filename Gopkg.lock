@@ -2,12 +2,12 @@
 
 
 [[projects]]
-  digest = "1:5c3894b2aa4d6bead0ceeea6831b305d62879c871780e7b76296ded1b004bc57"
+  digest = "1:5ad08b0e14866764a6d7475eb11c9cf05cad9a52c442593bdfa544703ff77f61"
   name = "cloud.google.com/go"
   packages = ["compute/metadata"]
   pruneopts = "NUT"
-  revision = "6cb29e61d96723a38dcac44d4c15c36744d96d07"
-  version = "v0.29.0"
+  revision = "74b12019e2aa53ec27882158f59192d7cd6d1998"
+  version = "v0.33.1"
 
 [[projects]]
   digest = "1:ade392a843b2035effb4b4a2efa2c3bab3eb29b992e98bacf9c898b0ecb54e45"
@@ -43,11 +43,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:b8d3579baec6379ae322d12b08af6883415d52ac9905c7aabd8553242b2fc99e"
+  digest = "1:24ff4fda4a068a13142cd0eb902ee1138f4cd1071d8ef30dd07984506271c68c"
   name = "github.com/json-iterator/go"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "2433035e513208b0f7bd5b50d0aecd889b2c1ff8"
+  revision = "d05f387f50c0c406889b62cb5ec51c76a64d89ee"
 
 [[projects]]
   digest = "1:08c231ec84231a7e23d67e4b58f975e1423695a32467a362ee55a803f9de8061"
@@ -87,15 +87,15 @@
   name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "2233dee583dcf88f3c8b22cb7a33f05a499800d8"
+  revision = "059132a15dd08d6704c67711dae0cf35ab991756"
 
 [[projects]]
   branch = "master"
-  digest = "1:455a9e33f7716f9a2e0d1f65e2d04941d311cd5cc40a96f957b2e4e8724a2faa"
+  digest = "1:62caa436b82f9045674f41ac847d526df121b6583b0cc904c2172b586acef4e3"
   name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "8d114be902bc9f08717804830a55c48378108a28"
+  revision = "fe5e611709b0c57fa4a89136deaa8e1d4004d053"
 
 [[projects]]
   digest = "1:9d8420bbf131d1618bde6530af37c3799340d3762cc47210c1d9532a4c3a2779"
@@ -157,7 +157,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:33b9d71d1dde2106309484a388eb7ba53cd1f67014e34a71f7b3dbc20bd186e5"
+  digest = "1:accf5f2688ddcfbdc4be68e5e780082afa913d0b28e830a788779144b829d9a6"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -166,11 +166,11 @@
     "publicsuffix",
   ]
   pruneopts = "NUT"
-  revision = "146acd28ed5894421fb5aac80ca93bc1b1f46f87"
+  revision = "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
 
 [[projects]]
   branch = "master"
-  digest = "1:dcb89c032286a9c3c5118a1496f8e0e237c1437f5356ac9602f6fdef560a5c21"
+  digest = "1:286347e7534393dccf6e9bb8e912730c02f0de71bc93f820906511817b61cf3a"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
@@ -180,18 +180,18 @@
     "jwt",
   ]
   pruneopts = "NUT"
-  revision = "c57b0facaced709681d9f90397429b9430a74754"
+  revision = "f42d05182288abf10faef86d16c0d07b8d40ea2d"
 
 [[projects]]
   branch = "master"
-  digest = "1:68ca1f18d986adc1d25a28aa732806ee8f1c874cc5b606e4ba67ddd3eeb89e20"
+  digest = "1:6eac76de26138eb5049ffa3f3a8d4cf394cf626812b7d9b31308301e24bc9840"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
   ]
   pruneopts = "NUT"
-  revision = "4497e2df6f9e69048a54498c7affbbec3294ad47"
+  revision = "66b7b1311ac80bbafcd2daeef9a5e6e2cd1e2399"
 
 [[projects]]
   digest = "1:e7071ed636b5422cc51c0e3a6cebc229d6c9fffc528814b519a980641422d619"
@@ -218,7 +218,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:29785d660eab828e5c05bf4befe46a6ac8bc0b7f11526bf6156181a9db0e7c27"
+  digest = "1:5fd2b05f34353b118ffe5ef9135cb0d859ddd0d1db8eb1d2f349cc8a173178c9"
   name = "google.golang.org/api"
   packages = [
     "gensupport",
@@ -227,10 +227,10 @@
     "oauth2/v2",
   ]
   pruneopts = "NUT"
-  revision = "c21459d81882ee61fcd6631fb94dbd9a29bd4377"
+  revision = "83a9d304b1e613fc253e1e2710778642fe81af53"
 
 [[projects]]
-  digest = "1:e2da54c7866453ac5831c61c7ec5d887f39328cac088c806553303bff4048e6f"
+  digest = "1:b63b351b57e64ae8aec1af030dc5e74a2676fcda62102f006ae4411fac1b04c8"
   name = "google.golang.org/appengine"
   packages = [
     ".",
@@ -245,8 +245,8 @@
     "urlfetch",
   ]
   pruneopts = "NUT"
-  revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
-  version = "v1.2.0"
+  revision = "4a4468ece617fc8205e99368fa2200e9d1fad421"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:7c95b35057a0ff2e19f707173cc1a947fa43a6eb5c4d300d196ece0334046082"
