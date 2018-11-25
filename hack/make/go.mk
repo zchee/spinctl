@@ -22,8 +22,8 @@ ifneq ($(GIT_UNTRACKED_CHANGES),)
 	GIT_COMMIT := $(GIT_COMMIT)-dirty
 endif
 CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GIT_COMMIT) -X $(PKG)/pkg/version.version=$(VERSION)
-GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
-GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
+GO_LDFLAGS=-ldflags "-w -s $(CTIMEVAR)"
+GO_LDFLAGS_STATIC=-ldflags "-w -s $(CTIMEVAR) '-extldflags=-static'"
 GO_BUILDTAGS := osusergo
 
 VETLITE_LINTERS ?= asmdecl assign atomic bools buildtag cgocall copylocks httpresponse loopclosure lostcancel nilfunc pkgfact shift stdmethods structtag tests unmarshal unreachable unsafeptr ## composites composites.whitelist printf printf.funcs unusedresult unusedresult.funcs unusedresult.stringmethods
@@ -56,7 +56,7 @@ debug:
 
 $(APP): $(wildcard *.go) $(wildcard */**/*.go) VERSION.txt
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go build -tags "$(GO_BUILDTAGS)" -v $(GO_LDFLAGS) -o $(APP) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go build -v -tags "$(GO_BUILDTAGS)" $(GO_LDFLAGS) -o $(APP) $(PKG)/cmd/$(APP)
 
 build: $(APP)  ## Builds a dynamic executable or package.
 
