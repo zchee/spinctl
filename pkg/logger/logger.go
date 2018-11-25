@@ -14,7 +14,7 @@ import (
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/zchee/spinctl/pkg/internal/pretty"
+	"github.com/zchee/spinctl/pkg/logger/internal/pretty"
 )
 
 const (
