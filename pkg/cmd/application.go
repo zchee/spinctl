@@ -18,8 +18,9 @@ import (
 
 func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "application",
-		Short: "manage the Spinnaker applications.",
+		Use:     "application",
+		Aliases: []string{"app"},
+		Short:   "manage the Spinnaker applications.",
 	}
 
 	cmd.AddCommand(newCmdApplicationGet(ctx, client, out))
