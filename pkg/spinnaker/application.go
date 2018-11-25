@@ -13,17 +13,26 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (c *Client) GetApplication(ctx context.Context, out io.Writer, name string, expand bool, format string) error {
+func (c *Client) GetApplication(ctx context.Context, out io.Writer, application string, expand bool, format string) error {
 	opts := make(map[string]interface{})
 	if expand {
 		opts["expand"] = true
 	}
 
-	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, name, opts)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		return errors.Wrapf(err, "failed to get %s application", name)
+	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, application, opts)
+	if err != nil {
+		return errors.Wrapf(err, "failed to get %s application", application)
 	}
 	defer resp.Body.Close()
+
+	switch resp.StatusCode {
+	case http.StatusOK:
+		// nothing to do
+	case http.StatusNotFound:
+		return errors.Wrapf(err, "application %q not found", application)
+	default:
+		return errors.Wrapf(err, "encountered an error getting application, status code: %d", resp.StatusCode)
+	}
 
 	s, err := parsePayload(&payload, format)
 	if err != nil {
