@@ -33,16 +33,19 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer
 
 type pipelineGet struct {
 	out io.Writer
+
+	outFormat string
 }
 
 func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &pipelineGet{
+	get := &pipelineGet{
 		out: out,
 	}
 
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline.",
+		Args:  cobra.ExactArgs(2),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = client.Authenticate(ctx)
@@ -51,10 +54,21 @@ func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Wri
 			}
 			return nil
 		},
-		RunE: func(*cobra.Command, []string) error {
-			return errors.New("not implements yet")
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := cmd.ValidateArgs(args); err != nil {
+				return err
+			}
+
+			application := args[0]
+			pipelineName := args[1]
+			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
+
+			return client.GetPipeline(ctx, get.out, application, pipelineName, get.outFormat)
 		},
 	}
+
+	f := cmd.Flags()
+	f.StringVarP(&get.outFormat, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
