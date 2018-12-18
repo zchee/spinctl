@@ -10,6 +10,14 @@
   version = "v0.33.1"
 
 [[projects]]
+  branch = "master"
+  digest = "1:2b23c176460b7b078aeffc44d97515e13d7aa5857c1c2768b3e3defc0397626e"
+  name = "github.com/antihax/optional"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "ca021399b1a6796ecb758292c6311ce0b28857fc"
+
+[[projects]]
   digest = "1:ade392a843b2035effb4b4a2efa2c3bab3eb29b992e98bacf9c898b0ecb54e45"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -260,6 +268,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/antihax/optional",
     "github.com/fatih/color",
     "github.com/ghodss/yaml",
     "github.com/json-iterator/go",
@@ -272,7 +281,6 @@
     "go.uber.org/zap",
     "go.uber.org/zap/buffer",
     "go.uber.org/zap/zapcore",
-    "golang.org/x/net/context",
     "golang.org/x/net/publicsuffix",
     "golang.org/x/oauth2",
     "golang.org/x/oauth2/google",
