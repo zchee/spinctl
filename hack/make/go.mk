@@ -118,7 +118,7 @@ bench/trace:  ## Take a package benchmark with take a trace profiling.
 .PHONY: coverage
 coverage:  ## Take test coverage.
 	$(call target)
-	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_TEST_PKGS)
+	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS)
 
 $(GO_PATH)/bin/go-junit-report:
 	@go get -u github.com/jstemmer/go-junit-report
@@ -127,7 +127,7 @@ $(GO_PATH)/bin/go-junit-report:
 coverage/junit: $(GO_PATH)/bin/go-junit-report  ## Take test coverage and output test results with junit syntax.
 	$(call target)
 	mkdir -p _test-results
-	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_TEST_PKGS) 2>&1 | go-junit-report > _test-results/results.xml
+	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS) 2>&1 | go-junit-report > test-results/results.xml
 
 
 lint: lint/fmt lint/govet lint/golint lint/vet lint/golangci-lint  ## Run all linters.
