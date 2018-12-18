@@ -8,19 +8,19 @@ Method | HTTP request | Description
 
 
 # **GetServerGroupManagersForApplicationUsingGET**
-> []HashMap GetServerGroupManagersForApplicationUsingGET(ctx, application)
+> []interface{} GetServerGroupManagersForApplicationUsingGET(ctx, application)
 Retrieve a list of server group managers for an application
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 

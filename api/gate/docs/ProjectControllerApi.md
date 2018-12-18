@@ -8,29 +8,29 @@ Method | HTTP request | Description
 
 
 # **AllPipelinesForProjectUsingGET**
-> []HashMap AllPipelinesForProjectUsingGET(ctx, id, optional)
+> []interface{} AllPipelinesForProjectUsingGET(ctx, id, optional)
 Get all pipelines for project
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***AllPipelinesForProjectUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a AllPipelinesForProjectUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **limit** | **int32**| limit | [default to 5]
- **statuses** | **string**| statuses | 
+
+ **limit** | **optional.Int32**| limit | [default to 5]
+ **statuses** | **optional.String**| statuses | 
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 

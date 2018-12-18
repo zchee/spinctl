@@ -17,19 +17,19 @@ Retrieve a list of security groups for a given account, grouped by region
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **account** | **string**| account | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***AllByAccountUsingGET1Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a AllByAccountUsingGET1Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **string**| account | 
- **provider** | **string**| provider | [default to aws]
- **region** | **string**| region | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+ **provider** | **optional.String**| provider | [default to aws]
+ **region** | **optional.String**| region | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
@@ -54,16 +54,16 @@ Retrieve a list of security groups, grouped by account, cloud provider, and regi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***AllUsingGET4Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a AllUsingGET4Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+ **id** | **optional.String**| id | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
@@ -88,23 +88,23 @@ Retrieve a security group's details
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **account** | **string**| account | 
   **region** | **string**| region | 
   **name** | **string**| name | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetSecurityGroupUsingGET1Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetSecurityGroupUsingGET1Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **string**| account | 
- **region** | **string**| region | 
- **name** | **string**| name | 
- **provider** | **string**| provider | [default to aws]
- **vpcId** | **string**| vpcId | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+
+
+ **provider** | **optional.String**| provider | [default to aws]
+ **vpcId** | **optional.String**| vpcId | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 

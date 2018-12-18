@@ -20,6 +20,8 @@ tags:
   description: "Search Controller"
 - name: "v-2-canary-config-controller"
   description: "V 2 Canary Config Controller"
+- name: "v-2-pipeline-templates-controller"
+  description: "V 2 Pipeline Templates Controller"
 - name: "pipeline-controller"
   description: "Pipeline Controller"
 - name: "load-balancer-controller"
@@ -91,6 +93,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Account"
+        x-optionalDataType: "String"
       - name: "owner"
         in: "query"
         description: "filteres results to only include applications owned by the specified\
@@ -98,6 +101,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Owner"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -136,12 +140,14 @@ paths:
         type: "string"
         default: "false"
         x-exportParamName: "Expand"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -198,12 +204,14 @@ paths:
         type: "string"
         default: "false"
         x-exportParamName: "Expand"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -242,24 +250,28 @@ paths:
         type: "string"
         default: "false"
         x-exportParamName: "Expand"
+        x-optionalDataType: "String"
       - name: "cloudProvider"
         in: "query"
         description: "cloudProvider"
         required: false
         type: "string"
         x-exportParamName: "CloudProvider"
+        x-optionalDataType: "String"
       - name: "clusters"
         in: "query"
         description: "clusters"
         required: false
         type: "string"
         x-exportParamName: "Clusters"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -315,6 +327,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       - name: "includeDetails"
         in: "query"
         description: "includeDetails"
@@ -322,12 +335,12 @@ paths:
         type: "string"
         default: "true"
         x-exportParamName: "IncludeDetails"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -358,6 +371,7 @@ paths:
         type: "boolean"
         default: true
         x-exportParamName: "Expand"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -395,6 +409,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -438,13 +453,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -486,6 +503,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -535,13 +553,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -589,13 +609,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -644,25 +666,29 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "region"
         in: "query"
         description: "region"
         required: false
         type: "string"
         x-exportParamName: "Region"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -724,18 +750,21 @@ paths:
         required: false
         type: "boolean"
         x-exportParamName: "OnlyEnabled"
+        x-optionalDataType: "Bool"
       - name: "validateOldest"
         in: "query"
         description: "validateOldest"
         required: false
         type: "boolean"
         x-exportParamName: "ValidateOldest"
+        x-optionalDataType: "Bool"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -791,6 +820,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -811,7 +841,7 @@ paths:
       - "executions-controller"
       summary: "Search for pipeline executions using a combination of criteria. The\
         \ returned list is sorted by buildTime (trigger time) in reverse order so\
-        \ that nwewer executions are first in the list."
+        \ that newer executions are first in the list."
       operationId: "searchForPipelineExecutionsByTriggerUsingGET"
       consumes:
       - "application/json"
@@ -834,12 +864,14 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "TriggerTypes"
+        x-optionalDataType: "String"
       - name: "pipelineName"
         in: "query"
         description: "Only includes executions that with this pipeline name."
         required: false
         type: "string"
         x-exportParamName: "PipelineName"
+        x-optionalDataType: "String"
       - name: "eventId"
         in: "query"
         description: "Only includes executions that were triggered by a trigger with\
@@ -847,6 +879,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "EventId"
+        x-optionalDataType: "String"
       - name: "trigger"
         in: "query"
         description: "Only includes executions that were triggered by a trigger that\
@@ -867,6 +900,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Trigger"
+        x-optionalDataType: "String"
       - name: "triggerTimeStartBoundary"
         in: "query"
         description: "Only includes executions that were built at or after the given\
@@ -878,6 +912,7 @@ paths:
         default: 0
         format: "int64"
         x-exportParamName: "TriggerTimeStartBoundary"
+        x-optionalDataType: "Int64"
       - name: "triggerTimeEndBoundary"
         in: "query"
         description: "Only includes executions that were built at or before the given\
@@ -889,6 +924,7 @@ paths:
         default: 9223372036854775807
         format: "int64"
         x-exportParamName: "TriggerTimeEndBoundary"
+        x-optionalDataType: "Int64"
       - name: "statuses"
         in: "query"
         description: "Only includes executions with a status that is equal to a status\
@@ -899,6 +935,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Statuses"
+        x-optionalDataType: "String"
       - name: "startIndex"
         in: "query"
         description: "Sets the first item of the resulting list for pagination. The\
@@ -909,6 +946,7 @@ paths:
         default: 0
         format: "int32"
         x-exportParamName: "StartIndex"
+        x-optionalDataType: "Int32"
       - name: "size"
         in: "query"
         description: "Sets the size of the resulting list for pagination. This value\
@@ -918,6 +956,7 @@ paths:
         default: 10
         format: "int32"
         x-exportParamName: "Size"
+        x-optionalDataType: "Int32"
       - name: "reverse"
         in: "query"
         description: "Reverses the resulting list before it is paginated. If this\
@@ -926,6 +965,7 @@ paths:
         type: "boolean"
         default: false
         x-exportParamName: "Reverse"
+        x-optionalDataType: "Bool"
       - name: "expand"
         in: "query"
         description: "Expands each execution object in the resulting list. If this\
@@ -934,6 +974,7 @@ paths:
         type: "boolean"
         default: false
         x-exportParamName: "Expand"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -973,13 +1014,15 @@ paths:
         default: 20
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1009,13 +1052,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1125,6 +1170,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "User"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -1163,18 +1209,21 @@ paths:
         type: "integer"
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       - name: "statuses"
         in: "query"
         description: "statuses"
         required: false
         type: "string"
         x-exportParamName: "Statuses"
+        x-optionalDataType: "String"
       - name: "expand"
         in: "query"
         description: "expand"
         required: false
         type: "boolean"
         x-exportParamName: "Expand"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -1212,6 +1261,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Reason"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -1252,7 +1302,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1382,13 +1433,15 @@ paths:
         default: 20
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1487,6 +1540,7 @@ paths:
         type: "integer"
         format: "int32"
         x-exportParamName: "Page"
+        x-optionalDataType: "Int32"
       - name: "limit"
         in: "query"
         description: "limit"
@@ -1494,12 +1548,14 @@ paths:
         type: "integer"
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       - name: "statuses"
         in: "query"
         description: "statuses"
         required: false
         type: "string"
         x-exportParamName: "Statuses"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -1649,6 +1705,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -1681,13 +1738,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1712,6 +1771,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Principal"
+        x-optionalDataType: "String"
       - name: "after"
         in: "query"
         description: "after"
@@ -1719,18 +1779,19 @@ paths:
         type: "string"
         format: "date-time"
         x-exportParamName: "After"
+        x-optionalDataType: "Time"
       - name: "type"
         in: "query"
         description: "type"
         required: false
         type: "string"
         x-exportParamName: "Type_"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1755,6 +1816,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Principal"
+        x-optionalDataType: "String"
       - name: "after"
         in: "query"
         description: "after"
@@ -1762,18 +1824,19 @@ paths:
         type: "string"
         format: "date-time"
         x-exportParamName: "After"
+        x-optionalDataType: "Time"
       - name: "type"
         in: "query"
         description: "type"
         required: false
         type: "string"
         x-exportParamName: "Type_"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1925,7 +1988,6 @@ paths:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1949,7 +2011,6 @@ paths:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -1979,7 +2040,6 @@ paths:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2018,27 +2078,32 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Email"
+        x-optionalDataType: "String"
       - name: "username"
         in: "query"
         required: false
         type: "string"
         x-exportParamName: "Username"
+        x-optionalDataType: "String"
       - name: "firstName"
         in: "query"
         required: false
         type: "string"
         x-exportParamName: "FirstName"
+        x-optionalDataType: "String"
       - name: "lastName"
         in: "query"
         required: false
         type: "string"
         x-exportParamName: "LastName"
+        x-optionalDataType: "String"
       - name: "expand"
         in: "query"
         description: "expand"
         required: false
         type: "boolean"
         x-exportParamName: "Expand"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -2084,21 +2149,25 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Email"
+        x-optionalDataType: "String"
       - name: "username"
         in: "query"
         required: false
         type: "string"
         x-exportParamName: "Username"
+        x-optionalDataType: "String"
       - name: "firstName"
         in: "query"
         required: false
         type: "string"
         x-exportParamName: "FirstName"
+        x-optionalDataType: "String"
       - name: "lastName"
         in: "query"
         required: false
         type: "string"
         x-exportParamName: "LastName"
+        x-optionalDataType: "String"
       - name: "account"
         in: "path"
         description: "account"
@@ -2111,6 +2180,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -2126,8 +2196,10 @@ paths:
     get:
       tags:
       - "executions-controller"
-      summary: "Retrieve a list of the most recent pipeline executions for the provided\
-        \ `pipelineConfigIds` that match the provided `statuses` query parameter"
+      summary: "Retrieves an ad-hoc collection of executions based on a number of\
+        \ user-supplied parameters. Either executionIds or pipelineConfigIds must\
+        \ be supplied in order to return any results. If both are supplied, an exception\
+        \ will be thrown."
       operationId: "getLatestExecutionsByConfigIdsUsingGET"
       consumes:
       - "application/json"
@@ -2136,23 +2208,49 @@ paths:
       parameters:
       - name: "pipelineConfigIds"
         in: "query"
-        description: "pipelineConfigIds"
-        required: true
+        description: "A comma-separated list of pipeline configuration IDs to retrieve\
+          \ recent executions for. Either this OR pipelineConfigIds must be supplied,\
+          \ but not both."
+        required: false
         type: "string"
         x-exportParamName: "PipelineConfigIds"
+        x-optionalDataType: "String"
+      - name: "executionIds"
+        in: "query"
+        description: "A comma-separated list of executions to retrieve. Either this\
+          \ OR pipelineConfigIds must be supplied, but not both."
+        required: false
+        type: "string"
+        x-exportParamName: "ExecutionIds"
+        x-optionalDataType: "String"
       - name: "limit"
         in: "query"
-        description: "limit"
+        description: "The number of executions to return per pipeline configuration.\
+          \ Ignored if executionIds parameter is supplied. If this value is missing,\
+          \ it is defaulted to 1."
         required: false
         type: "integer"
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       - name: "statuses"
         in: "query"
-        description: "statuses"
+        description: "A comma-separated list of execution statuses to filter by. Ignored\
+          \ if executionIds parameter is supplied. If this value is missing, it is\
+          \ defaulted to all statuses."
         required: false
         type: "string"
         x-exportParamName: "Statuses"
+        x-optionalDataType: "String"
+      - name: "expand"
+        in: "query"
+        description: "Expands each execution object in the resulting list. If this\
+          \ value is missing, it is defaulted to true."
+        required: false
+        type: "boolean"
+        default: true
+        x-exportParamName: "Expand"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -2185,18 +2283,19 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Id"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2227,24 +2326,26 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "region"
         in: "query"
         description: "region"
         required: false
         type: "string"
         x-exportParamName: "Region"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2287,24 +2388,26 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "vpcId"
         in: "query"
         description: "vpcId"
         required: false
         type: "string"
         x-exportParamName: "VpcId"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2331,24 +2434,28 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "q"
         in: "query"
         description: "q"
         required: false
         type: "string"
         x-exportParamName: "Q"
+        x-optionalDataType: "String"
       - name: "region"
         in: "query"
         description: "region"
         required: false
         type: "string"
         x-exportParamName: "Region"
+        x-optionalDataType: "String"
       - name: "account"
         in: "query"
         description: "account"
         required: false
         type: "string"
         x-exportParamName: "Account"
+        x-optionalDataType: "String"
       - name: "count"
         in: "query"
         description: "count"
@@ -2356,13 +2463,15 @@ paths:
         type: "integer"
         format: "int32"
         x-exportParamName: "Count"
+        x-optionalDataType: "Int32"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2387,6 +2496,7 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "account"
         in: "query"
         description: "account"
@@ -2405,6 +2515,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -2455,19 +2566,22 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2491,7 +2605,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2533,12 +2648,12 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2581,18 +2696,19 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2617,12 +2733,14 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -2674,19 +2792,22 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2717,12 +2838,14 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -2754,6 +2877,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -2791,13 +2915,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2821,7 +2947,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2881,13 +3008,15 @@ paths:
         default: 20
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2920,7 +3049,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -2983,12 +3113,14 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "ExecutionId"
+        x-optionalDataType: "String"
       - name: "pipelineConfigId"
         in: "query"
         description: "pipelineConfigId"
         required: false
         type: "string"
         x-exportParamName: "PipelineConfigId"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -3064,6 +3196,7 @@ paths:
         type: "boolean"
         default: false
         x-exportParamName: "SkipPlanDependents"
+        x-optionalDataType: "Bool"
       responses:
         201:
           description: "Created"
@@ -3102,6 +3235,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Application"
+        x-optionalDataType: "String"
       responses:
         202:
           description: "Accepted"
@@ -3139,6 +3273,7 @@ paths:
         required: false
         type: "boolean"
         x-exportParamName: "Recursive"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -3382,7 +3517,6 @@ paths:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -3481,6 +3615,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Reason"
+        x-optionalDataType: "String"
       - name: "force"
         in: "query"
         description: "force"
@@ -3488,6 +3623,7 @@ paths:
         type: "boolean"
         default: false
         x-exportParamName: "Force"
+        x-optionalDataType: "Bool"
       responses:
         200:
           description: "OK"
@@ -3581,9 +3717,9 @@ paths:
       tags:
       - "pipeline-controller"
       summary: "Evaluate a pipeline expression using the provided execution as context"
-      operationId: "evaluateExpressionForExecutionUsingPOST"
+      operationId: "evaluateExpressionForExecutionViaPOSTUsingPOST_1"
       consumes:
-      - "application/json"
+      - "text/plain"
       produces:
       - "*/*"
       parameters:
@@ -3593,12 +3729,13 @@ paths:
         required: true
         type: "string"
         x-exportParamName: "Id"
-      - name: "expression"
-        in: "query"
-        description: "expression"
+      - in: "body"
+        name: "pipelineExpression"
+        description: "pipelineExpression"
         required: true
-        type: "string"
-        x-exportParamName: "Expression"
+        schema:
+          type: "string"
+        x-exportParamName: "PipelineExpression"
       responses:
         200:
           description: "OK"
@@ -3784,7 +3921,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -3972,19 +4110,22 @@ paths:
         default: 5
         format: "int32"
         x-exportParamName: "Limit"
+        x-optionalDataType: "Int32"
       - name: "statuses"
         in: "query"
         description: "statuses"
         required: false
         type: "string"
         x-exportParamName: "Statuses"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4032,6 +4173,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Q"
+        x-optionalDataType: "String"
       - name: "type"
         in: "query"
         description: "type"
@@ -4044,6 +4186,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Platform"
+        x-optionalDataType: "String"
       - name: "pageSize"
         in: "query"
         description: "pageSize"
@@ -4052,6 +4195,7 @@ paths:
         default: 10000
         format: "int32"
         x-exportParamName: "PageSize"
+        x-optionalDataType: "Int32"
       - name: "page"
         in: "query"
         description: "page"
@@ -4060,6 +4204,7 @@ paths:
         default: 1
         format: "int32"
         x-exportParamName: "Page"
+        x-optionalDataType: "Int32"
       - name: "allowShortQuery"
         in: "query"
         description: "allowShortQuery"
@@ -4067,19 +4212,22 @@ paths:
         type: "boolean"
         default: false
         x-exportParamName: "AllowShortQuery"
+        x-optionalDataType: "Bool"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4104,18 +4252,19 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Id"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4147,24 +4296,26 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "region"
         in: "query"
         description: "region"
         required: false
         type: "string"
         x-exportParamName: "Region"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4207,24 +4358,26 @@ paths:
         type: "string"
         default: "aws"
         x-exportParamName: "Provider"
+        x-optionalDataType: "String"
       - name: "vpcId"
         in: "query"
         description: "vpcId"
         required: false
         type: "string"
         x-exportParamName: "VpcId"
+        x-optionalDataType: "String"
       - name: "X-RateLimit-App"
         in: "header"
         description: "X-RateLimit-App"
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4248,7 +4401,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4278,13 +4432,15 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4484,6 +4640,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XRateLimitApp"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -4664,6 +4821,78 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
+  /v2/canaries/canary/{canaryConfigId}:
+    post:
+      tags:
+      - "v-2-canary-controller"
+      summary: "Start a canary execution"
+      operationId: "initiateCanaryUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "canaryConfigId"
+        in: "path"
+        description: "canaryConfigId"
+        required: true
+        type: "string"
+        x-exportParamName: "CanaryConfigId"
+      - in: "body"
+        name: "executionRequest"
+        description: "executionRequest"
+        required: true
+        schema:
+          type: "object"
+        x-exportParamName: "ExecutionRequest"
+      - name: "application"
+        in: "query"
+        description: "application"
+        required: false
+        type: "string"
+        x-exportParamName: "Application"
+        x-optionalDataType: "String"
+      - name: "parentPipelineExecutionId"
+        in: "query"
+        description: "parentPipelineExecutionId"
+        required: false
+        type: "string"
+        x-exportParamName: "ParentPipelineExecutionId"
+        x-optionalDataType: "String"
+      - name: "metricsAccountName"
+        in: "query"
+        description: "metricsAccountName"
+        required: false
+        type: "string"
+        x-exportParamName: "MetricsAccountName"
+        x-optionalDataType: "String"
+      - name: "storageAccountName"
+        in: "query"
+        description: "storageAccountName"
+        required: false
+        type: "string"
+        x-exportParamName: "StorageAccountName"
+        x-optionalDataType: "String"
+      - name: "configurationAccountName"
+        in: "query"
+        description: "configurationAccountName"
+        required: false
+        type: "string"
+        x-exportParamName: "ConfigurationAccountName"
+        x-optionalDataType: "String"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+        201:
+          description: "Created"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
   /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId}:
     get:
       tags:
@@ -4693,12 +4922,12 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "StorageAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -4773,12 +5002,14 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Filter"
+        x-optionalDataType: "String"
       - name: "metricsAccountName"
         in: "query"
         description: "metricsAccountName"
         required: false
         type: "string"
         x-exportParamName: "MetricsAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -4816,6 +5047,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "StorageAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -4861,12 +5093,14 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Statuses"
+        x-optionalDataType: "String"
       - name: "storageAccountName"
         in: "query"
         description: "storageAccountName"
         required: false
         type: "string"
         x-exportParamName: "StorageAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -4898,12 +5132,14 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "Application"
+        x-optionalDataType: "String"
       - name: "configurationAccountName"
         in: "query"
         description: "configurationAccountName"
         required: false
         type: "string"
         x-exportParamName: "ConfigurationAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -4941,12 +5177,12 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "ConfigurationAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         201:
           description: "Created"
         401:
@@ -4978,12 +5214,12 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "ConfigurationAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -5012,6 +5248,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "ConfigurationAccountName"
+        x-optionalDataType: "String"
       - in: "body"
         name: "config"
         description: "config"
@@ -5024,7 +5261,6 @@ paths:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         201:
           description: "Created"
         401:
@@ -5055,6 +5291,7 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "ConfigurationAccountName"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -5064,6 +5301,253 @@ paths:
           description: "Unauthorized"
         403:
           description: "Forbidden"
+  /v2/pipelineTemplates:
+    get:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "List pipeline templates."
+      operationId: "listUsingGET_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "scopes"
+        in: "query"
+        description: "scopes"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+        x-exportParamName: "Scopes"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+    post:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "Create a pipeline template."
+      operationId: "createUsingPOST_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "pipelineTemplate"
+        description: "pipelineTemplate"
+        required: true
+        schema:
+          type: "object"
+        x-exportParamName: "PipelineTemplate"
+      responses:
+        201:
+          description: "Created"
+        202:
+          description: "Accepted"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /v2/pipelineTemplates/plan:
+    post:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "Plan a pipeline template configuration."
+      operationId: "planUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "pipeline"
+        description: "pipeline"
+        required: true
+        schema:
+          type: "object"
+        x-exportParamName: "Pipeline"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        201:
+          description: "Created"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+  /v2/pipelineTemplates/{id}:
+    get:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "Get a pipeline template."
+      operationId: "getUsingGET_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+    post:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "Update a pipeline template."
+      operationId: "updateUsingPOST_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      - in: "body"
+        name: "pipelineTemplate"
+        description: "pipelineTemplate"
+        required: true
+        schema:
+          type: "object"
+        x-exportParamName: "PipelineTemplate"
+      - name: "skipPlanDependents"
+        in: "query"
+        description: "skipPlanDependents"
+        required: false
+        type: "boolean"
+        default: false
+        x-exportParamName: "SkipPlanDependents"
+        x-optionalDataType: "Bool"
+      responses:
+        201:
+          description: "Created"
+        202:
+          description: "Accepted"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+    delete:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "Delete a pipeline template."
+      operationId: "deleteUsingDELETE_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      - name: "application"
+        in: "query"
+        description: "application"
+        required: false
+        type: "string"
+        x-exportParamName: "Application"
+        x-optionalDataType: "String"
+      responses:
+        202:
+          description: "Accepted"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        204:
+          description: "No Content"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+  /v2/pipelineTemplates/{id}/dependents:
+    get:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "List all pipelines that implement a pipeline template"
+      operationId: "listPipelineTemplateDependentsUsingGET_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
   /v3/builds:
     get:
       tags:
@@ -5282,7 +5766,8 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/HashMap"
+              type: "object"
+              properties: {}
         401:
           description: "Unauthorized"
         403:
@@ -5351,18 +5836,19 @@ paths:
         required: false
         type: "string"
         x-exportParamName: "XHubSignature"
+        x-optionalDataType: "String"
       - name: "X-Event-Key"
         in: "header"
         description: "X-Event-Key"
         required: false
         type: "string"
         x-exportParamName: "XEventKey"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
           schema:
             type: "object"
-            properties: {}
         201:
           description: "Created"
         401:
@@ -5433,11 +5919,6 @@ definitions:
     properties:
       authority:
         type: "string"
-  HashMap:
-    type: "object"
-    additionalProperties:
-      type: "object"
-      properties: {}
   HashMap«string,object»:
     type: "object"
     additionalProperties:

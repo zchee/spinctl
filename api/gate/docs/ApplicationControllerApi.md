@@ -29,17 +29,17 @@ Cancel pipeline
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***CancelPipelineUsingPUTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a CancelPipelineUsingPUTOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **reason** | **string**| reason | 
+
+ **reason** | **optional.String**| reason | 
 
 ### Return type
 
@@ -64,7 +64,7 @@ Cancel task
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
 
 ### Return type
@@ -90,16 +90,16 @@ Retrieve a list of applications
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***GetAllApplicationsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetAllApplicationsUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **string**| filters results to only include applications deployed in the specified account | 
- **owner** | **string**| filteres results to only include applications owned by the specified email | 
+ **account** | **optional.String**| filters results to only include applications deployed in the specified account | 
+ **owner** | **optional.String**| filteres results to only include applications owned by the specified email | 
 
 ### Return type
 
@@ -117,28 +117,28 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetApplicationHistoryUsingGET**
-> []HashMap GetApplicationHistoryUsingGET(ctx, application, optional)
+> []interface{} GetApplicationHistoryUsingGET(ctx, application, optional)
 Retrieve a list of an application's configuration revision history
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetApplicationHistoryUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetApplicationHistoryUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **application** | **string**| application | 
- **limit** | **int32**| limit | [default to 20]
+
+ **limit** | **optional.Int32**| limit | [default to 20]
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 
@@ -159,17 +159,17 @@ Retrieve an application's details
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetApplicationUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetApplicationUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **application** | **string**| application | 
- **expand** | **bool**| expand | [default to true]
+
+ **expand** | **optional.Bool**| expand | [default to true]
 
 ### Return type
 
@@ -194,7 +194,7 @@ Retrieve a pipeline configuration
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
   **pipelineName** | **string**| pipelineName | 
 
@@ -221,7 +221,7 @@ Retrieve a list of an application's pipeline configurations
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
 
 ### Return type
@@ -247,19 +247,19 @@ Retrieve a list of an application's pipeline executions
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetPipelinesUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetPipelinesUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **application** | **string**| application | 
- **limit** | **int32**| limit | 
- **statuses** | **string**| statuses | 
- **expand** | **bool**| expand | 
+
+ **limit** | **optional.Int32**| limit | 
+ **statuses** | **optional.String**| statuses | 
+ **expand** | **optional.Bool**| expand | 
 
 ### Return type
 
@@ -284,7 +284,7 @@ Retrieve a pipeline strategy configuration
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
   **strategyName** | **string**| strategyName | 
 
@@ -311,7 +311,7 @@ Retrieve a list of an application's pipeline strategy configurations
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
 
 ### Return type
@@ -337,19 +337,19 @@ Get task details
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
   **taskDetailsId** | **string**| taskDetailsId | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetTaskDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetTaskDetailsUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **taskDetailsId** | **string**| taskDetailsId | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
@@ -374,7 +374,7 @@ Get task
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
 
 ### Return type
@@ -400,19 +400,19 @@ Retrieve a list of an application's tasks
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetTasksUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetTasksUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **application** | **string**| application | 
- **page** | **int32**| page | 
- **limit** | **int32**| limit | 
- **statuses** | **string**| statuses | 
+
+ **page** | **optional.Int32**| page | 
+ **limit** | **optional.Int32**| limit | 
+ **statuses** | **optional.String**| statuses | 
 
 ### Return type
 
@@ -437,20 +437,20 @@ Invoke pipeline config
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
   **pipelineName** | **string**| pipelineName | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***InvokePipelineConfigUsingPOSTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a InvokePipelineConfigUsingPOSTOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **application** | **string**| application | 
- **pipelineName** | **string**| pipelineName | 
- **trigger** | [**interface{}**](interface{}.md)| trigger | 
- **user** | **string**| user | 
+
+
+ **trigger** | [**optional.Interface of interface{}**](interface{}.md)| trigger | 
+ **user** | **optional.String**| user | 
 
 ### Return type
 
@@ -475,7 +475,7 @@ Create task
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
   **map_** | [**interface{}**](interface{}.md)| map | 
 

@@ -16,17 +16,17 @@ findByPrincipalAndAfterAndType
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***FindByPrincipalAndAfterAndTypeUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a FindByPrincipalAndAfterAndTypeUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **principal** | **string**| principal | 
- **after** | **time.Time**| after | 
- **type_** | **string**| type | 
+ **principal** | **optional.String**| principal | 
+ **after** | **optional.Time**| after | 
+ **type_** | **optional.String**| type | 
 
 ### Return type
 
@@ -51,17 +51,17 @@ findByPrincipalAndAfterAndType
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***FindByPrincipalAndAfterAndTypeUsingGET1Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a FindByPrincipalAndAfterAndTypeUsingGET1Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **principal** | **string**| principal | 
- **after** | **time.Time**| after | 
- **type_** | **string**| type | 
+ **principal** | **optional.String**| principal | 
+ **after** | **optional.Time**| after | 
+ **type_** | **optional.String**| type | 
 
 ### Return type
 

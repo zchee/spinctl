@@ -16,22 +16,22 @@ Retrieve an instance's console output
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **account** | **string**| account | 
   **region** | **string**| region | 
   **instanceId** | **string**| instanceId | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetConsoleOutputUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetConsoleOutputUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **string**| account | 
- **region** | **string**| region | 
- **instanceId** | **string**| instanceId | 
- **provider** | **string**| provider | [default to aws]
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+
+
+ **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
@@ -56,21 +56,21 @@ Retrieve an instance's details
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **account** | **string**| account | 
   **region** | **string**| region | 
   **instanceId** | **string**| instanceId | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetInstanceDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetInstanceDetailsUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **string**| account | 
- **region** | **string**| region | 
- **instanceId** | **string**| instanceId | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+
+
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 

@@ -15,7 +15,7 @@ Retrieves a list of events for a server group
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
   **account** | **string**| account | 
   **serverGroupName** | **string**| serverGroupName | 

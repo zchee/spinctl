@@ -8,26 +8,26 @@ Method | HTTP request | Description
 
 
 # **AllUsingGET**
-> []HashMap AllUsingGET(ctx, optional)
+> []interface{} AllUsingGET(ctx, optional)
 Retrieve the list of artifact accounts configured in Clouddriver.
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***AllUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a AllUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 

@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**GetCanaryResultUsingGET**](V2CanaryControllerApi.md#GetCanaryResultUsingGET) | **Get** /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId} | Retrieve a canary result
 [**GetCanaryResultsByApplicationUsingGET**](V2CanaryControllerApi.md#GetCanaryResultsByApplicationUsingGET) | **Get** /v2/canaries/{application}/executions | Retrieve a list of an application&#39;s canary results
 [**GetMetricSetPairListUsingGET**](V2CanaryControllerApi.md#GetMetricSetPairListUsingGET) | **Get** /v2/canaries/metricSetPairList/{metricSetPairListId} | Retrieve a metric set pair list
+[**InitiateCanaryUsingPOST**](V2CanaryControllerApi.md#InitiateCanaryUsingPOST) | **Post** /v2/canaries/canary/{canaryConfigId} | Start a canary execution
 [**ListCredentialsUsingGET**](V2CanaryControllerApi.md#ListCredentialsUsingGET) | **Get** /v2/canaries/credentials | Retrieve a list of configured Kayenta accounts
 [**ListJudgesUsingGET**](V2CanaryControllerApi.md#ListJudgesUsingGET) | **Get** /v2/canaries/judges | Retrieve a list of all configured canary judges
 [**ListMetricsServiceMetadataUsingGET**](V2CanaryControllerApi.md#ListMetricsServiceMetadataUsingGET) | **Get** /v2/canaries/metadata/metricsService | Retrieve a list of descriptors for use in populating the canary config ui
@@ -20,19 +21,19 @@ Retrieve a canary result
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **canaryConfigId** | **string**| canaryConfigId | 
   **canaryExecutionId** | **string**| canaryExecutionId | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetCanaryResultUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetCanaryResultUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **canaryConfigId** | **string**| canaryConfigId | 
- **canaryExecutionId** | **string**| canaryExecutionId | 
- **storageAccountName** | **string**| storageAccountName | 
+
+
+ **storageAccountName** | **optional.String**| storageAccountName | 
 
 ### Return type
 
@@ -57,20 +58,20 @@ Retrieve a list of an application's canary results
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **application** | **string**| application | 
   **limit** | **int32**| limit | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetCanaryResultsByApplicationUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetCanaryResultsByApplicationUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **application** | **string**| application | 
- **limit** | **int32**| limit | 
- **statuses** | **string**| Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED, TERMINAL | 
- **storageAccountName** | **string**| storageAccountName | 
+
+
+ **statuses** | **optional.String**| Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED, TERMINAL | 
+ **storageAccountName** | **optional.String**| storageAccountName | 
 
 ### Return type
 
@@ -95,21 +96,62 @@ Retrieve a metric set pair list
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **metricSetPairListId** | **string**| metricSetPairListId | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetMetricSetPairListUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetMetricSetPairListUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **metricSetPairListId** | **string**| metricSetPairListId | 
- **storageAccountName** | **string**| storageAccountName | 
+
+ **storageAccountName** | **optional.String**| storageAccountName | 
 
 ### Return type
 
 [**[]interface{}**](interface{}.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **InitiateCanaryUsingPOST**
+> interface{} InitiateCanaryUsingPOST(ctx, canaryConfigId, executionRequest, optional)
+Start a canary execution
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+  **canaryConfigId** | **string**| canaryConfigId | 
+  **executionRequest** | [**interface{}**](interface{}.md)| executionRequest | 
+ **optional** | ***InitiateCanaryUsingPOSTOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a InitiateCanaryUsingPOSTOpts struct
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **application** | **optional.String**| application | 
+ **parentPipelineExecutionId** | **optional.String**| parentPipelineExecutionId | 
+ **metricsAccountName** | **optional.String**| metricsAccountName | 
+ **storageAccountName** | **optional.String**| storageAccountName | 
+ **configurationAccountName** | **optional.String**| configurationAccountName | 
+
+### Return type
+
+[**interface{}**](interface{}.md)
 
 ### Authorization
 
@@ -174,16 +216,16 @@ Retrieve a list of descriptors for use in populating the canary config ui
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***ListMetricsServiceMetadataUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a ListMetricsServiceMetadataUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filter** | **string**| filter | 
- **metricsAccountName** | **string**| metricsAccountName | 
+ **filter** | **optional.String**| filter | 
+ **metricsAccountName** | **optional.String**| metricsAccountName | 
 
 ### Return type
 

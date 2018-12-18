@@ -38,22 +38,22 @@ Endpoint for posting webhooks to Spinnaker's webhook service
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **type_** | **string**| type | 
   **source** | **string**| source | 
   **event** | [**interface{}**](interface{}.md)| event | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***WebhooksUsingPOSTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a WebhooksUsingPOSTOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **type_** | **string**| type | 
- **source** | **string**| source | 
- **event** | [**interface{}**](interface{}.md)| event | 
- **xHubSignature** | **string**| X-Hub-Signature | 
- **xEventKey** | **string**| X-Event-Key | 
+
+
+
+ **xHubSignature** | **optional.String**| X-Hub-Signature | 
+ **xEventKey** | **optional.String**| X-Event-Key | 
 
 ### Return type
 

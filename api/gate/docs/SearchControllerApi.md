@@ -8,33 +8,33 @@ Method | HTTP request | Description
 
 
 # **SearchUsingGET**
-> []HashMap SearchUsingGET(ctx, type_, optional)
+> []interface{} SearchUsingGET(ctx, type_, optional)
 Search infrastructure
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **type_** | **string**| type | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***SearchUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a SearchUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **type_** | **string**| type | 
- **q** | **string**| q | 
- **platform** | **string**| platform | 
- **pageSize** | **int32**| pageSize | [default to 10000]
- **page** | **int32**| page | [default to 1]
- **allowShortQuery** | **bool**| allowShortQuery | [default to false]
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+ **q** | **optional.String**| q | 
+ **platform** | **optional.String**| platform | 
+ **pageSize** | **optional.Int32**| pageSize | [default to 10000]
+ **page** | **optional.Int32**| page | [default to 1]
+ **allowShortQuery** | **optional.Bool**| allowShortQuery | [default to false]
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 

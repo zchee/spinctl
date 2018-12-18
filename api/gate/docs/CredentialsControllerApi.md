@@ -16,23 +16,23 @@ Retrieve an account's details
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **account** | **string**| account | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***GetAccountUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetAccountUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **string**| account | 
- **roles** | [**[]string**](string.md)|  | 
- **allowedAccounts** | [**[]string**](string.md)|  | 
- **email** | **string**|  | 
- **username** | **string**|  | 
- **firstName** | **string**|  | 
- **lastName** | **string**|  | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+ **roles** | [**optional.Interface of []string**](string.md)|  | 
+ **allowedAccounts** | [**optional.Interface of []string**](string.md)|  | 
+ **email** | **optional.String**|  | 
+ **username** | **optional.String**|  | 
+ **firstName** | **optional.String**|  | 
+ **lastName** | **optional.String**|  | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
@@ -57,21 +57,21 @@ Retrieve a list of accounts
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***GetAccountsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a GetAccountsUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **roles** | [**[]string**](string.md)|  | 
- **allowedAccounts** | [**[]string**](string.md)|  | 
- **email** | **string**|  | 
- **username** | **string**|  | 
- **firstName** | **string**|  | 
- **lastName** | **string**|  | 
- **expand** | **bool**| expand | 
+ **roles** | [**optional.Interface of []string**](string.md)|  | 
+ **allowedAccounts** | [**optional.Interface of []string**](string.md)|  | 
+ **email** | **optional.String**|  | 
+ **username** | **optional.String**|  | 
+ **firstName** | **optional.String**|  | 
+ **lastName** | **optional.String**|  | 
+ **expand** | **optional.Bool**| expand | 
 
 ### Return type
 

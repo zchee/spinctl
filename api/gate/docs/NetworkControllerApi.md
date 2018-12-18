@@ -9,28 +9,28 @@ Method | HTTP request | Description
 
 
 # **AllByCloudProviderUsingGET**
-> []HashMap AllByCloudProviderUsingGET(ctx, cloudProvider, optional)
+> []interface{} AllByCloudProviderUsingGET(ctx, cloudProvider, optional)
 Retrieve a list of networks for a given cloud provider
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **cloudProvider** | **string**| cloudProvider | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***AllByCloudProviderUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a AllByCloudProviderUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **cloudProvider** | **string**| cloudProvider | 
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 
@@ -51,15 +51,15 @@ Retrieve a list of networks, grouped by cloud provider
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***AllUsingGET2Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a AllUsingGET2Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **string**| X-RateLimit-App | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 

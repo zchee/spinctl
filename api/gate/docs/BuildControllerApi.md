@@ -26,7 +26,7 @@ Deprecated, use the v3 endpoint instead
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **type_** | **string**| type | 
 
 ### Return type
@@ -54,7 +54,7 @@ Deprecated, use the v3 endpoint instead
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
   **number** | **string**| number | 
 
@@ -83,7 +83,7 @@ Deprecated, use the v3 endpoint instead
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
 
 ### Return type
@@ -111,7 +111,7 @@ Deprecated, use the v3 endpoint instead
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
 
 ### Return type
@@ -139,7 +139,7 @@ Deprecated, use the v3 endpoint instead
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
 
 ### Return type
@@ -165,7 +165,7 @@ Get build masters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **type_** | **string**| type | 
 
 ### Return type
@@ -191,7 +191,7 @@ Get build for build master
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
   **number** | **string**| number | 
   **job** | **string**| job | 
@@ -219,7 +219,7 @@ Get builds for build master
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
   **job** | **string**| job | 
 
@@ -246,7 +246,7 @@ Get job config
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
   **job** | **string**| job | 
 
@@ -273,7 +273,7 @@ Get jobs for build master
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **buildMaster** | **string**| buildMaster | 
 
 ### Return type

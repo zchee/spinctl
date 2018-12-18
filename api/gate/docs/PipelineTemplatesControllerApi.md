@@ -21,7 +21,7 @@ Create a pipeline template.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **pipelineTemplate** | [**interface{}**](interface{}.md)| pipelineTemplate | 
 
 ### Return type
@@ -47,17 +47,17 @@ Delete a pipeline template.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***DeleteUsingDELETEOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a DeleteUsingDELETEOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **application** | **string**| application | 
+
+ **application** | **optional.String**| application | 
 
 ### Return type
 
@@ -82,7 +82,7 @@ Get a pipeline template.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
 
 ### Return type
@@ -108,17 +108,17 @@ List all pipelines that implement a pipeline template
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***ListPipelineTemplateDependentsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a ListPipelineTemplateDependentsUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **recursive** | **bool**| recursive | 
+
+ **recursive** | **optional.Bool**| recursive | 
 
 ### Return type
 
@@ -136,26 +136,26 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ListUsingGET**
-> []HashMap ListUsingGET(ctx, optional)
+> []interface{} ListUsingGET(ctx, optional)
 List pipeline templates.
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***ListUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a ListUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **scopes** | [**[]string**](string.md)| scopes | 
+ **scopes** | [**optional.Interface of []string**](string.md)| scopes | 
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 
@@ -176,18 +176,18 @@ Resolve a pipeline template.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **source** | **string**| source | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***ResolveTemplatesUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a ResolveTemplatesUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **source** | **string**| source | 
- **executionId** | **string**| executionId | 
- **pipelineConfigId** | **string**| pipelineConfigId | 
+
+ **executionId** | **optional.String**| executionId | 
+ **pipelineConfigId** | **optional.String**| pipelineConfigId | 
 
 ### Return type
 
@@ -212,19 +212,19 @@ Update a pipeline template.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
   **pipelineTemplate** | [**interface{}**](interface{}.md)| pipelineTemplate | 
- **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+ **optional** | ***UpdateUsingPOSTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
-Optional parameters are passed through a map[string]interface{}.
+Optional parameters are passed through a pointer to a UpdateUsingPOSTOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id | 
- **pipelineTemplate** | [**interface{}**](interface{}.md)| pipelineTemplate | 
- **skipPlanDependents** | **bool**| skipPlanDependents | [default to false]
+
+
+ **skipPlanDependents** | **optional.Bool**| skipPlanDependents | [default to false]
 
 ### Return type
 
