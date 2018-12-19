@@ -31,6 +31,10 @@ ignored = []
   branch = "master"
 
 [[constraint]]
+  name = "github.com/fatih/color"
+  branch = "master"
+
+[[constraint]]
   name = "github.com/ghodss/yaml"
   branch = "master"
 
@@ -41,3 +45,15 @@ ignored = []
 [[constraint]]
   name = "github.com/zchee/go-open"
   version = "1.0.0"
+
+[[override]]
+  name = "go.uber.org/multierr"
+  branch = "master"
+
+[[override]]
+  name = "github.com/modern-go/concurrent"
+  branch = "master"
+
+[[override]]
+  name = "github.com/modern-go/reflect2"
+  branch = "master"
