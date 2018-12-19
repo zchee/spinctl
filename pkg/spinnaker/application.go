@@ -10,16 +10,19 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/antihax/optional"
 	"github.com/pkg/errors"
+
+	"github.com/zchee/spinctl/api/gate"
 )
 
 func (c *Client) GetApplication(ctx context.Context, out io.Writer, application string, expand bool, format string) error {
-	opts := make(map[string]interface{})
+	var opts gate.GetApplicationUsingGETOpts
 	if expand {
-		opts["expand"] = true
+		opts.Expand = optional.NewBool(true)
 	}
 
-	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, application, opts)
+	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, application, &opts)
 	if err != nil {
 		return errors.Wrapf(err, "failed to get %s application", application)
 	}
