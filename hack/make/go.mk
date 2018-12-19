@@ -9,21 +9,21 @@ GO_PKGS := $(shell go list ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/moc
 GO_PKGS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/mock')
 GO_TEST_PKGS := $(shell go list -f='{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./...)
 
-CGO_ENABLED ?= 0
 VERSION := $(shell cat VERSION.txt)
-
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 GIT_UNTRACKED_CHANGES:= $(shell git status --porcelain --untracked-files=no)
 ifneq ($(GIT_UNTRACKED_CHANGES),)
 	GIT_COMMIT := $(GIT_COMMIT)-dirty
 endif
 CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GIT_COMMIT) -X $(PKG)/pkg/version.version=$(VERSION)
+
+CGO_ENABLED ?= 0
 GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 GO_BUILDTAGS := osusergo
 GOFLAGS ?= -tags '$(GO_BUILDTAGS)'
 
-ifneq ($(wildcard go.mod),)  # exist go.mod file
+ifeq ($(wildcard go.mod),)  # exist go.mod file
 ifeq ($(CI),)  # $CI is empty
 	GOFLAGS+=-mod=vendor
 endif
@@ -136,27 +136,23 @@ lint/golangci-lint: cmd/golangci-lint .golangci.yml  ## Run golangci-lint.
 
 ## mod
 
-go.mod:
-	$(call target,mod/init)
-	@GO111MODULE=on go mod init
-
 .PHONY: mod/init
-mod/init: go.mod
+mod/init:
+	$(call target)
+	@GO111MODULE=on go mod init
 
 .PHONY: mod/goget
 mod/goget:  ## Update module and go.mod.
 	$(call target)
 	@GO111MODULE=on go get -u -m -v -x ./...
 
-go.sum: go.mod
-	$(call target,mod/tidy)
+.PHONY: mod/tidy
+mod/tidy:
+	$(call target)
 	@GO111MODULE=on go mod tidy -v
 
-.PHONY: mod/tidy
-mod/tidy: go.sum
-
 .PHONY: mod/vendor
-mod/vendor: go.mod go.sum
+mod/vendor:
 	$(call target)
 	@GO111MODULE=on go mod vendor -v
 
@@ -230,6 +226,7 @@ container/build: Dockerfile  ## Create the container image from the Dockerfile.
 .PHONY: container/push
 container/push:  ## Push the container image to $IMAGE_REGISTRY.
 	docker image push $(IMAGE_REGISTRY)/$(APP):$(VERSION:v%=%)
+
 
 .PHONY: boilerplate/go/%
 boilerplate/go/%: BOILERPLATE_PKG_DIR=$(shell printf $@ | cut -d'/' -f3- | rev | cut -d'/' -f2- | rev)
