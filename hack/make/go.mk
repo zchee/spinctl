@@ -9,7 +9,7 @@ GO_PKGS := $(shell go list ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/moc
 GO_PKGS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/mock')
 GO_TEST_PKGS := $(shell go list -f='{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./...)
 
-CGO_ENABLED := 1
+CGO_ENABLED ?= 0
 VERSION := $(shell cat VERSION.txt)
 
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
@@ -21,6 +21,11 @@ CTIMEVAR=-X $(PKG)/pkg/version.gitCommit=$(GIT_COMMIT) -X $(PKG)/pkg/version.ver
 GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 GO_BUILDTAGS := osusergo
+GOFLAGS ?= -tags '$(GO_BUILDTAGS)'
+
+ifeq ($(CI),)  # $CI is empty
+	GOFLAGS+=-mod=vendor
+endif
 
 GO_TEST ?= go test
 GO_TEST_FUNC ?= .
@@ -28,28 +33,24 @@ GO_TEST_FLAGS ?=
 GO_BENCH_FUNC ?= .
 GO_BENCH_FLAGS ?= -benchmem
 
-VET_LINTERS := asmdecl assign atomic bools buildtag cgocall copylocks httpresponse loopclosure lostcancel nilfunc nilness pkgfact shift stdmethods structtag tests unreachable unsafeptr  # composites -composites.whitelist '' findcall -findcall.name '' printf -printf.funcs '' unusedresult -unusedresult.funcs '' -unusedresult.stringmethods ''
-GOLANGCI_LINTERS := deadcode dupl errcheck goconst gocyclo golint gosec ineffassign interfacer maligned megacheck structcheck unconvert varcheck 
-GOLANGCI_EXCLUDE :=
-ifneq ($(wildcard '.errcheckignore'),)
-	GOLANGCI_EXCLUDE = $(foreach pat,$(shell cat .errcheckignore),--exclude '$(pat)')
-endif
-
-IMAGE_REGISTRY := quay.io/zchee
+IMAGE_REGISTRY := gcr.io/container-image
 
 # ----------------------------------------------------------------------------
 # defines
 
+GOPHER = ""
 define target
-@printf "+ \\033[32m$@\\033[0m\\n"
+@printf "$(GOPHER)  \\033[32m$(patsubst ,$@,$(1))\\033[0m\\n"
 endef
 
 # ----------------------------------------------------------------------------
 # targets
 
+## build and install
+
 $(APP): $(wildcard *.go) $(wildcard */**/*.go) VERSION.txt
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go build -v -tags "$(GO_BUILDTAGS)" $(GO_LDFLAGS) -o $(APP) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GOFLAGS)) -o $(APP) $(PKG)/cmd/$(APP)
 
 .PHONY: build
 build: $(APP)  ## Builds a dynamic executable or package.
@@ -63,52 +64,25 @@ static: $(APP)  ## Builds a static executable or package.
 install: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 install:  ## Installs the executable or package.
 	$(call target)
-	go install -a -v -tags "$(GO_BUILDTAGS)" ${GO_LDFLAGS} $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GOFLAGS)) $(PKG)/cmd/$(APP)
 
+
+## test, bench and coverage
 
 .PHONY: test
 test:  ## Run the package test with checks race condition.
 	$(call target)
-	$(GO_TEST) -v -race -tags "$(GO_BUILDTAGS)" -run=$(GO_TEST_FUNC) $(GO_TEST_FLAGS) $(GO_TEST_PKGS)
-
-.PHONY: test/cpu
-test/cpu: GO_TEST_FLAGS+=-cpuprofile cpu.out
-test/cpu: test  ## Run the package test with take a cpu profiling.
-	$(call target)
-
-.PHONY: test/mem
-test/mem: GO_TEST_FLAGS+=-memprofile mem.out
-test/mem: test  ## Run the package test with take a memory profiling.
-	$(call target)
-
-.PHONY: test/mutex
-test/mutex: GO_TEST_FLAGS+=-mutexprofile mutex.out
-test/mutex: test  ## Run the package test with take a mutex profiling.
-	$(call target)
-
-.PHONY: test/block
-test/block: GO_TEST_FLAGS+=-blockprofile block.out
-test/block: test  ## Run the package test with take a blockingh profiling.
-	$(call target)
-
-.PHONY: test/trace
-test/trace: GO_TEST_FLAGS+=-trace trace.out
-test/trace: test  ## Run the package test with take a trace profiling.
-	$(call target)
+	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -run=$(GO_TEST_FUNC) $(GO_TEST_PKGS)
 
 .PHONY: bench
 bench:  ## Take a package benchmark.
 	$(call target)
-	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -run='^$$' -bench=$(GO_BENCH_FUNC) $(GO_BENCH_FLAGS) $(GO_TEST_PKGS)
+	$(GO_TEST) -v $(strip $(GOFLAGS)) -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_TEST_PKGS)
 
 .PHONY: bench/race
 bench/race:  ## Take a package benchmark with checks race condition.
 	$(call target)
-	$(GO_TEST) -v -race -tags "$(GO_BUILDTAGS)" -run='^$$' -bench=$(GO_BENCH_FUNC) $(GO_BENCH_FLAGS) $(GO_TEST_PKGS)
-
-.PHONY: bench/cpu
-bench/cpu: GO_BENCH_FLAGS+=-cpuprofile cpu.out
-bench/cpu: bench  ## Take a package benchmark with take a cpu profiling.
+	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_TEST_PKGS)
 
 .PHONY: bench/trace
 bench/trace:  ## Take a package benchmark with take a trace profiling.
@@ -118,77 +92,133 @@ bench/trace:  ## Take a package benchmark with take a trace profiling.
 .PHONY: coverage
 coverage:  ## Take test coverage.
 	$(call target)
-	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS)
+	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS)
 
 $(GO_PATH)/bin/go-junit-report:
-	@go get -u github.com/jstemmer/go-junit-report
+	@GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
+
+cmd/go-junit-report: $(GO_PATH)/bin/go-junit-report  # go get 'go-junit-report' binary
 
 .PHONY: coverage/junit
-coverage/junit: $(GO_PATH)/bin/go-junit-report  ## Take test coverage and output test results with junit syntax.
+coverage/junit: cmd/go-junit-report  ## Take test coverage and output test results with junit syntax.
 	$(call target)
-	mkdir -p _test-results
-	$(GO_TEST) -v -tags "$(GO_BUILDTAGS)" -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS) 2>&1 | go-junit-report > test-results/results.xml
+	@mkdir -p test-results
+	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS) 2>&1 | tee /dev/stderr | go-junit-report -set-exit-code > test-results/report.xml
 
 
-lint: lint/fmt lint/govet lint/golint lint/vet lint/golangci-lint  ## Run all linters.
+## lint
+
+lint: lint/fmt lint/govet lint/golangci-lint  ## Run all linters.
 
 .PHONY: lint/fmt
 lint/fmt:  ## Verifies all files have been `gofmt`ed.
 	$(call target)
-	@gofmt -s -l . | grep -v '.pb.go' | tee /dev/stderr
+	@gofmt -s -l . | grep -v -e 'vendor' -e '.pb.go' -e '_*.go' | tee /dev/stderr
 
 .PHONY: lint/govet
 lint/govet:  ## Verifies `go vet` passes.
 	$(call target)
 	@go vet -all $(GO_PKGS) | tee /dev/stderr
 
-$(GO_PATH)/bin/golint:
-	@go get -u golang.org/x/lint/golint
-
-.PHONY: lint/golint
-lint/golint: $(GO_PATH)/bin/golint  ## Verifies `golint` passes.
-	$(call target)
-	@golint -min_confidence=0.3 -set_exit_status $(GO_PKGS)
-
-$(GO_PATH)/bin/vet:
-	@go get -u golang.org/x/tools/go/analysis/cmd/vet golang.org/x/tools/go/analysis/passes/...
-
-lint/vet:  ## Run vet
-	$(call target)
-	@vet $(foreach linter,$(VET_LINTERS),-$(linter).enable) $(GO_PKGS)
-
 $(GO_PATH)/bin/golangci-lint:
-	@go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	@GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+
+cmd/golangci-lint: $(GO_PATH)/bin/golangci-lint  # go get 'golangci-lint' binary
 
 .PHONY: golangci-lint
-lint/golangci-lint: $(GO_PATH)/bin/golangci-lint  ## Run golangci-lint.
+lint/golangci-lint: cmd/golangci-lint .golangci.yml  ## Run golangci-lint.
 	$(call target)
-	@golangci-lint run --no-config --issues-exit-code=0 $(GOLANGCI_EXCLUDE) --deadline=30m --disable-all $(foreach tool,$(GOLANGCI_LINTERS),--enable=$(tool)) $(GO_PKGS_ABS)
+	@golangci-lint run ./...
 
+
+## mod
+
+go.mod:
+	$(call target,mod/init)
+	@GO111MODULE=on go mod init
+
+.PHONY: mod/init
+mod/init: go.mod
+
+.PHONY: mod/goget
+mod/goget:  ## Update module and go.mod.
+	$(call target)
+	@GO111MODULE=on go get -u -m -v -x ./...
+
+go.sum: go.mod
+	$(call target,mod/tidy)
+	@GO111MODULE=on go mod tidy -v
+
+.PHONY: mod/tidy
+mod/tidy: go.sum
+
+.PHONY: mod/vendor
+mod/vendor: go.mod go.sum
+	$(call target)
+	@GO111MODULE=on go mod vendor -v
+
+.PHONY: mod/graph
+mod/graph:
+	$(call target)
+	@GO111MODULE=on go mod graph
+
+.PHONY: mod/clean
+mod/clean:
+	$(call target)
+	@$(RM) go.mod go.sum
+	@$(RM) -r vendor
+
+.PHONY: mod
+mod: mod/clean mod/init mod/tidy mod/vendor  ## Updates the vendoring directory via go mod.
+	@sed -i ':a;N;$$!ba;s|go 1\.12\n\n||g' go.mod
+
+.PHONY: mod/install
+mod/install: mod/tidy mod/vendor
+	$(call target)
+	@GO111MODULE=on go install -v $(shell go list -f '{{if and (or .GoFiles .CgoFiles) (ne .Name "main")}}{{.ImportPath}}{{end}}' ./vendor/...)
+
+.PHONY: mod/update
+mod/update: mod/goget mod/tidy mod/vendor mod/install  ## Updates all vendor packages.
+
+
+## dep
 
 $(GO_PATH)/bin/dep:
 	@go get -u github.com/golang/dep/cmd/dep
 
+cmd/dep: $(GO_PATH)/bin/dep
+
 .PHONY: dep/init
-dep/init: $(GO_PATH)/bin/dep  ## Fetch vendor packages via dep ensure.
+dep/init: cmd/dep  ## Fetch vendor packages via dep ensure.
 	$(call target)
 	@dep init -v -no-examples
 
 .PHONY: dep/ensure
-dep/ensure: $(GO_PATH)/bin/dep  ## Fetch vendor packages via dep ensure.
+dep/ensure: cmd/dep Gopkg.toml  ## Fetch vendor packages via dep ensure.
+	$(call target)
+	@dep ensure -v
+
+.PHONY: dep/ensure/only-vendor
+dep/ensure/only-vendor: cmd/dep Gopkg.toml Gopkg.lock  ## Fetch vendor packages via dep ensure.
 	$(call target)
 	@dep ensure -v -vendor-only
 
+.PHONY: dep/clean
+dep/clean: cmd/dep
+	$(call target)
+	@$(RM) Gopkg.toml Gopkg.lock
+	@$(RM) -r vendor
+
 .PHONY: dep/update
-dep/update: $(GO_PATH)/bin/dep dep/clean  ## Updates the vendoring directory.
+dep/update: cmd/dep dep/clean
 	$(call target)
 	@dep ensure -v -update
 
-.PHONY: dep/clean
-dep/clean:
-	$(call target)
-	@$(RM) -r vendor
+.PHONY: dep/init
+dep: dep/clean dep/update  ## Updates the vendoring directory via dep.
 
+
+## miscellaneous
 
 .PHONY: container/build
 container/build: Dockerfile  ## Create the container image from the Dockerfile.
@@ -198,14 +228,16 @@ container/build: Dockerfile  ## Create the container image from the Dockerfile.
 container/push:  ## Push the container image to $IMAGE_REGISTRY.
 	docker image push $(IMAGE_REGISTRY)/$(APP):$(VERSION:v%=%)
 
-
-boilerplate/%: BOILERPLATE_PKG_NAME=$(if $(findstring $@,cmd),main,$(shell printf $@ | rev | cut -d/ -f2 | rev))
-boilerplate/%: hack/boilerplate/boilerplate.go.txt  ## Create go file from boilerplate.go.txt
+.PHONY: boilerplate/go/%
+boilerplate/go/%: BOILERPLATE_PKG_DIR=$(shell printf $@ | cut -d'/' -f3- | rev | cut -d'/' -f2- | rev)
+boilerplate/go/%: BOILERPLATE_PKG_NAME=$(if $(findstring $@,cmd),main,$(shell printf $@ | rev | cut -d/ -f2 | rev))
+boilerplate/go/%: hack/boilerplate/boilerplate.go.txt  ## Create go file from boilerplate.go.txt
+	@if [ ! -d ${BOILERPLATE_PKG_DIR} ]; then mkdir -p ${BOILERPLATE_PKG_DIR}; fi
 	@cat hack/boilerplate/boilerplate.go.txt <(printf "package ${BOILERPLATE_PKG_NAME}\\n") > $*
 
 
 .PHONY: AUTHORS
-AUTHORS:
+AUTHORS:  ## Creates AUTHORS file.
 	@$(file >$@,# This file lists all individuals having contributed content to the repository.)
 	@$(file >>$@,# For how it is generated, see `make AUTHORS`.)
 	@printf "$(shell git log --format="\n%aN <%aE>" | LC_ALL=C.UTF-8 sort -uf)" >> $@
@@ -214,7 +246,7 @@ AUTHORS:
 .PHONY: clean
 clean:  ## Cleanup any build binaries or packages.
 	$(call target)
-	$(RM) $(APP) *.out *.test *.prof trace.log
+	$(RM) *.out *.test *.prof trace.log
 
 
 .PHONY: help
