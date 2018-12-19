@@ -246,7 +246,7 @@ AUTHORS:  ## Creates AUTHORS file.
 .PHONY: clean
 clean:  ## Cleanup any build binaries or packages.
 	$(call target)
-	$(RM) *.out *.test *.prof trace.log
+	$(RM) $(APP) *.out *.test *.prof trace.log
 
 
 .PHONY: help
