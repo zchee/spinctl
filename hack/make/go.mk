@@ -23,8 +23,10 @@ GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 GO_BUILDTAGS := osusergo
 GOFLAGS ?= -tags '$(GO_BUILDTAGS)'
 
+ifneq ($(wildcard go.mod),)  # exist go.mod file
 ifeq ($(CI),)  # $CI is empty
 	GOFLAGS+=-mod=vendor
+endif
 endif
 
 GO_TEST ?= go test
@@ -53,15 +55,16 @@ $(APP): $(wildcard *.go) $(wildcard */**/*.go) VERSION.txt
 	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GOFLAGS)) -o $(APP) $(PKG)/cmd/$(APP)
 
 .PHONY: build
+build: GOFLAGS=${GO_LDFLAGS}
 build: $(APP)  ## Builds a dynamic executable or package.
 
 .PHONY: static
-static: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+static: GOFLAGS=${GO_LDFLAGS_STATIC}
 static: GO_BUILDTAGS+=static
 static: $(APP)  ## Builds a static executable or package.
 
 .PHONY: install
-install: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+install: GOFLAGS=${GO_LDFLAGS_STATIC}
 install:  ## Installs the executable or package.
 	$(call target)
 	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GOFLAGS)) $(PKG)/cmd/$(APP)
@@ -246,7 +249,7 @@ AUTHORS:  ## Creates AUTHORS file.
 .PHONY: clean
 clean:  ## Cleanup any build binaries or packages.
 	$(call target)
-	$(RM) $(APP) *.out *.test *.prof trace.log
+	@$(RM) $(APP) *.out *.test *.prof trace.log
 
 
 .PHONY: help
