@@ -21,11 +21,11 @@ CGO_ENABLED ?= 0
 GO_LDFLAGS=-ldflags "-w $(CTIMEVAR)"
 GO_LDFLAGS_STATIC=-ldflags "-w $(CTIMEVAR) -extldflags -static"
 GO_BUILDTAGS := osusergo
-GOFLAGS ?= -tags '$(GO_BUILDTAGS)'
+GO_FLAGS ?= -tags '$(GO_BUILDTAGS)'
 
-ifeq ($(wildcard go.mod),)  # exist go.mod file
+ifneq ($(wildcard go.mod),)  # exist go.mod
 ifeq ($(CI),)  # $CI is empty
-	GOFLAGS+=-mod=vendor
+	GO_FLAGS+=-mod=vendor
 endif
 endif
 
@@ -52,22 +52,22 @@ endef
 
 $(APP): $(wildcard *.go) $(wildcard */**/*.go) VERSION.txt
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GOFLAGS)) -o $(APP) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GO_FLAGS)) -o $(APP) $(PKG)/cmd/$(APP)
 
 .PHONY: build
-build: GOFLAGS=${GO_LDFLAGS}
+build: GO_FLAGS+=${GO_LDFLAGS}
 build: $(APP)  ## Builds a dynamic executable or package.
 
 .PHONY: static
-static: GOFLAGS=${GO_LDFLAGS_STATIC}
+static: GO_FLAGS+=${GO_LDFLAGS_STATIC}
 static: GO_BUILDTAGS+=static
 static: $(APP)  ## Builds a static executable or package.
 
 .PHONY: install
-install: GOFLAGS=${GO_LDFLAGS_STATIC}
+install: GO_FLAGS+=${GO_LDFLAGS_STATIC}
 install:  ## Installs the executable or package.
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GOFLAGS)) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GO_FLAGS)) $(PKG)/cmd/$(APP)
 
 
 ## test, bench and coverage
@@ -75,17 +75,17 @@ install:  ## Installs the executable or package.
 .PHONY: test
 test:  ## Run the package test with checks race condition.
 	$(call target)
-	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -run=$(GO_TEST_FUNC) $(GO_TEST_PKGS)
+	$(GO_TEST) -v -race $(strip $(GO_FLAGS)) -run=$(GO_TEST_FUNC) $(GO_TEST_PKGS)
 
 .PHONY: bench
 bench:  ## Take a package benchmark.
 	$(call target)
-	$(GO_TEST) -v $(strip $(GOFLAGS)) -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_TEST_PKGS)
+	$(GO_TEST) -v $(strip $(GO_FLAGS)) -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_TEST_PKGS)
 
 .PHONY: bench/race
 bench/race:  ## Take a package benchmark with checks race condition.
 	$(call target)
-	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_TEST_PKGS)
+	$(GO_TEST) -v -race $(strip $(GO_FLAGS)) -run='^$$' -bench=$(GO_BENCH_FUNC) -benchmem $(GO_TEST_PKGS)
 
 .PHONY: bench/trace
 bench/trace:  ## Take a package benchmark with take a trace profiling.
@@ -95,7 +95,7 @@ bench/trace:  ## Take a package benchmark with take a trace profiling.
 .PHONY: coverage
 coverage:  ## Take test coverage.
 	$(call target)
-	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS)
+	$(GO_TEST) -v -race $(strip $(GO_FLAGS)) -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS)
 
 $(GO_PATH)/bin/go-junit-report:
 	@GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
@@ -106,7 +106,7 @@ cmd/go-junit-report: $(GO_PATH)/bin/go-junit-report  # go get 'go-junit-report' 
 coverage/junit: cmd/go-junit-report  ## Take test coverage and output test results with junit syntax.
 	$(call target)
 	@mkdir -p test-results
-	$(GO_TEST) -v -race $(strip $(GOFLAGS)) -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS) 2>&1 | tee /dev/stderr | go-junit-report -set-exit-code > test-results/report.xml
+	$(GO_TEST) -v -race $(strip $(GO_FLAGS)) -covermode=atomic -coverpkg=$(PKG)/... -coverprofile=coverage.out $(GO_PKGS) 2>&1 | tee /dev/stderr | go-junit-report -set-exit-code > test-results/report.xml
 
 
 ## lint
