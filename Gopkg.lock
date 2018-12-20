@@ -42,6 +42,19 @@
   version = "v1.2.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:223930d9167ddfe6588371dfe80931c2885487e4dfbf443783e30d8cee24841e"
+  name = "github.com/google/go-cmp"
+  packages = [
+    "cmp",
+    "cmp/internal/diff",
+    "cmp/internal/function",
+    "cmp/internal/value",
+  ]
+  pruneopts = "NUT"
+  revision = "2248b49eaa8e1c8c0963ee77b40841adbc19d4ca"
+
+[[projects]]
   digest = "1:406338ad39ab2e37b7f4452906442a3dbf0eb3379dd1f06aafb5c07e769a5fbb"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
@@ -72,6 +85,14 @@
   pruneopts = "NUT"
   revision = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
   version = "v0.0.4"
+
+[[projects]]
+  branch = "master"
+  digest = "1:bd4438946fbb2ab6166918d30722908bb834a793da463635e01320ea8010f655"
+  name = "github.com/minio/sha256-simd"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "51976451ce1942acbb55707a983ed232fa027110"
 
 [[projects]]
   branch = "master"
@@ -271,7 +292,9 @@
     "github.com/antihax/optional",
     "github.com/fatih/color",
     "github.com/ghodss/yaml",
+    "github.com/google/go-cmp/cmp",
     "github.com/json-iterator/go",
+    "github.com/minio/sha256-simd",
     "github.com/pkg/errors",
     "github.com/spf13/cobra",
     "github.com/spf13/pflag",

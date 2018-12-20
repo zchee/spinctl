@@ -10,6 +10,7 @@ ignored = []
   unused-packages = true
   non-go = true
 
+# constraint
 [[constraint]]
   name = "golang.org/x/net"
   branch = "master"
@@ -43,9 +44,19 @@ ignored = []
   branch = "master"
 
 [[constraint]]
+  name = "github.com/google/go-cmp"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/minio/sha256-simd"
+  branch = "master"
+
+# semver
+[[constraint]]
   name = "github.com/zchee/go-open"
   version = "1.0.0"
 
+# override
 [[override]]
   name = "go.uber.org/multierr"
   branch = "master"
