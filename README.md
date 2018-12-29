@@ -1,6 +1,6 @@
 # spinctl
 
-[![CircleCI][circleci-badge]][circleci] [![codecov.io][codecov-badge]][codecov] [![godoc.org][godoc-badge]][godoc] [![Releases][release-badge]][release] [![GA][ga-badge]][ga]
+[![CircleCI][circleci-badge]][circleci] [![godoc.org][godoc-badge]][godoc] [![codecov.io][codecov-badge]][codecov] [![Releases][release-badge]][release] [![GA][ga-badge]][ga]
 
 spinctl is a command-line tool to manage Spinnaker via gate API.
 
