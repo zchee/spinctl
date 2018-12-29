@@ -1,4 +1,5 @@
-flags\.Parse
-flags\.MarkHidden
-.*\.ListenAndServe
-.*\.WriteTo
+(*github.com/spf13/pflag.FlagSet).MarkHidden
+(*runtime/pprof.Profile).WriteTo
+# io.WriterTo
+(*net.http.Server).ListenAndServe
+hash/Hash.Write
