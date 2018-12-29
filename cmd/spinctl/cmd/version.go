@@ -13,6 +13,7 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+// NewCmdVersion creates the version command.
 func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	get := &applicationGet{
 		out: out,

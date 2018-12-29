@@ -16,6 +16,7 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+// NewCmdPipeline creates the pipeline command.
 func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "pipeline",

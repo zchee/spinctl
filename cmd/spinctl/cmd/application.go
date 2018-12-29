@@ -16,6 +16,7 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+// NewCmdApplication creates the application command.
 func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "application",

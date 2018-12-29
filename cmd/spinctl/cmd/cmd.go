@@ -26,15 +26,18 @@ const (
 	defaultLogLevel = zap.InfoLevel
 )
 
+// Options represents a root command options.
 type Options struct {
 	debug      bool
 	configPath string
 }
 
+// NewDefaultCommand wrap of NewCommand function.
 func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 	return NewCommand(ctx, args)
 }
 
+// NewCommand creates the `spinctl` root command.
 func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:          appName,

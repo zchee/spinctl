@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// GetPipeline retrieves a pipeline configuration of application.
 func (c *Client) GetPipeline(ctx context.Context, out io.Writer, application, pipelineName string, format string) error {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigUsingGET(ctx, application, pipelineName)
 	if err != nil {
@@ -36,6 +37,7 @@ func (c *Client) GetPipeline(ctx context.Context, out io.Writer, application, pi
 	return nil
 }
 
+// ListPipelines retrieves a list of an application pipeline configurations.
 func (c *Client) ListPipelines(ctx context.Context, out io.Writer, name, format string) error {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigsForApplicationUsingGET(ctx, name)
 	if err != nil || resp.StatusCode != http.StatusOK {

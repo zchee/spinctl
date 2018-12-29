@@ -16,6 +16,7 @@ import (
 	"github.com/zchee/spinctl/api/gate"
 )
 
+// GetApplication retrieves an application details.
 func (c *Client) GetApplication(ctx context.Context, out io.Writer, application string, expand bool, format string) error {
 	var opts gate.GetApplicationUsingGETOpts
 	if expand {
@@ -46,6 +47,7 @@ func (c *Client) GetApplication(ctx context.Context, out io.Writer, application 
 	return nil
 }
 
+// ListApplications retrieves a list of applications.
 func (c *Client) ListApplications(ctx context.Context, out io.Writer, format string) error {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
 	if err != nil || resp.StatusCode != http.StatusOK {

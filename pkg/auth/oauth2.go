@@ -125,9 +125,8 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 			break
 		}
 
-		tmpDelay = 0 // reset
 		live <- struct{}{}
-		logger.FromContext(ctx).Info("succsess Dialing")
+		logger.FromContext(ctx).Debug("succsess Dialing")
 	}()
 	<-live // wait for callbackServer is live
 
@@ -166,7 +165,10 @@ func CallbackServer(addr string) *http.Server {
 func CodeFromStdin() string {
 	r := bufio.NewReader(os.Stdin)
 	fmt.Fprintf(os.Stdout, "Paste authorization code: ")
-	code, _ := r.ReadString('\n')
+	code, err := r.ReadString('\n')
+	if err != nil {
+		return ""
+	}
 
 	return strings.TrimSpace(code)
 }

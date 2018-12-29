@@ -24,6 +24,7 @@ var (
 	userAgent = "spinctl/" + version.Version
 )
 
+// Client represents a wrap of gate REST API client.
 type Client struct {
 	Client *gate.APIClient
 	Config *config.Config
@@ -36,38 +37,45 @@ var defaultGateConfiguration = &gate.Configuration{
 	HTTPClient:    http.DefaultClient,
 }
 
+// Option represents a functional option pattern for gate.Configuration.
 type Option func(*gate.Configuration)
 
+// WithBasePath sets custom URL base path to gate.APIClient.
 func WithBasePath(p string) Option {
 	return func(c *gate.Configuration) {
 		c.BasePath = p
 	}
 }
 
+// WithHost sets custom Host URL to gate.APIClient.
 func WithHost(host string) Option {
 	return func(c *gate.Configuration) {
 		c.Host = host
 	}
 }
 
+// WithtHeader sets custom header to gate.APIClient DefaultHeader.
 func WithtHeader(hdr map[string]string) Option {
 	return func(c *gate.Configuration) {
 		c.DefaultHeader = hdr
 	}
 }
 
+// WithUserAgent sets custom user agent to gate.APIClient
 func WithUserAgent(ua string) Option {
 	return func(c *gate.Configuration) {
 		c.UserAgent = ua
 	}
 }
 
+// WithHTTPClient sets custom http.Client to gate.APIClient.
 func WithHTTPClient(hc *http.Client) Option {
 	return func(c *gate.Configuration) {
 		c.HTTPClient = hc
 	}
 }
 
+// NewClient returns the new Client.
 func NewClient(cfg *config.Config, opts ...Option) *Client {
 	conf := defaultGateConfiguration
 	for _, o := range opts {
@@ -87,6 +95,7 @@ func NewClient(cfg *config.Config, opts ...Option) *Client {
 	}
 }
 
+// Authenticate authorizes the any auth method for access to Gate REST API.
 func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 	confAuth := c.Config.Auth
 

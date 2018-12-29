@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// GetVersion fetch Gate's current version.
 func (c *Client) GetVersion(ctx context.Context, out io.Writer, format string) error {
 	payload, resp, err := c.Client.VersionControllerApi.GetVersionUsingGET(ctx)
 	if err != nil {

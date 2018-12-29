@@ -30,15 +30,14 @@ func init() {
 	}
 }
 
-func newZapConfig(opts ...zap.Option) zap.Config {
-	var cfg zap.Config
+func newZapConfig() (cfg zap.Config) {
 	if _, ok := os.LookupEnv(envZapDebug); !ok {
 		cfg = zap.NewDevelopmentConfig()
 	} else {
 		cfg = zap.NewDevelopmentConfig()
 		cfg.Encoding = "debug" // already registered init function
 		cfg.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-		opts = append(opts, zap.AddCaller())
+		cfg.DisableCaller = false
 	}
 
 	if envlv := os.Getenv(envLogLevel); envlv != "" {
@@ -51,8 +50,9 @@ func newZapConfig(opts ...zap.Option) zap.Config {
 	return cfg
 }
 
+// NewZapLogger returns the new zap Logger.
 func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.Logger {
-	cfg := newZapConfig(opts...)
+	cfg := newZapConfig()
 	if !cfg.Level.Enabled(lv) {
 		cfg.Level.SetLevel(lv)
 	}
@@ -65,8 +65,9 @@ func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.Logger {
 	return l
 }
 
+// NewZapSugaredLogger returns the new zap Sugared Logger.
 func NewZapSugaredLogger(lv zapcore.Level, out zapcore.WriteSyncer, opts ...zap.Option) *zap.SugaredLogger {
-	cfg := newZapConfig(opts...)
+	cfg := newZapConfig()
 	cfg.Level.SetLevel(lv)
 	cfg.DisableCaller = true
 	cfg.DisableStacktrace = true
@@ -82,6 +83,8 @@ func NewZapSugaredLogger(lv zapcore.Level, out zapcore.WriteSyncer, opts ...zap.
 	return l.Sugar()
 }
 
+// RedirectStdLog redirects output from the standard library's package-global
+// logger to the supplied logger at InfoLevel and returnn the undo function.
 func RedirectStdLog(logger *zap.Logger) func() {
 	return zap.RedirectStdLog(logger)
 }
@@ -91,6 +94,7 @@ type consoleEncoder struct {
 	consoleEncoder zapcore.Encoder
 }
 
+// NewConsoleEncoder returrn the colored console Encoder for debugging.
 func NewConsoleEncoder(cfg zapcore.EncoderConfig) zapcore.Encoder {
 	color.NoColor = false // Force enabled
 
@@ -108,6 +112,7 @@ func NewConsoleEncoder(cfg zapcore.EncoderConfig) zapcore.Encoder {
 	}
 }
 
+// Clone implements zapcore.Encoder.
 func (c consoleEncoder) Clone() zapcore.Encoder {
 	return consoleEncoder{
 		consoleEncoder: c.consoleEncoder.Clone(),
@@ -115,6 +120,7 @@ func (c consoleEncoder) Clone() zapcore.Encoder {
 	}
 }
 
+// EncodeEntry implements zapcore.Encoder.
 func (c consoleEncoder) EncodeEntry(ent zapcore.Entry, fields []zapcore.Field) (*buffer.Buffer, error) {
 	line, err := c.consoleEncoder.EncodeEntry(ent, nil)
 	if err != nil {
