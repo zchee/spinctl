@@ -1,18 +1,21 @@
 version: 2.1
 
 orbs:
-  reviewdog: zchee/reviewdog@0.0.1
-  executor: zchee/golang@1.11.1
+  golang: cci-orb/golang@dev:v0.0.1
 
 defaults: &defaults
   working_directory: /go/src/github.com/zchee/spinctl
-  executor: executor/golang-stretch
+  executor: golang/stretch
+  environment:
+    GO111MODULE: "on"
+  shell: /bin/bash -euo pipefail
 
 jobs:
   fetch:
     <<: *defaults
     steps:
       - checkout
+      - golang/gomod
       - run:
           name: Remove global .gitconfig
           command: |
@@ -75,6 +78,3 @@ workflows:
           context: org-global
           requires:
             - fetch
-      - reviewdog/run:
-          context: org-global
-          working_directory: "/go/src/github.com/zchee/spinctl"
