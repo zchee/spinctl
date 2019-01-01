@@ -51,6 +51,7 @@ endef
 
 ## build and install
 
+.PHONY: $(APP)
 $(APP): $(wildcard *.go) $(wildcard */*.go) VERSION.txt
 	$(call target)
 	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GO_FLAGS)) -o $(APP) $(CMD)
