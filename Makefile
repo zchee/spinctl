@@ -1,9 +1,7 @@
-.DEFAULT_GOAL := static
-
 # ----------------------------------------------------------------------------
 # global
  
-.DEFAULT_GOAL=build
+.DEFAULT_GOAL := static
 APP = spinctl
 CMD_PREFIX=$(PKG)/cmd/
 CMD=$(CMD_PREFIX)$(APP)
