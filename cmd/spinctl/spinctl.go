@@ -18,9 +18,6 @@ func main() {
 
 	c := cmd.NewDefaultCommand(ctx, os.Args[1:])
 	if err := c.Execute(); err != nil {
-		switch err.(type) {
-		default:
-			os.Exit(1)
-		}
+		os.Exit(1)
 	}
 }

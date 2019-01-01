@@ -147,8 +147,7 @@ func (c consoleEncoder) EncodeEntry(ent zapcore.Entry, fields []zapcore.Field) (
 	}
 
 	for _, field := range fields {
-		switch field.Key {
-		case "stacktrace":
+		if field.Key == "stacktrace" {
 			line2.AppendByte('\n')
 			line2.AppendString("Error StackTrace\n")
 			line2.AppendString(fmt.Sprintf("%v\n", field.String))

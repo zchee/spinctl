@@ -14,14 +14,14 @@ import (
 //go:nosplit
 func noescape(p unsafe.Pointer) unsafe.Pointer {
 	x := uintptr(p)
-	return unsafe.Pointer(x ^ 0)
+	return unsafe.Pointer(x ^ 0) //nolint:govet
 }
 
 // UnsafeSlice returns a byte array that points to the given string without a heap allocation.
 // The string must be preserved until the  byte arrayis disposed.
 func UnsafeSlice(s string) (p []byte) {
 	sh := (*reflect.SliceHeader)(unsafe.Pointer(&p))
-	sh.Data = (*(*reflect.StringHeader)(noescape(unsafe.Pointer(&s)))).Data
+	sh.Data = (*reflect.StringHeader)(noescape(unsafe.Pointer(&s))).Data
 	sh.Len = len(s)
 	sh.Cap = len(s)
 
