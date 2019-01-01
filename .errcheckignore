@@ -1,5 +1,10 @@
+(*encoding/json.Encoder).Encode
 (*github.com/spf13/pflag.FlagSet).MarkHidden
+(*github.com/spf13/pflag.FlagSet).Parse
+(*github.com/zchee/spinctl/pkg/logger/internal/pretty.Formatter).Format
+(*net/http.Server).Close
+(*net/http.Server).ListenAndServe
 (*runtime/pprof.Profile).WriteTo
-# io.WriterTo
-(*net.http.Server).ListenAndServe
-hash/Hash.Write
+(io.Closer).Close
+(io.Writer).Write
+net/http/cookiejar.New
