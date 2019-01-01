@@ -1,0 +1,33 @@
+version: 0.0.0.{build}
+
+platform: x64
+
+clone_folder: C:\gopath\src\github.com\zchee\go-open
+shallow_clone: true
+
+environment:
+  GO_VERSION: 1.11.1
+  GOPATH: C:\gopath
+  PATH: C:\go\bin;C:\gopath\bin;%PATH%;%PYTHON%;%PYTHON%\Scripts
+
+install:
+  - rmdir C:\go /s /q
+  - appveyor DownloadFile https://storage.googleapis.com/golang/go%GO_VERSION%.windows-amd64.msi
+  - msiexec /i go%GO_VERSION%.windows-amd64.msi /q
+  - go version
+  - go env
+
+build: off
+
+before_test:
+  - go get -u golang.org/x/lint/golint
+test_script:
+  - gofmt -s -l -w .
+  - go vet -v -all ('go list ./... ^| find /i /v "/vendor/"')
+  - golint -min_confidence=0.8 -set_exit_status ('go list ./... ^| find /i /v "/vendor/"')
+after_test:
+  - go test -v -race -covermode=atomic -coverpkg=./... -coverprofile=coverage.out ./...
+
+on_success:
+  - pip install -U codecov
+  - codecov -f coverage.out --flags windows

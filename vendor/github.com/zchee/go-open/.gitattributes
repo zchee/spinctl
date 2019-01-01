@@ -1,0 +1,7 @@
+# go-open project gitattributes file
+# https://github.com/github/linguist#using-gitattributes
+
+docs linguist-documentation
+doc.go linguist-documentation
+*.pb.go linguist-generated
+vendor/* linguist-vendored

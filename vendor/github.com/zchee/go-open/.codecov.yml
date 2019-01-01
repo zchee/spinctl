@@ -1,0 +1,48 @@
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+
+  status:
+    project:
+      default: off
+      linux:
+        flags: linux
+        target: auto
+        threshold: 5%
+      darwin:
+        flags: darwin
+        target: auto
+        threshold: 5%
+      windows:
+        flags: windows
+        target: auto
+        threshold: 5%
+    patch:
+      default: off
+      linux:
+        flags: linux
+        only_pulls: true
+        target: 50%
+        threshold: 5%
+      darwin:
+        flags: darwin
+        only_pulls: true
+        target: 50%
+        threshold: 5%
+      windows:
+        flags: windows
+        only_pulls: true
+        target: 50%
+        threshold: 5%
+
+flags:
+  linux:
+    paths:
+      - /
+  darwin:
+    paths:
+      - /
+  windows:
+    paths:
+      - /

@@ -1,0 +1,6 @@
+[[constraint]]
+  name = "golang.org/x/sys"
+  branch = "master"
+
+[prune]
+  unused-packages = true
