@@ -3,7 +3,7 @@
 
 SHELL = /usr/bin/env bash
  
-GO_PATH = $(shell go env GOPATH)
+GO_PATH := $(shell go env GOPATH)
 PKG = $(subst $(GO_PATH)/src/,,$(CURDIR))
 GO_PKGS := $(shell go list ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/mock')
 GO_PKGS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e '.pb.go' -e 'api/gate' -e 'api/mock')
@@ -50,9 +50,9 @@ endef
 
 ## build and install
 
-$(APP): $(wildcard *.go) $(wildcard */**/*.go) VERSION.txt
+$(APP): $(wildcard *.go) $(wildcard */*.go) VERSION.txt
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GO_FLAGS)) -o $(APP) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GO_FLAGS)) -o $(APP) $(CMD)
 
 .PHONY: build
 build: GO_FLAGS+=${GO_LDFLAGS}
@@ -67,7 +67,7 @@ static: $(APP)  ## Builds a static executable or package.
 install: GO_FLAGS+=${GO_LDFLAGS_STATIC}
 install:  ## Installs the executable or package.
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GO_FLAGS)) $(PKG)/cmd/$(APP)
+	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GO_FLAGS)) $(CMD)
 
 
 ## test, bench and coverage
@@ -100,6 +100,7 @@ coverage:  ## Take test coverage.
 $(GO_PATH)/bin/go-junit-report:
 	@GO111MODULE=off go get -u github.com/jstemmer/go-junit-report
 
+.PHONY: cmd/go-junit-report
 cmd/go-junit-report: $(GO_PATH)/bin/go-junit-report  # go get 'go-junit-report' binary
 
 .PHONY: coverage/junit
@@ -111,6 +112,7 @@ coverage/junit: cmd/go-junit-report  ## Take test coverage and output test resul
 
 ## lint
 
+.PHONY: lint
 lint: lint/fmt lint/govet lint/golangci-lint  ## Run all linters.
 
 .PHONY: lint/fmt
@@ -126,6 +128,7 @@ lint/govet:  ## Verifies `go vet` passes.
 $(GO_PATH)/bin/golangci-lint:
 	@GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 
+.PHONY: cmd/golangci-lint
 cmd/golangci-lint: $(GO_PATH)/bin/golangci-lint  # go get 'golangci-lint' binary
 
 .PHONY: golangci-lint
@@ -174,7 +177,7 @@ mod: mod/clean mod/init mod/tidy mod/vendor  ## Updates the vendoring directory 
 .PHONY: mod/install
 mod/install: mod/tidy mod/vendor
 	$(call target)
-	@GO111MODULE=on go install -v $(shell go list -f '{{if and (or .GoFiles .CgoFiles) (ne .Name "main")}}{{.ImportPath}}{{end}}' ./vendor/...)
+	@GO111MODULE=off go install -v $(GO_VENDOR_PKGS) || GO111MODULE=on go install -mod=vendor -v $(GO_VENDOR_PKGS)
 
 .PHONY: mod/update
 mod/update: mod/goget mod/tidy mod/vendor mod/install  ## Updates all vendor packages.
@@ -185,6 +188,7 @@ mod/update: mod/goget mod/tidy mod/vendor mod/install  ## Updates all vendor pac
 $(GO_PATH)/bin/dep:
 	@go get -u github.com/golang/dep/cmd/dep
 
+.PHONY: cmd/dep
 cmd/dep: $(GO_PATH)/bin/dep
 
 .PHONY: dep/init
@@ -197,24 +201,28 @@ dep/ensure: cmd/dep Gopkg.toml  ## Fetch vendor packages via dep ensure.
 	$(call target)
 	@dep ensure -v
 
-.PHONY: dep/ensure/only-vendor
-dep/ensure/only-vendor: cmd/dep Gopkg.toml Gopkg.lock  ## Fetch vendor packages via dep ensure.
+.PHONY: dep/ensure/vendor-only
+dep/ensure/vendor-only: cmd/dep Gopkg.toml Gopkg.lock  ## Fetch vendor packages via dep ensure.
 	$(call target)
 	@dep ensure -v -vendor-only
 
+.PHONY: dep/install
+dep/install: dep/ensure  ## Compiles vendor packages to object(.a) file.
+	@go install -v  $(GO_VENDOR_PKGS)
+
+.PHONY: dep/update
+dep/update: cmd/dep  ## Updates the vendoring directory via dep
+	$(call target)
+	@dep ensure -v -update
+
 .PHONY: dep/clean
-dep/clean: cmd/dep
+dep/clean: cmd/dep  ## Cleans the dep files.
 	$(call target)
 	@$(RM) Gopkg.toml Gopkg.lock
 	@$(RM) -r vendor
 
-.PHONY: dep/update
-dep/update: cmd/dep dep/clean
-	$(call target)
-	@dep ensure -v -update
-
-.PHONY: dep/init
-dep: dep/clean dep/update  ## Updates the vendoring directory via dep.
+.PHONY: dep
+dep: dep/init dep/ensure dep/install  ## Initialize dep vendor structures.
 
 
 ## miscellaneous
