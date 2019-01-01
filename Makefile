@@ -3,8 +3,8 @@
  
 .DEFAULT_GOAL := static
 APP = spinctl
-CMD_PREFIX=$(PKG)/cmd/
-CMD=$(CMD_PREFIX)$(APP)
+CMD_PREFIX = $(PKG)/cmd/
+CMD = $(CMD_PREFIX)$(APP)
 
 # ----------------------------------------------------------------------------
 # target
