@@ -6,13 +6,18 @@ package cmd
 
 import (
 	"context"
-	"fmt"
+	"net/http"
+	"time"
 
+	"contrib.go.opencensus.io/exporter/stackdriver"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"go.opencensus.io/plugin/ochttp"
+	"go.opencensus.io/trace"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	apioption "google.golang.org/api/option"
 
 	"github.com/zchee/spinctl/pkg/config"
 	"github.com/zchee/spinctl/pkg/logger"
@@ -21,8 +26,6 @@ import (
 )
 
 const (
-	appName = "spinctl"
-
 	defaultLogLevel = zap.InfoLevel
 )
 
@@ -40,8 +43,8 @@ func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 // NewCommand creates the `spinctl` root command.
 func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:          appName,
-		Short:        fmt.Sprintf("%s is a command-line tool to manage Spinnaker via gate API.", appName),
+		Use:          "spinctl",
+		Short:        "spinctl is a command-line tool to manage Spinnaker via gate API.",
 		SilenceUsage: true,
 		PersistentPreRunE: func(*cobra.Command, []string) error {
 			return initProfiling()
@@ -52,13 +55,14 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		Version: versionpkg.Version,
 	}
 
-	flags := cmd.PersistentFlags()
-	cmd.Flags().BoolP("version", "v", false, "Show the version information.")
+	flags := cmd.Flags()
+	flags.BoolP("version", "v", false, "Show the version information.") // root onlyversion flag
 
+	pflags := cmd.PersistentFlags()
 	conf := config.New()
 	opts := &Options{}
-	addFlags(flags, conf, opts)
-	flags.Parse(args)
+	addFlags(pflags, conf, opts)
+	pflags.Parse(args)
 
 	if !conf.Exists() {
 		if err := conf.Create(); err != nil {
@@ -73,13 +77,21 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		cmd.Println(errors.WithStack(err))
 	}
 
-	client := spinnaker.NewClient(conf)
-	out := cmd.OutOrStdout()
+	hc := &http.Client{
+		Transport: &ochttp.Transport{},
+	}
+	client := spinnaker.NewClient(conf, spinnaker.WithHTTPClient(hc))
+
 	var lv = defaultLogLevel
 	if opts.debug {
 		lv = zap.DebugLevel
 	}
+	out := cmd.OutOrStdout()
 	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
+
+	if err := addStackdriverExporter(ctx); err != nil {
+		cmd.Println(err)
+	}
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 	cmd.AddCommand(NewCmdCompletion(out))
@@ -96,4 +108,25 @@ func addFlags(flags *pflag.FlagSet, conf *config.Config, opts *Options) {
 	flags.StringVarP(&opts.configPath, "config", "c", conf.Path(), "config file path")
 
 	addProfilingFlags(flags)
+}
+
+func addStackdriverExporter(ctx context.Context) error {
+	stackdriverOpts := stackdriver.Options{
+		ProjectID:                "xxx",
+		OnError:                  func(err error) { logger.FromContext(ctx).Error(zap.Error(err)) },
+		MonitoringClientOptions:  []apioption.ClientOption{},
+		TraceClientOptions:       []apioption.ClientOption{},
+		BundleCountThreshold:     0,
+		TraceSpansBufferMaxBytes: 8 * 1024 * 1024, // 8MB
+		MetricPrefix:             "spinctl/",
+		Context:                  ctx,
+		Timeout:                  5 * time.Second,
+	}
+	ext, err := stackdriver.NewExporter(stackdriverOpts)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	trace.RegisterExporter(ext)
+
+	return nil
 }

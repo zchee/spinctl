@@ -86,7 +86,7 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 		Aliases: []string{"ls"},
 		Short:   "List the pipelines for the provided application.",
 		Args:    cobra.ExactArgs(1),
-		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
+		Example: "  spinctl pipeline list spin -o yaml",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = p.client.Authenticate(ctx)
@@ -123,7 +123,7 @@ func (p *pipeline) listConfig(ctx context.Context) *cobra.Command {
 		Use:     "listConfig",
 		Short:   "List the all pipeline config.",
 		Args:    cobra.ExactArgs(0),
-		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
+		Example: "  spinctl pipeline list spin -o yaml",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = p.client.Authenticate(ctx)

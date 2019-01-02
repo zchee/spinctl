@@ -50,7 +50,7 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 		Use:     "get <application name>",
 		Short:   "Get the specified application.",
 		Args:    cobra.ExactArgs(1),
-		Example: fmt.Sprintf("  %s application get spin -x -o yaml", appName),
+		Example: "  spinctl application get spin -x -o yaml",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = a.client.Authenticate(ctx)
@@ -89,7 +89,7 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 		Aliases: []string{"ls"},
 		Short:   "List all applications.",
 		Args:    cobra.ExactArgs(0),
-		Example: fmt.Sprintf("  %s application list -o yaml", appName),
+		Example: "  spinctl application list -o yaml",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = a.client.Authenticate(ctx)
