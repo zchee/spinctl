@@ -212,7 +212,7 @@ V2PipelineTemplatesControllerApiService Get a pipeline template.
 
 @return map[string]interface{}
 */
-func (a *V2PipelineTemplatesControllerApiService) GetUsingGET1(ctx context.Context, id string) (map[string]interface{}, *http.Response, error) {
+func (a *V2PipelineTemplatesControllerApiService) GetUsingGET2(ctx context.Context, id string) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
