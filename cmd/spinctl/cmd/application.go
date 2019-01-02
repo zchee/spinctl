@@ -37,15 +37,15 @@ func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Wri
 		Short:   "manage the Spinnaker applications.",
 	}
 
-	cmd.AddCommand(a.newCmdApplicationGet(ctx))
-	cmd.AddCommand(a.newCmdApplicationList(ctx))
-	cmd.AddCommand(a.newCmdApplicationSave(ctx))
-	cmd.AddCommand(a.newCmdApplicationDelete(ctx))
+	cmd.AddCommand(a.get(ctx))
+	cmd.AddCommand(a.list(ctx))
+	cmd.AddCommand(a.save(ctx))
+	cmd.AddCommand(a.delete(ctx))
 
 	return cmd
 }
 
-func (a *application) newCmdApplicationGet(ctx context.Context) *cobra.Command {
+func (a *application) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "get <application name>",
 		Short:   "Get the specified application.",
@@ -83,7 +83,7 @@ func (a *application) newCmdApplicationGet(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (a *application) newCmdApplicationList(ctx context.Context) *cobra.Command {
+func (a *application) list(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls"},
@@ -117,7 +117,7 @@ func (a *application) newCmdApplicationList(ctx context.Context) *cobra.Command 
 	return cmd
 }
 
-func (a *application) newCmdApplicationSave(ctx context.Context) *cobra.Command {
+func (a *application) save(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
@@ -137,7 +137,7 @@ func (a *application) newCmdApplicationSave(ctx context.Context) *cobra.Command 
 	return cmd
 }
 
-func (a *application) newCmdApplicationDelete(ctx context.Context) *cobra.Command {
+func (a *application) delete(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},

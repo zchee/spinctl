@@ -33,17 +33,17 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer
 		Use:   "pipeline",
 		Short: "manage the Spinnaker pipelines.",
 	}
-	cmd.AddCommand(p.newCmdPipelineGet(ctx))
-	cmd.AddCommand(p.newCmdPipelineList(ctx))
-	cmd.AddCommand(p.newCmdPipelineConfigList(ctx))
-	cmd.AddCommand(p.newCmdPipelineSave(ctx))
-	cmd.AddCommand(p.newCmdPipelineDelete(ctx))
-	cmd.AddCommand(p.newCmdPipelineExecute(ctx))
+	cmd.AddCommand(p.get(ctx))
+	cmd.AddCommand(p.list(ctx))
+	cmd.AddCommand(p.listConfig(ctx))
+	cmd.AddCommand(p.save(ctx))
+	cmd.AddCommand(p.delete(ctx))
+	cmd.AddCommand(p.execute(ctx))
 
 	return cmd
 }
 
-func (p *pipeline) newCmdPipelineGet(ctx context.Context) *cobra.Command {
+func (p *pipeline) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline.",
@@ -80,7 +80,7 @@ func (p *pipeline) newCmdPipelineGet(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) newCmdPipelineList(ctx context.Context) *cobra.Command {
+func (p *pipeline) list(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list <application name>",
 		Aliases: []string{"ls"},
@@ -118,7 +118,7 @@ func (p *pipeline) newCmdPipelineList(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) newCmdPipelineConfigList(ctx context.Context) *cobra.Command {
+func (p *pipeline) listConfig(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "listConfig",
 		Short:   "List the all pipeline config.",
@@ -152,7 +152,7 @@ func (p *pipeline) newCmdPipelineConfigList(ctx context.Context) *cobra.Command 
 	return cmd
 }
 
-func (p *pipeline) newCmdPipelineSave(ctx context.Context) *cobra.Command {
+func (p *pipeline) save(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided pipeline.",
@@ -172,7 +172,7 @@ func (p *pipeline) newCmdPipelineSave(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) newCmdPipelineDelete(ctx context.Context) *cobra.Command {
+func (p *pipeline) delete(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},
@@ -193,7 +193,7 @@ func (p *pipeline) newCmdPipelineDelete(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) newCmdPipelineExecute(ctx context.Context) *cobra.Command {
+func (p *pipeline) execute(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "execute",
 		Aliases: []string{"exec"},
