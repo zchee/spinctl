@@ -14,12 +14,12 @@ import (
 	"github.com/zchee/spinctl/pkg/unsafeutil"
 )
 
-func parsePayload(payload interface{}, format string) (string, error) {
+func parsePayload(payload interface{}, output string) (string, error) {
 	buf := new(bytes.Buffer)
 	enc := jsoniter.ConfigFastest.NewEncoder(buf)
 
 	// format raw prints payload directly
-	if format != "raw" {
+	if output != "raw" {
 		enc.SetIndent("", "  ")
 	}
 	if err := enc.Encode(&payload); err != nil {
@@ -27,7 +27,7 @@ func parsePayload(payload interface{}, format string) (string, error) {
 	}
 
 	out := buf.Bytes()
-	switch format {
+	switch output {
 	case "yaml":
 		data, err := yaml.JSONToYAML(buf.Bytes())
 		if err != nil {

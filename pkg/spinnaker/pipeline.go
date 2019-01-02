@@ -12,7 +12,7 @@ import (
 )
 
 // GetPipeline retrieves a pipeline configuration of application.
-func (c *Client) GetPipeline(ctx context.Context, application, pipelineName string, format string) (string, error) {
+func (c *Client) GetPipeline(ctx context.Context, application, pipelineName, output string) (string, error) {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigUsingGET(ctx, application, pipelineName)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get all applications")
@@ -26,7 +26,7 @@ func (c *Client) GetPipeline(ctx context.Context, application, pipelineName stri
 		return "", errors.Wrapf(err, "encountered an error getting pipeline in pipeline %s with name %s, status code: %d\n", application, pipelineName, resp.StatusCode)
 	}
 
-	s, err := parsePayload(&payload, format)
+	s, err := parsePayload(&payload, output)
 	if err != nil {
 		return "", err
 	}
@@ -35,14 +35,14 @@ func (c *Client) GetPipeline(ctx context.Context, application, pipelineName stri
 }
 
 // ListPipelines retrieves a list of an application pipeline configurations.
-func (c *Client) ListPipelines(ctx context.Context, name, format string) (string, error) {
+func (c *Client) ListPipelines(ctx context.Context, name, output string) (string, error) {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigsForApplicationUsingGET(ctx, name)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return "", errors.Wrap(err, "failed to get all applications")
 	}
 	defer resp.Body.Close()
 
-	s, err := parsePayload(&payload, format)
+	s, err := parsePayload(&payload, output)
 	if err != nil {
 		return "", err
 	}
