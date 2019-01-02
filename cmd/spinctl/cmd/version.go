@@ -29,7 +29,7 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer)
 
 	cmd := &cobra.Command{
 		Use:   "version",
-		Short: "Get Gate's current version",
+		Short: "Show current Gate's version",
 		Args:  cobra.ExactArgs(0),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
