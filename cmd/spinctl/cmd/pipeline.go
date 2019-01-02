@@ -35,6 +35,7 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer
 	}
 	cmd.AddCommand(p.newCmdPipelineGet(ctx))
 	cmd.AddCommand(p.newCmdPipelineList(ctx))
+	cmd.AddCommand(p.newCmdPipelineConfigList(ctx))
 	cmd.AddCommand(p.newCmdPipelineSave(ctx))
 	cmd.AddCommand(p.newCmdPipelineDelete(ctx))
 	cmd.AddCommand(p.newCmdPipelineExecute(ctx))
@@ -103,6 +104,40 @@ func (p *pipeline) newCmdPipelineList(ctx context.Context) *cobra.Command {
 			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
 			s, err := p.client.ListPipelines(ctx, name, p.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(p.out, s)
+			return nil
+		},
+	}
+
+	f := cmd.Flags()
+	f.StringVarP(&p.output, "output", "o", "", "Output format. One of: (json|yaml)")
+
+	return cmd
+}
+
+func (p *pipeline) newCmdPipelineConfigList(ctx context.Context) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "listConfig",
+		Short:   "List the all pipelines config.",
+		Args:    cobra.ExactArgs(0),
+		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = p.client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := cmd.ValidateArgs(args); err != nil {
+				return err
+			}
+
+			s, err := p.client.ListPipelineConfigs(ctx, p.output)
 			if err != nil {
 				return err
 			}

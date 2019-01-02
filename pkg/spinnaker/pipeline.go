@@ -49,3 +49,26 @@ func (c *Client) ListPipelines(ctx context.Context, name, output string) (string
 
 	return s, nil
 }
+
+// ListPipelineConfigs gets all pipeline configs.
+func (c *Client) ListPipelineConfigs(ctx context.Context, output string) (string, error) {
+	payload, resp, err := c.Client.PipelineConfigControllerApi.GetAllPipelineConfigsUsingGET(ctx)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to get all applications")
+	}
+	defer resp.Body.Close()
+
+	switch resp.StatusCode {
+	case http.StatusOK:
+		// nothing to do
+	default:
+		return "", errors.Wrapf(err, "encountered an error getting list of pipeline config, status code: %d\n", resp.StatusCode)
+	}
+
+	s, err := parsePayload(&payload, output)
+	if err != nil {
+		return "", err
+	}
+
+	return s, nil
+}
