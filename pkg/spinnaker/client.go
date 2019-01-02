@@ -26,8 +26,9 @@ var (
 
 // Client represents a wrap of gate REST API client.
 type Client struct {
-	Client *gate.APIClient
-	Config *config.Config
+	Client     *gate.APIClient
+	Config     *config.Config
+	httpClient *http.Client
 }
 
 var defaultGateConfiguration = &gate.Configuration{
@@ -90,8 +91,9 @@ func NewClient(cfg *config.Config, opts ...Option) *Client {
 	}
 
 	return &Client{
-		Client: gate.NewAPIClient(conf),
-		Config: cfg,
+		Client:     gate.NewAPIClient(conf),
+		Config:     cfg,
+		httpClient: conf.HTTPClient,
 	}
 }
 
@@ -130,10 +132,9 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 		}
 		logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
-		if err := auth.Login(ctx, confAuth.OAuth2Config, c.Config.Gate.Endpoint, tok); err != nil {
+		if err := auth.Login(ctx, c.httpClient, confAuth.OAuth2Config, c.Config.Gate.Endpoint, tok); err != nil {
 			return nil, err
 		}
-
 		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
 		confAuth.OAuth2Config.Token = tok
 		if err := c.Config.Write(); err != nil {
