@@ -82,6 +82,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
+	cmd.AddCommand(NewCmdCompletion(out))
 	cmd.AddCommand(NewCmdPipeline(ctx, client, out))
 	cmd.AddCommand(NewCmdPipelineTemplate(ctx, client, out))
 	cmd.AddCommand(NewCmdVersion(ctx, client, out))
