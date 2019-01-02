@@ -12,7 +12,7 @@ import (
 )
 
 // GetVersion fetch Gate's current version.
-func (c *Client) GetVersion(ctx context.Context, output string) (string, error) {
+func (c *Client) GetVersion(ctx context.Context, format string) (string, error) {
 	payload, resp, err := c.Client.VersionControllerApi.GetVersionUsingGET(ctx)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get version")
@@ -26,7 +26,7 @@ func (c *Client) GetVersion(ctx context.Context, output string) (string, error) 
 		return "", errors.Wrapf(err, "encountered an error getting version, status code: %d", resp.StatusCode)
 	}
 
-	s, err := parsePayload(&payload, output)
+	s, err := parsePayload(&payload, format)
 	if err != nil {
 		return "", err
 	}
