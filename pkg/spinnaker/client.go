@@ -6,6 +6,7 @@ package spinnaker
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/cookiejar"
 
@@ -26,8 +27,9 @@ var (
 
 // Client represents a wrap of gate REST API client.
 type Client struct {
-	Client *gate.APIClient
-	Config *config.Config
+	Client     *gate.APIClient
+	Config     *config.Config
+	httpClient *http.Client
 }
 
 var defaultGateConfiguration = &gate.Configuration{
@@ -90,8 +92,9 @@ func NewClient(cfg *config.Config, opts ...Option) *Client {
 	}
 
 	return &Client{
-		Client: gate.NewAPIClient(conf),
-		Config: cfg,
+		Client:     gate.NewAPIClient(conf),
+		Config:     cfg,
+		httpClient: conf.HTTPClient,
 	}
 }
 
@@ -130,6 +133,10 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 		}
 		logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
+		if err := c.Login(tok.AccessToken); err != nil {
+			return nil, err
+		}
+
 		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
 		confAuth.OAuth2Config.Token = tok
 		if err := c.Config.Write(); err != nil {
@@ -138,4 +145,17 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 	}
 
 	return ctx, nil
+}
+
+func (c *Client) Login(accessToken string) error {
+	req, err := http.NewRequest(http.MethodGet, c.Config.Gate.Endpoint+"/login", nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
+	if _, err := c.httpClient.Do(req); err != nil {
+		return err
+	}
+
+	return nil
 }
