@@ -115,7 +115,7 @@ coverage/junit: cmd/go-junit-report  ## Take test coverage and output test resul
 ## lint
 
 .PHONY: lint
-lint: lint/fmt lint/govet lint/golangci-lint  ## Run all linters.
+lint: lint/fmt lint/golangci-lint  ## Run all linters.
 
 .PHONY: lint/fmt
 lint/fmt:  ## Verifies all files have been `gofmt`ed.
