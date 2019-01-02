@@ -24,7 +24,7 @@ type pipeline struct {
 
 // NewCmdPipeline creates the pipeline command.
 func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	p := pipeline{
+	p := &pipeline{
 		out:    out,
 		client: client,
 	}
@@ -64,7 +64,12 @@ func (p *pipeline) newCmdPipelineGet(ctx context.Context) *cobra.Command {
 			pipelineName := args[1]
 			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
 
-			return p.client.GetPipeline(ctx, p.out, application, pipelineName, p.output)
+			s, err := p.client.GetPipeline(ctx, application, pipelineName, p.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(p.out, s)
+			return nil
 		},
 	}
 
@@ -97,7 +102,12 @@ func (p *pipeline) newCmdPipelineList(ctx context.Context) *cobra.Command {
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
-			return p.client.ListPipelines(ctx, p.out, name, p.output)
+			s, err := p.client.ListPipelines(ctx, name, p.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(p.out, s)
+			return nil
 		},
 	}
 

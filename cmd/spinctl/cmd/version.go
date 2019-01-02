@@ -6,6 +6,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"io"
 
 	"github.com/spf13/cobra"
@@ -21,7 +22,7 @@ type version struct {
 
 // NewCmdVersion creates the version command.
 func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	v := version{
+	v := &version{
 		out:    out,
 		client: client,
 	}
@@ -43,7 +44,12 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer)
 				return err
 			}
 
-			return client.GetVersion(ctx, v.out, v.output)
+			s, err := client.GetVersion(ctx, v.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(v.out, s)
+			return nil
 		},
 	}
 

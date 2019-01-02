@@ -26,7 +26,7 @@ type application struct {
 
 // NewCmdApplication creates the application command.
 func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	a := application{
+	a := &application{
 		out:    out,
 		client: client,
 	}
@@ -67,7 +67,12 @@ func (a *application) newCmdApplicationGet(ctx context.Context) *cobra.Command {
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdApplicationGet: name: %s, expand: %t", name, a.expand)
 
-			return a.client.GetApplication(ctx, a.out, name, a.expand, a.output)
+			s, err := a.client.GetApplication(ctx, name, a.expand, a.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(a.out, s)
+			return nil
 		},
 	}
 
@@ -97,7 +102,12 @@ func (a *application) newCmdApplicationList(ctx context.Context) *cobra.Command 
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
 			}
-			return a.client.ListApplications(ctx, a.out, a.output)
+			s, err := a.client.ListApplications(ctx, a.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(a.out, s)
+			return nil
 		},
 	}
 

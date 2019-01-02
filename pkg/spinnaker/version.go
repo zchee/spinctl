@@ -6,18 +6,16 @@ package spinnaker
 
 import (
 	"context"
-	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/pkg/errors"
 )
 
 // GetVersion fetch Gate's current version.
-func (c *Client) GetVersion(ctx context.Context, out io.Writer, format string) error {
+func (c *Client) GetVersion(ctx context.Context, format string) (string, error) {
 	payload, resp, err := c.Client.VersionControllerApi.GetVersionUsingGET(ctx)
 	if err != nil {
-		return errors.Wrap(err, "failed to get version")
+		return "", errors.Wrap(err, "failed to get version")
 	}
 	defer resp.Body.Close()
 
@@ -25,14 +23,13 @@ func (c *Client) GetVersion(ctx context.Context, out io.Writer, format string) e
 	case http.StatusOK:
 		// nothing to do
 	default:
-		return errors.Wrapf(err, "encountered an error getting version, status code: %d", resp.StatusCode)
+		return "", errors.Wrapf(err, "encountered an error getting version, status code: %d", resp.StatusCode)
 	}
 
 	s, err := parsePayload(&payload, format)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Fprintln(out, s)
 
-	return nil
+	return s, nil
 }

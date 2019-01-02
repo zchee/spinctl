@@ -6,18 +6,16 @@ package spinnaker
 
 import (
 	"context"
-	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/pkg/errors"
 )
 
 // GetPipeline retrieves a pipeline configuration of application.
-func (c *Client) GetPipeline(ctx context.Context, out io.Writer, application, pipelineName string, format string) error {
+func (c *Client) GetPipeline(ctx context.Context, application, pipelineName string, format string) (string, error) {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigUsingGET(ctx, application, pipelineName)
 	if err != nil {
-		return errors.Wrap(err, "failed to get all applications")
+		return "", errors.Wrap(err, "failed to get all applications")
 	}
 	defer resp.Body.Close()
 
@@ -25,31 +23,29 @@ func (c *Client) GetPipeline(ctx context.Context, out io.Writer, application, pi
 	case http.StatusOK:
 		// nothing to do
 	default:
-		return errors.Wrapf(err, "encountered an error getting pipeline in pipeline %s with name %s, status code: %d\n", application, pipelineName, resp.StatusCode)
+		return "", errors.Wrapf(err, "encountered an error getting pipeline in pipeline %s with name %s, status code: %d\n", application, pipelineName, resp.StatusCode)
 	}
 
 	s, err := parsePayload(&payload, format)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Fprintln(out, s)
 
-	return nil
+	return s, nil
 }
 
 // ListPipelines retrieves a list of an application pipeline configurations.
-func (c *Client) ListPipelines(ctx context.Context, out io.Writer, name, format string) error {
+func (c *Client) ListPipelines(ctx context.Context, name, format string) (string, error) {
 	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigsForApplicationUsingGET(ctx, name)
 	if err != nil || resp.StatusCode != http.StatusOK {
-		return errors.Wrap(err, "failed to get all applications")
+		return "", errors.Wrap(err, "failed to get all applications")
 	}
 	defer resp.Body.Close()
 
 	s, err := parsePayload(&payload, format)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Fprintln(out, s)
 
-	return nil
+	return s, nil
 }
