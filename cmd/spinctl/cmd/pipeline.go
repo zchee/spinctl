@@ -16,40 +16,40 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+type pipeline struct {
+	out    io.Writer
+	client *spinnaker.Client
+	output string
+}
+
 // NewCmdPipeline creates the pipeline command.
 func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
+	p := pipeline{
+		out:    out,
+		client: client,
+	}
+
 	cmd := &cobra.Command{
 		Use:   "pipeline",
 		Short: "manage the Spinnaker pipelines.",
 	}
-
-	cmd.AddCommand(newCmdPipelineGet(ctx, client, out))
-	cmd.AddCommand(newCmdPipelineList(ctx, client, out))
-	cmd.AddCommand(newCmdPipelineSave(ctx, client, out))
-	cmd.AddCommand(newCmdPipelineDelete(ctx, client, out))
-	cmd.AddCommand(newCmdPipelineExecute(ctx, client, out))
+	cmd.AddCommand(p.newCmdPipelineGet(ctx))
+	cmd.AddCommand(p.newCmdPipelineList(ctx))
+	cmd.AddCommand(p.newCmdPipelineSave(ctx))
+	cmd.AddCommand(p.newCmdPipelineDelete(ctx))
+	cmd.AddCommand(p.newCmdPipelineExecute(ctx))
 
 	return cmd
 }
 
-type pipelineGet struct {
-	out io.Writer
-
-	outFormat string
-}
-
-func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	get := &pipelineGet{
-		out: out,
-	}
-
+func (p *pipeline) newCmdPipelineGet(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline.",
 		Args:  cobra.ExactArgs(2),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = p.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -64,27 +64,17 @@ func newCmdPipelineGet(ctx context.Context, client *spinnaker.Client, out io.Wri
 			pipelineName := args[1]
 			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
 
-			return client.GetPipeline(ctx, get.out, application, pipelineName, get.outFormat)
+			return p.client.GetPipeline(ctx, p.out, application, pipelineName, p.output)
 		},
 	}
 
 	f := cmd.Flags()
-	f.StringVarP(&get.outFormat, "output", "o", "", "Output format. One of: (json|yaml)")
+	f.StringVarP(&p.output, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
 
-type pipelineList struct {
-	out io.Writer
-
-	outFormat string
-}
-
-func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	list := &pipelineList{
-		out: out,
-	}
-
+func (p *pipeline) newCmdPipelineList(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list <application name>",
 		Aliases: []string{"ls"},
@@ -93,7 +83,7 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = p.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -107,31 +97,23 @@ func newCmdPipelineList(ctx context.Context, client *spinnaker.Client, out io.Wr
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
-			return client.ListPipelines(ctx, list.out, name, list.outFormat)
+			return p.client.ListPipelines(ctx, p.out, name, p.output)
 		},
 	}
 
 	f := cmd.Flags()
-	f.StringVarP(&list.outFormat, "output", "o", "", "Output format. One of: (json|yaml)")
+	f.StringVarP(&p.output, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
 
-type pipelineSave struct {
-	out io.Writer
-}
-
-func newCmdPipelineSave(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &pipelineSave{
-		out: out,
-	}
-
+func (p *pipeline) newCmdPipelineSave(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided pipeline.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = p.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -145,22 +127,14 @@ func newCmdPipelineSave(ctx context.Context, client *spinnaker.Client, out io.Wr
 	return cmd
 }
 
-type pipelineDelete struct {
-	out io.Writer
-}
-
-func newCmdPipelineDelete(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &pipelineDelete{
-		out: out,
-	}
-
+func (p *pipeline) newCmdPipelineDelete(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the provided pipeline.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = p.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -174,22 +148,14 @@ func newCmdPipelineDelete(ctx context.Context, client *spinnaker.Client, out io.
 	return cmd
 }
 
-type pipelineExecute struct {
-	out io.Writer
-}
-
-func newCmdPipelineExecute(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &pipelineExecute{
-		out: out,
-	}
-
+func (p *pipeline) newCmdPipelineExecute(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "execute",
 		Aliases: []string{"exec"},
 		Short:   "Execute the provided pipeline.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = p.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}

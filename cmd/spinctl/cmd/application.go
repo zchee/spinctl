@@ -16,34 +16,36 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+type application struct {
+	out    io.Writer
+	client *spinnaker.Client
+	output string
+
+	expand bool
+}
+
 // NewCmdApplication creates the application command.
 func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
+	a := application{
+		out:    out,
+		client: client,
+	}
+
 	cmd := &cobra.Command{
 		Use:     "application",
 		Aliases: []string{"app"},
 		Short:   "manage the Spinnaker applications.",
 	}
 
-	cmd.AddCommand(newCmdApplicationGet(ctx, client, out))
-	cmd.AddCommand(newCmdApplicationList(ctx, client, out))
-	cmd.AddCommand(newCmdApplicationSave(ctx, client, out))
-	cmd.AddCommand(newCmdApplicationDelete(ctx, client, out))
+	cmd.AddCommand(a.newCmdApplicationGet(ctx))
+	cmd.AddCommand(a.newCmdApplicationList(ctx))
+	cmd.AddCommand(a.newCmdApplicationSave(ctx))
+	cmd.AddCommand(a.newCmdApplicationDelete(ctx))
 
 	return cmd
 }
 
-type applicationGet struct {
-	out io.Writer
-
-	expand    bool
-	outFormat string
-}
-
-func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	get := &applicationGet{
-		out: out,
-	}
-
+func (a *application) newCmdApplicationGet(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "get <application name>",
 		Short:   "Get the specified application.",
@@ -51,7 +53,7 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 		Example: fmt.Sprintf("  %s application get spin -x -o yaml", appName),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = a.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -63,30 +65,20 @@ func newCmdApplicationGet(ctx context.Context, client *spinnaker.Client, out io.
 			}
 
 			name := args[0]
-			logger.FromContext(ctx).Debugf("CmdApplicationGet: name: %s, expand: %t", name, get.expand)
+			logger.FromContext(ctx).Debugf("CmdApplicationGet: name: %s, expand: %t", name, a.expand)
 
-			return client.GetApplication(ctx, get.out, name, get.expand, get.outFormat)
+			return a.client.GetApplication(ctx, a.out, name, a.expand, a.output)
 		},
 	}
 
 	f := cmd.Flags()
-	f.BoolVarP(&get.expand, "expand", "x", false, "expand application description.")
-	f.StringVarP(&get.outFormat, "output", "o", "", "output format. One of: (json|yaml)")
+	f.BoolVarP(&a.expand, "expand", "x", false, "expand application description.")
+	f.StringVarP(&a.output, "output", "o", "", "output format. One of: (json|yaml)")
 
 	return cmd
 }
 
-type applicationList struct {
-	out io.Writer
-
-	outFormat string
-}
-
-func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	list := &applicationList{
-		out: out,
-	}
-
+func (a *application) newCmdApplicationList(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls"},
@@ -95,7 +87,7 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 		Example: fmt.Sprintf("  %s application list -o yaml", appName),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = a.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -105,31 +97,23 @@ func newCmdApplicationList(ctx context.Context, client *spinnaker.Client, out io
 			if err := cmd.ValidateArgs(args); err != nil {
 				return err
 			}
-			return client.ListApplications(ctx, list.out, list.outFormat)
+			return a.client.ListApplications(ctx, a.out, a.output)
 		},
 	}
 
 	f := cmd.Flags()
-	f.StringVarP(&list.outFormat, "output", "o", "", "output format. One of: (json|yaml)")
+	f.StringVarP(&a.output, "output", "o", "", "output format. One of: (json|yaml)")
 
 	return cmd
 }
 
-type applicationSave struct {
-	out io.Writer
-}
-
-func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &applicationSave{
-		out: out,
-	}
-
+func (a *application) newCmdApplicationSave(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = a.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -143,22 +127,14 @@ func newCmdApplicationSave(ctx context.Context, client *spinnaker.Client, out io
 	return cmd
 }
 
-type applicationDelete struct {
-	out io.Writer
-}
-
-func newCmdApplicationDelete(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	_ = &applicationDelete{
-		out: out,
-	}
-
+func (a *application) newCmdApplicationDelete(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the specified application.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = a.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}

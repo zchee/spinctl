@@ -13,10 +13,17 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
+type version struct {
+	out    io.Writer
+	client *spinnaker.Client
+	output string
+}
+
 // NewCmdVersion creates the version command.
 func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
-	get := &applicationGet{
-		out: out,
+	v := version{
+		out:    out,
+		client: client,
 	}
 
 	cmd := &cobra.Command{
@@ -25,7 +32,7 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer)
 		Args:  cobra.ExactArgs(0),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
-			ctx, err = client.Authenticate(ctx)
+			ctx, err = v.client.Authenticate(ctx)
 			if err != nil {
 				return err
 			}
@@ -36,12 +43,12 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer)
 				return err
 			}
 
-			return client.GetVersion(ctx, get.out, get.outFormat)
+			return client.GetVersion(ctx, v.out, v.output)
 		},
 	}
 
 	f := cmd.Flags()
-	f.StringVarP(&get.outFormat, "output", "o", "", "output format. One of: (json|yaml)")
+	f.StringVarP(&v.output, "output", "o", "", "output format. One of: (json|yaml)")
 
 	return cmd
 }

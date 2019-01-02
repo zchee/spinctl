@@ -17,7 +17,7 @@ import (
 	"github.com/zchee/spinctl/pkg/config"
 	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
-	"github.com/zchee/spinctl/pkg/version"
+	versionpkg "github.com/zchee/spinctl/pkg/version"
 )
 
 const (
@@ -49,7 +49,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		PersistentPostRunE: func(*cobra.Command, []string) error {
 			return flushProfiling()
 		},
-		Version: version.Version,
+		Version: versionpkg.Version,
 	}
 
 	flags := cmd.PersistentFlags()
