@@ -17,9 +17,10 @@ import (
 )
 
 type pipelineTemplate struct {
-	out    io.Writer
-	client *spinnaker.Client
-	output string
+	out        io.Writer
+	client     *spinnaker.Client
+	output     string
+	listScopes []string
 }
 
 // NewCmdPipelineTemplate manage the pipeline template command.
@@ -97,9 +98,18 @@ func (pt *pipelineTemplate) list(ctx context.Context) *cobra.Command {
 				return err
 			}
 
-			return errors.New("not implements yet")
+			s, err := pt.client.ListPipelineTemplates(ctx, pt.listScopes, pt.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(pt.out, s)
+			return nil
 		},
 	}
+
+	f := cmd.Flags()
+	f.StringArrayVar(&pt.listScopes, "scopes", nil, "pipeline template scopes")
+	f.StringVarP(&pt.output, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
 }
