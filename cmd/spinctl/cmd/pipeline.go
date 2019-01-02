@@ -121,7 +121,7 @@ func (p *pipeline) newCmdPipelineList(ctx context.Context) *cobra.Command {
 func (p *pipeline) newCmdPipelineConfigList(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "listConfig",
-		Short:   "List the all pipelines config.",
+		Short:   "List the all pipeline config.",
 		Args:    cobra.ExactArgs(0),
 		Example: fmt.Sprintf("  %s pipeline list spin -o yaml", appName),
 		PreRunE: func(*cobra.Command, []string) error {
