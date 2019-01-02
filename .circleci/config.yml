@@ -11,39 +11,11 @@ defaults: &defaults
   shell: /bin/bash -euo pipefail
 
 jobs:
-  fetch:
-    <<: *defaults
-    steps:
-      - checkout
-      - golang/gomod
-      - run:
-          name: Remove global .gitconfig
-          command: |
-            if [ -f ~/.gitconfig ]; then rm ~/.gitconfig; fi
-      - restore_cache:
-          keys:
-            - vendor-{{ checksum "Gopkg.lock" }}
-      - run:
-          name: Install dependencies
-          command: |
-            if [[ ! -d vendor ]]; then
-              make dep/ensure
-            fi
-      - save_cache:
-          key: vendor-{{ checksum "Gopkg.lock" }}
-          paths:
-            - /go/src/github.com/zchee/spinctl/vendor
-      - persist_to_workspace:
-          root: /go/src/github.com/zchee/spinctl
-          paths:
-            - "vendor/*"
-
   test:
     <<: *defaults
     steps:
       - checkout
-      - attach_workspace:
-          at: /go/src/github.com/zchee/spinctl
+      - golang/gomod
       - run:
           name: Test and collect coverages
           command: |
@@ -57,8 +29,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - attach_workspace:
-          at: /go/src/github.com/zchee/spinctl
+      - golang/gomod
       - run:
           name: Run lint for sources
           command: |
@@ -68,13 +39,7 @@ workflows:
   version: 2
   workflows:
     jobs:
-      - fetch:
-          context: org-global
       - test:
           context: org-global
-          requires:
-            - fetch
       - lint:
           context: org-global
-          requires:
-            - fetch
