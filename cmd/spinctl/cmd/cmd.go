@@ -53,11 +53,11 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	}
 
 	flags := cmd.PersistentFlags()
+	cmd.Flags().BoolP("version", "v", false, "Show the version information.")
 
 	conf := config.New()
 	opts := &Options{}
 	addFlags(flags, conf, opts)
-
 	flags.Parse(args)
 
 	if !conf.Exists() {
@@ -89,8 +89,6 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 }
 
 func addFlags(flags *pflag.FlagSet, conf *config.Config, opts *Options) {
-	flags.BoolP("version", "v", false, "Show the version information.")
-
 	flags.BoolVarP(&opts.debug, "debug", "d", false, "Use debug output")
 
 	flags.StringVarP(&opts.configPath, "config", "c", conf.Path(), "config file path")
