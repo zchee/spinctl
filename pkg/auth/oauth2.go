@@ -149,6 +149,31 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 	return tok, nil
 }
 
+// Login login to gate.
+func Login(ctx context.Context, oc *OAuth2Config, gateEndpoint string, token *oauth2.Token) error {
+	req, err := http.NewRequest(http.MethodGet, gateEndpoint+"/login", nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))
+
+	conf := &oauth2.Config{
+		ClientID:     oc.ClientID,
+		ClientSecret: oc.ClientSecret,
+		Scopes:       oc.Scopes,
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  oc.AuthURL,
+			TokenURL: oc.TokenURL,
+		},
+	}
+	hc := conf.Client(ctx, token)
+	if _, err := hc.Do(req); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // CallbackServer returns the new http.Server which dummy http server for OAuth2 callback handler.
 func CallbackServer(addr string) *http.Server {
 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
