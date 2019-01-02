@@ -6,11 +6,12 @@ package spinnaker
 
 import (
 	"bytes"
-	"unsafe"
 
 	"github.com/ghodss/yaml"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
+
+	"github.com/zchee/spinctl/pkg/unsafeutil"
 )
 
 func parsePayload(payload interface{}, format string) (string, error) {
@@ -41,5 +42,5 @@ func parsePayload(payload interface{}, format string) (string, error) {
 	}
 	out = bytes.TrimSpace(out)
 
-	return *(*string)(unsafe.Pointer(&out)), nil
+	return unsafeutil.UnsafeString(out), nil
 }
