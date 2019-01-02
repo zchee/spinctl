@@ -83,6 +83,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 	cmd.AddCommand(NewCmdPipeline(ctx, client, out))
+	cmd.AddCommand(NewCmdPipelineTemplate(ctx, client, out))
 	cmd.AddCommand(NewCmdVersion(ctx, client, out))
 
 	return cmd
