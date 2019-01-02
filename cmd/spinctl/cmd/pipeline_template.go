@@ -47,7 +47,7 @@ func (pt *pipelineTemplate) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline template.",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = pt.client.Authenticate(ctx)
