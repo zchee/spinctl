@@ -23,18 +23,13 @@ func (c *Client) GetApplication(ctx context.Context, application string, expand 
 
 	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, application, &opts)
 	if err != nil {
+		switch resp.StatusCode {
+		case http.StatusNotFound:
+			return "", errors.Wrapf(err, "not found %s application", application)
+		}
 		return "", errors.Wrapf(err, "failed to get %s application", application)
 	}
 	defer resp.Body.Close()
-
-	switch resp.StatusCode {
-	case http.StatusOK:
-		// nothing to do
-	case http.StatusNotFound:
-		return "", errors.Wrapf(err, "application %q not found", application)
-	default:
-		return "", errors.Wrapf(err, "encountered an error getting application, status code: %d", resp.StatusCode)
-	}
 
 	s, err := parsePayload(&payload, format)
 	if err != nil {
