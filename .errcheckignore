@@ -1,6 +1,7 @@
 (*encoding/json.Encoder).Encode
 (*github.com/spf13/pflag.FlagSet).MarkHidden
 (*github.com/spf13/pflag.FlagSet).Parse
+(*github.com/spf13/cobra.Command).GenBashCompletion
 (*github.com/zchee/spinctl/pkg/logger/internal/pretty.Formatter).Format
 (*net/http.Server).Close
 (*net/http.Server).ListenAndServe
