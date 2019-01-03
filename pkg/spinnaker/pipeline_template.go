@@ -10,6 +10,7 @@ import (
 
 	"github.com/antihax/optional"
 	"github.com/pkg/errors"
+
 	"github.com/zchee/spinctl/api/gate"
 )
 

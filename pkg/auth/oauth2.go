@@ -150,7 +150,7 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 }
 
 // Login login to gate.
-func Login(hc *http.Client, oc *OAuth2Config, gateEndpoint string, token *oauth2.Token) error {
+func Login(hc *http.Client, gateEndpoint string, token *oauth2.Token) error {
 	req, err := http.NewRequest(http.MethodGet, gateEndpoint+"/login", nil)
 	if err != nil {
 		return err
