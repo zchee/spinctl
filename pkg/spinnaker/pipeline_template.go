@@ -26,7 +26,7 @@ func (c *Client) GetPipelineTemplate(ctx context.Context, id, format string) (st
 	case http.StatusOK:
 		// nothing to do
 	default:
-		return "", errors.Wrapf(err, "encountered an error getting pipeline template, id: %s, status code: %d\n", resp.StatusCode)
+		return "", errors.Wrapf(err, "encountered an error getting pipeline template, status code: %d\n", resp.StatusCode)
 	}
 
 	s, err := parsePayload(&payload, format)
