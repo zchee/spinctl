@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Test and collect coverages
           command: |
-            make coverage
+            make coverage/junit
       - run:
           name: Upload coverages to codecov
           command: |
