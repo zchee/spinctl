@@ -66,7 +66,7 @@ func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.Logger {
 }
 
 // NewZapSugaredLogger returns the new zap Sugared Logger.
-func NewZapSugaredLogger(lv zapcore.Level, out zapcore.WriteSyncer, opts ...zap.Option) *zap.SugaredLogger {
+func NewZapSugaredLogger(lv zapcore.Level, opts ...zap.Option) *zap.SugaredLogger {
 	cfg := newZapConfig()
 	cfg.Level.SetLevel(lv)
 	cfg.DisableCaller = true

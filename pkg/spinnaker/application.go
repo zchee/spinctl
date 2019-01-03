@@ -23,8 +23,7 @@ func (c *Client) GetApplication(ctx context.Context, application string, expand 
 
 	payload, resp, err := c.Client.ApplicationControllerApi.GetApplicationUsingGET(ctx, application, &opts)
 	if err != nil {
-		switch resp.StatusCode {
-		case http.StatusNotFound:
+		if resp.StatusCode == http.StatusNotFound {
 			return "", errors.Wrapf(err, "not found %s application", application)
 		}
 		return "", errors.Wrapf(err, "failed to get %s application", application)

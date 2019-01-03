@@ -132,7 +132,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 		}
 		logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
-		if err := auth.Login(ctx, c.httpClient, confAuth.OAuth2Config, c.Config.Gate.Endpoint, tok); err != nil {
+		if err := auth.Login(c.httpClient, confAuth.OAuth2Config, c.Config.Gate.Endpoint, tok); err != nil {
 			return nil, err
 		}
 		ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)

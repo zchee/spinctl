@@ -16,7 +16,6 @@ import (
 	"go.opencensus.io/plugin/ochttp"
 	"go.opencensus.io/trace"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	apioption "google.golang.org/api/option"
 
 	"github.com/zchee/spinctl/pkg/config"
@@ -87,7 +86,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		lv = zap.DebugLevel
 	}
 	out := cmd.OutOrStdout()
-	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv, zapcore.AddSync(out)))
+	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv))
 
 	if err := addStackdriverExporter(ctx); err != nil {
 		cmd.Println(err)
