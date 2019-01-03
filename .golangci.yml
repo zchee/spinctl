@@ -49,9 +49,9 @@ linters-settings:
     for-loops: false  # Report preallocation suggestions on for loops, false by default
   unparam:
     algo: cha
-    check-exported: false
+    check-exported: true
   unused:
-    check-exported: false
+    check-exported: true
 
 linters:
   enable:
