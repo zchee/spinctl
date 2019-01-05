@@ -7,7 +7,7 @@ contrib.go.opencensus.io/exporter/stackdriver
 contrib.go.opencensus.io/exporter/stackdriver/monitoredresource
 # github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 github.com/antihax/optional
-# github.com/aws/aws-sdk-go v1.16.11
+# github.com/aws/aws-sdk-go v1.16.14
 github.com/aws/aws-sdk-go/aws/ec2metadata
 github.com/aws/aws-sdk-go/aws/session
 github.com/aws/aws-sdk-go/aws
@@ -68,13 +68,13 @@ github.com/json-iterator/go
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.4
 github.com/mattn/go-isatty
-# github.com/minio/sha256-simd v0.0.0-20181005183134-51976451ce19
+# github.com/minio/sha256-simd v0.0.0-20190105025725-66352e71c5e1
 github.com/minio/sha256-simd
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.1
 github.com/modern-go/reflect2
-# github.com/pkg/errors v0.0.0-20181023235946-059132a15dd0
+# github.com/pkg/errors v0.8.1
 github.com/pkg/errors
 # github.com/spf13/cobra v0.0.0-20181127133106-d2d81d9a96e2
 github.com/spf13/cobra
@@ -87,19 +87,19 @@ github.com/zchee/go-xdgbasedir
 github.com/zchee/go-xdgbasedir/home
 # go.opencensus.io v0.18.0
 go.opencensus.io/plugin/ochttp
+go.opencensus.io/stats/view
 go.opencensus.io/trace
 go.opencensus.io
 go.opencensus.io/stats
-go.opencensus.io/stats/view
 go.opencensus.io/tag
 go.opencensus.io/plugin/ochttp/propagation/b3
 go.opencensus.io/trace/propagation
 go.opencensus.io/exemplar
+go.opencensus.io/internal/tagencoding
+go.opencensus.io/stats/internal
 go.opencensus.io/internal
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-go.opencensus.io/stats/internal
-go.opencensus.io/internal/tagencoding
 go.opencensus.io/plugin/ocgrpc
 # go.uber.org/atomic v1.3.2
 go.uber.org/atomic
@@ -107,8 +107,8 @@ go.uber.org/atomic
 go.uber.org/multierr
 # go.uber.org/zap v0.0.0-20180814183419-67bc79d13d15
 go.uber.org/zap
-go.uber.org/zap/zapcore
 go.uber.org/zap/buffer
+go.uber.org/zap/zapcore
 go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
@@ -130,7 +130,7 @@ golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
 # golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.0.0-20190102155601-82a175fd1598
+# golang.org/x/sys v0.0.0-20190105165716-badf5585203e
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 # golang.org/x/text v0.3.0
@@ -138,7 +138,7 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/transform
-# google.golang.org/api v0.0.0-20181229000844-f26a60c56f14
+# google.golang.org/api v0.1.0
 google.golang.org/api/option
 google.golang.org/api/oauth2/v2
 google.golang.org/api/support/bundler
