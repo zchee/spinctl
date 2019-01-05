@@ -84,3 +84,14 @@ func (c *Client) GetPipelineConfigHistory(ctx context.Context, id string, limit 
 
 	return s, nil
 }
+
+// ConvertPipelineConfigToPipelineTemplate converts a pipeline config to a pipeline template.
+func (c *Client) ConvertPipelineConfigToPipelineTemplate(ctx context.Context, id string) (string, error) {
+	s, resp, err := c.Client.PipelineConfigControllerApi.ConvertPipelineConfigToPipelineTemplateUsingGET(ctx, id)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to convert pipeline config to pipeline template")
+	}
+	defer resp.Body.Close()
+
+	return s, nil
+}

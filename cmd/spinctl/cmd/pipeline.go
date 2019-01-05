@@ -20,6 +20,8 @@ type pipeline struct {
 	out    io.Writer
 	client *spinnaker.Client
 	output string
+
+	convertID string
 }
 
 // NewCmdPipeline creates the pipeline command.
@@ -33,12 +35,13 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer
 		Use:   "pipeline",
 		Short: "manage the Spinnaker pipelines.",
 	}
+	cmd.AddCommand(p.convert(ctx))
+	cmd.AddCommand(p.delete(ctx))
+	cmd.AddCommand(p.execute(ctx))
 	cmd.AddCommand(p.get(ctx))
 	cmd.AddCommand(p.list(ctx))
 	cmd.AddCommand(p.listConfig(ctx))
 	cmd.AddCommand(p.save(ctx))
-	cmd.AddCommand(p.delete(ctx))
-	cmd.AddCommand(p.execute(ctx))
 
 	return cmd
 }
@@ -148,6 +151,38 @@ func (p *pipeline) listConfig(ctx context.Context) *cobra.Command {
 
 	f := cmd.Flags()
 	f.StringVarP(&p.output, "output", "o", "", "Output format. One of: (json|yaml)")
+
+	return cmd
+}
+
+func (p *pipeline) convert(ctx context.Context) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "convert",
+		Short: "Convert a pipeline config to a pipeline template.",
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = p.client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if err := cmd.ValidateArgs(args); err != nil {
+				return err
+			}
+
+			s, err := p.client.ConvertPipelineConfigToPipelineTemplate(ctx, p.convertID)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(p.out, s)
+			return nil
+		},
+	}
+
+	f := cmd.Flags()
+	f.StringVarP(&p.convertID, "id", "i", "", "pipeline configs ID")
 
 	return cmd
 }
