@@ -18,6 +18,22 @@ import (
 	"github.com/zchee/spinctl/pkg/auth"
 )
 
+// Config implements a spinctl configarations.
+type Config struct {
+	GoogleCloudProject string       `yaml:"googleCloudProject,omitempty"`
+	Gate               Gate         `yaml:"gate,omitempty"`
+	Auth               *auth.Config `yaml:"auth,omitempty"`
+
+	path          string
+	exists        bool
+	dirCreateOnce sync.Once
+}
+
+// Gate implements a Spinnaker gate API configarations.
+type Gate struct {
+	Endpoint string `yaml:"endpoint,omitempty"`
+}
+
 var (
 	configPath string
 )
@@ -33,21 +49,6 @@ func init() {
 	default:
 		configPath = filepath.Join(home.Dir(), ".spinctl.yaml")
 	}
-}
-
-// Config implements a spinctl configarations.
-type Config struct {
-	Gate Gate         `yaml:"gate,omitempty"`
-	Auth *auth.Config `yaml:"auth,omitempty"`
-
-	path          string
-	exists        bool
-	dirCreateOnce sync.Once
-}
-
-// Gate implements a Spinnaker gate API configarations.
-type Gate struct {
-	Endpoint string `yaml:"endpoint,omitempty"`
 }
 
 // New loads the spinctl config file and returns the new Config.
