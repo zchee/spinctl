@@ -16,7 +16,7 @@ import (
 
 // GetPipelineTemplate gets a pipeline template.
 func (c *Client) GetPipelineTemplate(ctx context.Context, id, format string) (string, error) {
-	payload, resp, err := c.Client.PipelineTemplatesControllerApi.GetUsingGET(ctx, id)
+	payload, resp, err := c.Client.V2PipelineTemplatesControllerApi.GetUsingGET2(ctx, id)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get list of pipeline template")
 	}
@@ -39,12 +39,12 @@ func (c *Client) GetPipelineTemplate(ctx context.Context, id, format string) (st
 
 // ListPipelineTemplates lists pipeline templates.
 func (c *Client) ListPipelineTemplates(ctx context.Context, scopes []string, format string) (string, error) {
-	var opts gate.ListUsingGETOpts
+	var opts gate.ListUsingGET1Opts
 	if scopes != nil {
 		opts.Scopes = optional.NewInterface(scopes)
 	}
 
-	payload, resp, err := c.Client.PipelineTemplatesControllerApi.ListUsingGET(ctx, &opts)
+	payload, resp, err := c.Client.V2PipelineTemplatesControllerApi.ListUsingGET1(ctx, &opts)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get list of pipeline templates")
 	}
