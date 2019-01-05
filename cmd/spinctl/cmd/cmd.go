@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"go.opencensus.io/plugin/ochttp"
+	"go.opencensus.io/stats/view"
 	"go.opencensus.io/trace"
 	"go.uber.org/zap"
 	apioption "google.golang.org/api/option"
@@ -58,28 +59,46 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	flags.BoolP("version", "v", false, "Show the version information.") // version flag is root only
 
 	pflags := cmd.PersistentFlags()
-	conf := config.New()
+	cfg := config.New()
 	opts := &Options{}
-	addFlags(pflags, conf, opts)
+	addFlags(pflags, cfg, opts)
 	pflags.Parse(args)
 
-	if !conf.Exists() {
-		if err := conf.Create(); err != nil {
+	if !cfg.Exists() {
+		if err := cfg.Create(); err != nil {
 			cmd.Println(errors.WithStack(err))
 		}
 	}
 
-	if path := opts.configPath; path != conf.Path() {
-		conf.SetPath(path)
+	if path := opts.configPath; path != cfg.Path() {
+		cfg.SetPath(path)
 	}
-	if err := conf.Read(); err != nil {
+	if err := cfg.Read(); err != nil {
 		cmd.Println(errors.WithStack(err))
 	}
 
-	hc := &http.Client{
-		Transport: &ochttp.Transport{},
+	var clientOpts []spinnaker.Option
+	if projectID := cfg.GoogleCloudProject; projectID != "" {
+		if err := view.Register(
+			ochttp.ClientSentBytesDistribution,
+			ochttp.ClientReceivedBytesDistribution,
+			ochttp.ClientRoundtripLatencyDistribution,
+		); err != nil {
+			cmd.Println(err)
+		}
+		clientOpts = append(clientOpts, spinnaker.WithHTTPClient(&http.Client{
+			Transport: &ochttp.Transport{
+				StartOptions: trace.StartOptions{
+					Sampler: trace.AlwaysSample(),
+				},
+			},
+		}))
+
+		if err := addStackdriverExporter(ctx, projectID); err != nil {
+			cmd.Println(err)
+		}
 	}
-	client := spinnaker.NewClient(conf, spinnaker.WithHTTPClient(hc))
+	client := spinnaker.NewClient(cfg, clientOpts...)
 
 	var lv = defaultLogLevel
 	if opts.debug {
@@ -87,10 +106,6 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	}
 	out := cmd.OutOrStdout()
 	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv))
-
-	if err := addStackdriverExporter(ctx); err != nil {
-		cmd.Println(err)
-	}
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 	cmd.AddCommand(NewCmdCompletion(out))
@@ -101,17 +116,17 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	return cmd
 }
 
-func addFlags(flags *pflag.FlagSet, conf *config.Config, opts *Options) {
+func addFlags(flags *pflag.FlagSet, cfg *config.Config, opts *Options) {
 	flags.BoolVarP(&opts.debug, "debug", "d", false, "Use debug output")
 
-	flags.StringVarP(&opts.configPath, "config", "c", conf.Path(), "config file path")
+	flags.StringVarP(&opts.configPath, "config", "c", cfg.Path(), "config file path")
 
 	addProfilingFlags(flags)
 }
 
-func addStackdriverExporter(ctx context.Context) error {
+func addStackdriverExporter(ctx context.Context, projectID string) error {
 	stackdriverOpts := stackdriver.Options{
-		ProjectID:                "xxx",
+		ProjectID:                projectID,
 		OnError:                  func(err error) { logger.FromContext(ctx).Error(zap.Error(err)) },
 		MonitoringClientOptions:  []apioption.ClientOption{},
 		TraceClientOptions:       []apioption.ClientOption{},
@@ -126,6 +141,7 @@ func addStackdriverExporter(ctx context.Context) error {
 		return errors.WithStack(err)
 	}
 	trace.RegisterExporter(ext)
+	view.RegisterExporter(ext)
 
 	return nil
 }
