@@ -119,7 +119,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 			if err != nil {
 				return nil, err
 			}
-		} else {
+		} else { //nolint:gocritic // TODO(zchee): remove
 			if oc := confAuth.OAuth2Config; oc != nil {
 				tok, err = auth.AuthenticateOAuth2(ctx, oc)
 				if err != nil {
