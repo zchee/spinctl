@@ -8,15 +8,12 @@ require (
 	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 	github.com/aws/aws-sdk-go v1.16.14 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/fatih/color v0.0.0-20181010231311-3f9d52f7176a
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.2.0
 	github.com/googleapis/gax-go v2.0.2+incompatible // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/json-iterator/go v0.0.0-20181112064556-d05f387f50c0
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/mattn/go-colorable v0.0.9 // indirect
-	github.com/mattn/go-isatty v0.0.4 // indirect
 	github.com/minio/sha256-simd v0.0.0-20190105025725-66352e71c5e1
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
