@@ -28,15 +28,15 @@ type AmazonInfrastructureControllerApiService service
 AmazonInfrastructureControllerApiService Get instance types
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 
-@return []interface{}
+@return []HashMap
 */
-func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx context.Context) ([]interface{}, *http.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx context.Context) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -94,7 +94,7 @@ func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx con
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -114,15 +114,15 @@ func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx con
 AmazonInfrastructureControllerApiService Get subnets
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 
-@return []interface{}
+@return []HashMap
 */
-func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx context.Context) ([]interface{}, *http.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx context.Context) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -180,7 +180,7 @@ func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx context.C
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -200,15 +200,15 @@ func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx context.C
 AmazonInfrastructureControllerApiService Get VPCs
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 
-@return []interface{}
+@return []HashMap
 */
-func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx context.Context) ([]interface{}, *http.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx context.Context) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -266,7 +266,7 @@ func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx context.Cont
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

@@ -30,15 +30,15 @@ ServerGroupManagerControllerApiService Retrieve a list of server group managers 
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
 
-@return []interface{}
+@return []HashMap
 */
-func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplicationUsingGET(ctx context.Context, application string) ([]interface{}, *http.Response, error) {
+func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplicationUsingGET(ctx context.Context, application string) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -97,7 +97,7 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

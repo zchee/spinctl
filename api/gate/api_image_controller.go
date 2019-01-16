@@ -38,7 +38,7 @@ The query parameter &#x60;q&#x60; filters the list of images by image name
      * @param "Account" (optional.String) -  account
      * @param "Count" (optional.Int32) -  count
 
-@return []interface{}
+@return []HashMap
 */
 
 type FindImagesUsingGETOpts struct {
@@ -49,13 +49,13 @@ type FindImagesUsingGETOpts struct {
 	Count    optional.Int32
 }
 
-func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, localVarOptionals *FindImagesUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, localVarOptionals *FindImagesUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -128,7 +128,7 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx context.Context, loca
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -259,7 +259,7 @@ ImageControllerApiService Get image details
      * @param "Provider" (optional.String) -  provider
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetImageDetailsUsingGETOpts struct {
@@ -267,13 +267,13 @@ type GetImageDetailsUsingGETOpts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context, account string, region string, imageId string, localVarOptionals *GetImageDetailsUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context, account string, region string, imageId string, localVarOptionals *GetImageDetailsUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -340,7 +340,7 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx context.Context,
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

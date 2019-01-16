@@ -118,8 +118,8 @@ WebhookControllerApiService Endpoint for posting webhooks to Spinnaker&#39;s web
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param type_ type
  * @param source source
+ * @param event event
  * @param optional nil or *WebhooksUsingPOSTOpts - Optional Parameters:
-     * @param "Event" (optional.Interface of interface{}) -  event
      * @param "XHubSignature" (optional.String) -  X-Hub-Signature
      * @param "XEventKey" (optional.String) -  X-Event-Key
 
@@ -127,12 +127,11 @@ WebhookControllerApiService Endpoint for posting webhooks to Spinnaker&#39;s web
 */
 
 type WebhooksUsingPOSTOpts struct {
-	Event         optional.Interface
 	XHubSignature optional.String
 	XEventKey     optional.String
 }
 
-func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, type_ string, source string, localVarOptionals *WebhooksUsingPOSTOpts) (interface{}, *http.Response, error) {
+func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, type_ string, source string, event interface{}, localVarOptionals *WebhooksUsingPOSTOpts) (interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarPostBody    interface{}
@@ -174,14 +173,7 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx context.Context, typ
 		localVarHeaderParams["X-Event-Key"] = parameterToString(localVarOptionals.XEventKey.Value(), "")
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Event.IsSet() {
-
-		localVarOptionalEvent, localVarOptionalEventok := localVarOptionals.Event.Value().(interface{})
-		if !localVarOptionalEventok {
-			return localVarReturnValue, nil, reportError("event should be interface{}")
-		}
-		localVarPostBody = &localVarOptionalEvent
-	}
+	localVarPostBody = &event
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err

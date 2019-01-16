@@ -136,7 +136,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ListUsingGET**
-> []interface{} ListUsingGET(ctx, optional)
+> []HashMap ListUsingGET(ctx, optional)
 List pipeline templates.
 
 ### Required Parameters
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]HashMap**](HashMap.md)
 
 ### Authorization
 

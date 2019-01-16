@@ -321,20 +321,20 @@ ApplicationControllerApiService Retrieve a list of an application&#39;s configur
  * @param optional nil or *GetApplicationHistoryUsingGETOpts - Optional Parameters:
      * @param "Limit" (optional.Int32) -  limit
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetApplicationHistoryUsingGETOpts struct {
 	Limit optional.Int32
 }
 
-func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx context.Context, application string, localVarOptionals *GetApplicationHistoryUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx context.Context, application string, localVarOptionals *GetApplicationHistoryUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -396,7 +396,7 @@ func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx cont
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

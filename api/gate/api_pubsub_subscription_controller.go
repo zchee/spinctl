@@ -30,7 +30,7 @@ PubsubSubscriptionControllerApiService Retrieve the list of pub/sub subscription
 
 @return []Mapstringstring
 */
-func (a *PubsubSubscriptionControllerApiService) AllUsingGET4(ctx context.Context) ([]Mapstringstring, *http.Response, error) {
+func (a *PubsubSubscriptionControllerApiService) AllUsingGET3(ctx context.Context) ([]Mapstringstring, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}

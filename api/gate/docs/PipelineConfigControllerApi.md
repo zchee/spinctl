@@ -36,7 +36,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetAllPipelineConfigsUsingGET**
-> []interface{} GetAllPipelineConfigsUsingGET(ctx, )
+> []HashMap GetAllPipelineConfigsUsingGET(ctx, )
 Get all pipeline configs.
 
 ### Required Parameters
@@ -44,7 +44,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]HashMap**](HashMap.md)
 
 ### Authorization
 
@@ -58,7 +58,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetPipelineConfigHistoryUsingGET**
-> []interface{} GetPipelineConfigHistoryUsingGET(ctx, pipelineConfigId, optional)
+> []HashMap GetPipelineConfigHistoryUsingGET(ctx, pipelineConfigId, optional)
 Get pipeline config history.
 
 ### Required Parameters
@@ -79,7 +79,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]HashMap**](HashMap.md)
 
 ### Authorization
 

@@ -241,20 +241,20 @@ ClusterControllerApiService Retrieve a list of clusters for an account
  * @param optional nil or *GetClustersUsingGET1Opts - Optional Parameters:
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetClustersUsingGET1Opts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx context.Context, application string, account string, localVarOptionals *GetClustersUsingGET1Opts) ([]interface{}, *http.Response, error) {
+func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx context.Context, application string, account string, localVarOptionals *GetClustersUsingGET1Opts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -317,7 +317,7 @@ func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx context.Context, 
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -443,7 +443,7 @@ ClusterControllerApiService Retrieve a list of scaling activities for a server g
      * @param "Region" (optional.String) -  region
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetScalingActivitiesUsingGETOpts struct {
@@ -452,13 +452,13 @@ type GetScalingActivitiesUsingGETOpts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx context.Context, application string, account string, clusterName string, serverGroupName string, localVarOptionals *GetScalingActivitiesUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx context.Context, application string, account string, clusterName string, serverGroupName string, localVarOptionals *GetScalingActivitiesUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -529,7 +529,7 @@ func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx context.C
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -555,20 +555,20 @@ ClusterControllerApiService Retrieve a server group&#39;s details
  * @param optional nil or *GetServerGroupsUsingGETOpts - Optional Parameters:
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetServerGroupsUsingGETOpts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx context.Context, application string, account string, clusterName string, serverGroupName string, localVarOptionals *GetServerGroupsUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx context.Context, application string, account string, clusterName string, serverGroupName string, localVarOptionals *GetServerGroupsUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -633,7 +633,7 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx context.Contex
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -658,20 +658,20 @@ ClusterControllerApiService Retrieve a list of server groups for a cluster
  * @param optional nil or *GetServerGroupsUsingGET1Opts - Optional Parameters:
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetServerGroupsUsingGET1Opts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx context.Context, application string, account string, clusterName string, localVarOptionals *GetServerGroupsUsingGET1Opts) ([]interface{}, *http.Response, error) {
+func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx context.Context, application string, account string, clusterName string, localVarOptionals *GetServerGroupsUsingGET1Opts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -735,7 +735,7 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx context.Conte
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

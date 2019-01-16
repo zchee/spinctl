@@ -119,15 +119,15 @@ func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemp
 PipelineConfigControllerApiService Get all pipeline configs.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 
-@return []interface{}
+@return []HashMap
 */
-func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx context.Context) ([]interface{}, *http.Response, error) {
+func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx context.Context) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -185,7 +185,7 @@ func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx c
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -208,20 +208,20 @@ PipelineConfigControllerApiService Get pipeline config history.
  * @param optional nil or *GetPipelineConfigHistoryUsingGETOpts - Optional Parameters:
      * @param "Limit" (optional.Int32) -  limit
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetPipelineConfigHistoryUsingGETOpts struct {
 	Limit optional.Int32
 }
 
-func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ctx context.Context, pipelineConfigId string, localVarOptionals *GetPipelineConfigHistoryUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ctx context.Context, pipelineConfigId string, localVarOptionals *GetPipelineConfigHistoryUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -283,7 +283,7 @@ func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ct
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

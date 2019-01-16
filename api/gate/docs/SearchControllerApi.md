@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **SearchUsingGET**
-> []interface{} SearchUsingGET(ctx, type_, optional)
+> []HashMap SearchUsingGET(ctx, type_, optional)
 Search infrastructure
 
 ### Required Parameters
@@ -34,7 +34,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]HashMap**](HashMap.md)
 
 ### Authorization
 

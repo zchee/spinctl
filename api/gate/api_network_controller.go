@@ -34,20 +34,20 @@ NetworkControllerApiService Retrieve a list of networks for a given cloud provid
  * @param optional nil or *AllByCloudProviderUsingGETOpts - Optional Parameters:
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type AllByCloudProviderUsingGETOpts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx context.Context, cloudProvider string, localVarOptionals *AllByCloudProviderUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx context.Context, cloudProvider string, localVarOptionals *AllByCloudProviderUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -109,7 +109,7 @@ func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx context.Con
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

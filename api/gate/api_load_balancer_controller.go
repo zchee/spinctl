@@ -135,20 +135,20 @@ LoadBalancerControllerApiService Retrieve a list of load balancers for a given a
  * @param optional nil or *GetApplicationLoadBalancersUsingGETOpts - Optional Parameters:
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetApplicationLoadBalancersUsingGETOpts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(ctx context.Context, application string, localVarOptionals *GetApplicationLoadBalancersUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(ctx context.Context, application string, localVarOptionals *GetApplicationLoadBalancersUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -210,7 +210,7 @@ func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(c
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -236,7 +236,7 @@ LoadBalancerControllerApiService Retrieve a load balancer&#39;s details as a sin
      * @param "Provider" (optional.String) -  provider
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []interface{}
+@return []HashMap
 */
 
 type GetLoadBalancerDetailsUsingGETOpts struct {
@@ -244,13 +244,13 @@ type GetLoadBalancerDetailsUsingGETOpts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx context.Context, account string, region string, name string, localVarOptionals *GetLoadBalancerDetailsUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx context.Context, account string, region string, name string, localVarOptionals *GetLoadBalancerDetailsUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -317,7 +317,7 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx co
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

@@ -138,19 +138,19 @@ func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx context.Co
 /*
 SecurityGroupControllerApiService Retrieve a list of security groups, grouped by account, cloud provider, and region
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *AllUsingGET5Opts - Optional Parameters:
+ * @param optional nil or *AllUsingGET4Opts - Optional Parameters:
      * @param "Id" (optional.String) -  id
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
 @return interface{}
 */
 
-type AllUsingGET5Opts struct {
+type AllUsingGET4Opts struct {
 	Id            optional.String
 	XRateLimitApp optional.String
 }
 
-func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx context.Context, localVarOptionals *AllUsingGET5Opts) (interface{}, *http.Response, error) {
+func (a *SecurityGroupControllerApiService) AllUsingGET4(ctx context.Context, localVarOptionals *AllUsingGET4Opts) (interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}

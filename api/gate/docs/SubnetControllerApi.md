@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # **AllByCloudProviderUsingGET1**
-> []interface{} AllByCloudProviderUsingGET1(ctx, cloudProvider, optional)
+> []HashMap AllByCloudProviderUsingGET1(ctx, cloudProvider, optional)
 Retrieve a list of subnets for a given cloud provider
 
 ### Required Parameters
@@ -29,7 +29,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]HashMap**](HashMap.md)
 
 ### Authorization
 

@@ -460,8 +460,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -560,8 +559,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -616,8 +614,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -687,8 +684,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -1021,8 +1017,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -1059,8 +1054,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -1302,8 +1296,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -1440,8 +1433,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -1721,55 +1713,6 @@ paths:
         404:
           description: "Not Found"
       deprecated: true
-  /artifacts/account/{accountName}/versions:
-    get:
-      tags:
-      - "artifact-controller"
-      summary: "Retrieve the list of artifact versions by account and artifact names"
-      operationId: "artifactVersionsUsingGET"
-      consumes:
-      - "application/json"
-      produces:
-      - "*/*"
-      parameters:
-      - name: "accountName"
-        in: "path"
-        description: "accountName"
-        required: true
-        type: "string"
-        x-exportParamName: "AccountName"
-      - name: "type"
-        in: "query"
-        description: "type"
-        required: true
-        type: "string"
-        x-exportParamName: "Type_"
-      - name: "artifactName"
-        in: "query"
-        description: "artifactName"
-        required: true
-        type: "string"
-        x-exportParamName: "ArtifactName"
-      - name: "X-RateLimit-App"
-        in: "header"
-        description: "X-RateLimit-App"
-        required: false
-        type: "string"
-        x-exportParamName: "XRateLimitApp"
-        x-optionalDataType: "String"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            type: "array"
-            items:
-              type: "string"
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
   /artifacts/credentials:
     get:
       tags:
@@ -1794,8 +1737,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -2519,8 +2461,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -2629,8 +2570,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -2654,8 +2594,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -2855,8 +2794,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -2971,8 +2909,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -2996,8 +2933,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -3064,8 +3000,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -3098,8 +3033,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -3766,9 +3700,9 @@ paths:
       tags:
       - "pipeline-controller"
       summary: "Evaluate a pipeline expression using the provided execution as context"
-      operationId: "evaluateExpressionForExecutionUsingPOST"
+      operationId: "evaluateExpressionForExecutionViaPOSTUsingPOST"
       consumes:
-      - "application/json"
+      - "text/plain"
       produces:
       - "*/*"
       parameters:
@@ -3778,12 +3712,13 @@ paths:
         required: true
         type: "string"
         x-exportParamName: "Id"
-      - name: "expression"
-        in: "query"
-        description: "expression"
+      - in: "body"
+        name: "pipelineExpression"
+        description: "pipelineExpression"
         required: true
-        type: "string"
-        x-exportParamName: "Expression"
+        schema:
+          type: "string"
+        x-exportParamName: "PipelineExpression"
       responses:
         200:
           description: "OK"
@@ -3969,8 +3904,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -4133,100 +4067,6 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
-  /projects:
-    get:
-      tags:
-      - "project-controller"
-      summary: "Get all projects"
-      operationId: "allUsingGET_3"
-      consumes:
-      - "application/json"
-      produces:
-      - "*/*"
-      parameters: []
-      responses:
-        200:
-          description: "OK"
-          schema:
-            type: "array"
-            items:
-              type: "object"
-              properties: {}
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
-  /projects/{id}:
-    get:
-      tags:
-      - "project-controller"
-      summary: "Get a project"
-      operationId: "getUsingGET_1"
-      consumes:
-      - "application/json"
-      produces:
-      - "*/*"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "id"
-        required: true
-        type: "string"
-        x-exportParamName: "Id"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "object"
-              properties: {}
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
-  /projects/{id}/clusters:
-    get:
-      tags:
-      - "project-controller"
-      summary: "Get a project's clusters"
-      operationId: "getClustersUsingGET_3"
-      consumes:
-      - "application/json"
-      produces:
-      - "*/*"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "id"
-        required: true
-        type: "string"
-        x-exportParamName: "Id"
-      - name: "X-RateLimit-App"
-        in: "header"
-        description: "X-RateLimit-App"
-        required: false
-        type: "string"
-        x-exportParamName: "XRateLimitApp"
-        x-optionalDataType: "String"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            type: "array"
-            items:
-              type: "object"
-              properties: {}
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
   /projects/{id}/pipelines:
     get:
       tags:
@@ -4266,8 +4106,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -4279,7 +4118,7 @@ paths:
       tags:
       - "pubsub-subscription-controller"
       summary: "Retrieve the list of pub/sub subscriptions configured in Echo."
-      operationId: "allUsingGET_4"
+      operationId: "allUsingGET_3"
       consumes:
       - "application/json"
       produces:
@@ -4368,8 +4207,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -4382,7 +4220,7 @@ paths:
       - "security-group-controller"
       summary: "Retrieve a list of security groups, grouped by account, cloud provider,\
         \ and region"
-      operationId: "allUsingGET_5"
+      operationId: "allUsingGET_4"
       consumes:
       - "application/json"
       produces:
@@ -4543,8 +4381,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -4581,8 +4418,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -5469,8 +5305,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -5510,24 +5345,37 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
-  /v2/pipelineTemplates/plan:
-    post:
+  /v2/pipelineTemplates/resolve:
+    get:
       tags:
       - "v-2-pipeline-templates-controller"
-      summary: "Plan a pipeline template configuration."
-      operationId: "planUsingPOST"
+      summary: "Resolve a pipeline template."
+      operationId: "resolveTemplatesUsingGET_1"
       consumes:
       - "application/json"
       produces:
       - "*/*"
       parameters:
-      - in: "body"
-        name: "pipeline"
-        description: "pipeline"
+      - name: "source"
+        in: "query"
+        description: "source"
         required: true
-        schema:
-          type: "object"
-        x-exportParamName: "Pipeline"
+        type: "string"
+        x-exportParamName: "Source"
+      - name: "executionId"
+        in: "query"
+        description: "executionId"
+        required: false
+        type: "string"
+        x-exportParamName: "ExecutionId"
+        x-optionalDataType: "String"
+      - name: "pipelineConfigId"
+        in: "query"
+        description: "pipelineConfigId"
+        required: false
+        type: "string"
+        x-exportParamName: "PipelineConfigId"
+        x-optionalDataType: "String"
       responses:
         200:
           description: "OK"
@@ -5536,8 +5384,6 @@ paths:
             additionalProperties:
               type: "object"
               properties: {}
-        201:
-          description: "Created"
         401:
           description: "Unauthorized"
         403:
@@ -5549,7 +5395,7 @@ paths:
       tags:
       - "v-2-pipeline-templates-controller"
       summary: "Get a pipeline template."
-      operationId: "getUsingGET_2"
+      operationId: "getUsingGET_1"
       consumes:
       - "application/json"
       produces:
@@ -5908,8 +5754,7 @@ paths:
           schema:
             type: "array"
             items:
-              type: "object"
-              properties: {}
+              $ref: "#/definitions/HashMap"
         401:
           description: "Unauthorized"
         403:
@@ -5968,7 +5813,7 @@ paths:
       - in: "body"
         name: "event"
         description: "event"
-        required: false
+        required: true
         schema:
           type: "object"
         x-exportParamName: "Event"
@@ -6061,6 +5906,11 @@ definitions:
     properties:
       authority:
         type: "string"
+  HashMap:
+    type: "object"
+    additionalProperties:
+      type: "object"
+      properties: {}
   HashMap«string,object»:
     type: "object"
     additionalProperties:

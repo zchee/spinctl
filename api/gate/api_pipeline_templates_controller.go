@@ -397,20 +397,20 @@ PipelineTemplatesControllerApiService List pipeline templates.
  * @param optional nil or *ListUsingGETOpts - Optional Parameters:
      * @param "Scopes" (optional.Interface of []string) -  scopes
 
-@return []interface{}
+@return []HashMap
 */
 
 type ListUsingGETOpts struct {
 	Scopes optional.Interface
 }
 
-func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx context.Context, localVarOptionals *ListUsingGETOpts) ([]interface{}, *http.Response, error) {
+func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx context.Context, localVarOptionals *ListUsingGETOpts) ([]HashMap, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []interface{}
+		localVarReturnValue []HashMap
 	)
 
 	// create path and map variables
@@ -471,7 +471,7 @@ func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx context.Context
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []interface{}
+			var v []HashMap
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
