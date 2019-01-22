@@ -34,20 +34,20 @@ SubnetControllerApiService Retrieve a list of subnets for a given cloud provider
  * @param optional nil or *AllByCloudProviderUsingGET1Opts - Optional Parameters:
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []HashMap
+@return []interface{}
 */
 
 type AllByCloudProviderUsingGET1Opts struct {
 	XRateLimitApp optional.String
 }
 
-func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx context.Context, cloudProvider string, localVarOptionals *AllByCloudProviderUsingGET1Opts) ([]HashMap, *http.Response, error) {
+func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx context.Context, cloudProvider string, localVarOptionals *AllByCloudProviderUsingGET1Opts) ([]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []HashMap
+		localVarReturnValue []interface{}
 	)
 
 	// create path and map variables
@@ -109,7 +109,7 @@ func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx context.Con
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []HashMap
+			var v []interface{}
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

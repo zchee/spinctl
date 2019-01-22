@@ -38,7 +38,7 @@ SearchControllerApiService Search infrastructure
      * @param "AllowShortQuery" (optional.Bool) -  allowShortQuery
      * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
 
-@return []HashMap
+@return []interface{}
 */
 
 type SearchUsingGETOpts struct {
@@ -50,13 +50,13 @@ type SearchUsingGETOpts struct {
 	XRateLimitApp   optional.String
 }
 
-func (a *SearchControllerApiService) SearchUsingGET(ctx context.Context, type_ string, localVarOptionals *SearchUsingGETOpts) ([]HashMap, *http.Response, error) {
+func (a *SearchControllerApiService) SearchUsingGET(ctx context.Context, type_ string, localVarOptionals *SearchUsingGETOpts) ([]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []HashMap
+		localVarReturnValue []interface{}
 	)
 
 	// create path and map variables
@@ -133,7 +133,7 @@ func (a *SearchControllerApiService) SearchUsingGET(ctx context.Context, type_ s
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []HashMap
+			var v []interface{}
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

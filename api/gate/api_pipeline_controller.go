@@ -836,7 +836,7 @@ PipelineControllerApiService Evaluate a pipeline expression using the provided e
 
 @return map[string]interface{}
 */
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionViaPOSTUsingPOST(ctx context.Context, id string, pipelineExpression string) (map[string]interface{}, *http.Response, error) {
+func (a *PipelineControllerApiService) EvaluateExpressionForExecutionViaPOSTUsingPOST1(ctx context.Context, id string, pipelineExpression string) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarPostBody    interface{}
@@ -924,15 +924,15 @@ PipelineControllerApiService Retrieve pipeline execution logs
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
 
-@return []HashMap
+@return []interface{}
 */
-func (a *PipelineControllerApiService) GetPipelineLogsUsingGET(ctx context.Context, id string) ([]HashMap, *http.Response, error) {
+func (a *PipelineControllerApiService) GetPipelineLogsUsingGET(ctx context.Context, id string) ([]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []HashMap
+		localVarReturnValue []interface{}
 	)
 
 	// create path and map variables
@@ -991,7 +991,7 @@ func (a *PipelineControllerApiService) GetPipelineLogsUsingGET(ctx context.Conte
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []HashMap
+			var v []interface{}
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

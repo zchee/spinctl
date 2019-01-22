@@ -125,20 +125,20 @@ SnapshotControllerApiService Get snapshot history
  * @param optional nil or *GetSnapshotHistoryUsingGETOpts - Optional Parameters:
      * @param "Limit" (optional.Int32) -  limit
 
-@return []HashMap
+@return []interface{}
 */
 
 type GetSnapshotHistoryUsingGETOpts struct {
 	Limit optional.Int32
 }
 
-func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx context.Context, application string, account string, localVarOptionals *GetSnapshotHistoryUsingGETOpts) ([]HashMap, *http.Response, error) {
+func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx context.Context, application string, account string, localVarOptionals *GetSnapshotHistoryUsingGETOpts) ([]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []HashMap
+		localVarReturnValue []interface{}
 	)
 
 	// create path and map variables
@@ -201,7 +201,7 @@ func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx context.Co
 		}
 
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []HashMap
+			var v []interface{}
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

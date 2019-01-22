@@ -6,10 +6,10 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CreateUsingPOST1**](V2PipelineTemplatesControllerApi.md#CreateUsingPOST1) | **Post** /v2/pipelineTemplates | Create a pipeline template.
 [**DeleteUsingDELETE1**](V2PipelineTemplatesControllerApi.md#DeleteUsingDELETE1) | **Delete** /v2/pipelineTemplates/{id} | Delete a pipeline template.
-[**GetUsingGET1**](V2PipelineTemplatesControllerApi.md#GetUsingGET1) | **Get** /v2/pipelineTemplates/{id} | Get a pipeline template.
+[**GetUsingGET2**](V2PipelineTemplatesControllerApi.md#GetUsingGET2) | **Get** /v2/pipelineTemplates/{id} | Get a pipeline template.
 [**ListPipelineTemplateDependentsUsingGET1**](V2PipelineTemplatesControllerApi.md#ListPipelineTemplateDependentsUsingGET1) | **Get** /v2/pipelineTemplates/{id}/dependents | List all pipelines that implement a pipeline template
 [**ListUsingGET1**](V2PipelineTemplatesControllerApi.md#ListUsingGET1) | **Get** /v2/pipelineTemplates | List pipeline templates.
-[**ResolveTemplatesUsingGET1**](V2PipelineTemplatesControllerApi.md#ResolveTemplatesUsingGET1) | **Get** /v2/pipelineTemplates/resolve | Resolve a pipeline template.
+[**PlanUsingPOST**](V2PipelineTemplatesControllerApi.md#PlanUsingPOST) | **Post** /v2/pipelineTemplates/plan | Plan a pipeline template configuration.
 [**UpdateUsingPOST1**](V2PipelineTemplatesControllerApi.md#UpdateUsingPOST1) | **Post** /v2/pipelineTemplates/{id} | Update a pipeline template.
 
 
@@ -74,8 +74,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **GetUsingGET1**
-> map[string]interface{} GetUsingGET1(ctx, id)
+# **GetUsingGET2**
+> map[string]interface{} GetUsingGET2(ctx, id)
 Get a pipeline template.
 
 ### Required Parameters
@@ -127,7 +127,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ListUsingGET1**
-> []HashMap ListUsingGET1(ctx, optional)
+> []interface{} ListUsingGET1(ctx, optional)
 List pipeline templates.
 
 ### Required Parameters
@@ -146,7 +146,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]HashMap**](HashMap.md)
+[**[]interface{}**](interface{}.md)
 
 ### Authorization
 
@@ -159,26 +159,16 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **ResolveTemplatesUsingGET1**
-> map[string]interface{} ResolveTemplatesUsingGET1(ctx, source, optional)
-Resolve a pipeline template.
+# **PlanUsingPOST**
+> map[string]interface{} PlanUsingPOST(ctx, pipeline)
+Plan a pipeline template configuration.
 
 ### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **source** | **string**| source | 
- **optional** | ***ResolveTemplatesUsingGET1Opts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-Optional parameters are passed through a pointer to a ResolveTemplatesUsingGET1Opts struct
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **executionId** | **optional.String**| executionId | 
- **pipelineConfigId** | **optional.String**| pipelineConfigId | 
+  **pipeline** | [**interface{}**](interface{}.md)| pipeline | 
 
 ### Return type
 
