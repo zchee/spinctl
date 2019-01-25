@@ -25,7 +25,7 @@ import (
 	oauth2_v2 "google.golang.org/api/oauth2/v2"
 
 	"github.com/zchee/spinctl/pkg/logger"
-	"github.com/zchee/spinctl/pkg/unsafeutil"
+	"github.com/zchee/spinctl/pkg/internal/unsafeutil"
 )
 
 // OAuth2Config implements a OAuth2.0 authentication data for Spinnaker.

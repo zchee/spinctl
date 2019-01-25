@@ -11,7 +11,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 
-	"github.com/zchee/spinctl/pkg/unsafeutil"
+	"github.com/zchee/spinctl/pkg/internal/unsafeutil"
 )
 
 func parsePayload(payload interface{}, format string) (string, error) {
