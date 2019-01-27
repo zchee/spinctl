@@ -97,7 +97,14 @@ func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 			return nil
 		},
 		RunE: func(*cobra.Command, []string) error {
-			return errNotImplementedYet
+			// TODO(zchee): validate arg length.
+			s, err := pc.client.ListPipelineConfigs(ctx, pc.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(pc.out, s)
+
+			return nil
 		},
 	}
 
