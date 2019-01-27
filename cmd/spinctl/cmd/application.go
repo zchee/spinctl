@@ -21,7 +21,10 @@ type application struct {
 	client *spinnaker.Client
 	output string
 
-	expand bool
+	getExpand bool
+
+	listAccount string
+	listOwner   string
 }
 
 // NewCmdApplication creates the application command.
@@ -65,9 +68,9 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 			}
 
 			name := args[0]
-			logger.FromContext(ctx).Debugf("CmdApplicationGet: name: %s, expand: %t", name, a.expand)
+			logger.FromContext(ctx).Debugf("CmdApplicationGet: name: %s, expand: %t", name, a.getExpand)
 
-			s, err := a.client.GetApplication(ctx, name, a.expand, a.output)
+			s, err := a.client.GetApplication(ctx, name, a.getExpand, a.output)
 			if err != nil {
 				return err
 			}
@@ -77,7 +80,7 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.BoolVarP(&a.expand, "expand", "x", false, "expand application description.")
+	f.BoolVarP(&a.getExpand, "expand", "x", false, "expand application description.")
 	f.StringVarP(&a.output, "output", "o", "", "output format. One of: (json|yaml)")
 
 	return cmd
@@ -99,10 +102,7 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
-				return err
-			}
-			s, err := a.client.ListApplications(ctx, a.output)
+			s, err := a.client.ListApplications(ctx, a.listAccount, a.listOwner, a.output)
 			if err != nil {
 				return err
 			}
@@ -112,6 +112,8 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 	}
 
 	f := cmd.Flags()
+	f.StringVar(&a.listAccount, "account", "", "filters results to only include applications deployed in the specified account")
+	f.StringVar(&a.listOwner, "owner", "", "filteres results to only include applications owned by the specified email")
 	f.StringVarP(&a.output, "output", "o", "", "output format. One of: (json|yaml)")
 
 	return cmd

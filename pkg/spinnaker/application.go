@@ -39,8 +39,16 @@ func (c *Client) GetApplication(ctx context.Context, application string, expand 
 }
 
 // ListApplications retrieves a list of applications.
-func (c *Client) ListApplications(ctx context.Context, format string) (string, error) {
-	payload, resp, err := c.Client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, nil)
+func (c *Client) ListApplications(ctx context.Context, account, owner, format string) (string, error) {
+	var opts gate.GetAllApplicationsUsingGETOpts
+	if account != "" {
+		opts.Account = optional.NewString(account)
+	}
+	if owner != "" {
+		opts.Owner = optional.NewString(owner)
+	}
+
+	payload, resp, err := c.Client.ApplicationControllerApi.GetAllApplicationsUsingGET(ctx, &opts)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return "", errors.Wrap(err, "failed to get all applications")
 	}
