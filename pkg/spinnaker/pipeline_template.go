@@ -22,10 +22,7 @@ func (c *Client) GetPipelineTemplate(ctx context.Context, id, format string) (st
 	}
 	defer resp.Body.Close()
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		// nothing to do
-	default:
+	if resp.StatusCode != http.StatusOK {
 		return "", errors.Wrapf(err, "encountered an error getting pipeline template, status code: %d\n", resp.StatusCode)
 	}
 
@@ -50,10 +47,7 @@ func (c *Client) ListPipelineTemplates(ctx context.Context, scopes []string, for
 	}
 	defer resp.Body.Close()
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		// nothing to do
-	default:
+	if resp.StatusCode != http.StatusOK {
 		return "", errors.Wrapf(err, "encountered an error getting list of pipeline templates, scopes %s, status code: %d\n", scopes, resp.StatusCode)
 	}
 
