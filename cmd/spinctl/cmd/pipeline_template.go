@@ -6,7 +6,6 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 
@@ -132,7 +131,7 @@ func (pt *pipelineTemplate) create(ctx context.Context) *cobra.Command {
 				return err
 			}
 
-			return errors.New("not implements yet")
+			return errNotImplementedYet
 		},
 	}
 
@@ -158,7 +157,7 @@ func (pt *pipelineTemplate) update(ctx context.Context) *cobra.Command {
 				return err
 			}
 
-			return errors.New("not implements yet")
+			return errNotImplementedYet
 		},
 	}
 
@@ -184,7 +183,7 @@ func (pt *pipelineTemplate) delete(ctx context.Context) *cobra.Command {
 				return err
 			}
 
-			return errors.New("not implements yet")
+			return errNotImplementedYet
 		},
 	}
 

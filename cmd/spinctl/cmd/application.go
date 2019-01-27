@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
 	"github.com/zchee/spinctl/pkg/logger"
@@ -132,7 +131,7 @@ func (a *application) save(ctx context.Context) *cobra.Command {
 			return nil
 		},
 		RunE: func(*cobra.Command, []string) error {
-			return errors.New("not implements yet")
+			return errNotImplementedYet
 		},
 	}
 
@@ -153,7 +152,7 @@ func (a *application) delete(ctx context.Context) *cobra.Command {
 			return nil
 		},
 		RunE: func(*cobra.Command, []string) error {
-			return errors.New("not implements yet")
+			return errNotImplementedYet
 		},
 	}
 
