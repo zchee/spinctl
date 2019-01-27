@@ -50,15 +50,15 @@ func (c *Client) GetPipelineConfigFromApplication(ctx context.Context, applicati
 	return s, nil
 }
 
-// GetPipelineConfigHistory gets pipeline config history.
-func (c *Client) GetPipelineConfigHistory(ctx context.Context, id string, limit int32, format string) (string, error) {
+// GetPipelineConfigHistory gets pipeline config histories.
+func (c *Client) GetPipelineConfigHistory(ctx context.Context, pipelineConfigID string, limit int32, format string) (string, error) {
 	var opts gate.GetPipelineConfigHistoryUsingGETOpts
 	if limit > 0 {
 		opts.Limit = optional.NewInt32(limit)
 	}
-	payload, resp, err := c.Client.PipelineConfigControllerApi.GetPipelineConfigHistoryUsingGET(ctx, id, &opts)
+	payload, resp, err := c.Client.PipelineConfigControllerApi.GetPipelineConfigHistoryUsingGET(ctx, pipelineConfigID, &opts)
 	if err != nil {
-		return "", errors.Wrap(err, "failed to get list pipeline configs")
+		return "", errors.Wrap(err, "failed to get pipeline config histories")
 	}
 	defer resp.Body.Close()
 

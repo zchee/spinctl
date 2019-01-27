@@ -19,6 +19,8 @@ type pipelineConfig struct {
 	out    io.Writer
 	client *spinnaker.Client
 	output string
+
+	historyLimit int32
 }
 
 // NewCmdPipelineConfig creates the pipeline-config command.
@@ -109,6 +111,39 @@ func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 	}
 
 	f := cmd.Flags()
+	f.StringVarP(&pc.output, "output", "o", "", "Output format. One of: (json|yaml)")
+
+	return cmd
+}
+
+func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "history [pipeline config ID]",
+		Short: "Get pipeline config history.",
+		PreRunE: func(*cobra.Command, []string) error {
+			var err error
+			ctx, err = pc.client.Authenticate(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		RunE: func(_ *cobra.Command, args []string) error {
+			// TODO(zchee): validate arg length.
+			pipelineConfigID := args[0]
+
+			s, err := pc.client.GetPipelineConfigHistory(ctx, pipelineConfigID, pc.historyLimit, pc.output)
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(pc.out, s)
+
+			return nil
+		},
+	}
+
+	f := cmd.Flags()
+	f.Int32Var(&pc.historyLimit, "limit", 0, "Limit size of histories.")
 	f.StringVarP(&pc.output, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
