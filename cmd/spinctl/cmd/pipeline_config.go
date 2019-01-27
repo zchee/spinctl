@@ -41,8 +41,8 @@ func NewCmdPipelineConfig(ctx context.Context, client *spinnaker.Client, out io.
 
 func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get [application]",
-		Short: "Get the list of an application's pipeline configurations.",
+		Use:   "get [application] <pipeline name>",
+		Short: "Get the list or specific of an application's pipeline configurations.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = pc.client.Authenticate(ctx)
@@ -54,12 +54,24 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// TODO(zchee): validate arg length.
 			application := args[0]
-			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s", application)
+			logger.FromContext(ctx).Debugf("pipelineConfig.get: application: %s", application)
 
-			s, err := pc.client.GetPipelineConfigFromApplication(ctx, application, pc.output)
-			if err != nil {
-				return err
+			var s string
+			if len(args) == 2 {
+				pipelineName := args[1]
+				logger.FromContext(ctx).Debugf("pipelineConfig.get: pipelineName: %s", pipelineName)
+
+				s, err = pc.client.GetPipelineConfig(ctx, application, pipelineName, pc.output)
+				if err != nil {
+					return err
+				}
+			} else {
+				s, err = pc.client.GetPipelineConfigFromApplication(ctx, application, pc.output)
+				if err != nil {
+					return err
+				}
 			}
+
 			fmt.Fprintf(pc.out, s)
 
 			return err
@@ -74,8 +86,8 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 
 func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "list",
-		Short:   "List the all pipeline config.",
+		Use:   "list",
+		Short: "List the all pipeline configs.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
 			ctx, err = pc.client.Authenticate(ctx)
