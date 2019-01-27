@@ -6,11 +6,33 @@ package spinnaker
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/antihax/optional"
 	"github.com/pkg/errors"
+
 	"github.com/zchee/spinctl/api/gate"
 )
+
+// GetPipelineConfig retrieve a pipeline configuration.
+func (c *Client) GetPipelineConfig(ctx context.Context, application, pipelineName, format string) (string, error) {
+	payload, resp, err := c.Client.ApplicationControllerApi.GetPipelineConfigUsingGET(ctx, application, pipelineName)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to get pipeline config from %s", application)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", errors.Wrapf(err, "failed to get pipeline config. status_code: %d\n", resp.StatusCode)
+	}
+
+	s, err := parsePayload(&payload, format)
+	if err != nil {
+		return "", err
+	}
+
+	return s, nil
+}
 
 // GetPipelineConfigFromApplication retrieve a list of an application's pipeline configurations.
 func (c *Client) GetPipelineConfigFromApplication(ctx context.Context, application, format string) (string, error) {
