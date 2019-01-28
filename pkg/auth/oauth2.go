@@ -39,8 +39,9 @@ type OAuth2Config struct {
 }
 
 // IsValid checks whethere the OAuth2Config is valid.
-func (o OAuth2Config) IsValid() bool {
-	return o.ClientID != "" && o.ClientSecret != "" && o.TokenURL != "" && o.AuthURL != "" && len(o.Scopes) != 0
+func (o *OAuth2Config) IsValid() bool {
+	return o.TokenURL != "" && o.AuthURL != "" && len(o.Scopes) != 0
+}
 }
 
 // AuthenticateOAuth2 authenticate gate with OAuth2 and returns the new oauth2.Token.
