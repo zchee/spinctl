@@ -56,7 +56,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	}
 
 	flags := cmd.Flags()
-	flags.BoolP("version", "v", false, "Show the version information.") // version flag is root only
+	flags.BoolP("version", "v", false, "Show "+cmd.Name()+" version.") // version flag is root only
 
 	pflags := cmd.PersistentFlags()
 	cfg := config.New()
