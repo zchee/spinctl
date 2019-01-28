@@ -54,7 +54,7 @@ endef
 .PHONY: $(APP)
 $(APP): $(wildcard *.go) $(wildcard */*.go) VERSION.txt
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) go build $(strip $(GO_FLAGS)) -o $(APP) $(CMD)
+	CGO_ENABLED=$(CGO_ENABLED) go build -v $(strip $(GO_FLAGS)) -o $(APP) $(CMD)
 
 .PHONY: build
 build: GO_FLAGS+=${GO_LDFLAGS}
