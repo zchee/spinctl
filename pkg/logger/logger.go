@@ -37,23 +37,8 @@ func newZapConfig() (cfg zap.Config) {
 	return cfg
 }
 
-// NewZapLogger returns the new zap Logger.
-func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.Logger {
-	cfg := newZapConfig()
-	if !cfg.Level.Enabled(lv) {
-		cfg.Level.SetLevel(lv)
-	}
-
-	l, err := cfg.Build(opts...)
-	if err != nil {
-		panic(fmt.Errorf("logger.NewZapLogger: %+v", err))
-	}
-
-	return l
-}
-
 // NewZapSugaredLogger returns the new zap Sugared Logger.
-func NewZapSugaredLogger(lv zapcore.Level, opts ...zap.Option) *zap.SugaredLogger {
+func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.SugaredLogger {
 	cfg := newZapConfig()
 	cfg.Level.SetLevel(lv)
 	cfg.DisableCaller = true
@@ -68,10 +53,4 @@ func NewZapSugaredLogger(lv zapcore.Level, opts ...zap.Option) *zap.SugaredLogge
 	}
 
 	return l.Sugar()
-}
-
-// RedirectStdLog redirects output from the standard library's package-global
-// logger to the supplied logger at InfoLevel and returnn the undo function.
-func RedirectStdLog(logger *zap.Logger) func() {
-	return zap.RedirectStdLog(logger)
 }

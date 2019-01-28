@@ -105,7 +105,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		lv = zap.DebugLevel
 	}
 	out := cmd.OutOrStdout()
-	ctx = logger.NewContext(ctx, logger.NewZapSugaredLogger(lv))
+	ctx = logger.NewContext(ctx, logger.NewZapLogger(lv))
 
 	cmd.AddCommand(NewCmdApplication(ctx, client, out))
 	cmd.AddCommand(NewCmdCompletion(out))
