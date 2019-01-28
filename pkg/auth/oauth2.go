@@ -42,6 +42,9 @@ type OAuth2Config struct {
 func (o *OAuth2Config) IsValid() bool {
 	return o.TokenURL != "" && o.AuthURL != "" && len(o.Scopes) != 0
 }
+
+func (o *OAuth2Config) IsExpired() bool {
+	return o.Token == nil || !o.Token.Valid()
 }
 
 // AuthenticateOAuth2 authenticate gate with OAuth2 and returns the new oauth2.Token.
