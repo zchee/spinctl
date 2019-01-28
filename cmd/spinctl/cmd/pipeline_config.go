@@ -37,6 +37,7 @@ func NewCmdPipelineConfig(ctx context.Context, client *spinnaker.Client, out io.
 	cmd.AddCommand(pc.get(ctx))
 	cmd.AddCommand(pc.list(ctx))
 	cmd.AddCommand(pc.convert(ctx))
+	cmd.AddCommand(pc.history(ctx))
 
 	return cmd
 }
