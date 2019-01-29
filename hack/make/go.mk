@@ -179,7 +179,7 @@ mod: mod/clean mod/init mod/tidy mod/vendor  ## Updates the vendoring directory 
 .PHONY: mod/install
 mod/install: mod/tidy mod/vendor
 	$(call target)
-	@GO111MODULE=off go install -v $(GO_VENDOR_PKGS) 2>/dev/null || GO111MODULE=on go install -mod=vendor -v $(GO_VENDOR_PKGS)
+	@GO111MODULE=off go install -v $(GO_VENDOR_PKGS) || GO111MODULE=on go install -mod=vendor -v $(GO_VENDOR_PKGS)
 
 .PHONY: mod/update
 mod/update: mod/goget mod/tidy mod/vendor mod/install  ## Updates all vendor packages.
