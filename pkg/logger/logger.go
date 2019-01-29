@@ -37,7 +37,7 @@ func newZapConfig() (cfg zap.Config) {
 	return cfg
 }
 
-// NewZapSugaredLogger returns the new zap Sugared Logger.
+// NewZapLogger returns the new zap Sugared Logger.
 func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.SugaredLogger {
 	cfg := newZapConfig()
 	cfg.Level.SetLevel(lv)

@@ -54,7 +54,7 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 			}
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) (err error) {
+		RunE: func(_ *cobra.Command, args []string) (err error) {
 			// TODO(zchee): validate arg length.
 			application := args[0]
 			logger.FromContext(ctx).Debugf("pipelineConfig.get: application: %s", application)
@@ -162,7 +162,7 @@ func (pc *pipelineConfig) convert(ctx context.Context) *cobra.Command {
 			}
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			// TODO(zchee): validate arg length
 			pipelineConfigID := args[0]
 			logger.FromContext(ctx).Debugf("pipelineConfig.convert: pipelineConfigID: %s", pipelineConfigID)

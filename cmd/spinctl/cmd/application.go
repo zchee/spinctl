@@ -100,7 +100,7 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 			}
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(*cobra.Command, []string) error {
 			s, err := a.client.ListApplications(ctx, a.listAccount, a.listOwner, a.output)
 			if err != nil {
 				return err

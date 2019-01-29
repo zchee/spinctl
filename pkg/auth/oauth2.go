@@ -43,6 +43,7 @@ func (o *OAuth2Config) IsValid() bool {
 	return o.TokenURL != "" && o.AuthURL != "" && len(o.Scopes) != 0
 }
 
+// IsExpired reports whether the o.Token is expired.
 func (o *OAuth2Config) IsExpired() bool {
 	return o.Token == nil || !o.Token.Valid()
 }

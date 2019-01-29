@@ -9,5 +9,5 @@ import (
 )
 
 var (
-	errNotImplementedYet = errors.New("not implemented yet.")
+	errNotImplementedYet = errors.New("not implemented yet")
 )

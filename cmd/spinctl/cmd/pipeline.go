@@ -19,8 +19,6 @@ type pipeline struct {
 	out    io.Writer
 	client *spinnaker.Client
 	output string
-
-	convertID string
 }
 
 // NewCmdPipeline creates the pipeline command.
