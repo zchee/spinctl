@@ -144,7 +144,7 @@ func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.Int32Var(&pc.historyLimit, "limit", 0, "Limit size of histories.")
+	f.Int32Var(&pc.historyLimit, "limit", 20, "Limit size of histories.")
 	f.StringVarP(&pc.output, "output", "o", "", "Output format. One of: (json|yaml)")
 
 	return cmd
