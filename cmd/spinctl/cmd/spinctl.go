@@ -7,17 +7,18 @@ package cmd
 import (
 	"context"
 	"net/http"
+	"os"
 	"time"
 
 	"contrib.go.opencensus.io/exporter/stackdriver"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 	"go.opencensus.io/plugin/ochttp"
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/trace"
 	"go.uber.org/zap"
 	apioption "google.golang.org/api/option"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/config"
 	"github.com/zchee/spinctl/pkg/logger"
@@ -25,8 +26,11 @@ import (
 	versionpkg "github.com/zchee/spinctl/pkg/version"
 )
 
-const (
-	defaultLogLevel = zap.InfoLevel
+var (
+	defaultIOStreams = &genericclioptions.IOStreams{In: os.Stdin, Out: os.Stdout, ErrOut: os.Stderr}
+
+	atomicInfoLevel  = zap.NewAtomicLevelAt(zap.InfoLevel)
+	atomicDebugLevel = zap.NewAtomicLevelAt(zap.DebugLevel)
 )
 
 // Options represents a root command options.
@@ -58,15 +62,25 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	flags := cmd.Flags()
 	flags.BoolP("version", "v", false, "Show "+cmd.Name()+" version.") // version flag is root only
 
-	pflags := cmd.PersistentFlags()
+	persistentFlags := cmd.PersistentFlags()
 	cfg := config.New()
 	opts := &Options{}
-	addFlags(pflags, cfg, opts)
-	pflags.Parse(args)
+	addGlobalFlags(persistentFlags, cfg, opts)
+	printFlags := NewPrintFlags()
+	printFlags.AddFlags(cmd)
+
+	persistentFlags.Parse(args)
+
+	var lv = atomicInfoLevel
+	if opts.debug {
+		lv = atomicDebugLevel
+	}
+	log := logger.NewZapLogger(lv)
+	ctx = logger.NewContext(ctx, log)
 
 	if !cfg.Exists() {
 		if err := cfg.Create(); err != nil {
-			cmd.Println(errors.WithStack(err))
+			log.Fatal(zap.Error(err))
 		}
 	}
 
@@ -74,17 +88,18 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		cfg.SetPath(path)
 	}
 	if err := cfg.Read(); err != nil {
-		cmd.Println(errors.WithStack(err))
+		log.Fatal(zap.Error(err))
 	}
 
 	var clientOpts []spinnaker.Option
 	if projectID := cfg.GoogleCloudProject; projectID != "" {
+		log.Debug("use StackdriverExporter")
 		if err := view.Register(
 			ochttp.ClientSentBytesDistribution,
 			ochttp.ClientReceivedBytesDistribution,
 			ochttp.ClientRoundtripLatencyDistribution,
 		); err != nil {
-			cmd.Println(err)
+			log.Fatal(zap.Error(err))
 		}
 		clientOpts = append(clientOpts, spinnaker.WithHTTPClient(&http.Client{
 			Transport: &ochttp.Transport{
@@ -94,38 +109,24 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 			},
 		}))
 
-		if err := addStackdriverExporter(ctx, projectID); err != nil {
-			cmd.Println(err)
+		if err := NewStackdriverExporter(ctx, projectID); err != nil {
+			log.Fatal(zap.Error(err))
 		}
 	}
 	client := spinnaker.NewClient(cfg, clientOpts...)
 
-	var lv = defaultLogLevel
-	if opts.debug {
-		lv = zap.DebugLevel
-	}
-	out := cmd.OutOrStdout()
-	ctx = logger.NewContext(ctx, logger.NewZapLogger(lv))
-
-	cmd.AddCommand(NewCmdApplication(ctx, client, out))
-	cmd.AddCommand(NewCmdCompletion(out))
-	cmd.AddCommand(NewCmdPipeline(ctx, client, out))
-	cmd.AddCommand(NewCmdPipelineConfig(ctx, client, out))
-	cmd.AddCommand(NewCmdPipelineTemplate(ctx, client, out))
-	cmd.AddCommand(NewCmdVersion(ctx, client, out))
+	ioStreams := defaultIOStreams
+	cmd.AddCommand(NewCmdApplication(ctx, client, ioStreams))
+	cmd.AddCommand(NewCmdCompletion(ioStreams))
+	cmd.AddCommand(NewCmdPipeline(ctx, client, ioStreams))
+	cmd.AddCommand(NewCmdPipelineConfig(ctx, client, ioStreams))
+	cmd.AddCommand(NewCmdPipelineTemplate(ctx, client, ioStreams))
+	cmd.AddCommand(NewCmdVersion(ctx, client, ioStreams))
 
 	return cmd
 }
 
-func addFlags(flags *pflag.FlagSet, cfg *config.Config, opts *Options) {
-	flags.BoolVarP(&opts.debug, "debug", "d", false, "Use debug output")
-
-	flags.StringVarP(&opts.configPath, "config", "c", cfg.Path(), "config file path")
-
-	addProfilingFlags(flags)
-}
-
-func addStackdriverExporter(ctx context.Context, projectID string) error {
+func NewStackdriverExporter(ctx context.Context, projectID string) error {
 	stackdriverOpts := stackdriver.Options{
 		ProjectID:                projectID,
 		OnError:                  func(err error) { logger.FromContext(ctx).Error(zap.Error(err)) },
