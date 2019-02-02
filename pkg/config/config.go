@@ -20,9 +20,9 @@ import (
 
 // Config implements a spinctl configarations.
 type Config struct {
-	GoogleCloudProject string       `yaml:"googleCloudProject,omitempty"`
 	Gate               Gate         `yaml:"gate,omitempty"`
 	Auth               *auth.Config `yaml:"auth,omitempty"`
+	GoogleCloudProject string       `yaml:"googleCloudProject,omitempty"`
 
 	path          string
 	exists        bool
