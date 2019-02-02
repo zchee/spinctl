@@ -16,12 +16,11 @@ import (
 	"github.com/zchee/spinctl/pkg/config"
 )
 
-func NewPrintFlags() *genericclioptions.PrintFlags {
-	outputFormat := ""
+func addPrintFlags(outputFormat *string) *genericclioptions.PrintFlags {
 	templateArgPtr := ""
 
 	return &genericclioptions.PrintFlags{
-		OutputFormat:       &outputFormat,
+		OutputFormat:       outputFormat,
 		JSONYamlPrintFlags: genericclioptions.NewJSONYamlPrintFlags(),
 		TemplatePrinterFlags: &genericclioptions.KubeTemplatePrintFlags{
 			GoTemplatePrintFlags: &genericclioptions.GoTemplatePrintFlags{
