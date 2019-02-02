@@ -19,6 +19,7 @@ import (
 func parsePayload(payload interface{}, outputFormat string) (s string, err error) {
 	buf := new(bytes.Buffer)
 	enc := jsoniter.ConfigFastest.NewEncoder(buf)
+	enc.SetIndent("", "  ")
 
 	if strings.HasPrefix(outputFormat, "jsonpath=") {
 		tok := strings.Split(outputFormat, "=")
@@ -30,7 +31,6 @@ func parsePayload(payload interface{}, outputFormat string) (s string, err error
 		}
 	}
 
-	enc.SetIndent("", "  ")
 	if err := enc.Encode(&payload); err != nil {
 		return "", errors.Wrap(err, "parsePayload: failed to encoding payload")
 	}
@@ -42,9 +42,8 @@ func parsePayload(payload interface{}, outputFormat string) (s string, err error
 		if err != nil {
 			return "", errors.Wrap(err, "parsePayload: failed to convert payload to JSONToYAML")
 		}
-	case "json":
+	default:
 		// nothing to do
-		// json by defaut
 	}
 	out = bytes.TrimSpace(out)
 
