@@ -47,29 +47,20 @@ func NewDefaultCommand(ctx context.Context, args []string) *cobra.Command {
 // NewCommand creates the `spinctl` root command.
 func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:          "spinctl",
-		Short:        "spinctl is a command-line tool to manage Spinnaker via gate API.",
-		SilenceUsage: true,
-		PersistentPreRunE: func(*cobra.Command, []string) error {
-			return initProfiling()
-		},
-		PersistentPostRunE: func(*cobra.Command, []string) error {
-			return flushProfiling()
-		},
-		Version: versionpkg.Version,
+		Use:                "spinctl",
+		Short:              "spinctl is a command-line tool to manage Spinnaker via gate API.",
+		SilenceUsage:       true,
+		PersistentPreRunE:  func(*cobra.Command, []string) error { return initProfiling() },
+		PersistentPostRunE: func(*cobra.Command, []string) error { return flushProfiling() },
+		Version:            versionpkg.Version,
 	}
+	cmd.Flags().BoolP("version", "v", false, "Show "+cmd.Name()+" version.") // version flag is root only
 
-	flags := cmd.Flags()
-	flags.BoolP("version", "v", false, "Show "+cmd.Name()+" version.") // version flag is root only
-
-	persistentFlags := cmd.PersistentFlags()
+	flags := cmd.PersistentFlags()
 	cfg := config.New()
 	opts := &Options{}
-	addGlobalFlags(persistentFlags, cfg, opts)
-	printFlags := NewPrintFlags()
-	printFlags.AddFlags(cmd)
-
-	persistentFlags.Parse(args)
+	addGlobalFlags(flags, cfg, opts)
+	flags.Parse(args)
 
 	var lv = atomicInfoLevel
 	if opts.debug {

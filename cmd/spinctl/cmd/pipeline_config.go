@@ -16,9 +16,9 @@ import (
 )
 
 type pipelineConfig struct {
-	ioStreams *genericclioptions.IOStreams
-	client    *spinnaker.Client
-	output    string
+	ioStreams    *genericclioptions.IOStreams
+	client       *spinnaker.Client
+	outputFormat string
 
 	historyLimit int32
 }
@@ -64,12 +64,12 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 				pipelineName := args[1]
 				logger.FromContext(ctx).Debugf("pipelineConfig.get: pipelineName: %s", pipelineName)
 
-				s, err = pc.client.GetPipelineConfig(ctx, application, pipelineName, pc.output)
+				s, err = pc.client.GetPipelineConfig(ctx, application, pipelineName, pc.outputFormat)
 				if err != nil {
 					return err
 				}
 			} else {
-				s, err = pc.client.GetPipelineConfigFromApplication(ctx, application, pc.output)
+				s, err = pc.client.GetPipelineConfigFromApplication(ctx, application, pc.outputFormat)
 				if err != nil {
 					return err
 				}
@@ -81,8 +81,7 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVarP(&pc.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&pc.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
@@ -101,7 +100,7 @@ func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(*cobra.Command, []string) error {
 			// TODO(zchee): validate arg length.
-			s, err := pc.client.ListPipelineConfigs(ctx, pc.output)
+			s, err := pc.client.ListPipelineConfigs(ctx, pc.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -111,8 +110,7 @@ func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVarP(&pc.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&pc.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
@@ -133,7 +131,7 @@ func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
 			// TODO(zchee): validate arg length.
 			pipelineConfigID := args[0]
 
-			s, err := pc.client.GetPipelineConfigHistory(ctx, pipelineConfigID, pc.historyLimit, pc.output)
+			s, err := pc.client.GetPipelineConfigHistory(ctx, pipelineConfigID, pc.historyLimit, pc.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -145,7 +143,7 @@ func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
 
 	f := cmd.Flags()
 	f.Int32Var(&pc.historyLimit, "limit", 20, "Limit size of histories.")
-	f.StringVarP(&pc.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&pc.outputFormat).AddFlags(cmd)
 
 	return cmd
 }

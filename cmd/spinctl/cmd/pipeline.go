@@ -16,9 +16,9 @@ import (
 )
 
 type pipeline struct {
-	ioStreams *genericclioptions.IOStreams
-	client    *spinnaker.Client
-	output    string
+	ioStreams    *genericclioptions.IOStreams
+	client       *spinnaker.Client
+	outputFormat string
 }
 
 // NewCmdPipeline creates the pipeline command.
@@ -63,7 +63,7 @@ func (p *pipeline) get(ctx context.Context) *cobra.Command {
 			pipelineName := args[1]
 			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
 
-			s, err := p.client.GetPipeline(ctx, application, pipelineName, p.output)
+			s, err := p.client.GetPipeline(ctx, application, pipelineName, p.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -72,8 +72,7 @@ func (p *pipeline) get(ctx context.Context) *cobra.Command {
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVarP(&p.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&p.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
@@ -101,7 +100,7 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
-			s, err := p.client.ListPipelines(ctx, name, p.output)
+			s, err := p.client.ListPipelines(ctx, name, p.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -110,8 +109,7 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVarP(&p.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&p.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
