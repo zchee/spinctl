@@ -117,6 +117,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	return cmd
 }
 
+// NewStackdriverExporter apply stackdriver exporter.
 func NewStackdriverExporter(ctx context.Context, projectID string) error {
 	stackdriverOpts := stackdriver.Options{
 		ProjectID:                projectID,
