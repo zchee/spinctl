@@ -24,7 +24,7 @@ func parsePayload(payload interface{}, outputFormat string) (s string, err error
 		tok := strings.Split(outputFormat, "=")
 		outputFormat = tok[1]
 
-		payload, err = parseJsonPath(&payload, outputFormat)
+		payload, err = parseJSONPath(&payload, outputFormat)
 		if err != nil {
 			return "", errors.Wrap(err, "parsePayload: failed to convert payload to JSONToYAML")
 		}
@@ -52,7 +52,7 @@ func parsePayload(payload interface{}, outputFormat string) (s string, err error
 	return s, nil
 }
 
-func parseJsonPath(input interface{}, template string) (interface{}, error) {
+func parseJSONPath(input interface{}, template string) (interface{}, error) {
 	j := jsonpath.New("json-path")
 	if err := j.Parse(template); err != nil {
 		return nil, errors.Errorf("failed to parsing json: %v", err)
