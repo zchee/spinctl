@@ -10,9 +10,9 @@ import (
 	"runtime"
 	"runtime/pprof"
 
+	"github.com/spf13/pflag"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/spf13/pflag"
 	"github.com/zchee/spinctl/pkg/config"
 )
 
