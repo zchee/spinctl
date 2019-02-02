@@ -9,28 +9,64 @@ import (
 	"os"
 	"runtime"
 	"runtime/pprof"
+	"sort"
+	"strings"
 
+	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/config"
 )
 
-func addPrintFlags(outputFormat *string) *genericclioptions.PrintFlags {
-	templateArgPtr := ""
+type PrintFlags struct {
+	JSONYamlPrintFlags *genericclioptions.JSONYamlPrintFlags
+	JSONPathPrintFlags *genericclioptions.JSONPathPrintFlags
 
-	return &genericclioptions.PrintFlags{
+	OutputFormat *string
+
+	// OutputFlagSpecified indicates whether the user specifically requested a certain kind of output.
+	// Using this function allows a sophisticated caller to change the flag binding logic if they so desire.
+	OutputFlagSpecified func() bool
+}
+
+// templates are logically optional for specifying a format.
+// this allows a user to specify a template format value
+// as --output=jsonpath=
+var outputFormats = map[string]bool{
+	"json":     true,
+	"yaml":     true,
+	"jsonpath": true,
+}
+
+func (f *PrintFlags) AllowedFormats() []string {
+	formats := make([]string, 0, len(outputFormats))
+	for format := range outputFormats {
+		formats = append(formats, format)
+	}
+	sort.Strings(formats)
+	return formats
+}
+
+func (f *PrintFlags) AddFlags(cmd *cobra.Command) {
+	f.JSONYamlPrintFlags.AddFlags(cmd)
+	f.JSONPathPrintFlags.AddFlags(cmd)
+
+	if f.OutputFormat != nil {
+		cmd.Flags().StringVarP(f.OutputFormat, "output", "o", *f.OutputFormat, fmt.Sprintf("Output format. One of: %s.", strings.Join(f.AllowedFormats(), "|")))
+		if f.OutputFlagSpecified == nil {
+			f.OutputFlagSpecified = func() bool {
+				return cmd.Flag("output").Changed
+			}
+		}
+	}
+}
+
+func addPrintFlags(outputFormat *string) *PrintFlags {
+	return &PrintFlags{
 		OutputFormat:       outputFormat,
 		JSONYamlPrintFlags: genericclioptions.NewJSONYamlPrintFlags(),
-		TemplatePrinterFlags: &genericclioptions.KubeTemplatePrintFlags{
-			GoTemplatePrintFlags: &genericclioptions.GoTemplatePrintFlags{
-				TemplateArgument: &templateArgPtr,
-			},
-			JSONPathPrintFlags: &genericclioptions.JSONPathPrintFlags{
-				TemplateArgument: &templateArgPtr,
-			},
-			TemplateArgument: &templateArgPtr,
-		},
+		JSONPathPrintFlags: &genericclioptions.JSONPathPrintFlags{},
 	}
 }
 
