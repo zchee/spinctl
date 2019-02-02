@@ -38,9 +38,9 @@ func newZapConfig() (cfg zap.Config) {
 }
 
 // NewZapLogger returns the new zap Sugared Logger.
-func NewZapLogger(lv zapcore.Level, opts ...zap.Option) *zap.SugaredLogger {
+func NewZapLogger(lv zap.AtomicLevel, opts ...zap.Option) *zap.SugaredLogger {
 	cfg := newZapConfig()
-	cfg.Level.SetLevel(lv)
+	cfg.Level.SetLevel(lv.Level())
 	cfg.DisableCaller = true
 	cfg.DisableStacktrace = true
 	cfg.EncoderConfig.EncodeTime = nil
