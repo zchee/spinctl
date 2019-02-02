@@ -9,13 +9,18 @@ require (
 	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 	github.com/aws/aws-sdk-go v1.16.26 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.1.0 // indirect
+	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.2.0
+	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
+	github.com/googleapis/gnostic v0.2.0 // indirect
+	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/json-iterator/go v0.0.0-20181112064556-d05f387f50c0
 	github.com/minio/sha256-simd v0.0.0-20190117184323-cc1980cb0338
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/spf13/cobra v0.0.0-20181127133106-d2d81d9a96e2
 	github.com/spf13/pflag v1.0.3
@@ -33,4 +38,10 @@ require (
 	google.golang.org/genproto v0.0.0-20190128161407-8ac453e89fca // indirect
 	google.golang.org/grpc v1.18.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
+	k8s.io/api v0.0.0-20181121191454-a61488babbd6 // indirect
+	k8s.io/apimachinery v0.0.0-20190122181752-bebe27e40fb7 // indirect
+	k8s.io/cli-runtime v0.0.0-20181121194908-20f904c5b669
+	k8s.io/client-go v10.0.0+incompatible // indirect
+	k8s.io/klog v0.1.0 // indirect
+	sigs.k8s.io/yaml v1.1.0 // indirect
 )
