@@ -7,24 +7,24 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 
 	"github.com/spf13/cobra"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
 type version struct {
-	out    io.Writer
-	client *spinnaker.Client
-	output string
+	ioStreams *genericclioptions.IOStreams
+	client    *spinnaker.Client
+	output    string
 }
 
 // NewCmdVersion creates the version command.
-func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
+func NewCmdVersion(ctx context.Context, client *spinnaker.Client, ioStreams *genericclioptions.IOStreams) *cobra.Command {
 	v := &version{
-		out:    out,
-		client: client,
+		ioStreams: ioStreams,
+		client:    client,
 	}
 
 	cmd := &cobra.Command{
@@ -48,7 +48,7 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, out io.Writer)
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(v.out, s)
+			fmt.Fprintf(v.ioStreams.Out, s)
 			return nil
 		},
 	}

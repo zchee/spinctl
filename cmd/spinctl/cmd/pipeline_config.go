@@ -7,27 +7,27 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 
 	"github.com/spf13/cobra"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
 type pipelineConfig struct {
-	out    io.Writer
-	client *spinnaker.Client
-	output string
+	ioStreams *genericclioptions.IOStreams
+	client    *spinnaker.Client
+	output    string
 
 	historyLimit int32
 }
 
 // NewCmdPipelineConfig creates the pipeline-config command.
-func NewCmdPipelineConfig(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
+func NewCmdPipelineConfig(ctx context.Context, client *spinnaker.Client, ioStreams *genericclioptions.IOStreams) *cobra.Command {
 	pc := &pipelineConfig{
-		out:    out,
-		client: client,
+		ioStreams: ioStreams,
+		client:    client,
 	}
 
 	cmd := &cobra.Command{
@@ -75,7 +75,7 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 				}
 			}
 
-			fmt.Fprintf(pc.out, s)
+			fmt.Fprintf(pc.ioStreams.Out, s)
 
 			return err
 		},
@@ -105,7 +105,7 @@ func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(pc.out, s)
+			fmt.Fprintf(pc.ioStreams.Out, s)
 
 			return nil
 		},
@@ -137,7 +137,7 @@ func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(pc.out, s)
+			fmt.Fprintf(pc.ioStreams.Out, s)
 
 			return nil
 		},
@@ -152,7 +152,7 @@ func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
 
 func (pc *pipelineConfig) convert(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "convert [pipeline config id]",
+		Use:   "convert [pipeline config ID]",
 		Short: "Convert a pipeline config to a pipeline template.",
 		PreRunE: func(*cobra.Command, []string) error {
 			var err error
@@ -171,7 +171,7 @@ func (pc *pipelineConfig) convert(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(pc.out, s)
+			fmt.Fprintf(pc.ioStreams.Out, s)
 
 			return nil
 		},

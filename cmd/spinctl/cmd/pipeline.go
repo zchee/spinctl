@@ -7,25 +7,25 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 
 	"github.com/spf13/cobra"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
 type pipeline struct {
-	out    io.Writer
-	client *spinnaker.Client
-	output string
+	ioStreams *genericclioptions.IOStreams
+	client    *spinnaker.Client
+	output    string
 }
 
 // NewCmdPipeline creates the pipeline command.
-func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
+func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, ioStreams *genericclioptions.IOStreams) *cobra.Command {
 	p := &pipeline{
-		out:    out,
-		client: client,
+		ioStreams: ioStreams,
+		client:    client,
 	}
 
 	cmd := &cobra.Command{
@@ -67,7 +67,7 @@ func (p *pipeline) get(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(p.out, s)
+			fmt.Fprintf(p.ioStreams.Out, s)
 			return nil
 		},
 	}
@@ -105,7 +105,7 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(p.out, s)
+			fmt.Fprintf(p.ioStreams.Out, s)
 			return nil
 		},
 	}

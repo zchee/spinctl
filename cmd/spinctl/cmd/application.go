@@ -7,18 +7,18 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 
 	"github.com/spf13/cobra"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/logger"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
 type application struct {
-	out    io.Writer
-	client *spinnaker.Client
-	output string
+	ioStreams *genericclioptions.IOStreams
+	client    *spinnaker.Client
+	output    string
 
 	getExpand bool
 
@@ -27,10 +27,10 @@ type application struct {
 }
 
 // NewCmdApplication creates the application command.
-func NewCmdApplication(ctx context.Context, client *spinnaker.Client, out io.Writer) *cobra.Command {
+func NewCmdApplication(ctx context.Context, client *spinnaker.Client, ioStreams *genericclioptions.IOStreams) *cobra.Command {
 	a := &application{
-		out:    out,
-		client: client,
+		ioStreams: ioStreams,
+		client:    client,
 	}
 
 	cmd := &cobra.Command{
@@ -73,7 +73,7 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(a.out, s)
+			fmt.Fprintf(a.ioStreams.Out, s)
 			return nil
 		},
 	}
@@ -105,7 +105,7 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(a.out, s)
+			fmt.Fprintf(a.ioStreams.Out, s)
 			return nil
 		},
 	}

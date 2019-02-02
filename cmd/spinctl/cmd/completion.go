@@ -10,6 +10,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
 )
 
 const defaultBoilerPlate = `
@@ -65,7 +66,7 @@ var (
 )
 
 // NewCmdCompletion creates the spinctl shell completion.
-func NewCmdCompletion(out io.Writer) *cobra.Command {
+func NewCmdCompletion(ioStreams *genericclioptions.IOStreams) *cobra.Command {
 	shells := []string{}
 	for s := range completionShells {
 		shells = append(shells, s)
@@ -78,7 +79,7 @@ func NewCmdCompletion(out io.Writer) *cobra.Command {
 		Long:                  completionLong,
 		Example:               completionExample,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runCompletion(out, cmd, args)
+			return runCompletion(ioStreams.Out, cmd, args)
 		},
 		ValidArgs: shells,
 	}
