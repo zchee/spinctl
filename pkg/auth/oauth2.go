@@ -30,6 +30,7 @@ import (
 
 // OAuth2Config implements a OAuth2.0 authentication data for Spinnaker.
 type OAuth2Config struct {
+	UseGcloud    bool          `yaml:"gcloud,omitempty"`
 	ClientID     string        `yaml:"clientId,omitempty"`
 	ClientSecret string        `yaml:"clientSecret,omitempty"`
 	AuthURL      string        `yaml:"authUrl,omitempty"`
