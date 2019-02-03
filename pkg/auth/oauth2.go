@@ -39,13 +39,13 @@ var (
 
 // OAuth2Config implements a OAuth2.0 authentication data for Spinnaker.
 type OAuth2Config struct {
-	UseGcloud    bool          `yaml:"gcloud,omitempty"`
 	ClientID     string        `yaml:"clientId,omitempty"`
 	ClientSecret string        `yaml:"clientSecret,omitempty"`
 	AuthURL      string        `yaml:"authUrl,omitempty"`
 	TokenURL     string        `yaml:"tokenUrl,omitempty"`
 	Scopes       []string      `yaml:"scopes,omitempty"`
 	Token        *oauth2.Token `yaml:"token,omitempty"`
+	UseGcloud    bool          `yaml:"gcloud,omitempty"`
 }
 
 // IsValid checks whethere the OAuth2Config is valid.
