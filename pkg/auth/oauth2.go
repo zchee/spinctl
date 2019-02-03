@@ -232,6 +232,7 @@ func HashVerifier(b []byte) []byte {
 	return h.Sum(nil)
 }
 
+// AuthenticateOAuth2ReuseToken authenticate gate with OAuth2 with reuse token and returns the refreshed oauth2.Token.
 func AuthenticateOAuth2ReuseToken(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, error) {
 	conf := &oauth2.Config{
 		Scopes: oc.Scopes,
@@ -245,6 +246,7 @@ func AuthenticateOAuth2ReuseToken(ctx context.Context, oc *OAuth2Config) (*oauth
 	return tokSrc.Token()
 }
 
+// AuthenticateOAuth2WithGcloud authenticate gate with OAuth2 with gcloud access token returns the new oauth2.Token.
 func AuthenticateOAuth2WithGcloud(ctx context.Context) (*oauth2.Token, error) {
 	cmd := exec.CommandContext(ctx, "gcloud", "auth", "application-default", "print-access-token")
 	out, err := cmd.Output()
