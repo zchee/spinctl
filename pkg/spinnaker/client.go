@@ -5,17 +5,13 @@
 package spinnaker
 
 import (
-	"bytes"
 	"context"
 	"net/http"
 	"net/http/cookiejar"
-	"os/exec"
 
 	"github.com/pkg/errors"
 	"golang.org/x/net/publicsuffix"
 	"golang.org/x/oauth2"
-	oauth2_google "golang.org/x/oauth2/google"
-	oauth2_v2 "google.golang.org/api/oauth2/v2"
 
 	"github.com/zchee/spinctl/api/gate"
 	"github.com/zchee/spinctl/pkg/auth"
@@ -109,54 +105,25 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 		switch { // nolint:gocritic
 		case confAuth.OAuth2Config != nil:
 			oauth2Conf := confAuth.OAuth2Config
+
 			var tok *oauth2.Token
 			var err error
-
 			switch {
 			case oauth2Conf.UseGcloud:
-				cmd := exec.Command("gcloud", "auth", "application-default", "print-access-token")
-				out, err := cmd.Output()
-				if err != nil {
-					return nil, err
-				}
-				out = bytes.TrimSpace(out)
-				tok = &oauth2.Token{
-					AccessToken:  string(out),
-					RefreshToken: string(out),
-				}
-
-				conf := &oauth2.Config{
-					Scopes:   []string{"openid", oauth2_v2.UserinfoEmailScope, oauth2_v2.UserinfoProfileScope},
-					Endpoint: oauth2_google.Endpoint,
-				}
-				tokSrc := conf.TokenSource(ctx, tok)
-				tok, err = tokSrc.Token()
-				if err != nil {
-					return nil, err
-				}
+				tok, err = auth.AuthenticateOAuth2WithGcloud(ctx)
 			case oauth2Conf.Token != nil:
-				tok = oauth2Conf.Token
-				conf := &oauth2.Config{
-					Scopes: oauth2Conf.Scopes,
-					Endpoint: oauth2.Endpoint{
-						AuthURL:  oauth2Conf.AuthURL,
-						TokenURL: oauth2Conf.TokenURL,
-					},
-				}
-				tokSrc := conf.TokenSource(ctx, tok)
-				tok, err = tokSrc.Token()
-				if err != nil {
-					return nil, err
-				}
+				tok, err = auth.AuthenticateOAuth2ReuseToken(ctx, oauth2Conf)
 			default:
 				tok, err = auth.AuthenticateOAuth2(ctx, oauth2Conf)
-				if err != nil {
-					return nil, err
-				}
-				if !tok.Valid() {
-					return nil, errors.Wrapf(err, "token is invalid: %v", tok)
-				}
 			}
+			if err != nil {
+				return nil, err
+			}
+
+			if !tok.Valid() {
+				return nil, errors.Wrapf(err, "token is invalid: %v", tok)
+			}
+
 			logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
 			if err := auth.Login(c.httpClient, c.Config.Gate.Endpoint, tok); err != nil {

@@ -6,6 +6,7 @@ package auth
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	crand "crypto/rand"
 	"encoding/base64"
@@ -13,6 +14,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -26,6 +28,13 @@ import (
 
 	"github.com/zchee/spinctl/pkg/internal/unsafeutil"
 	"github.com/zchee/spinctl/pkg/logger"
+)
+
+var (
+	// GoogleScope scope of Google OAuth2.
+	GoogleScope = []string{"openid", oauth2_v2.UserinfoEmailScope, oauth2_v2.UserinfoProfileScope}
+	// GoogleEndpoint endpoint of Google OAuth2.
+	GoogleEndpoint = oauth2_google.Endpoint
 )
 
 // OAuth2Config implements a OAuth2.0 authentication data for Spinnaker.
@@ -69,10 +78,10 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 
 	// TODO(zchee): Currently, only of supported Google OAuth2 if Scope is nil
 	if conf.Scopes == nil {
-		conf.Scopes = []string{"openid", oauth2_v2.UserinfoEmailScope, oauth2_v2.UserinfoProfileScope}
+		conf.Scopes = GoogleScope
 	}
 	if conf.Endpoint.AuthURL == "" || conf.Endpoint.TokenURL == "" {
-		conf.Endpoint = oauth2_google.Endpoint
+		conf.Endpoint = GoogleEndpoint
 	}
 
 	// Requests refresh token
@@ -221,4 +230,38 @@ func HashVerifier(b []byte) []byte {
 	h.Write(b)
 
 	return h.Sum(nil)
+}
+
+func AuthenticateOAuth2ReuseToken(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, error) {
+	conf := &oauth2.Config{
+		Scopes: oc.Scopes,
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  oc.AuthURL,
+			TokenURL: oc.TokenURL,
+		},
+	}
+	tokSrc := conf.TokenSource(ctx, oc.Token)
+
+	return tokSrc.Token()
+}
+
+func AuthenticateOAuth2WithGcloud(ctx context.Context) (*oauth2.Token, error) {
+	cmd := exec.CommandContext(ctx, "gcloud", "auth", "application-default", "print-access-token")
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, err
+	}
+	out = bytes.TrimSpace(out)
+	tok := &oauth2.Token{
+		AccessToken:  string(out),
+		RefreshToken: string(out),
+	}
+
+	conf := &oauth2.Config{
+		Scopes:   GoogleScope,
+		Endpoint: GoogleEndpoint,
+	}
+	tokSrc := conf.TokenSource(ctx, tok)
+
+	return tokSrc.Token()
 }
