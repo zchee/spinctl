@@ -46,16 +46,15 @@ func (pt *pipelineTemplate) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline template.",
-		Args:  cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = pt.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 1); err != nil {
 				return err
 			}
 
+			ctx, err = pt.client.Authenticate(ctx)
+			return err
+		},
+		RunE: func(_ *cobra.Command, args []string) error {
 			id := args[0]
 			logger.FromContext(ctx).Debugf("pipelineTemplate.get: id: %s", id)
 
@@ -79,16 +78,15 @@ func (pt *pipelineTemplate) list(ctx context.Context) *cobra.Command {
 		Use:     "list",
 		Aliases: []string{"ls"},
 		Short:   "List pipeline templates.",
-		Args:    cobra.ExactArgs(0),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = pt.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 0); err != nil {
 				return err
 			}
 
+			ctx, err = pt.client.Authenticate(ctx)
+			return err
+		},
+		RunE: func(*cobra.Command, []string) error {
 			s, err := pt.client.ListPipelineTemplates(ctx, pt.listScopes, pt.output)
 			if err != nil {
 				return err
@@ -105,20 +103,12 @@ func (pt *pipelineTemplate) list(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) create(ctx context.Context) *cobra.Command {
+func (pt *pipelineTemplate) create(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create",
-		Short: "Create a pipeline template.",
-		Args:  cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = pt.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
-				return err
-			}
-
+		Use:     "create",
+		Short:   "Create a pipeline template.",
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
+		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
 	}
@@ -126,21 +116,14 @@ func (pt *pipelineTemplate) create(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) update(ctx context.Context) *cobra.Command {
+func (pt *pipelineTemplate) update(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update",
 		Aliases: []string{"up"},
 		Short:   "Update a pipeline template.",
 		Args:    cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = pt.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
-				return err
-			}
-
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
+		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
 	}
@@ -148,21 +131,13 @@ func (pt *pipelineTemplate) update(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) delete(ctx context.Context) *cobra.Command {
+func (pt *pipelineTemplate) delete(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete a pipeline template.",
-		Args:    cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = pt.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
-				return err
-			}
-
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
+		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
 	}

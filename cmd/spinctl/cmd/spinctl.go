@@ -8,6 +8,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"contrib.go.opencensus.io/exporter/stackdriver"
@@ -133,5 +134,17 @@ func NewStackdriverExporter(ctx context.Context, projectID string) error {
 	trace.RegisterExporter(ext)
 	view.RegisterExporter(ext)
 
+	return nil
+}
+
+func validateArgs(cmd *cobra.Command, args []string, expectedArgs int) error {
+	use := strings.Split(cmd.Use, " ")
+	if expectedArgs == 0 && len(args) > 0 {
+		return errors.Errorf("%s command no needs args", use[0])
+	}
+	if len(args) < expectedArgs {
+		use := strings.Split(cmd.Use, " ")
+		return errors.Errorf("%s command required %s arg(s)", use[0], use[1:])
+	}
 	return nil
 }

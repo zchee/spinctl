@@ -43,18 +43,17 @@ func NewCmdPipeline(ctx context.Context, client *spinnaker.Client, ioStreams *ge
 
 func (p *pipeline) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "get",
+		Use:   "get [application name] [pipeline name]",
 		Short: "Get the specified pipeline.",
-		Args:  cobra.ExactArgs(2),
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = p.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 2); err != nil {
 				return err
 			}
 
+			ctx, err = p.client.Authenticate(ctx)
+			return err
+		},
+		RunE: func(_ *cobra.Command, args []string) error {
 			application := args[0]
 			pipelineName := args[1]
 			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
@@ -78,17 +77,15 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 		Use:     "list <application name>",
 		Aliases: []string{"ls"},
 		Short:   "List the pipelines for the provided application.",
-		Args:    cobra.ExactArgs(1),
 		Example: "  spinctl pipeline list spin -o yaml",
-		PreRunE: func(*cobra.Command, []string) (err error) {
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 2); err != nil {
+				return err
+			}
 			ctx, err = p.client.Authenticate(ctx)
 			return err
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
-				return err
-			}
-
+		RunE: func(_ *cobra.Command, args []string) error {
 			name := args[0]
 			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
@@ -106,14 +103,11 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) save(ctx context.Context) *cobra.Command {
+func (p *pipeline) save(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "save",
-		Short: "Save the provided pipeline.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = p.client.Authenticate(ctx)
-			return err
-		},
+		Use:     "save",
+		Short:   "Save the provided pipeline.",
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
@@ -122,15 +116,12 @@ func (p *pipeline) save(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) delete(ctx context.Context) *cobra.Command {
+func (p *pipeline) delete(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the provided pipeline.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = p.client.Authenticate(ctx)
-			return err
-		},
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
@@ -139,15 +130,12 @@ func (p *pipeline) delete(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (p *pipeline) execute(ctx context.Context) *cobra.Command {
+func (p *pipeline) execute(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "execute",
 		Aliases: []string{"exec"},
 		Short:   "Execute the provided pipeline.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = p.client.Authenticate(ctx)
-			return err
-		},
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},

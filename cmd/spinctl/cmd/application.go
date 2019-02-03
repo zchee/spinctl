@@ -51,17 +51,16 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "get <application name>",
 		Short:   "Get the specified application.",
-		Args:    cobra.ExactArgs(1),
 		Example: "  spinctl application get spin -x -o yaml",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = a.client.Authenticate(ctx)
-			return err
-		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if err := cmd.ValidateArgs(args); err != nil {
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 1); err != nil {
 				return err
 			}
 
+			ctx, err = a.client.Authenticate(ctx)
+			return err
+		},
+		RunE: func(_ *cobra.Command, args []string) error {
 			name := args[0]
 			logger.FromContext(ctx).Debugf("application.get: name: %s, expand: %t", name, a.getExpand)
 			logger.FromContext(ctx).Debug(a.outputFormat)
@@ -87,9 +86,12 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 		Use:     "list",
 		Aliases: []string{"ls"},
 		Short:   "List all applications.",
-		Args:    cobra.ExactArgs(0),
 		Example: "  spinctl application list -o yaml",
-		PreRunE: func(*cobra.Command, []string) (err error) {
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 0); err != nil {
+				return err
+			}
+
 			ctx, err = a.client.Authenticate(ctx)
 			return err
 		},
@@ -111,14 +113,11 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (a *application) save(ctx context.Context) *cobra.Command {
+func (a *application) save(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "save",
-		Short: "Save the provided application.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = a.client.Authenticate(ctx)
-			return err
-		},
+		Use:     "save",
+		Short:   "Save the provided application.",
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
@@ -127,15 +126,12 @@ func (a *application) save(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (a *application) delete(ctx context.Context) *cobra.Command {
+func (a *application) delete(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the specified application.",
-		PreRunE: func(*cobra.Command, []string) (err error) {
-			ctx, err = a.client.Authenticate(ctx)
-			return err
-		},
+		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
 		},
