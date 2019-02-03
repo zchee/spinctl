@@ -47,13 +47,9 @@ func (pt *pipelineTemplate) get(ctx context.Context) *cobra.Command {
 		Use:   "get",
 		Short: "Get the specified pipeline template.",
 		Args:  cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pt.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -84,13 +80,9 @@ func (pt *pipelineTemplate) list(ctx context.Context) *cobra.Command {
 		Aliases: []string{"ls"},
 		Short:   "List pipeline templates.",
 		Args:    cobra.ExactArgs(0),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pt.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -118,13 +110,9 @@ func (pt *pipelineTemplate) create(ctx context.Context) *cobra.Command {
 		Use:   "create",
 		Short: "Create a pipeline template.",
 		Args:  cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pt.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -144,13 +132,9 @@ func (pt *pipelineTemplate) update(ctx context.Context) *cobra.Command {
 		Aliases: []string{"up"},
 		Short:   "Update a pipeline template.",
 		Args:    cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pt.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -170,13 +154,9 @@ func (pt *pipelineTemplate) delete(ctx context.Context) *cobra.Command {
 		Aliases: []string{"del"},
 		Short:   "Delete a pipeline template.",
 		Args:    cobra.ExactArgs(1),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pt.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {

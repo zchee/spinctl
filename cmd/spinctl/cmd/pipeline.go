@@ -46,13 +46,9 @@ func (p *pipeline) get(ctx context.Context) *cobra.Command {
 		Use:   "get",
 		Short: "Get the specified pipeline.",
 		Args:  cobra.ExactArgs(2),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = p.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -84,13 +80,9 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 		Short:   "List the pipelines for the provided application.",
 		Args:    cobra.ExactArgs(1),
 		Example: "  spinctl pipeline list spin -o yaml",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = p.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -118,13 +110,9 @@ func (p *pipeline) save(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided pipeline.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = p.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
@@ -139,13 +127,9 @@ func (p *pipeline) delete(ctx context.Context) *cobra.Command {
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the provided pipeline.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = p.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
@@ -160,13 +144,9 @@ func (p *pipeline) execute(ctx context.Context) *cobra.Command {
 		Use:     "execute",
 		Aliases: []string{"exec"},
 		Short:   "Execute the provided pipeline.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = p.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet

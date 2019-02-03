@@ -31,13 +31,9 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, ioStreams *gen
 		Use:   "version",
 		Short: "Show current Gate's version",
 		Args:  cobra.ExactArgs(0),
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = v.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {

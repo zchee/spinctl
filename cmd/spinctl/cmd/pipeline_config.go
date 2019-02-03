@@ -46,13 +46,9 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get [application] <pipeline name>",
 		Short: "Get the list or specific of an application's pipeline configurations.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pc.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(_ *cobra.Command, args []string) (err error) {
 			// TODO(zchee): validate arg length.
@@ -90,13 +86,9 @@ func (pc *pipelineConfig) list(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List the all pipeline configs.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pc.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			// TODO(zchee): validate arg length.
@@ -119,13 +111,9 @@ func (pc *pipelineConfig) history(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "history [pipeline config ID]",
 		Short: "Get pipeline config history.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pc.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			// TODO(zchee): validate arg length.
@@ -152,13 +140,9 @@ func (pc *pipelineConfig) convert(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "convert [pipeline config ID]",
 		Short: "Convert a pipeline config to a pipeline template.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = pc.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			// TODO(zchee): validate arg length

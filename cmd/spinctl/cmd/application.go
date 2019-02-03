@@ -53,13 +53,9 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 		Short:   "Get the specified application.",
 		Args:    cobra.ExactArgs(1),
 		Example: "  spinctl application get spin -x -o yaml",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = a.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := cmd.ValidateArgs(args); err != nil {
@@ -93,13 +89,9 @@ func (a *application) list(ctx context.Context) *cobra.Command {
 		Short:   "List all applications.",
 		Args:    cobra.ExactArgs(0),
 		Example: "  spinctl application list -o yaml",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = a.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			s, err := a.client.ListApplications(ctx, a.listAccount, a.listOwner, a.outputFormat)
@@ -123,13 +115,9 @@ func (a *application) save(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "save",
 		Short: "Save the provided application.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = a.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
@@ -144,13 +132,9 @@ func (a *application) delete(ctx context.Context) *cobra.Command {
 		Use:     "delete",
 		Aliases: []string{"del"},
 		Short:   "Delete the specified application.",
-		PreRunE: func(*cobra.Command, []string) error {
-			var err error
+		PreRunE: func(*cobra.Command, []string) (err error) {
 			ctx, err = a.client.Authenticate(ctx)
-			if err != nil {
-				return err
-			}
-			return nil
+			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
 			return errNotImplementedYet
