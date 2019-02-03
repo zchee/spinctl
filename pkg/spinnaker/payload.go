@@ -23,9 +23,10 @@ func parsePayload(payload interface{}, outputFormat string) (s string, err error
 
 	if strings.HasPrefix(outputFormat, "jsonpath=") {
 		tok := strings.Split(outputFormat, "=")
-		outputFormat = tok[1]
+		outputFormat = tok[0]
+		template := tok[1]
 
-		payload, err = parseJSONPath(&payload, outputFormat)
+		payload, err = parseJSONPath(&payload, template)
 		if err != nil {
 			return "", errors.Wrap(err, "parsePayload: failed to convert payload to JSONToYAML")
 		}
@@ -40,10 +41,12 @@ func parsePayload(payload interface{}, outputFormat string) (s string, err error
 	case "yaml":
 		out, err = yaml.JSONToYAML(buf.Bytes())
 		if err != nil {
-			return "", errors.Wrap(err, "parsePayload: failed to convert payload to JSONToYAML")
+			return "", errors.Wrap(err, "parsePayload: failed to convert json payload to yaml")
 		}
-	default:
+	case "json", "jsonpath":
 		// nothing to do
+	default:
+		return "", errors.New("invalid output option")
 	}
 	out = bytes.TrimSpace(out)
 
