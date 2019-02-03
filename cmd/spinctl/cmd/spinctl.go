@@ -85,11 +85,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	var clientOpts []spinnaker.Option
 	if projectID := cfg.GoogleCloudProject; projectID != "" {
 		log.Debug("use StackdriverExporter")
-		if err := view.Register(
-			ochttp.ClientSentBytesDistribution,
-			ochttp.ClientReceivedBytesDistribution,
-			ochttp.ClientRoundtripLatencyDistribution,
-		); err != nil {
+		if err := view.Register(ochttp.DefaultClientViews...); err != nil {
 			log.Fatal(zap.Error(err))
 		}
 		clientOpts = append(clientOpts, spinnaker.WithHTTPClient(&http.Client{
