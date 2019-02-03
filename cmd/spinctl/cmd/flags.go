@@ -56,6 +56,9 @@ func (f *PrintFlags) AddFlags(cmd *cobra.Command) {
 	f.JSONPathPrintFlags.AddFlags(cmd)
 
 	if f.OutputFormat != nil {
+		if *f.OutputFormat == "" {
+			*f.OutputFormat = "json"
+		}
 		cmd.Flags().StringVarP(f.OutputFormat, "output", "o", *f.OutputFormat, fmt.Sprintf("Output format. One of: %s.", strings.Join(f.AllowedFormats(), "|")))
 		if f.OutputFlagSpecified == nil {
 			f.OutputFlagSpecified = func() bool {
