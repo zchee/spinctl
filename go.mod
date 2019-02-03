@@ -11,13 +11,15 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.1.0 // indirect
 	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
 	github.com/ghodss/yaml v1.0.0
+	github.com/gogo/protobuf v1.2.0 // indirect
 	github.com/google/go-cmp v0.2.0
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
 	github.com/googleapis/gnostic v0.2.0 // indirect
+	github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17 // indirect
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/json-iterator/go v0.0.0-20181112064556-d05f387f50c0
-	github.com/minio/sha256-simd v0.0.0-20190117184323-cc1980cb0338
+	github.com/minio/sha256-simd v0.0.0-20190131020904-2d45a736cd16
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
@@ -31,16 +33,17 @@ require (
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/multierr v0.0.0-20180122172545-ddea229ff1df // indirect
 	go.uber.org/zap v0.0.0-20180814183419-67bc79d13d15
+	golang.org/x/crypto v0.0.0-20190131182504-b8fe1690c613 // indirect
 	golang.org/x/net v0.0.0-20190125091013-d26f9f9a57f3
-	golang.org/x/oauth2 v0.0.0-20190115181402-5dab4167f31c
-	golang.org/x/sys v0.0.0-20190124100055-b90733256f2e // indirect
+	golang.org/x/oauth2 v0.0.0-20190130055435-99b60b757ec1
+	golang.org/x/sys v0.0.0-20190203050204-7ae0202eb74c // indirect
 	google.golang.org/api v0.1.0
-	google.golang.org/genproto v0.0.0-20190128161407-8ac453e89fca // indirect
+	google.golang.org/genproto v0.0.0-20190201180003-4b09977fb922 // indirect
 	google.golang.org/grpc v1.18.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
 	k8s.io/api v0.0.0-20181121191454-a61488babbd6 // indirect
-	k8s.io/apimachinery v0.0.0-20190122181752-bebe27e40fb7 // indirect
-	k8s.io/cli-runtime v0.0.0-20181121194908-20f904c5b669
+	k8s.io/apimachinery v0.0.0-20190117220443-572dfc7bdfcb // indirect
+	k8s.io/cli-runtime v0.0.0-20190201155147-3d3b57cfe43c
 	k8s.io/client-go v10.0.0+incompatible
 	k8s.io/klog v0.1.0 // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
