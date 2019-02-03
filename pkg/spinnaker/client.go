@@ -103,8 +103,8 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 
 	if confAuth != nil && confAuth.Enable {
 		switch { // nolint:gocritic
-		case confAuth.OAuth2Config != nil:
-			oauth2Conf := confAuth.OAuth2Config
+		case confAuth.OAuth2 != nil:
+			oauth2Conf := confAuth.OAuth2
 
 			var tok *oauth2.Token
 			var err error
@@ -130,7 +130,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 				return nil, err
 			}
 			ctx = context.WithValue(ctx, gate.ContextAccessToken, tok.AccessToken)
-			confAuth.OAuth2Config.Token = tok
+			confAuth.OAuth2.Token = tok
 			if err := c.Config.Write(); err != nil {
 				return nil, err
 			}
