@@ -19,6 +19,7 @@ import (
 	"github.com/zchee/spinctl/pkg/config"
 )
 
+// PrintFlags represents a output flags.
 type PrintFlags struct {
 	JSONYamlPrintFlags *genericclioptions.JSONYamlPrintFlags
 	JSONPathPrintFlags *genericclioptions.JSONPathPrintFlags
@@ -39,6 +40,7 @@ var outputFormats = map[string]bool{
 	"jsonpath": true,
 }
 
+// AllowedFormats returtns the allowed output format.
 func (f *PrintFlags) AllowedFormats() []string {
 	formats := make([]string, 0, len(outputFormats))
 	for format := range outputFormats {
@@ -48,6 +50,7 @@ func (f *PrintFlags) AllowedFormats() []string {
 	return formats
 }
 
+// AddFlags adds the output flag to cmd.
 func (f *PrintFlags) AddFlags(cmd *cobra.Command) {
 	f.JSONYamlPrintFlags.AddFlags(cmd)
 	f.JSONPathPrintFlags.AddFlags(cmd)
