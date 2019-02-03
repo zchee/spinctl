@@ -106,7 +106,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 	confAuth := c.Config.Auth
 
 	if confAuth != nil && confAuth.Enable {
-		switch {
+		switch { // nolint:gocritic
 		case confAuth.OAuth2Config != nil:
 			oauth2Conf := confAuth.OAuth2Config
 			var tok *oauth2.Token
