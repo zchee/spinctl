@@ -16,9 +16,10 @@ import (
 )
 
 type pipelineTemplates struct {
-	ioStreams  *genericclioptions.IOStreams
-	client     *spinnaker.Client
-	output     string
+	ioStreams    *genericclioptions.IOStreams
+	client       *spinnaker.Client
+	outputFormat string
+
 	listScopes []string
 }
 
@@ -58,7 +59,7 @@ func (pt *pipelineTemplates) get(ctx context.Context) *cobra.Command {
 			id := args[0]
 			logger.FromContext(ctx).Debugf("pipelineTemplates.get: id: %s", id)
 
-			s, err := pt.client.GetPipelineTemplate(ctx, id, pt.output)
+			s, err := pt.client.GetPipelineTemplate(ctx, id, pt.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -67,8 +68,7 @@ func (pt *pipelineTemplates) get(ctx context.Context) *cobra.Command {
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVarP(&pt.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&pt.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
@@ -87,7 +87,7 @@ func (pt *pipelineTemplates) list(ctx context.Context) *cobra.Command {
 			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
-			s, err := pt.client.ListPipelineTemplates(ctx, pt.listScopes, pt.output)
+			s, err := pt.client.ListPipelineTemplates(ctx, pt.listScopes, pt.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -98,7 +98,7 @@ func (pt *pipelineTemplates) list(ctx context.Context) *cobra.Command {
 
 	f := cmd.Flags()
 	f.StringArrayVar(&pt.listScopes, "scopes", nil, "pipeline template scopes")
-	f.StringVarP(&pt.output, "output", "o", "", "Output format. One of: (json|yaml)")
+	addPrintFlags(&pt.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
