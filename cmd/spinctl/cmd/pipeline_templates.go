@@ -15,23 +15,23 @@ import (
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
-type pipelineTemplate struct {
+type pipelineTemplates struct {
 	ioStreams  *genericclioptions.IOStreams
 	client     *spinnaker.Client
 	output     string
 	listScopes []string
 }
 
-// NewCmdPipelineTemplate manage the pipeline template command.
-func NewCmdPipelineTemplate(ctx context.Context, client *spinnaker.Client, ioStreams *genericclioptions.IOStreams) *cobra.Command {
-	pt := &pipelineTemplate{
+// NewCmdPipelineTemplates manage the pipeline template command.
+func NewCmdPipelineTemplates(ctx context.Context, client *spinnaker.Client, ioStreams *genericclioptions.IOStreams) *cobra.Command {
+	pt := &pipelineTemplates{
 		ioStreams: ioStreams,
 		client:    client,
 	}
 
 	cmd := &cobra.Command{
-		Use:   "pipeline-template",
-		Short: "manage the Spinnaker pipeline template.",
+		Use:   "pipeline-templates",
+		Short: "manage the Spinnaker pipeline templates.",
 	}
 	cmd.AddCommand(pt.get(ctx))
 	cmd.AddCommand(pt.list(ctx))
@@ -42,7 +42,7 @@ func NewCmdPipelineTemplate(ctx context.Context, client *spinnaker.Client, ioStr
 	return cmd
 }
 
-func (pt *pipelineTemplate) get(ctx context.Context) *cobra.Command {
+func (pt *pipelineTemplates) get(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get the specified pipeline template.",
@@ -56,7 +56,7 @@ func (pt *pipelineTemplate) get(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			id := args[0]
-			logger.FromContext(ctx).Debugf("pipelineTemplate.get: id: %s", id)
+			logger.FromContext(ctx).Debugf("pipelineTemplates.get: id: %s", id)
 
 			s, err := pt.client.GetPipelineTemplate(ctx, id, pt.output)
 			if err != nil {
@@ -73,7 +73,7 @@ func (pt *pipelineTemplate) get(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) list(ctx context.Context) *cobra.Command {
+func (pt *pipelineTemplates) list(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Aliases: []string{"ls"},
@@ -103,7 +103,7 @@ func (pt *pipelineTemplate) list(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) create(context.Context) *cobra.Command {
+func (pt *pipelineTemplates) create(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Create a pipeline template.",
@@ -116,7 +116,7 @@ func (pt *pipelineTemplate) create(context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) update(context.Context) *cobra.Command {
+func (pt *pipelineTemplates) update(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update",
 		Aliases: []string{"up"},
@@ -131,7 +131,7 @@ func (pt *pipelineTemplate) update(context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplate) delete(context.Context) *cobra.Command {
+func (pt *pipelineTemplates) delete(context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete",
 		Aliases: []string{"del"},

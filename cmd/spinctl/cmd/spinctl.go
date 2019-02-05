@@ -108,7 +108,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	cmd.AddCommand(NewCmdCompletion(ioStreams))
 	cmd.AddCommand(NewCmdPipeline(ctx, client, ioStreams))
 	cmd.AddCommand(NewCmdPipelineConfig(ctx, client, ioStreams))
-	cmd.AddCommand(NewCmdPipelineTemplate(ctx, client, ioStreams))
+	cmd.AddCommand(NewCmdPipelineTemplates(ctx, client, ioStreams))
 	cmd.AddCommand(NewCmdVersion(ctx, client, ioStreams))
 
 	return cmd
