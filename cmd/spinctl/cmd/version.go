@@ -15,9 +15,9 @@ import (
 )
 
 type version struct {
-	ioStreams *genericclioptions.IOStreams
-	client    *spinnaker.Client
-	output    string
+	ioStreams    *genericclioptions.IOStreams
+	client       *spinnaker.Client
+	outputFormat string
 }
 
 // NewCmdVersion creates the version command.
@@ -39,7 +39,7 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, ioStreams *gen
 			return err
 		},
 		RunE: func(*cobra.Command, []string) error {
-			s, err := client.GetVersion(ctx, v.output)
+			s, err := client.GetVersion(ctx, v.outputFormat)
 			if err != nil {
 				return err
 			}
@@ -48,8 +48,7 @@ func NewCmdVersion(ctx context.Context, client *spinnaker.Client, ioStreams *gen
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVarP(&v.output, "output", "o", "", "output format. One of: (json|yaml)")
+	addPrintFlags(&v.outputFormat).AddFlags(cmd)
 
 	return cmd
 }
