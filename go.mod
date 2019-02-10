@@ -3,11 +3,11 @@ module github.com/zchee/spinctl
 go 1.12
 
 require (
-	cloud.google.com/go v0.35.1 // indirect
+	cloud.google.com/go v0.36.0 // indirect
 	contrib.go.opencensus.io/exporter/ocagent v0.4.3 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.9.1
 	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
-	github.com/aws/aws-sdk-go v1.16.26 // indirect
+	github.com/aws/aws-sdk-go v1.16.31 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.1.0 // indirect
 	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
 	github.com/ghodss/yaml v1.0.0
@@ -33,18 +33,17 @@ require (
 	go.uber.org/atomic v1.3.2 // indirect
 	go.uber.org/multierr v0.0.0-20180122172545-ddea229ff1df // indirect
 	go.uber.org/zap v0.0.0-20180814183419-67bc79d13d15
-	golang.org/x/crypto v0.0.0-20190131182504-b8fe1690c613 // indirect
-	golang.org/x/net v0.0.0-20190125091013-d26f9f9a57f3
+	golang.org/x/crypto v0.0.0-20190208162236-193df9c0f06f // indirect
+	golang.org/x/net v0.0.0-20190206173232-65e2d4e15006
 	golang.org/x/oauth2 v0.0.0-20190130055435-99b60b757ec1
-	golang.org/x/sys v0.0.0-20190203050204-7ae0202eb74c // indirect
+	golang.org/x/sys v0.0.0-20190209173611-3b5209105503 // indirect
 	google.golang.org/api v0.1.0
-	google.golang.org/genproto v0.0.0-20190201180003-4b09977fb922 // indirect
 	google.golang.org/grpc v1.18.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
-	k8s.io/api v0.0.0-20181121191454-a61488babbd6 // indirect
+	k8s.io/api v0.0.0-20190202010724-74b699b93c15 // indirect
 	k8s.io/apimachinery v0.0.0-20190117220443-572dfc7bdfcb // indirect
-	k8s.io/cli-runtime v0.0.0-20190201155147-3d3b57cfe43c
-	k8s.io/client-go v10.0.0+incompatible
+	k8s.io/cli-runtime v0.0.0-20190202014047-491c94071cfa
+	k8s.io/client-go v2.0.0-alpha.0.0.20190202011228-6e4752048fde+incompatible
 	k8s.io/klog v0.1.0 // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
