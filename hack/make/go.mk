@@ -185,48 +185,6 @@ mod/install: mod/tidy mod/vendor
 mod/update: mod/goget mod/tidy mod/vendor mod/install  ## Updates all vendor packages.
 
 
-## dep
-
-$(GO_PATH)/bin/dep:
-	@go get -u github.com/golang/dep/cmd/dep
-
-.PHONY: cmd/dep
-cmd/dep: $(GO_PATH)/bin/dep
-
-.PHONY: dep/init
-dep/init: cmd/dep  ## Fetch vendor packages via dep ensure.
-	$(call target)
-	@dep init -v -no-examples
-
-.PHONY: dep/ensure
-dep/ensure: cmd/dep Gopkg.toml  ## Fetch vendor packages via dep ensure.
-	$(call target)
-	@dep ensure -v
-
-.PHONY: dep/ensure/vendor-only
-dep/ensure/vendor-only: cmd/dep Gopkg.toml Gopkg.lock  ## Fetch vendor packages via dep ensure.
-	$(call target)
-	@dep ensure -v -vendor-only
-
-.PHONY: dep/install
-dep/install: dep/ensure  ## Compiles vendor packages to object(.a) file.
-	@go install -v  $(GO_VENDOR_PKGS)
-
-.PHONY: dep/update
-dep/update: cmd/dep  ## Updates the vendoring directory via dep
-	$(call target)
-	@dep ensure -v -update
-
-.PHONY: dep/clean
-dep/clean: cmd/dep  ## Cleans the dep files.
-	$(call target)
-	@$(RM) Gopkg.toml Gopkg.lock
-	@$(RM) -r vendor
-
-.PHONY: dep
-dep: dep/init dep/ensure dep/install  ## Initialize dep vendor structures.
-
-
 ## miscellaneous
 
 .PHONY: container/build
