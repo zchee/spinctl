@@ -1,5 +1,5 @@
 run:
-  concurrency: 4
+  concurrency: 12
   deadline: 5m
   issues-exit-code: 1
   tests: true
@@ -9,7 +9,7 @@ run:
     - internal/cmd/*
   skip-files:
     - ".*\\.pb\\.go"
-    - ".*\\.gen\\.go"
+    - ".*(.|_)gen\\.go"
   modules-download-mode: readonly
 
 linters-settings:
@@ -18,8 +18,6 @@ linters-settings:
     include-go-root: false
     packages:
       - github.com/davecgh/go-spew/spew
-  # dupl:
-  #   threshold: 100
   errcheck:
     check-type-assertions: true
     check-blank: true
@@ -27,8 +25,6 @@ linters-settings:
   goconst:
     min-len: 3
     min-occurrences: 3
-  # gocyclo:
-  #   min-complexity: 10
   gofmt:
     simplify: true
   goimports:
@@ -37,6 +33,17 @@ linters-settings:
     min-confidence: 0.3
   govet:
     check-shadowing: false
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - experimental
+    settings:
+      captLocal:
+        paramsOnly: true
+      rangeValCopy:
+        sizeThreshold: 32
   maligned:
     suggest-new: true
   misspell:
@@ -55,30 +62,7 @@ linters-settings:
 
 linters:
   enable:
-    - deadcode
-    - depguard
-    - errcheck
-    - goconst
-    - gocritic
-    - gofmt
-    - goimports
-    - golint
-    - gosimple
-    - govet
-    - ineffassign
-    - interfacer
-    - maligned
-    - misspell
-    - nakedret
-    - prealloc
-    - scopelint
-    - staticcheck
-    - structcheck
-    - unconvert
-    - unparam
-    - unused
-    - varcheck
-  enable-all: false
+  enable-all: true
   disable:
     - dupl
     - gochecknoglobals
@@ -88,10 +72,6 @@ linters:
     - lll
     - megacheck
     - typecheck
-  disable-all: false
-  presets:
-    - bugs
-    - unused
   fast: false
 
 issues:
