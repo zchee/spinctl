@@ -8,10 +8,10 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/ghodss/yaml"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 	"k8s.io/client-go/util/jsonpath"
+	"sigs.k8s.io/yaml"
 
 	"github.com/zchee/spinctl/pkg/internal/unsafeutil"
 )
