@@ -6,7 +6,7 @@ SHELL = /usr/bin/env bash
 GO_PATH = $(shell go env GOPATH)
 PKG = $(subst $(GO_PATH)/src/,,$(CURDIR))
 GO_PKGS := $(shell go list ./... | grep -v -e '.pb.go' -e 'api/gate')
-GO_PKGS_ABS := $(shell go list -f '$(GO_PATH)/src/{{.ImportPath}}' ./... | grep -v -e '.pb.go' -e 'api/gate')
+GO_APP_PKGS := $(shell go list -f '{{if and (or .GoFiles .CgoFiles) (ne .Name "main")}}{{.ImportPath}}{{end}}' ${PKG}/...)
 GO_TEST_PKGS := $(shell go list -f='{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./...)
 GO_VENDOR_PKGS := $(shell go list -f '{{if and (or .GoFiles .CgoFiles) (ne .Name "main")}}./vendor/{{.ImportPath}}{{end}}' ./vendor/...)
 
@@ -71,6 +71,10 @@ install:  ## Installs the executable or package.
 	$(call target)
 	CGO_ENABLED=$(CGO_ENABLED) go install -a -v $(strip $(GO_FLAGS)) $(CMD)
 
+.PHONY: pkg/install
+pkg/install:
+	CGO_ENABLED=$(CGO_ENABLED) go install -v ${GO_APP_PKGS}
+
 
 ## test, bench and coverage
 
@@ -134,12 +138,12 @@ lint/golangci-lint: cmd/golangci-lint .golangci.yml  ## Run golangci-lint.
 .PHONY: mod/init
 mod/init:
 	$(call target)
-	@GO111MODULE=on go mod init
+	@GO111MODULE=on go mod init || true
 
 .PHONY: mod/goget
 mod/goget:  ## Update module and go.mod.
 	$(call target)
-	@GO111MODULE=on go get -u -m -v -x ./...
+	@GO111MODULE=on go get -u -m -v -x
 
 .PHONY: mod/tidy
 mod/tidy:
@@ -159,17 +163,17 @@ mod/graph:
 .PHONY: mod/clean
 mod/clean:
 	$(call target)
-	@$(RM) go.mod go.sum
-	@$(RM) -r vendor
-
-.PHONY: mod
-mod: mod/clean mod/init mod/tidy mod/vendor  ## Updates the vendoring directory via go mod.
-	@sed -i ':a;N;$$!ba;s|go 1\.12\n\n||g' go.mod
+	@$(RM) -r $(shell find vendor -maxdepth 1 -path "vendor/*" -type d)
 
 .PHONY: mod/install
-mod/install: mod/tidy mod/vendor
+# mod/install: mod/tidy mod/vendor
+mod/install:
 	$(call target)
 	@GO111MODULE=off go install -v $(GO_VENDOR_PKGS) || GO111MODULE=on go install -mod=vendor -v $(GO_VENDOR_PKGS)
+
+.PHONY: mod
+mod: mod/tidy mod/vendor mod/install  ## Updates the vendoring directory via go mod.
+	@sed -i ':a;N;$$!ba;s|go 1\.12\n\n||g' go.mod
 
 .PHONY: mod/update
 mod/update: mod/goget mod/tidy mod/vendor mod/install  ## Updates all vendor packages.
