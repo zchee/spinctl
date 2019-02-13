@@ -10,7 +10,6 @@ require (
 	github.com/aws/aws-sdk-go v1.16.31 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.1.0 // indirect
 	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
-	github.com/ghodss/yaml v1.0.0
 	github.com/gogo/protobuf v1.2.0 // indirect
 	github.com/google/go-cmp v0.2.0
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
@@ -45,5 +44,5 @@ require (
 	k8s.io/cli-runtime v0.0.0-20190202014047-491c94071cfa
 	k8s.io/client-go v2.0.0-alpha.0.0.20190202011228-6e4752048fde+incompatible
 	k8s.io/klog v0.1.0 // indirect
-	sigs.k8s.io/yaml v1.1.0 // indirect
+	sigs.k8s.io/yaml v1.1.0
 )
