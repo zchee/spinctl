@@ -7,7 +7,7 @@ contrib.go.opencensus.io/exporter/stackdriver
 contrib.go.opencensus.io/exporter/stackdriver/monitoredresource
 # github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 github.com/antihax/optional
-# github.com/aws/aws-sdk-go v1.16.31
+# github.com/aws/aws-sdk-go v1.16.33
 github.com/aws/aws-sdk-go/aws/ec2metadata
 github.com/aws/aws-sdk-go/aws/session
 github.com/aws/aws-sdk-go/aws
@@ -58,7 +58,7 @@ github.com/golang/protobuf/protoc-gen-go/descriptor
 github.com/golang/protobuf/ptypes
 # github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c
 github.com/google/btree
-# github.com/google/go-cmp v0.2.0
+# github.com/google/go-cmp v0.2.1-0.20181115012043-2248b49eaa8e
 github.com/google/go-cmp/cmp
 github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/function
@@ -71,7 +71,7 @@ github.com/googleapis/gax-go/v2
 github.com/googleapis/gnostic/OpenAPIv2
 github.com/googleapis/gnostic/compiler
 github.com/googleapis/gnostic/extensions
-# github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17
+# github.com/gregjones/httpcache v0.0.0-20190212212710-3befbb6ad0cc
 github.com/gregjones/httpcache
 github.com/gregjones/httpcache/diskcache
 # github.com/imdario/mergo v0.3.7
@@ -117,20 +117,20 @@ go.opencensus.io/internal
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
 go.opencensus.io/plugin/ocgrpc
-# go.uber.org/atomic v1.3.2
+# go.uber.org/atomic v1.3.3-0.20181018215023-8dc6146f7569
 go.uber.org/atomic
-# go.uber.org/multierr v0.0.0-20180122172545-ddea229ff1df
+# go.uber.org/multierr v1.1.1-0.20180122172545-ddea229ff1df
 go.uber.org/multierr
-# go.uber.org/zap v0.0.0-20180814183419-67bc79d13d15
+# go.uber.org/zap v1.9.2-0.20190122184550-82e3b47c1fe4
 go.uber.org/zap
 go.uber.org/zap/zapcore
 go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/buffer
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
-# golang.org/x/crypto v0.0.0-20190208162236-193df9c0f06f
+# golang.org/x/crypto v0.0.0-20190211182817-74369b46fc67
 golang.org/x/crypto/ssh/terminal
-# golang.org/x/net v0.0.0-20190206173232-65e2d4e15006
+# golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
 golang.org/x/net/publicsuffix
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/context
@@ -140,7 +140,7 @@ golang.org/x/net/internal/timeseries
 golang.org/x/net/http2/hpack
 golang.org/x/net/http/httpguts
 golang.org/x/net/idna
-# golang.org/x/oauth2 v0.0.0-20190130055435-99b60b757ec1
+# golang.org/x/oauth2 v0.0.0-20190212230446-3e8b2be13635
 golang.org/x/oauth2
 golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
@@ -148,7 +148,7 @@ golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
 # golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.0.0-20190209173611-3b5209105503
+# golang.org/x/sys v0.0.0-20190213121743-983097b1a8a3
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 # golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
@@ -337,7 +337,7 @@ k8s.io/client-go/pkg/apis/clientauthentication/v1beta1
 k8s.io/client-go/util/connrotation
 k8s.io/client-go/util/integer
 k8s.io/client-go/tools/clientcmd/api/v1
-# k8s.io/klog v0.1.0
+# k8s.io/klog v0.2.0
 k8s.io/klog
 # sigs.k8s.io/yaml v1.1.0
 sigs.k8s.io/yaml
