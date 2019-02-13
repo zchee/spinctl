@@ -115,17 +115,7 @@ coverage/junit: cmd/go-junit-report  ## Take test coverage and output test resul
 ## lint
 
 .PHONY: lint
-lint: lint/fmt lint/golangci-lint  ## Run all linters.
-
-.PHONY: lint/fmt
-lint/fmt:  ## Verifies all files have been `gofmt`ed.
-	$(call target)
-	@gofmt -s -l . | grep -v -e 'vendor' -e '.pb.go' -e '_*.go' | tee /dev/stderr
-
-.PHONY: lint/govet
-lint/govet:  ## Verifies `go vet` passes.
-	$(call target)
-	@go vet -all $(GO_PKGS) | tee /dev/stderr
+lint: lint/golangci-lint  ## Run all linters.
 
 $(GO_PATH)/bin/golangci-lint:
 	@GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
