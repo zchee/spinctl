@@ -14,8 +14,8 @@ coverage:
         target: 50%
         threshold: 10%
   ignore:
-    - "api/gate/*"
-    - "vendor/*"
+    - "api/gate"
+    - "vendor"
 
 comment:
   behavior: default
