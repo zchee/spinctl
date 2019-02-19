@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Upload coverages to codecov
           command: |
-            bash <(curl -s https://codecov.io/bash)
+            bash <(curl -s https://codecov.io/bash) -f /tmp/ci/artifacts/coverage.out
       - store_artifacts:
           path: /tmp/ci/artifacts
       - store_artifacts:
