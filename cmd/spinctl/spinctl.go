@@ -18,6 +18,6 @@ func main() {
 
 	c := commands.NewDefaultCommand(ctx, os.Args[1:])
 	if err := c.Execute(); err != nil {
-		os.Exit(1)
+		os.Exit(1) //nolint:gocritic
 	}
 }
