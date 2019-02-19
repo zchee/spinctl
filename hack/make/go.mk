@@ -31,16 +31,16 @@ CGO_ENABLED ?= 0
 GO_LDFLAGS=-s -w $(CTIMEVAR)
 GO_LDFLAGS_STATIC=-s -w '-extldflags=-static' $(CTIMEVAR)
 
-ifneq ($(wildcard go.mod),)  # exist go.mod
-ifneq ($(GO111MODULE),auto)
-	GO_FLAGS=-mod=vendor
-endif
-endif
-
-GO_BUILDTAGS := osusergo netgo
+GO_BUILDTAGS=osusergo netgo
+GO_BUILDTAGS_STATIC=static static_build
 GO_FLAGS ?= -tags='$(GO_BUILDTAGS)' -ldflags="${GO_LDFLAGS}"
 GO_INSTALLSUFFIX_STATIC=netgo
-GO_BUILDTAGS_STATIC=static static_build
+
+ifneq ($(wildcard go.mod),)  # exist go.mod
+ifneq ($(GO111MODULE),auto)
+	GO_FLAGS+=-mod=vendor
+endif
+endif
 
 CONTAINER_REGISTRY := gcr.io/container-image
 
@@ -63,27 +63,26 @@ $(APP): VERSION.txt
 	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go build -v $(strip $(GO_FLAGS)) -o $(APP) $(CMD)
 
 .PHONY: build
-build: GO_FLAGS+=-ldflags="${GO_LDFLAGS}"
 build: $(APP)  ## Builds a dynamic executable or package.
 
 .PHONY: static
-static: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 static: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+static: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 static: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 static: $(APP)  ## Builds a static executable or package.
-	$(call target)
 
 .PHONY: install
-install: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 install: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+install: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 install: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 install:  ## Installs the executable or package.
 	$(call target)
-	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go install -v $(strip $(GO_FLAGS)) $(CMD)
+	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go install -a -v $(strip $(GO_FLAGS)) $(CMD)
 
 .PHONY: pkg/install
-pkg/install: GO_FLAGS+=-ldflags="${GO_LDFLAGS_STATIC}" -installsuffix ${GO_INSTALLSUFFIX_STATIC}
+pkg/install: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 pkg/install: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
+pkg/install: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 pkg/install:
 	$(call target)
 	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GO_OS) GOARCH=$(GO_ARCH) go install -v $(strip $(GO_FLAGS)) ${GO_APP_PKGS}
@@ -112,8 +111,8 @@ bench/trace:  ## Take a package benchmark with take a trace profiling.
 	GODEBUG=allocfreetrace=1 ./bench-trace.test -test.run=none -test.bench=$(GO_BENCH_FUNC) -test.benchmem -test.benchtime=10ms 2> trace.log
 
 .PHONY: coverage
-coverage: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 coverage: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+coverage: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 coverage: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 coverage: clean  ## Take test coverage.
 	$(call target)
@@ -126,8 +125,8 @@ $(GO_PATH)/bin/go-junit-report:
 cmd/go-junit-report: $(GO_PATH)/bin/go-junit-report  # go get 'go-junit-report' binary
 
 .PHONY: coverage/ci
-coverage/ci: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 coverage/ci: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
+coverage/ci: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 coverage/ci: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 coverage/ci: cmd/go-junit-report  ## Take test coverage.
 	$(call target)
