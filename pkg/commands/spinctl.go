@@ -101,7 +101,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 				},
 			},
 		}))
-		log.Info("use ochttp.Transport")
+		log.Debug("use ochttp.Transport")
 
 		// Stackdriver exporter
 		sdOpts := stackdriver.Options{
@@ -119,7 +119,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		defer sd.Flush()
 		trace.RegisterExporter(sd)
 		view.RegisterExporter(sd)
-		log.Info("enabled Stackdriver exporter")
+		log.Debug("enabled Stackdriver exporter")
 
 		// Stackdriver Profiler
 		profConf := profiler.Config{
@@ -131,7 +131,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		if err := profiler.Start(profConf); err != nil {
 			logpkg.Fatalf("failed to start stackdriver profiler: %v", err)
 		}
-		log.Info("enabled Stackdriver profiler")
+		log.Debug("enabled Stackdriver profiler")
 
 		var span *trace.Span
 		ctx, span = trace.StartSpan(ctx, "main", trace.WithSampler(trace.AlwaysSample())) // start root span
