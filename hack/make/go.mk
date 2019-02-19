@@ -32,7 +32,7 @@ GO_LDFLAGS=-s -w $(CTIMEVAR)
 GO_LDFLAGS_STATIC=-s -w '-extldflags=-static' $(CTIMEVAR)
 
 ifneq ($(wildcard go.mod),)  # exist go.mod
-ifeq ($(GO111MODULE),off)
+ifneq ($(GO111MODULE),auto)
 	GO_FLAGS=-mod=vendor
 endif
 endif
@@ -71,6 +71,7 @@ static: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 static: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 static: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 static: $(APP)  ## Builds a static executable or package.
+	$(call target)
 
 .PHONY: install
 install: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
