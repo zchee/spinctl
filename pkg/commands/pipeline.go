@@ -79,7 +79,7 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 		Short:   "List the pipelines for the provided application.",
 		Example: "  spinctl pipeline list spin -o yaml",
 		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
-			if err := validateArgs(cmd, args, 2); err != nil {
+			if err := validateArgs(cmd, args, 1); err != nil {
 				return err
 			}
 			ctx, err = p.client.Authenticate(ctx)
