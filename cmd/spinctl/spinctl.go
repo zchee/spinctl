@@ -9,14 +9,14 @@ import (
 	"context"
 	"os"
 
-	"github.com/zchee/spinctl/cmd/spinctl/cmd"
+	"github.com/zchee/spinctl/pkg/commands"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	c := cmd.NewDefaultCommand(ctx, os.Args[1:])
+	c := commands.NewDefaultCommand(ctx, os.Args[1:])
 	if err := c.Execute(); err != nil {
 		os.Exit(1)
 	}
