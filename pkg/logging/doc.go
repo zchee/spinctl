@@ -2,5 +2,5 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package logging provives the zap.Logger into the context.Context.
+// Package logging provives the zap.SugaredLogger.
 package logging
