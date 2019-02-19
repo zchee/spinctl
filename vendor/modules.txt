@@ -1,13 +1,13 @@
 # cloud.google.com/go v0.36.0
+cloud.google.com/go/compute/metadata
 cloud.google.com/go/monitoring/apiv3
 cloud.google.com/go/trace/apiv2
-cloud.google.com/go/compute/metadata
 # contrib.go.opencensus.io/exporter/stackdriver v0.9.1
 contrib.go.opencensus.io/exporter/stackdriver
 contrib.go.opencensus.io/exporter/stackdriver/monitoredresource
 # github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
 github.com/antihax/optional
-# github.com/aws/aws-sdk-go v1.16.36
+# github.com/aws/aws-sdk-go v1.17.0
 github.com/aws/aws-sdk-go/aws/ec2metadata
 github.com/aws/aws-sdk-go/aws/session
 github.com/aws/aws-sdk-go/aws
@@ -43,7 +43,7 @@ github.com/census-instrumentation/opencensus-proto/gen-go/metrics/v1
 github.com/census-instrumentation/opencensus-proto/gen-go/resource/v1
 # github.com/evanphx/json-patch v4.1.0+incompatible
 github.com/evanphx/json-patch
-# github.com/gogo/protobuf v1.2.0
+# github.com/gogo/protobuf v1.2.1
 github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/sortkeys
 # github.com/golang/protobuf v1.2.0
@@ -128,7 +128,7 @@ go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/buffer
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
-# golang.org/x/crypto v0.0.0-20190211182817-74369b46fc67
+# golang.org/x/crypto v0.0.0-20190219172222-a4c6cb3142f2
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
 golang.org/x/net/publicsuffix
@@ -140,7 +140,7 @@ golang.org/x/net/internal/timeseries
 golang.org/x/net/http2/hpack
 golang.org/x/net/http/httpguts
 golang.org/x/net/idna
-# golang.org/x/oauth2 v0.0.0-20190212230446-3e8b2be13635
+# golang.org/x/oauth2 v0.0.0-20190219183015-4b83411ed2b3
 golang.org/x/oauth2
 golang.org/x/oauth2/google
 golang.org/x/oauth2/internal
@@ -148,7 +148,7 @@ golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
 # golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a
+# golang.org/x/sys v0.0.0-20190219092855-153ac476189d
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 # golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
@@ -165,15 +165,15 @@ golang.org/x/text/unicode/norm
 # golang.org/x/time v0.0.0-20181108054448-85acf8d2951c
 golang.org/x/time/rate
 # google.golang.org/api v0.1.0
-google.golang.org/api/option
 google.golang.org/api/oauth2/v2
-google.golang.org/api/support/bundler
-google.golang.org/api/internal
+google.golang.org/api/option
 google.golang.org/api/gensupport
 google.golang.org/api/googleapi
+google.golang.org/api/support/bundler
+google.golang.org/api/internal
+google.golang.org/api/googleapi/internal/uritemplates
 google.golang.org/api/iterator
 google.golang.org/api/transport
-google.golang.org/api/googleapi/internal/uritemplates
 google.golang.org/api/transport/grpc
 google.golang.org/api/transport/http
 google.golang.org/api/googleapi/transport
@@ -191,7 +191,7 @@ google.golang.org/appengine/internal/log
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/socket
 google.golang.org/appengine/internal/socket
-# google.golang.org/genproto v0.0.0-20190215211957-bd968387e4aa
+# google.golang.org/genproto v0.0.0-20190219182410-082222b4a5c5
 google.golang.org/genproto/googleapis/api/distribution
 google.golang.org/genproto/googleapis/api/label
 google.golang.org/genproto/googleapis/api/metric

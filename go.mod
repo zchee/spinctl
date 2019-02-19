@@ -5,10 +5,10 @@ require (
 	contrib.go.opencensus.io/exporter/ocagent v0.4.4 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.9.1
 	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
-	github.com/aws/aws-sdk-go v1.16.36 // indirect
+	github.com/aws/aws-sdk-go v1.17.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.1.0 // indirect
 	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
-	github.com/gogo/protobuf v1.2.0 // indirect
+	github.com/gogo/protobuf v1.2.1 // indirect
 	github.com/google/go-cmp v0.2.1-0.20181115012043-2248b49eaa8e
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
 	github.com/googleapis/gnostic v0.2.0 // indirect
@@ -30,12 +30,12 @@ require (
 	go.uber.org/atomic v1.3.3-0.20181018215023-8dc6146f7569 // indirect
 	go.uber.org/multierr v1.1.1-0.20180122172545-ddea229ff1df // indirect
 	go.uber.org/zap v1.9.2-0.20190122184550-82e3b47c1fe4
-	golang.org/x/crypto v0.0.0-20190211182817-74369b46fc67 // indirect
+	golang.org/x/crypto v0.0.0-20190219172222-a4c6cb3142f2 // indirect
 	golang.org/x/net v0.0.0-20190213061140-3a22650c66bd
-	golang.org/x/oauth2 v0.0.0-20190212230446-3e8b2be13635
-	golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a // indirect
+	golang.org/x/oauth2 v0.0.0-20190219183015-4b83411ed2b3
+	golang.org/x/sys v0.0.0-20190219092855-153ac476189d // indirect
 	google.golang.org/api v0.1.0
-	google.golang.org/genproto v0.0.0-20190215211957-bd968387e4aa // indirect
+	google.golang.org/genproto v0.0.0-20190219182410-082222b4a5c5 // indirect
 	google.golang.org/grpc v1.18.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
 	k8s.io/api v0.0.0-20190202010724-74b699b93c15 // indirect
