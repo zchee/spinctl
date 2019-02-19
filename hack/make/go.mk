@@ -67,11 +67,13 @@ build: GO_FLAGS+=-ldflags="${GO_LDFLAGS}"
 build: $(APP)  ## Builds a dynamic executable or package.
 
 .PHONY: static
+static: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 static: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 static: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 static: $(APP)  ## Builds a static executable or package.
 
 .PHONY: install
+install: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 install: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 install: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 install:  ## Installs the executable or package.
@@ -109,6 +111,7 @@ bench/trace:  ## Take a package benchmark with take a trace profiling.
 	GODEBUG=allocfreetrace=1 ./bench-trace.test -test.run=none -test.bench=$(GO_BENCH_FUNC) -test.benchmem -test.benchtime=10ms 2> trace.log
 
 .PHONY: coverage
+coverage: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 coverage: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 coverage: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 coverage: clean  ## Take test coverage.
@@ -122,6 +125,7 @@ $(GO_PATH)/bin/go-junit-report:
 cmd/go-junit-report: $(GO_PATH)/bin/go-junit-report  # go get 'go-junit-report' binary
 
 .PHONY: coverage/ci
+coverage/ci: GO_BUILDTAGS+=${GO_BUILDTAGS_STATIC}
 coverage/ci: GO_LDFLAGS=${GO_LDFLAGS_STATIC}
 coverage/ci: GO_FLAGS+=-installsuffix ${GO_INSTALLSUFFIX_STATIC}
 coverage/ci: cmd/go-junit-report  ## Take test coverage.
