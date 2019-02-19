@@ -19,11 +19,17 @@ jobs:
       - run:
           name: Test and collect coverages
           command: |
-            make coverage/junit
+            make coverage/ci
       - run:
           name: Upload coverages to codecov
           command: |
             bash <(curl -s https://codecov.io/bash)
+      - store_artifacts:
+          path: /tmp/ci/artifacts
+      - store_artifacts:
+          path: /tmp/ci/artifacts
+      - store_test_results:
+          path: /tmp/ci/test-results
 
   lint:
     <<: *defaults
