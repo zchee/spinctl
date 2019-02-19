@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
@@ -62,8 +62,8 @@ func (a *application) get(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			name := args[0]
-			logger.FromContext(ctx).Debugf("application.get: name: %s, expand: %t", name, a.getExpand)
-			logger.FromContext(ctx).Debug(a.outputFormat)
+			logging.FromContext(ctx).Debugf("application.get: name: %s, expand: %t", name, a.getExpand)
+			logging.FromContext(ctx).Debug(a.outputFormat)
 
 			s, err := a.client.GetApplication(ctx, name, a.getExpand, a.outputFormat)
 			if err != nil {

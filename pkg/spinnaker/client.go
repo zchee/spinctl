@@ -16,7 +16,7 @@ import (
 	"github.com/zchee/spinctl/api/gate"
 	"github.com/zchee/spinctl/pkg/auth"
 	"github.com/zchee/spinctl/pkg/config"
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 	"github.com/zchee/spinctl/pkg/version"
 )
 
@@ -124,7 +124,7 @@ func (c *Client) Authenticate(ctx context.Context) (context.Context, error) {
 				return nil, errors.Wrapf(err, "token is invalid: %v", tok)
 			}
 
-			logger.FromContext(ctx).Debugf("Authenticate: %#v", tok)
+			logging.FromContext(ctx).Debugf("Authenticate: %#v", tok)
 
 			if err := auth.Login(c.httpClient, c.Config.Gate.Endpoint, tok); err != nil {
 				return nil, err

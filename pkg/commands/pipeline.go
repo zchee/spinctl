@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
@@ -56,7 +56,7 @@ func (p *pipeline) get(ctx context.Context) *cobra.Command {
 		RunE: func(_ *cobra.Command, args []string) error {
 			application := args[0]
 			pipelineName := args[1]
-			logger.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
+			logging.FromContext(ctx).Debugf("CmdPipelineGet: application: %s, pipelineName: %s", application, pipelineName)
 
 			s, err := p.client.GetPipeline(ctx, application, pipelineName, p.outputFormat)
 			if err != nil {
@@ -87,7 +87,7 @@ func (p *pipeline) list(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			name := args[0]
-			logger.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
+			logging.FromContext(ctx).Debugf("CmdPipelineList: name: %s", name)
 
 			s, err := p.client.ListPipelines(ctx, name, p.outputFormat)
 			if err != nil {

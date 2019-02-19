@@ -27,7 +27,7 @@ import (
 	oauth2_v2 "google.golang.org/api/oauth2/v2"
 
 	"github.com/zchee/spinctl/pkg/internal/unsafeutil"
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 )
 
 var (
@@ -121,7 +121,7 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 		var tmpDelay time.Duration // how long to sleep on accept failure
 		for {
 			if _, err = net.Dial("tcp", oauth2CallbackAddr); err != nil {
-				logger.FromContext(ctx).Error("Dial error", zap.Duration("retrying", tmpDelay), zap.Error(err))
+				logging.FromContext(ctx).Error("Dial error", zap.Duration("retrying", tmpDelay), zap.Error(err))
 
 				if tmpDelay == 0 {
 					tmpDelay = 5 * time.Millisecond
@@ -141,7 +141,7 @@ func AuthenticateOAuth2(ctx context.Context, oc *OAuth2Config) (*oauth2.Token, e
 		}
 
 		live <- struct{}{}
-		logger.FromContext(ctx).Debug("succsess Dialing")
+		logging.FromContext(ctx).Debug("succsess Dialing")
 	}()
 	<-live // wait for callbackServer is live
 

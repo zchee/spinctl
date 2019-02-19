@@ -22,7 +22,7 @@ import (
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	"github.com/zchee/spinctl/pkg/config"
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 	versionpkg "github.com/zchee/spinctl/pkg/version"
 )
@@ -67,8 +67,8 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	if opts.debug {
 		lv = atomicDebugLevel
 	}
-	log := logger.NewZapLogger(lv)
-	ctx = logger.NewContext(ctx, log)
+	log := logging.NewZapLogger(lv)
+	ctx = logging.NewContext(ctx, log)
 
 	if !cfg.Exists() {
 		if err := cfg.Create(); err != nil {
@@ -118,7 +118,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 func NewStackdriverExporter(ctx context.Context, projectID string) error {
 	stackdriverOpts := stackdriver.Options{
 		ProjectID:                projectID,
-		OnError:                  func(err error) { logger.FromContext(ctx).Error(zap.Error(err)) },
+		OnError:                  func(err error) { logging.FromContext(ctx).Error(zap.Error(err)) },
 		MonitoringClientOptions:  []apioption.ClientOption{},
 		TraceClientOptions:       []apioption.ClientOption{},
 		BundleCountThreshold:     0,

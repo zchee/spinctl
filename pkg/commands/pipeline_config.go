@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
@@ -56,12 +56,12 @@ func (pc *pipelineConfig) get(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(_ *cobra.Command, args []string) (err error) {
 			application := args[0]
-			logger.FromContext(ctx).Debugf("pipelineConfig.get: application: %s", application)
+			logging.FromContext(ctx).Debugf("pipelineConfig.get: application: %s", application)
 
 			var s string
 			if len(args) == 2 {
 				pipelineName := args[1]
-				logger.FromContext(ctx).Debugf("pipelineConfig.get: pipelineName: %s", pipelineName)
+				logging.FromContext(ctx).Debugf("pipelineConfig.get: pipelineName: %s", pipelineName)
 
 				s, err = pc.client.GetPipelineConfig(ctx, application, pipelineName, pc.outputFormat)
 				if err != nil {
@@ -159,7 +159,7 @@ func (pc *pipelineConfig) convert(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			pipelineConfigID := args[0]
-			logger.FromContext(ctx).Debugf("pipelineConfig.convert: pipelineConfigID: %s", pipelineConfigID)
+			logging.FromContext(ctx).Debugf("pipelineConfig.convert: pipelineConfigID: %s", pipelineConfigID)
 
 			s, err := pc.client.ConvertPipelineConfigToPipelineTemplate(ctx, pipelineConfigID)
 			if err != nil {

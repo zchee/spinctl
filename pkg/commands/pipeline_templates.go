@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/zchee/spinctl/pkg/logger"
+	"github.com/zchee/spinctl/pkg/logging"
 	"github.com/zchee/spinctl/pkg/spinnaker"
 )
 
@@ -57,7 +57,7 @@ func (pt *pipelineTemplates) get(ctx context.Context) *cobra.Command {
 		},
 		RunE: func(_ *cobra.Command, args []string) error {
 			id := args[0]
-			logger.FromContext(ctx).Debugf("pipelineTemplates.get: id: %s", id)
+			logging.FromContext(ctx).Debugf("pipelineTemplates.get: id: %s", id)
 
 			s, err := pt.client.GetPipelineTemplate(ctx, id, pt.outputFormat)
 			if err != nil {
