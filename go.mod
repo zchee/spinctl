@@ -1,7 +1,7 @@
 module github.com/zchee/spinctl
 
 require (
-	cloud.google.com/go v0.36.0 // indirect
+	cloud.google.com/go v0.36.0
 	contrib.go.opencensus.io/exporter/ocagent v0.4.4 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.9.1
 	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6

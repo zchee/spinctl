@@ -1,5 +1,7 @@
 # cloud.google.com/go v0.36.0
+cloud.google.com/go/profiler
 cloud.google.com/go/compute/metadata
+cloud.google.com/go/internal/version
 cloud.google.com/go/monitoring/apiv3
 cloud.google.com/go/trace/apiv2
 # contrib.go.opencensus.io/exporter/stackdriver v0.9.1
@@ -48,14 +50,14 @@ github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/sortkeys
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
+github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/timestamp
 github.com/golang/protobuf/ptypes/wrappers
 github.com/golang/protobuf/ptypes/any
+github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/struct
 github.com/golang/protobuf/ptypes/empty
-github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/protoc-gen-go/descriptor
-github.com/golang/protobuf/ptypes
 # github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c
 github.com/google/btree
 # github.com/google/go-cmp v0.2.1-0.20181115012043-2248b49eaa8e
@@ -65,6 +67,8 @@ github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
 # github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf
 github.com/google/gofuzz
+# github.com/google/pprof v0.0.0-20181206194817-3ea8567a2e57
+github.com/google/pprof/profile
 # github.com/googleapis/gax-go/v2 v2.0.3
 github.com/googleapis/gax-go/v2
 # github.com/googleapis/gnostic v0.2.0
@@ -169,12 +173,12 @@ google.golang.org/api/oauth2/v2
 google.golang.org/api/option
 google.golang.org/api/gensupport
 google.golang.org/api/googleapi
+google.golang.org/api/transport/grpc
 google.golang.org/api/support/bundler
 google.golang.org/api/internal
 google.golang.org/api/googleapi/internal/uritemplates
 google.golang.org/api/iterator
 google.golang.org/api/transport
-google.golang.org/api/transport/grpc
 google.golang.org/api/transport/http
 google.golang.org/api/googleapi/transport
 google.golang.org/api/transport/http/internal/propagation
@@ -184,14 +188,16 @@ google.golang.org/appengine/urlfetch
 google.golang.org/appengine/internal
 google.golang.org/appengine/internal/app_identity
 google.golang.org/appengine/internal/modules
+google.golang.org/appengine/socket
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/internal/base
 google.golang.org/appengine/internal/datastore
 google.golang.org/appengine/internal/log
 google.golang.org/appengine/internal/remote_api
-google.golang.org/appengine/socket
 google.golang.org/appengine/internal/socket
 # google.golang.org/genproto v0.0.0-20190219182410-082222b4a5c5
+google.golang.org/genproto/googleapis/devtools/cloudprofiler/v2
+google.golang.org/genproto/googleapis/rpc/errdetails
 google.golang.org/genproto/googleapis/api/distribution
 google.golang.org/genproto/googleapis/api/label
 google.golang.org/genproto/googleapis/api/metric
@@ -205,11 +211,12 @@ google.golang.org/genproto/protobuf/field_mask
 google.golang.org/grpc
 google.golang.org/grpc/codes
 google.golang.org/grpc/metadata
-google.golang.org/grpc/naming
+google.golang.org/grpc/status
+google.golang.org/grpc/credentials
+google.golang.org/grpc/credentials/oauth
 google.golang.org/grpc/balancer
 google.golang.org/grpc/balancer/roundrobin
 google.golang.org/grpc/connectivity
-google.golang.org/grpc/credentials
 google.golang.org/grpc/encoding
 google.golang.org/grpc/encoding/proto
 google.golang.org/grpc/grpclog
@@ -222,18 +229,17 @@ google.golang.org/grpc/internal/grpcrand
 google.golang.org/grpc/internal/grpcsync
 google.golang.org/grpc/internal/transport
 google.golang.org/grpc/keepalive
+google.golang.org/grpc/naming
 google.golang.org/grpc/peer
 google.golang.org/grpc/resolver
 google.golang.org/grpc/resolver/dns
 google.golang.org/grpc/resolver/passthrough
 google.golang.org/grpc/stats
-google.golang.org/grpc/status
 google.golang.org/grpc/tap
-google.golang.org/grpc/balancer/base
 google.golang.org/grpc/credentials/internal
+google.golang.org/grpc/balancer/base
 google.golang.org/grpc/binarylog/grpc_binarylog_v1
 google.golang.org/grpc/internal/syscall
-google.golang.org/grpc/credentials/oauth
 # gopkg.in/inf.v0 v0.9.1
 gopkg.in/inf.v0
 # gopkg.in/yaml.v2 v2.2.2
