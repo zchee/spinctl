@@ -6,11 +6,14 @@ package commands
 
 import (
 	"context"
+	"fmt"
+	logpkg "log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 
+	"cloud.google.com/go/profiler"
 	"contrib.go.opencensus.io/exporter/stackdriver"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -84,8 +87,10 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 	}
 
 	var clientOpts []spinnaker.Option
-	if projectID := cfg.GoogleCloudProject; projectID != "" {
-		log.Debug("use StackdriverExporter")
+	if gcpProjectID := cfg.GoogleCloudProject; gcpProjectID != "" {
+		trace.ApplyConfig(trace.Config{
+			DefaultSampler: trace.AlwaysSample(),
+		})
 		if err := view.Register(ochttp.DefaultClientViews...); err != nil {
 			log.Fatal(zap.Error(err))
 		}
@@ -96,10 +101,41 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 				},
 			},
 		}))
+		log.Info("use ochttp.Transport")
 
-		if err := NewStackdriverExporter(ctx, projectID); err != nil {
-			log.Fatal(zap.Error(err))
+		// Stackdriver exporter
+		sdOpts := stackdriver.Options{
+			ProjectID: gcpProjectID,
+			OnError: func(err error) {
+				log.Error(fmt.Errorf("could not log error: %v", err))
+			},
+			MetricPrefix: cmd.Name(),
+			Context:      ctx,
 		}
+		sd, err := stackdriver.NewExporter(sdOpts)
+		if err != nil {
+			logpkg.Fatalf("failed to create stackdriver exporter: %v", err)
+		}
+		defer sd.Flush()
+		trace.RegisterExporter(sd)
+		view.RegisterExporter(sd)
+		log.Info("enabled Stackdriver exporter")
+
+		// Stackdriver Profiler
+		profConf := profiler.Config{
+			Service:        cmd.Name(),
+			ServiceVersion: versionpkg.Version,
+			MutexProfiling: true,
+			ProjectID:      gcpProjectID,
+		}
+		if err := profiler.Start(profConf); err != nil {
+			logpkg.Fatalf("failed to start stackdriver profiler: %v", err)
+		}
+		log.Info("enabled Stackdriver profiler")
+
+		var span *trace.Span
+		ctx, span = trace.StartSpan(ctx, "main", trace.WithSampler(trace.AlwaysSample())) // start root span
+		defer span.End()
 	}
 	client := spinnaker.NewClient(cfg, clientOpts...)
 
