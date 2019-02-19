@@ -71,7 +71,7 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 		lv = atomicDebugLevel
 	}
 	log := logging.NewZapLogger(lv)
-	ctx = logging.NewContext(ctx, log)
+	ctx = logging.WithContext(ctx, log)
 
 	if !cfg.Exists() {
 		if err := cfg.Create(); err != nil {

@@ -18,8 +18,8 @@ var (
 	ctxSugaredLoggerKey = &ctxSugaredLogger{}
 )
 
-// NewContext return the context with zap SugaredLogger context value.
-func NewContext(ctx context.Context, sugaredLogger *zap.SugaredLogger) context.Context {
+// WithContext return the context with zap SugaredLogger context value.
+func WithContext(ctx context.Context, sugaredLogger *zap.SugaredLogger) context.Context {
 	return context.WithValue(ctx, ctxSugaredLoggerKey, sugaredLogger)
 }
 
