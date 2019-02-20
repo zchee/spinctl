@@ -21,6 +21,8 @@ type pipelineTemplates struct {
 	outputFormat string
 
 	listScopes []string
+
+	saveFile string
 }
 
 // NewCmdPipelineTemplates manage the pipeline template command.
@@ -36,7 +38,7 @@ func NewCmdPipelineTemplates(ctx context.Context, client *spinnaker.Client, ioSt
 	}
 	cmd.AddCommand(pt.get(ctx))
 	cmd.AddCommand(pt.list(ctx))
-	cmd.AddCommand(pt.create(ctx))
+	cmd.AddCommand(pt.save(ctx))
 	cmd.AddCommand(pt.update(ctx))
 	cmd.AddCommand(pt.delete(ctx))
 
@@ -103,15 +105,28 @@ func (pt *pipelineTemplates) list(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
-func (pt *pipelineTemplates) create(context.Context) *cobra.Command {
+func (pt *pipelineTemplates) save(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create",
-		Short:   "Create a pipeline template.",
-		PreRunE: func(*cobra.Command, []string) (err error) { return nil },
+		Use:   "save",
+		Short: "Save a pipeline template.",
+		PreRunE: func(cmd *cobra.Command, args []string) (err error) {
+			if err := validateArgs(cmd, args, 0); err != nil {
+				return err
+			}
+
+			ctx, err = pt.client.Authenticate(ctx)
+			return err
+		},
 		RunE: func(*cobra.Command, []string) error {
-			return errNotImplementedYet
+			if err := pt.client.SavePipelineTemplates(ctx, pt.saveFile); err != nil {
+				return err
+			}
+			return nil
 		},
 	}
+
+	f := cmd.Flags()
+	f.StringVarP(&pt.saveFile, "file", "f", "", "file path to pipeline-template json")
 
 	return cmd
 }

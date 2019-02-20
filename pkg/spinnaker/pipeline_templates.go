@@ -6,7 +6,9 @@ package spinnaker
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/antihax/optional"
 	"github.com/pkg/errors"
@@ -57,4 +59,28 @@ func (c *Client) ListPipelineTemplates(ctx context.Context, scopes []string, for
 	}
 
 	return s, nil
+}
+
+// SavePipelineTemplates saves pipeline templates.
+func (c *Client) SavePipelineTemplates(ctx context.Context, filepath string) error {
+	f, err := os.Open(filepath)
+	if err != nil {
+		return err
+	}
+	var jsonContent map[string]interface{}
+	if err = json.NewDecoder(f).Decode(&jsonContent); err != nil {
+		return err
+	}
+
+	resp, err := c.Client.PipelineTemplatesControllerApi.CreateUsingPOST(ctx, jsonContent)
+	if err != nil {
+		return errors.Wrap(err, "failed to save of pipeline templates")
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.Wrapf(err, "encountered an error save of pipeline templates, filepath %s, status code: %d\n", filepath, resp.StatusCode)
+	}
+
+	return nil
 }
