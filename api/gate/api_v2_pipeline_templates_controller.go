@@ -31,10 +31,17 @@ type V2PipelineTemplatesControllerApiService service
 V2PipelineTemplatesControllerApiService Create a pipeline template.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param pipelineTemplate pipelineTemplate
+ * @param optional nil or *CreateUsingPOST1Opts - Optional Parameters:
+     * @param "Version" (optional.String) -  version
 
 
 */
-func (a *V2PipelineTemplatesControllerApiService) CreateUsingPOST1(ctx context.Context, pipelineTemplate interface{}) (*http.Response, error) {
+
+type CreateUsingPOST1Opts struct {
+	Version optional.String
+}
+
+func (a *V2PipelineTemplatesControllerApiService) CreateUsingPOST1(ctx context.Context, pipelineTemplate interface{}, localVarOptionals *CreateUsingPOST1Opts) (*http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 		localVarPostBody   interface{}
@@ -43,12 +50,15 @@ func (a *V2PipelineTemplatesControllerApiService) CreateUsingPOST1(ctx context.C
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/pipelineTemplates"
+	localVarPath := a.client.cfg.BasePath + "/v2/pipelineTemplates/create"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Version.IsSet() {
+		localVarQueryParams.Add("version", parameterToString(localVarOptionals.Version.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{"application/json"}
 
@@ -112,12 +122,16 @@ V2PipelineTemplatesControllerApiService Delete a pipeline template.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
  * @param optional nil or *DeleteUsingDELETE1Opts - Optional Parameters:
+     * @param "Version" (optional.String) -  version
+     * @param "Digest" (optional.String) -  digest
      * @param "Application" (optional.String) -  application
 
 @return map[string]interface{}
 */
 
 type DeleteUsingDELETE1Opts struct {
+	Version     optional.String
+	Digest      optional.String
 	Application optional.String
 }
 
@@ -138,6 +152,12 @@ func (a *V2PipelineTemplatesControllerApiService) DeleteUsingDELETE1(ctx context
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Version.IsSet() {
+		localVarQueryParams.Add("version", parameterToString(localVarOptionals.Version.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Digest.IsSet() {
+		localVarQueryParams.Add("digest", parameterToString(localVarOptionals.Digest.Value(), ""))
+	}
 	if localVarOptionals != nil && localVarOptionals.Application.IsSet() {
 		localVarQueryParams.Add("application", parameterToString(localVarOptionals.Application.Value(), ""))
 	}
@@ -209,10 +229,19 @@ func (a *V2PipelineTemplatesControllerApiService) DeleteUsingDELETE1(ctx context
 V2PipelineTemplatesControllerApiService Get a pipeline template.
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
+ * @param optional nil or *GetUsingGET2Opts - Optional Parameters:
+     * @param "Version" (optional.String) -  version
+     * @param "Digest" (optional.String) -  digest
 
 @return map[string]interface{}
 */
-func (a *V2PipelineTemplatesControllerApiService) GetUsingGET2(ctx context.Context, id string) (map[string]interface{}, *http.Response, error) {
+
+type GetUsingGET2Opts struct {
+	Version optional.String
+	Digest  optional.String
+}
+
+func (a *V2PipelineTemplatesControllerApiService) GetUsingGET2(ctx context.Context, id string, localVarOptionals *GetUsingGET2Opts) (map[string]interface{}, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
@@ -229,6 +258,12 @@ func (a *V2PipelineTemplatesControllerApiService) GetUsingGET2(ctx context.Conte
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Version.IsSet() {
+		localVarQueryParams.Add("version", parameterToString(localVarOptionals.Version.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Digest.IsSet() {
+		localVarQueryParams.Add("digest", parameterToString(localVarOptionals.Digest.Value(), ""))
+	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{"application/json"}
 
@@ -572,12 +607,14 @@ V2PipelineTemplatesControllerApiService Update a pipeline template.
  * @param id id
  * @param pipelineTemplate pipelineTemplate
  * @param optional nil or *UpdateUsingPOST1Opts - Optional Parameters:
+     * @param "Version" (optional.String) -  version
      * @param "SkipPlanDependents" (optional.Bool) -  skipPlanDependents
 
 
 */
 
 type UpdateUsingPOST1Opts struct {
+	Version            optional.String
 	SkipPlanDependents optional.Bool
 }
 
@@ -590,13 +627,16 @@ func (a *V2PipelineTemplatesControllerApiService) UpdateUsingPOST1(ctx context.C
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/pipelineTemplates/{id}"
+	localVarPath := a.client.cfg.BasePath + "/v2/pipelineTemplates/update/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", fmt.Sprintf("%v", id), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if localVarOptionals != nil && localVarOptionals.Version.IsSet() {
+		localVarQueryParams.Add("version", parameterToString(localVarOptionals.Version.Value(), ""))
+	}
 	if localVarOptionals != nil && localVarOptionals.SkipPlanDependents.IsSet() {
 		localVarQueryParams.Add("skipPlanDependents", parameterToString(localVarOptionals.SkipPlanDependents.Value(), ""))
 	}

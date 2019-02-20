@@ -4,17 +4,17 @@ All URIs are relative to *https://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**CreateUsingPOST1**](V2PipelineTemplatesControllerApi.md#CreateUsingPOST1) | **Post** /v2/pipelineTemplates | Create a pipeline template.
+[**CreateUsingPOST1**](V2PipelineTemplatesControllerApi.md#CreateUsingPOST1) | **Post** /v2/pipelineTemplates/create | Create a pipeline template.
 [**DeleteUsingDELETE1**](V2PipelineTemplatesControllerApi.md#DeleteUsingDELETE1) | **Delete** /v2/pipelineTemplates/{id} | Delete a pipeline template.
 [**GetUsingGET2**](V2PipelineTemplatesControllerApi.md#GetUsingGET2) | **Get** /v2/pipelineTemplates/{id} | Get a pipeline template.
 [**ListPipelineTemplateDependentsUsingGET1**](V2PipelineTemplatesControllerApi.md#ListPipelineTemplateDependentsUsingGET1) | **Get** /v2/pipelineTemplates/{id}/dependents | List all pipelines that implement a pipeline template
 [**ListUsingGET1**](V2PipelineTemplatesControllerApi.md#ListUsingGET1) | **Get** /v2/pipelineTemplates | List pipeline templates.
 [**PlanUsingPOST**](V2PipelineTemplatesControllerApi.md#PlanUsingPOST) | **Post** /v2/pipelineTemplates/plan | Plan a pipeline template configuration.
-[**UpdateUsingPOST1**](V2PipelineTemplatesControllerApi.md#UpdateUsingPOST1) | **Post** /v2/pipelineTemplates/{id} | Update a pipeline template.
+[**UpdateUsingPOST1**](V2PipelineTemplatesControllerApi.md#UpdateUsingPOST1) | **Post** /v2/pipelineTemplates/update/{id} | Update a pipeline template.
 
 
 # **CreateUsingPOST1**
-> CreateUsingPOST1(ctx, pipelineTemplate)
+> CreateUsingPOST1(ctx, pipelineTemplate, optional)
 Create a pipeline template.
 
 ### Required Parameters
@@ -23,6 +23,15 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **pipelineTemplate** | [**interface{}**](interface{}.md)| pipelineTemplate | 
+ **optional** | ***CreateUsingPOST1Opts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a CreateUsingPOST1Opts struct
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **version** | **optional.String**| version | 
 
 ### Return type
 
@@ -57,6 +66,8 @@ Optional parameters are passed through a pointer to a DeleteUsingDELETE1Opts str
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **version** | **optional.String**| version | 
+ **digest** | **optional.String**| digest | 
  **application** | **optional.String**| application | 
 
 ### Return type
@@ -75,7 +86,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetUsingGET2**
-> map[string]interface{} GetUsingGET2(ctx, id)
+> map[string]interface{} GetUsingGET2(ctx, id, optional)
 Get a pipeline template.
 
 ### Required Parameters
@@ -84,6 +95,16 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
   **id** | **string**| id | 
+ **optional** | ***GetUsingGET2Opts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a pointer to a GetUsingGET2Opts struct
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **version** | **optional.String**| version | 
+ **digest** | **optional.String**| digest | 
 
 ### Return type
 
@@ -205,6 +226,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
+ **version** | **optional.String**| version | 
  **skipPlanDependents** | **optional.Bool**| skipPlanDependents | [default to false]
 
 ### Return type

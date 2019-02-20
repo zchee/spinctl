@@ -64,6 +64,8 @@ tags:
   description: "Executions Controller"
 - name: "server-group-manager-controller"
   description: "Server Group Manager Controller"
+- name: "reorder-pipelines-controller"
+  description: "Reorder Pipelines Controller"
 - name: "build-controller"
   description: "Build Controller"
 - name: "bake-controller"
@@ -75,6 +77,37 @@ tags:
 - name: "job-controller"
   description: "Job Controller"
 paths:
+  /actions/pipelines/reorder:
+    post:
+      tags:
+      - "reorder-pipelines-controller"
+      summary: "Re-order pipelines"
+      operationId: "reorderPipelinesUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - in: "body"
+        name: "reorderPipelinesCommand"
+        description: "reorderPipelinesCommand"
+        required: true
+        schema:
+          $ref: "#/definitions/ReorderPipelinesCommand"
+        x-exportParamName: "ReorderPipelinesCommand"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+        201:
+          description: "Created"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
   /applications:
     get:
       tags:
@@ -3766,9 +3799,9 @@ paths:
       tags:
       - "pipeline-controller"
       summary: "Evaluate a pipeline expression using the provided execution as context"
-      operationId: "evaluateExpressionForExecutionViaPOSTUsingPOST_1"
+      operationId: "evaluateExpressionForExecutionViaPOSTUsingPOST"
       consumes:
-      - "application/json"
+      - "text/plain"
       produces:
       - "*/*"
       parameters:
@@ -3783,7 +3816,7 @@ paths:
         description: "pipelineExpression"
         required: true
         schema:
-          type: "object"
+          type: "string"
         x-exportParamName: "PipelineExpression"
       responses:
         200:
@@ -5478,6 +5511,7 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
+  /v2/pipelineTemplates/create:
     post:
       tags:
       - "v-2-pipeline-templates-controller"
@@ -5488,6 +5522,13 @@ paths:
       produces:
       - "*/*"
       parameters:
+      - name: "version"
+        in: "query"
+        description: "version"
+        required: false
+        type: "string"
+        x-exportParamName: "Version"
+        x-optionalDataType: "String"
       - in: "body"
         name: "pipelineTemplate"
         description: "pipelineTemplate"
@@ -5545,37 +5586,7 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
-  /v2/pipelineTemplates/{id}:
-    get:
-      tags:
-      - "v-2-pipeline-templates-controller"
-      summary: "Get a pipeline template."
-      operationId: "getUsingGET_2"
-      consumes:
-      - "application/json"
-      produces:
-      - "*/*"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "id"
-        required: true
-        type: "string"
-        x-exportParamName: "Id"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "object"
-              properties: {}
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
+  /v2/pipelineTemplates/update/{id}:
     post:
       tags:
       - "v-2-pipeline-templates-controller"
@@ -5592,6 +5603,13 @@ paths:
         required: true
         type: "string"
         x-exportParamName: "Id"
+      - name: "version"
+        in: "query"
+        description: "version"
+        required: false
+        type: "string"
+        x-exportParamName: "Version"
+        x-optionalDataType: "String"
       - in: "body"
         name: "pipelineTemplate"
         description: "pipelineTemplate"
@@ -5623,6 +5641,51 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
+  /v2/pipelineTemplates/{id}:
+    get:
+      tags:
+      - "v-2-pipeline-templates-controller"
+      summary: "Get a pipeline template."
+      operationId: "getUsingGET_2"
+      consumes:
+      - "application/json"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "string"
+        x-exportParamName: "Id"
+      - name: "version"
+        in: "query"
+        description: "version"
+        required: false
+        type: "string"
+        x-exportParamName: "Version"
+        x-optionalDataType: "String"
+      - name: "digest"
+        in: "query"
+        description: "digest"
+        required: false
+        type: "string"
+        x-exportParamName: "Digest"
+        x-optionalDataType: "String"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "object"
+              properties: {}
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
     delete:
       tags:
       - "v-2-pipeline-templates-controller"
@@ -5639,6 +5702,20 @@ paths:
         required: true
         type: "string"
         x-exportParamName: "Id"
+      - name: "version"
+        in: "query"
+        description: "version"
+        required: false
+        type: "string"
+        x-exportParamName: "Version"
+        x-optionalDataType: "String"
+      - name: "digest"
+        in: "query"
+        description: "digest"
+        required: false
+        type: "string"
+        x-exportParamName: "Digest"
+        x-optionalDataType: "String"
       - name: "application"
         in: "query"
         description: "application"
@@ -6086,6 +6163,20 @@ definitions:
         type: "string"
       pipelineName:
         type: "string"
+  ReorderPipelinesCommand:
+    type: "object"
+    properties:
+      application:
+        type: "string"
+      idsToIndices:
+        type: "object"
+        additionalProperties:
+          type: "integer"
+          format: "int32"
+    example:
+      idsToIndices:
+        key: 0
+      application: "application"
   ResponseEntity:
     type: "object"
     properties:
