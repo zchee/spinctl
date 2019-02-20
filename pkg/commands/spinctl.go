@@ -132,10 +132,6 @@ func NewCommand(ctx context.Context, args []string) *cobra.Command {
 			logpkg.Fatalf("failed to start stackdriver profiler: %v", err)
 		}
 		log.Debug("enabled Stackdriver profiler")
-
-		var span *trace.Span
-		ctx, span = trace.StartSpan(ctx, "main", trace.WithSampler(trace.AlwaysSample())) // start root span
-		defer span.End()
 	}
 	client := spinnaker.NewClient(cfg, clientOpts...)
 
