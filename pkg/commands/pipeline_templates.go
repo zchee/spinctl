@@ -20,6 +20,9 @@ type pipelineTemplates struct {
 	client       *spinnaker.Client
 	outputFormat string
 
+	getVersion string
+	getDigest  string
+
 	listScopes []string
 
 	saveFile string
@@ -61,7 +64,11 @@ func (pt *pipelineTemplates) get(ctx context.Context) *cobra.Command {
 			id := args[0]
 			logging.FromContext(ctx).Debugf("pipelineTemplates.get: id: %s", id)
 
-			s, err := pt.client.GetPipelineTemplate(ctx, id, pt.outputFormat)
+			opts := spinnaker.GetPipelineTemplateOptions{
+				Version: pt.getVersion,
+				Digest:  pt.getDigest,
+			}
+			s, err := pt.client.GetPipelineTemplate(ctx, pt.outputFormat, id, opts)
 			if err != nil {
 				return err
 			}
@@ -70,6 +77,9 @@ func (pt *pipelineTemplates) get(ctx context.Context) *cobra.Command {
 		},
 	}
 
+	f := cmd.Flags()
+	f.StringVarP(&pt.getVersion, "template-version", "V", "", "Version to pipeline-templates")
+	f.StringVarP(&pt.getDigest, "template-Digest", "D", "", "Digest to pipeline-templates")
 	addPrintFlags(&pt.outputFormat).AddFlags(cmd)
 
 	return cmd

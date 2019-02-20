@@ -16,9 +16,22 @@ import (
 	"github.com/zchee/spinctl/api/gate"
 )
 
+type GetPipelineTemplateOptions struct {
+	Version string
+	Digest  string
+}
+
 // GetPipelineTemplate gets a pipeline template.
-func (c *Client) GetPipelineTemplate(ctx context.Context, id, format string) (string, error) {
-	payload, resp, err := c.Client.V2PipelineTemplatesControllerApi.GetUsingGET2(ctx, id)
+func (c *Client) GetPipelineTemplate(ctx context.Context, format, id string, opts GetPipelineTemplateOptions) (string, error) {
+	var gateOpts gate.GetUsingGET2Opts
+	if version := opts.Version; version != "" {
+		gateOpts.Version = optional.NewString(version)
+	}
+	if digest := opts.Digest; digest != "" {
+		gateOpts.Digest = optional.NewString(digest)
+	}
+
+	payload, resp, err := c.Client.V2PipelineTemplatesControllerApi.GetUsingGET2(ctx, id, &gateOpts)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get list of pipeline template")
 	}
