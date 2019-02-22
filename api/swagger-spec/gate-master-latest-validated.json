@@ -4974,9 +4974,9 @@
           "pipeline-controller"
         ],
         "summary": "Evaluate a pipeline expression using the provided execution as context",
-        "operationId": "evaluateExpressionForExecutionViaPOSTUsingPOST",
+        "operationId": "evaluateExpressionForExecutionViaPOSTUsingPOST_1",
         "consumes": [
-          "text/plain"
+          "application/json"
         ],
         "produces": [
           "*/*"
@@ -4995,7 +4995,7 @@
             "description": "pipelineExpression",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "object"
             }
           }
         ],
