@@ -1,17 +1,20 @@
 # \VersionControllerApi
 
-All URIs are relative to *https://localhost:8084*
+All URIs are relative to *http://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetVersionUsingGET**](VersionControllerApi.md#GetVersionUsingGET) | **Get** /version | Fetch Gate&#39;s current version
 
 
-# **GetVersionUsingGET**
+
+## GetVersionUsingGET
+
 > Version GetVersionUsingGET(ctx, )
 Fetch Gate's current version
 
 ### Required Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -24,8 +27,10 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

@@ -9,6 +9,7 @@
 
 package gate
 
-type GrantedAuthority struct {
-	Authority string `json:"authority,omitempty"`
+type ReorderPipelinesCommand struct {
+	Application  string           `json:"application,omitempty"`
+	IdsToIndices map[string]int32 `json:"idsToIndices,omitempty"`
 }

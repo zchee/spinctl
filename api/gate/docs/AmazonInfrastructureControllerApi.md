@@ -1,6 +1,6 @@
 # \AmazonInfrastructureControllerApi
 
-All URIs are relative to *https://localhost:8084*
+All URIs are relative to *http://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,16 +9,19 @@ Method | HTTP request | Description
 [**VpcsUsingGET**](AmazonInfrastructureControllerApi.md#VpcsUsingGET) | **Get** /vpcs | Get VPCs
 
 
-# **InstanceTypesUsingGET**
-> []interface{} InstanceTypesUsingGET(ctx, )
+
+## InstanceTypesUsingGET
+
+> []map[string]interface{} InstanceTypesUsingGET(ctx, )
 Get instance types
 
 ### Required Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -26,21 +29,26 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **SubnetsUsingGET**
-> []interface{} SubnetsUsingGET(ctx, )
+
+## SubnetsUsingGET
+
+> []map[string]interface{} SubnetsUsingGET(ctx, )
 Get subnets
 
 ### Required Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -48,21 +56,26 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **VpcsUsingGET**
-> []interface{} VpcsUsingGET(ctx, )
+
+## VpcsUsingGET
+
+> []map[string]interface{} VpcsUsingGET(ctx, )
 Get VPCs
 
 ### Required Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -70,8 +83,10 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

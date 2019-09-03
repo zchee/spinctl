@@ -1,6 +1,6 @@
 # \LoadBalancerControllerApi
 
-All URIs are relative to *https://localhost:8084*
+All URIs are relative to *http://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,19 +10,24 @@ Method | HTTP request | Description
 [**GetLoadBalancerUsingGET**](LoadBalancerControllerApi.md#GetLoadBalancerUsingGET) | **Get** /loadBalancers/{name} | Retrieve a load balancer for a given cloud provider
 
 
-# **GetAllUsingGET**
-> []interface{} GetAllUsingGET(ctx, optional)
+
+## GetAllUsingGET
+
+> []map[string]interface{} GetAllUsingGET(ctx, optional)
 Retrieve a list of load balancers for a given cloud provider
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
  **optional** | ***GetAllUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetAllUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -31,7 +36,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -39,25 +44,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetApplicationLoadBalancersUsingGET**
-> []interface{} GetApplicationLoadBalancersUsingGET(ctx, application, optional)
+
+## GetApplicationLoadBalancersUsingGET
+
+> []map[string]interface{} GetApplicationLoadBalancersUsingGET(ctx, application, optional)
 Retrieve a list of load balancers for a given application
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
  **optional** | ***GetApplicationLoadBalancersUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetApplicationLoadBalancersUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -66,7 +78,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -74,27 +86,34 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetLoadBalancerDetailsUsingGET**
-> []interface{} GetLoadBalancerDetailsUsingGET(ctx, account, region, name, optional)
+
+## GetLoadBalancerDetailsUsingGET
+
+> []map[string]interface{} GetLoadBalancerDetailsUsingGET(ctx, account, region, name, optional)
 Retrieve a load balancer's details as a single element list for a given account, region, cloud provider and load balancer name
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **account** | **string**| account | 
-  **region** | **string**| region | 
-  **name** | **string**| name | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**account** | **string**| account | 
+**region** | **string**| region | 
+**name** | **string**| name | 
  **optional** | ***GetLoadBalancerDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetLoadBalancerDetailsUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -106,7 +125,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -114,25 +133,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetLoadBalancerUsingGET**
-> map[string]interface{} GetLoadBalancerUsingGET(ctx, name, optional)
+
+## GetLoadBalancerUsingGET
+
+> map[string]map[string]interface{} GetLoadBalancerUsingGET(ctx, name, optional)
 Retrieve a load balancer for a given cloud provider
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **name** | **string**| name | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**name** | **string**| name | 
  **optional** | ***GetLoadBalancerUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetLoadBalancerUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -142,7 +168,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -150,8 +176,10 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

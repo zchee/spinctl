@@ -1,6 +1,6 @@
 # \ApplicationControllerApi
 
-All URIs are relative to *https://localhost:8084*
+All URIs are relative to *http://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -21,20 +21,25 @@ Method | HTTP request | Description
 [**TaskUsingPOST**](ApplicationControllerApi.md#TaskUsingPOST) | **Post** /applications/{application}/tasks | Create task
 
 
-# **CancelPipelineUsingPUT**
-> map[string]interface{} CancelPipelineUsingPUT(ctx, id, optional)
+
+## CancelPipelineUsingPUT
+
+> map[string]map[string]interface{} CancelPipelineUsingPUT(ctx, id, optional)
 Cancel pipeline
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
  **optional** | ***CancelPipelineUsingPUTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a CancelPipelineUsingPUTOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -43,7 +48,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -51,25 +56,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **CancelTaskUsingPUT**
-> map[string]interface{} CancelTaskUsingPUT(ctx, id)
+
+## CancelTaskUsingPUT
+
+> map[string]map[string]interface{} CancelTaskUsingPUT(ctx, id)
 Cancel task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -77,24 +87,31 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetAllApplicationsUsingGET**
-> []interface{} GetAllApplicationsUsingGET(ctx, optional)
+
+## GetAllApplicationsUsingGET
+
+> []map[string]interface{} GetAllApplicationsUsingGET(ctx, optional)
 Retrieve a list of applications
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
  **optional** | ***GetAllApplicationsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetAllApplicationsUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -103,7 +120,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -111,25 +128,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetApplicationHistoryUsingGET**
-> []interface{} GetApplicationHistoryUsingGET(ctx, application, optional)
+
+## GetApplicationHistoryUsingGET
+
+> []map[string]interface{} GetApplicationHistoryUsingGET(ctx, application, optional)
 Retrieve a list of an application's configuration revision history
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
  **optional** | ***GetApplicationHistoryUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetApplicationHistoryUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -138,7 +162,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -146,25 +170,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetApplicationUsingGET**
-> map[string]interface{} GetApplicationUsingGET(ctx, application, optional)
+
+## GetApplicationUsingGET
+
+> map[string]map[string]interface{} GetApplicationUsingGET(ctx, application, optional)
 Retrieve an application's details
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
  **optional** | ***GetApplicationUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetApplicationUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -173,7 +204,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -181,26 +212,31 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetPipelineConfigUsingGET**
-> map[string]interface{} GetPipelineConfigUsingGET(ctx, application, pipelineName)
+
+## GetPipelineConfigUsingGET
+
+> map[string]map[string]interface{} GetPipelineConfigUsingGET(ctx, application, pipelineName)
 Retrieve a pipeline configuration
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
-  **pipelineName** | **string**| pipelineName | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
+**pipelineName** | **string**| pipelineName | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -208,25 +244,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetPipelineConfigsForApplicationUsingGET**
-> []interface{} GetPipelineConfigsForApplicationUsingGET(ctx, application)
+
+## GetPipelineConfigsForApplicationUsingGET
+
+> []map[string]interface{} GetPipelineConfigsForApplicationUsingGET(ctx, application)
 Retrieve a list of an application's pipeline configurations
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -234,25 +275,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetPipelinesUsingGET**
-> []interface{} GetPipelinesUsingGET(ctx, application, optional)
+
+## GetPipelinesUsingGET
+
+> []map[string]interface{} GetPipelinesUsingGET(ctx, application, optional)
 Retrieve a list of an application's pipeline executions
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
  **optional** | ***GetPipelinesUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetPipelinesUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -263,7 +311,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -271,26 +319,31 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetStrategyConfigUsingGET**
-> map[string]interface{} GetStrategyConfigUsingGET(ctx, application, strategyName)
+
+## GetStrategyConfigUsingGET
+
+> map[string]map[string]interface{} GetStrategyConfigUsingGET(ctx, application, strategyName)
 Retrieve a pipeline strategy configuration
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
-  **strategyName** | **string**| strategyName | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
+**strategyName** | **string**| strategyName | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -298,25 +351,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetStrategyConfigsForApplicationUsingGET**
-> []interface{} GetStrategyConfigsForApplicationUsingGET(ctx, application)
+
+## GetStrategyConfigsForApplicationUsingGET
+
+> []map[string]interface{} GetStrategyConfigsForApplicationUsingGET(ctx, application)
 Retrieve a list of an application's pipeline strategy configurations
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -324,26 +382,33 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetTaskDetailsUsingGET**
-> map[string]interface{} GetTaskDetailsUsingGET(ctx, id, taskDetailsId, optional)
+
+## GetTaskDetailsUsingGET
+
+> map[string]map[string]interface{} GetTaskDetailsUsingGET(ctx, id, taskDetailsId, optional)
 Get task details
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
-  **taskDetailsId** | **string**| taskDetailsId | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
+**taskDetailsId** | **string**| taskDetailsId | 
  **optional** | ***GetTaskDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetTaskDetailsUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -353,7 +418,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -361,25 +426,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetTaskUsingGET**
-> map[string]interface{} GetTaskUsingGET(ctx, id)
+
+## GetTaskUsingGET
+
+> map[string]map[string]interface{} GetTaskUsingGET(ctx, id)
 Get task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -387,25 +457,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetTasksUsingGET**
-> []interface{} GetTasksUsingGET(ctx, application, optional)
+
+## GetTasksUsingGET
+
+> []map[string]interface{} GetTasksUsingGET(ctx, application, optional)
 Retrieve a list of an application's tasks
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
  **optional** | ***GetTasksUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetTasksUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -416,7 +493,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -424,32 +501,39 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **InvokePipelineConfigUsingPOST**
+
+## InvokePipelineConfigUsingPOST
+
 > HttpEntity InvokePipelineConfigUsingPOST(ctx, application, pipelineName, optional)
 Invoke pipeline config
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
-  **pipelineName** | **string**| pipelineName | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**application** | **string**| application | 
+**pipelineName** | **string**| pipelineName | 
  **optional** | ***InvokePipelineConfigUsingPOSTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a InvokePipelineConfigUsingPOSTOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **trigger** | [**optional.Interface of interface{}**](interface{}.md)| trigger | 
+ **trigger** | **optional.Map[string]interface{}**| trigger | 
  **user** | **optional.String**| user | 
 
 ### Return type
@@ -462,26 +546,31 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: application/json
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **TaskUsingPOST**
-> map[string]interface{} TaskUsingPOST(ctx, application, map_)
+
+## TaskUsingPOST
+
+> map[string]map[string]interface{} TaskUsingPOST(ctx, map_, application)
 Create task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **application** | **string**| application | 
-  **map_** | [**interface{}**](interface{}.md)| map | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**map_** | **map[string]interface{}**| map | 
+**application** | **string**| application | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -489,8 +578,10 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: application/json
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

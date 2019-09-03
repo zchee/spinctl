@@ -1,20 +1,21 @@
 # AccountDetails
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**AccountId** | **string** |  | [optional] [default to null]
-**AccountType** | **string** |  | [optional] [default to null]
-**ChallengeDestructiveActions** | **bool** |  | [optional] [default to null]
-**CloudProvider** | **string** |  | [optional] [default to null]
-**Environment** | **string** |  | [optional] [default to null]
-**Name** | **string** |  | [optional] [default to null]
-**Permissions** | [**map[string][]string**](array.md) |  | [optional] [default to null]
-**PrimaryAccount** | **bool** |  | [optional] [default to null]
-**ProviderVersion** | **string** |  | [optional] [default to null]
-**RequiredGroupMembership** | **[]string** |  | [optional] [default to null]
-**Skin** | **string** |  | [optional] [default to null]
-**Type_** | **string** |  | [optional] [default to null]
+**AccountId** | **string** |  | [optional] 
+**AccountType** | **string** |  | [optional] 
+**ChallengeDestructiveActions** | **bool** |  | [optional] 
+**CloudProvider** | **string** |  | [optional] 
+**Environment** | **string** |  | [optional] 
+**Name** | **string** |  | [optional] 
+**Permissions** | [**map[string][]string**](array.md) |  | [optional] 
+**PrimaryAccount** | **bool** |  | [optional] 
+**ProviderVersion** | **string** |  | [optional] 
+**RequiredGroupMembership** | **[]string** |  | [optional] 
+**Skin** | **string** |  | [optional] 
+**Type** | **string** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -16,29 +16,23 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
 
 var _ _context.Context
 
-type ArtifactControllerApiService service
+type ConcourseControllerApiService service
 
 /*
-ArtifactControllerApiService Retrieve the list of artifact accounts configured in Clouddriver.
+ConcourseControllerApiService Retrieve the list of job names for a given pipeline available to triggers
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *AllUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
+ * @param buildMaster buildMaster
+ * @param team team
+ * @param pipeline pipeline
 @return []map[string]interface{}
 */
-
-type AllUsingGETOpts struct {
-	XRateLimitApp optional.String
-}
-
-func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVarOptionals *AllUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, buildMaster string, team string, pipeline string) ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHttpMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -49,7 +43,10 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/artifacts/credentials"
+	localVarPath := a.client.cfg.BasePath + "/concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/jobs"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", team)), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipeline"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipeline)), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -71,9 +68,6 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -122,40 +116,31 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 }
 
 /*
-ArtifactControllerApiService Retrieve the list of artifact versions by account and artifact names
+ConcourseControllerApiService Retrieve the list of pipeline names for a given team available to triggers
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param accountName accountName
- * @param type_ type
- * @param artifactName artifactName
- * @param optional nil or *ArtifactVersionsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []string
+ * @param buildMaster buildMaster
+ * @param team team
+@return []map[string]interface{}
 */
-
-type ArtifactVersionsUsingGETOpts struct {
-	XRateLimitApp optional.String
-}
-
-func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Context, accountName string, type_ string, artifactName string, localVarOptionals *ArtifactVersionsUsingGETOpts) ([]string, *_nethttp.Response, error) {
+func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, buildMaster string, team string) ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHttpMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  []string
+		localVarReturnValue  []map[string]interface{}
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/artifacts/account/{accountName}/versions"
-	localVarPath = strings.Replace(localVarPath, "{"+"accountName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", accountName)), -1)
+	localVarPath := a.client.cfg.BasePath + "/concourse/{buildMaster}/teams/{team}/pipelines"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", team)), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("type", parameterToString(type_, ""))
-	localVarQueryParams.Add("artifactName", parameterToString(artifactName, ""))
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
 
@@ -172,9 +157,6 @@ func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Con
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
-	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
 	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
@@ -198,7 +180,98 @@ func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Con
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []string
+			var v []map[string]interface{}
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+		return localVarReturnValue, localVarHttpResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHttpResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHttpResponse, nil
+}
+
+/*
+ConcourseControllerApiService Retrieve the list of resource names for a given pipeline available to the Concourse stage
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param buildMaster buildMaster
+ * @param team team
+ * @param pipeline pipeline
+@return []map[string]interface{}
+*/
+func (a *ConcourseControllerApiService) ResourcesUsingGET(ctx _context.Context, buildMaster string, team string, pipeline string) ([]map[string]interface{}, *_nethttp.Response, error) {
+	var (
+		localVarHttpMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  []map[string]interface{}
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/resources"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", team)), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipeline"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipeline)), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"*/*"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		if localVarHttpResponse.StatusCode == 200 {
+			var v []map[string]interface{}
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

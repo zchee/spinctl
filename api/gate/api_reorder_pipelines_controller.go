@@ -11,53 +11,42 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"strings"
 )
 
 // Linger please
 
 var _ _context.Context
 
-type EcsServerGroupEventsControllerApiService service
+type ReorderPipelinesControllerApiService service
 
 /*
-EcsServerGroupEventsControllerApiService Retrieves a list of events for a server group
+ReorderPipelinesControllerApiService Re-order pipelines
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param application application
- * @param account account
- * @param serverGroupName serverGroupName
- * @param region region
- * @param provider provider
-@return []map[string]interface{}
+ * @param reorderPipelinesCommand reorderPipelinesCommand
+@return map[string]interface{}
 */
-func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _context.Context, application string, account string, serverGroupName string, region string, provider string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ReorderPipelinesControllerApiService) ReorderPipelinesUsingPOST(ctx _context.Context, reorderPipelinesCommand ReorderPipelinesCommand) (map[string]interface{}, *_nethttp.Response, error) {
 	var (
-		localVarHttpMethod   = _nethttp.MethodGet
+		localVarHttpMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  []map[string]interface{}
+		localVarReturnValue  map[string]interface{}
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/serverGroups/{account}/{serverGroupName}/events"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", serverGroupName)), -1)
+	localVarPath := a.client.cfg.BasePath + "/actions/pipelines/reorder"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("region", parameterToString(region, ""))
-	localVarQueryParams.Add("provider", parameterToString(provider, ""))
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{}
+	localVarHttpContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
@@ -73,6 +62,8 @@ func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _contex
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
+	// body params
+	localVarPostBody = &reorderPipelinesCommand
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -95,7 +86,7 @@ func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _contex
 			error: localVarHttpResponse.Status,
 		}
 		if localVarHttpResponse.StatusCode == 200 {
-			var v []map[string]interface{}
+			var v map[string]interface{}
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

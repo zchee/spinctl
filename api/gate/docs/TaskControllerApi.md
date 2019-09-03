@@ -1,6 +1,6 @@
 # \TaskControllerApi
 
-All URIs are relative to *https://localhost:8084*
+All URIs are relative to *http://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,20 +12,23 @@ Method | HTTP request | Description
 [**TaskUsingPOST1**](TaskControllerApi.md#TaskUsingPOST1) | **Post** /tasks | Create task
 
 
-# **CancelTaskUsingPUT1**
-> map[string]interface{} CancelTaskUsingPUT1(ctx, id)
+
+## CancelTaskUsingPUT1
+
+> map[string]map[string]interface{} CancelTaskUsingPUT1(ctx, id)
 Cancel task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -33,25 +36,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **CancelTasksUsingPUT**
-> map[string]interface{} CancelTasksUsingPUT(ctx, ids)
+
+## CancelTasksUsingPUT
+
+> map[string]map[string]interface{} CancelTasksUsingPUT(ctx, ids)
 Cancel tasks
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **ids** | [**[]string**](string.md)| ids | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**ids** | [**[]string**](string.md)| ids | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -59,25 +67,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **DeleteTaskUsingDELETE**
-> map[string]interface{} DeleteTaskUsingDELETE(ctx, id)
+
+## DeleteTaskUsingDELETE
+
+> map[string]map[string]interface{} DeleteTaskUsingDELETE(ctx, id)
 Delete task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -85,26 +98,33 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetTaskDetailsUsingGET1**
-> map[string]interface{} GetTaskDetailsUsingGET1(ctx, id, taskDetailsId, optional)
+
+## GetTaskDetailsUsingGET1
+
+> map[string]map[string]interface{} GetTaskDetailsUsingGET1(ctx, id, taskDetailsId, optional)
 Get task details
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
-  **taskDetailsId** | **string**| taskDetailsId | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
+**taskDetailsId** | **string**| taskDetailsId | 
  **optional** | ***GetTaskDetailsUsingGET1Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetTaskDetailsUsingGET1Opts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -114,7 +134,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -122,25 +142,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetTaskUsingGET1**
-> map[string]interface{} GetTaskUsingGET1(ctx, id)
+
+## GetTaskUsingGET1
+
+> map[string]map[string]interface{} GetTaskUsingGET1(ctx, id)
 Get task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **id** | **string**| id | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**id** | **string**| id | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -148,25 +173,30 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **TaskUsingPOST1**
-> map[string]interface{} TaskUsingPOST1(ctx, map_)
+
+## TaskUsingPOST1
+
+> map[string]map[string]interface{} TaskUsingPOST1(ctx, map_)
 Create task
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **map_** | [**interface{}**](interface{}.md)| map | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**map_** | **map[string]interface{}**| map | 
 
 ### Return type
 
-[**map[string]interface{}**](interface{}.md)
+[**map[string]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -174,8 +204,10 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: application/json
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 

@@ -1,6 +1,6 @@
 # \ServerGroupControllerApi
 
-All URIs are relative to *https://localhost:8084*
+All URIs are relative to *http://localhost:8084*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -8,23 +8,28 @@ Method | HTTP request | Description
 [**GetServerGroupsForApplicationUsingGET**](ServerGroupControllerApi.md#GetServerGroupsForApplicationUsingGET) | **Get** /applications/{applicationName}/serverGroups | Retrieve a list of server groups for a given application
 
 
-# **GetServerGroupDetailsUsingGET**
-> interface{} GetServerGroupDetailsUsingGET(ctx, applicationName, account, region, serverGroupName, optional)
+
+## GetServerGroupDetailsUsingGET
+
+> map[string]interface{} GetServerGroupDetailsUsingGET(ctx, applicationName, account, region, serverGroupName, optional)
 Retrieve a server group's details
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **applicationName** | **string**| applicationName | 
-  **account** | **string**| account | 
-  **region** | **string**| region | 
-  **serverGroupName** | **string**| serverGroupName | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationName** | **string**| applicationName | 
+**account** | **string**| account | 
+**region** | **string**| region | 
+**serverGroupName** | **string**| serverGroupName | 
  **optional** | ***GetServerGroupDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetServerGroupDetailsUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -37,7 +42,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**interface{}**](interface{}.md)
+[**map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -45,25 +50,32 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
-# **GetServerGroupsForApplicationUsingGET**
-> []interface{} GetServerGroupsForApplicationUsingGET(ctx, applicationName, optional)
+
+## GetServerGroupsForApplicationUsingGET
+
+> []map[string]interface{} GetServerGroupsForApplicationUsingGET(ctx, applicationName, optional)
 Retrieve a list of server groups for a given application
 
 ### Required Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-  **applicationName** | **string**| applicationName | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**applicationName** | **string**| applicationName | 
  **optional** | ***GetServerGroupsForApplicationUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
+
 Optional parameters are passed through a pointer to a GetServerGroupsForApplicationUsingGETOpts struct
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -75,7 +87,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]interface{}**](interface{}.md)
+[**[]map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 
@@ -83,8 +95,10 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: */*
+- **Content-Type**: Not defined
+- **Accept**: */*
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
