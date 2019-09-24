@@ -28,7 +28,7 @@ require (
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/zchee/go-open v1.0.0
 	github.com/zchee/go-xdgbasedir v1.0.3
-	go.opencensus.io v0.19.0
+	go.opencensus.io v0.22.1
 	go.uber.org/atomic v1.3.3-0.20181018215023-8dc6146f7569 // indirect
 	go.uber.org/multierr v1.1.1-0.20180122172545-ddea229ff1df // indirect
 	go.uber.org/zap v1.9.2-0.20190122184550-82e3b47c1fe4
