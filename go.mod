@@ -40,7 +40,7 @@ require (
 	google.golang.org/api v0.1.0
 	google.golang.org/genproto v0.0.0-20190219182410-082222b4a5c5 // indirect
 	google.golang.org/grpc v1.18.0 // indirect
-	gopkg.in/yaml.v2 v2.2.2
+	gopkg.in/yaml.v2 v2.2.3
 	k8s.io/api v0.0.0-20190202010724-74b699b93c15 // indirect
 	k8s.io/apimachinery v0.0.0-20190117220443-572dfc7bdfcb // indirect
 	k8s.io/cli-runtime v0.0.0-20190202014047-491c94071cfa
