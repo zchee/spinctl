@@ -57,7 +57,7 @@ github.com/emicklei/go-restful
 github.com/emicklei/go-restful/log
 # github.com/evanphx/json-patch v4.2.0+incompatible
 github.com/evanphx/json-patch
-# github.com/ghodss/yaml v0.0.0-20180820084758-c7ce16629ff4
+# github.com/ghodss/yaml v1.0.0
 github.com/ghodss/yaml
 # github.com/go-openapi/jsonpointer v0.19.2
 github.com/go-openapi/jsonpointer
@@ -166,7 +166,7 @@ go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
 go.uber.org/zap/zapcore
-# golang.org/x/crypto v0.0.0-20190611184440-5c40567a22f8
+# golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20190812203447-cdfb69ac37fc
 golang.org/x/net/context
@@ -186,7 +186,7 @@ golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
 # golang.org/x/sync v0.0.0-20190423024810-112230192c58
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.0.0-20190804053845-51ab0e2deafa
+# golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 # golang.org/x/text v0.3.2
@@ -289,6 +289,31 @@ google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
+# google.golang.org/protobuf v0.0.0-20190914210843-3c4ab8c6f158
+google.golang.org/protobuf/encoding/prototext
+google.golang.org/protobuf/internal/descfmt
+google.golang.org/protobuf/internal/descopts
+google.golang.org/protobuf/internal/detrand
+google.golang.org/protobuf/internal/encoding/defval
+google.golang.org/protobuf/internal/encoding/messageset
+google.golang.org/protobuf/internal/encoding/tag
+google.golang.org/protobuf/internal/encoding/text
+google.golang.org/protobuf/internal/encoding/wire
+google.golang.org/protobuf/internal/errors
+google.golang.org/protobuf/internal/fieldnum
+google.golang.org/protobuf/internal/filedesc
+google.golang.org/protobuf/internal/filetype
+google.golang.org/protobuf/internal/flags
+google.golang.org/protobuf/internal/impl
+google.golang.org/protobuf/internal/mapsort
+google.golang.org/protobuf/internal/pragma
+google.golang.org/protobuf/internal/set
+google.golang.org/protobuf/internal/strs
+google.golang.org/protobuf/proto
+google.golang.org/protobuf/reflect/protoreflect
+google.golang.org/protobuf/reflect/protoregistry
+google.golang.org/protobuf/runtime/protoiface
+google.golang.org/protobuf/runtime/protoimpl
 # gopkg.in/inf.v0 v0.9.1
 gopkg.in/inf.v0
 # gopkg.in/yaml.v2 v2.2.2
