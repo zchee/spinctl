@@ -11,7 +11,8 @@ Method | HTTP request | Description
 
 ## GetConsoleOutputUsingGET
 
-> map[string]interface{} GetConsoleOutputUsingGET(ctx, account, region, instanceId, optional)
+> map[string]interface{} GetConsoleOutputUsingGET(ctx, account, instanceId, region, optional)
+
 Retrieve an instance's console output
 
 ### Required Parameters
@@ -21,8 +22,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **account** | **string**| account | 
-**region** | **string**| region | 
 **instanceId** | **string**| instanceId | 
+**region** | **string**| region | 
  **optional** | ***GetConsoleOutputUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -35,8 +36,8 @@ Name | Type | Description  | Notes
 
 
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -58,7 +59,8 @@ No authorization required
 
 ## GetInstanceDetailsUsingGET
 
-> map[string]interface{} GetInstanceDetailsUsingGET(ctx, account, region, instanceId, optional)
+> map[string]interface{} GetInstanceDetailsUsingGET(ctx, account, instanceId, region, optional)
+
 Retrieve an instance's details
 
 ### Required Parameters
@@ -68,8 +70,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **account** | **string**| account | 
-**region** | **string**| region | 
 **instanceId** | **string**| instanceId | 
+**region** | **string**| region | 
  **optional** | ***GetInstanceDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters

@@ -15,6 +15,7 @@ Method | HTTP request | Description
 ## GetServiceAccountsUsingGET
 
 > []map[string]interface{} GetServiceAccountsUsingGET(ctx, )
+
 Get service accounts
 
 ### Required Parameters
@@ -42,6 +43,7 @@ No authorization required
 ## LoggedOutUsingGET
 
 > string LoggedOutUsingGET(ctx, )
+
 Get logged out message
 
 ### Required Parameters
@@ -69,6 +71,7 @@ No authorization required
 ## RedirectUsingGET
 
 > RedirectUsingGET(ctx, to)
+
 Redirect to Deck
 
 ### Required Parameters
@@ -100,6 +103,7 @@ No authorization required
 ## SyncUsingPOST
 
 > SyncUsingPOST(ctx, )
+
 Sync user roles
 
 ### Required Parameters
@@ -127,6 +131,7 @@ No authorization required
 ## UserUsingGET
 
 > User UserUsingGET(ctx, )
+
 Get user
 
 ### Required Parameters

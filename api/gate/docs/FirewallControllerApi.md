@@ -14,6 +14,7 @@ Method | HTTP request | Description
 ## AllByAccountAndRegionUsingGET
 
 > []map[string]interface{} AllByAccountAndRegionUsingGET(ctx, account, region, optional)
+
 Retrieve a list of firewalls for a given account and region
 
 ### Required Parameters
@@ -35,8 +36,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -59,6 +60,7 @@ No authorization required
 ## AllByAccountUsingGET
 
 > map[string]interface{} AllByAccountUsingGET(ctx, account, optional)
+
 Retrieve a list of firewalls for a given account, grouped by region
 
 ### Required Parameters
@@ -78,8 +80,8 @@ Optional parameters are passed through a pointer to a AllByAccountUsingGETOpts s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -102,6 +104,7 @@ No authorization required
 ## AllUsingGET1
 
 > map[string]interface{} AllUsingGET1(ctx, optional)
+
 Retrieve a list of firewalls, grouped by account, cloud provider, and region
 
 ### Required Parameters
@@ -119,8 +122,8 @@ Optional parameters are passed through a pointer to a AllUsingGET1Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **optional.String**| id | 
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **id** | **optional.String**| id | 
 
 ### Return type
 
@@ -142,7 +145,8 @@ No authorization required
 
 ## GetSecurityGroupUsingGET
 
-> map[string]interface{} GetSecurityGroupUsingGET(ctx, account, region, name, optional)
+> map[string]interface{} GetSecurityGroupUsingGET(ctx, account, name, region, optional)
+
 Retrieve a firewall's details
 
 ### Required Parameters
@@ -152,8 +156,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **account** | **string**| account | 
-**region** | **string**| region | 
 **name** | **string**| name | 
+**region** | **string**| region | 
  **optional** | ***GetSecurityGroupUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -166,9 +170,9 @@ Name | Type | Description  | Notes
 
 
 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
  **provider** | **optional.String**| provider | [default to aws]
  **vpcId** | **optional.String**| vpcId | 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 

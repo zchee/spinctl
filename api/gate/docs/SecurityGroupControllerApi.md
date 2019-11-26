@@ -13,6 +13,7 @@ Method | HTTP request | Description
 ## AllByAccountUsingGET1
 
 > map[string]interface{} AllByAccountUsingGET1(ctx, account, optional)
+
 Retrieve a list of security groups for a given account, grouped by region
 
 ### Required Parameters
@@ -32,8 +33,8 @@ Optional parameters are passed through a pointer to a AllByAccountUsingGET1Opts 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -56,6 +57,7 @@ No authorization required
 ## AllUsingGET5
 
 > map[string]interface{} AllUsingGET5(ctx, optional)
+
 Retrieve a list of security groups, grouped by account, cloud provider, and region
 
 ### Required Parameters
@@ -73,8 +75,8 @@ Optional parameters are passed through a pointer to a AllUsingGET5Opts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **optional.String**| id | 
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **id** | **optional.String**| id | 
 
 ### Return type
 
@@ -96,7 +98,8 @@ No authorization required
 
 ## GetSecurityGroupUsingGET1
 
-> map[string]interface{} GetSecurityGroupUsingGET1(ctx, account, region, name, optional)
+> map[string]interface{} GetSecurityGroupUsingGET1(ctx, account, name, region, optional)
+
 Retrieve a security group's details
 
 ### Required Parameters
@@ -106,8 +109,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **account** | **string**| account | 
-**region** | **string**| region | 
 **name** | **string**| name | 
+**region** | **string**| region | 
  **optional** | ***GetSecurityGroupUsingGET1Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -120,9 +123,9 @@ Name | Type | Description  | Notes
 
 
 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
  **provider** | **optional.String**| provider | [default to aws]
  **vpcId** | **optional.String**| vpcId | 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 

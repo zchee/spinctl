@@ -13,6 +13,7 @@ Method | HTTP request | Description
 ## FindImagesUsingGET
 
 > []map[string]interface{} FindImagesUsingGET(ctx, optional)
+
 Retrieve a list of images, filtered by cloud provider, region, and account
 
 The query parameter `q` filters the list of images by image name
@@ -32,11 +33,11 @@ Optional parameters are passed through a pointer to a FindImagesUsingGETOpts str
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **account** | **optional.String**| account | 
+ **count** | **optional.Int32**| count | 
  **provider** | **optional.String**| provider | [default to aws]
  **q** | **optional.String**| q | 
  **region** | **optional.String**| region | 
- **account** | **optional.String**| account | 
- **count** | **optional.Int32**| count | 
 
 ### Return type
 
@@ -59,6 +60,7 @@ No authorization required
 ## FindTagsUsingGET
 
 > []map[string]interface{} FindTagsUsingGET(ctx, account, repository, optional)
+
 Find tags
 
 ### Required Parameters
@@ -80,8 +82,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -103,7 +105,8 @@ No authorization required
 
 ## GetImageDetailsUsingGET
 
-> []map[string]interface{} GetImageDetailsUsingGET(ctx, account, region, imageId, optional)
+> []map[string]interface{} GetImageDetailsUsingGET(ctx, account, imageId, region, optional)
+
 Get image details
 
 ### Required Parameters
@@ -113,8 +116,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **account** | **string**| account | 
-**region** | **string**| region | 
 **imageId** | **string**| imageId | 
+**region** | **string**| region | 
  **optional** | ***GetImageDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -127,8 +130,8 @@ Name | Type | Description  | Notes
 
 
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 

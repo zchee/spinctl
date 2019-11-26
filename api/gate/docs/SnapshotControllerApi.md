@@ -11,7 +11,8 @@ Method | HTTP request | Description
 
 ## GetCurrentSnapshotUsingGET
 
-> map[string]map[string]interface{} GetCurrentSnapshotUsingGET(ctx, application, account)
+> map[string]map[string]interface{} GetCurrentSnapshotUsingGET(ctx, account, application)
+
 Get current snapshot
 
 ### Required Parameters
@@ -20,8 +21,8 @@ Get current snapshot
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
 
 ### Return type
 
@@ -43,7 +44,8 @@ No authorization required
 
 ## GetSnapshotHistoryUsingGET
 
-> []map[string]interface{} GetSnapshotHistoryUsingGET(ctx, application, account, optional)
+> []map[string]interface{} GetSnapshotHistoryUsingGET(ctx, account, application, optional)
+
 Get snapshot history
 
 ### Required Parameters
@@ -52,8 +54,8 @@ Get snapshot history
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
  **optional** | ***GetSnapshotHistoryUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters

@@ -9,8 +9,136 @@
 
 package gate
 
+import (
+	"bytes"
+	"encoding/json"
+)
+
+// PipelineTemplateDependent struct for PipelineTemplateDependent
 type PipelineTemplateDependent struct {
-	Application      string `json:"application,omitempty"`
-	PipelineConfigId string `json:"pipelineConfigId,omitempty"`
-	PipelineName     string `json:"pipelineName,omitempty"`
+	Application      *string `json:"application,omitempty"`
+	PipelineConfigId *string `json:"pipelineConfigId,omitempty"`
+	PipelineName     *string `json:"pipelineName,omitempty"`
+}
+
+// GetApplication returns the Application field value if set, zero value otherwise.
+func (o *PipelineTemplateDependent) GetApplication() string {
+	if o == nil || o.Application == nil {
+		var ret string
+		return ret
+	}
+	return *o.Application
+}
+
+// GetApplicationOk returns a tuple with the Application field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *PipelineTemplateDependent) GetApplicationOk() (string, bool) {
+	if o == nil || o.Application == nil {
+		var ret string
+		return ret, false
+	}
+	return *o.Application, true
+}
+
+// HasApplication returns a boolean if a field has been set.
+func (o *PipelineTemplateDependent) HasApplication() bool {
+	if o != nil && o.Application != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetApplication gets a reference to the given string and assigns it to the Application field.
+func (o *PipelineTemplateDependent) SetApplication(v string) {
+	o.Application = &v
+}
+
+// GetPipelineConfigId returns the PipelineConfigId field value if set, zero value otherwise.
+func (o *PipelineTemplateDependent) GetPipelineConfigId() string {
+	if o == nil || o.PipelineConfigId == nil {
+		var ret string
+		return ret
+	}
+	return *o.PipelineConfigId
+}
+
+// GetPipelineConfigIdOk returns a tuple with the PipelineConfigId field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *PipelineTemplateDependent) GetPipelineConfigIdOk() (string, bool) {
+	if o == nil || o.PipelineConfigId == nil {
+		var ret string
+		return ret, false
+	}
+	return *o.PipelineConfigId, true
+}
+
+// HasPipelineConfigId returns a boolean if a field has been set.
+func (o *PipelineTemplateDependent) HasPipelineConfigId() bool {
+	if o != nil && o.PipelineConfigId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPipelineConfigId gets a reference to the given string and assigns it to the PipelineConfigId field.
+func (o *PipelineTemplateDependent) SetPipelineConfigId(v string) {
+	o.PipelineConfigId = &v
+}
+
+// GetPipelineName returns the PipelineName field value if set, zero value otherwise.
+func (o *PipelineTemplateDependent) GetPipelineName() string {
+	if o == nil || o.PipelineName == nil {
+		var ret string
+		return ret
+	}
+	return *o.PipelineName
+}
+
+// GetPipelineNameOk returns a tuple with the PipelineName field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *PipelineTemplateDependent) GetPipelineNameOk() (string, bool) {
+	if o == nil || o.PipelineName == nil {
+		var ret string
+		return ret, false
+	}
+	return *o.PipelineName, true
+}
+
+// HasPipelineName returns a boolean if a field has been set.
+func (o *PipelineTemplateDependent) HasPipelineName() bool {
+	if o != nil && o.PipelineName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPipelineName gets a reference to the given string and assigns it to the PipelineName field.
+func (o *PipelineTemplateDependent) SetPipelineName(v string) {
+	o.PipelineName = &v
+}
+
+type NullablePipelineTemplateDependent struct {
+	Value        PipelineTemplateDependent
+	ExplicitNull bool
+}
+
+func (v NullablePipelineTemplateDependent) MarshalJSON() ([]byte, error) {
+	switch {
+	case v.ExplicitNull:
+		return []byte("null"), nil
+	default:
+		return json.Marshal(v.Value)
+	}
+}
+
+func (v *NullablePipelineTemplateDependent) UnmarshalJSON(src []byte) error {
+	if bytes.Equal(src, []byte("null")) {
+		v.ExplicitNull = true
+		return nil
+	}
+
+	return json.Unmarshal(src, &v.Value)
 }

@@ -13,6 +13,7 @@ Method | HTTP request | Description
 ## BakeOptionsUsingGET
 
 > map[string]interface{} BakeOptionsUsingGET(ctx, cloudProvider)
+
 Retrieve a list of available bakery base images for a given cloud provider
 
 ### Required Parameters
@@ -44,6 +45,7 @@ No authorization required
 ## BakeOptionsUsingGET1
 
 > map[string]interface{} BakeOptionsUsingGET1(ctx, )
+
 Retrieve a list of available bakery base images, grouped by cloud provider
 
 ### Required Parameters
@@ -71,6 +73,7 @@ No authorization required
 ## LookupLogsUsingGET
 
 > map[string]interface{} LookupLogsUsingGET(ctx, region, statusId)
+
 Retrieve the logs for a given bake
 
 ### Required Parameters

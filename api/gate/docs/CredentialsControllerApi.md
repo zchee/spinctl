@@ -12,6 +12,7 @@ Method | HTTP request | Description
 ## GetAccountUsingGET
 
 > AccountDetails GetAccountUsingGET(ctx, account, optional)
+
 Retrieve an account's details
 
 ### Required Parameters
@@ -31,13 +32,19 @@ Optional parameters are passed through a pointer to a GetAccountUsingGETOpts str
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **roles** | [**optional.Interface of []string**](string.md)|  | 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **accountNonExpired** | **optional.Bool**|  | 
+ **accountNonLocked** | **optional.Bool**|  | 
  **allowedAccounts** | [**optional.Interface of []string**](string.md)|  | 
+ **authorities0Authority** | **optional.String**|  | 
+ **credentialsNonExpired** | **optional.Bool**|  | 
  **email** | **optional.String**|  | 
- **username** | **optional.String**|  | 
+ **enabled** | **optional.Bool**|  | 
  **firstName** | **optional.String**|  | 
  **lastName** | **optional.String**|  | 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **password** | **optional.String**|  | 
+ **roles** | [**optional.Interface of []string**](string.md)|  | 
+ **username** | **optional.String**|  | 
 
 ### Return type
 
@@ -60,6 +67,7 @@ No authorization required
 ## GetAccountsUsingGET
 
 > []Account GetAccountsUsingGET(ctx, optional)
+
 Retrieve a list of accounts
 
 ### Required Parameters
@@ -77,13 +85,19 @@ Optional parameters are passed through a pointer to a GetAccountsUsingGETOpts st
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **roles** | [**optional.Interface of []string**](string.md)|  | 
+ **accountNonExpired** | **optional.Bool**|  | 
+ **accountNonLocked** | **optional.Bool**|  | 
  **allowedAccounts** | [**optional.Interface of []string**](string.md)|  | 
+ **authorities0Authority** | **optional.String**|  | 
+ **credentialsNonExpired** | **optional.Bool**|  | 
  **email** | **optional.String**|  | 
- **username** | **optional.String**|  | 
+ **enabled** | **optional.Bool**|  | 
+ **expand** | **optional.Bool**| expand | 
  **firstName** | **optional.String**|  | 
  **lastName** | **optional.String**|  | 
- **expand** | **optional.Bool**| expand | 
+ **password** | **optional.String**|  | 
+ **roles** | [**optional.Interface of []string**](string.md)|  | 
+ **username** | **optional.String**|  | 
 
 ### Return type
 

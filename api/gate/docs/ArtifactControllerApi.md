@@ -6,12 +6,14 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**AllUsingGET**](ArtifactControllerApi.md#AllUsingGET) | **Get** /artifacts/credentials | Retrieve the list of artifact accounts configured in Clouddriver.
 [**ArtifactVersionsUsingGET**](ArtifactControllerApi.md#ArtifactVersionsUsingGET) | **Get** /artifacts/account/{accountName}/versions | Retrieve the list of artifact versions by account and artifact names
+[**GetArtifactUsingGET**](ArtifactControllerApi.md#GetArtifactUsingGET) | **Get** /artifacts/{provider}/{packageName}/{version} | Retrieve the specified artifact version for an artifact provider and package name
 
 
 
 ## AllUsingGET
 
 > []map[string]interface{} AllUsingGET(ctx, optional)
+
 Retrieve the list of artifact accounts configured in Clouddriver.
 
 ### Required Parameters
@@ -51,7 +53,8 @@ No authorization required
 
 ## ArtifactVersionsUsingGET
 
-> []string ArtifactVersionsUsingGET(ctx, accountName, type_, artifactName, optional)
+> []string ArtifactVersionsUsingGET(ctx, accountName, artifactName, type_, optional)
+
 Retrieve the list of artifact versions by account and artifact names
 
 ### Required Parameters
@@ -61,8 +64,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **accountName** | **string**| accountName | 
-**type_** | **string**| type | 
 **artifactName** | **string**| artifactName | 
+**type_** | **string**| type | 
  **optional** | ***ArtifactVersionsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -80,6 +83,40 @@ Name | Type | Description  | Notes
 ### Return type
 
 **[]string**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetArtifactUsingGET
+
+> map[string]interface{} GetArtifactUsingGET(ctx, packageName, provider, version)
+
+Retrieve the specified artifact version for an artifact provider and package name
+
+### Required Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**packageName** | **string**| packageName | 
+**provider** | **string**| provider | 
+**version** | **string**| version | 
+
+### Return type
+
+[**map[string]interface{}**](map[string]interface{}.md)
 
 ### Authorization
 

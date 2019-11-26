@@ -5,79 +5,80 @@ info:
 servers:
 - url: //localhost:8084/
 tags:
-- description: Task Controller
-  name: task-controller
 - description: Amazon Infrastructure Controller
   name: amazon-infrastructure-controller
-- description: V 2 Canary Controller
-  name: v-2-canary-controller
-- description: Project Controller
-  name: project-controller
-- description: Auth Controller
-  name: auth-controller
-- description: Search Controller
-  name: search-controller
-- description: V 2 Canary Config Controller
-  name: v-2-canary-config-controller
-- description: V 2 Pipeline Templates Controller
-  name: v-2-pipeline-templates-controller
-- description: Pipeline Controller
-  name: pipeline-controller
-- description: Load Balancer Controller
-  name: load-balancer-controller
-- description: Credentials Controller
-  name: credentials-controller
-- description: Pipeline Templates Controller
-  name: pipeline-templates-controller
-- description: Security Group Controller
-  name: security-group-controller
-- description: Image Controller
-  name: image-controller
-- description: Pubsub Subscription Controller
-  name: pubsub-subscription-controller
-- description: Ecs Server Group Events Controller
-  name: ecs-server-group-events-controller
-- description: Version Controller
-  name: version-controller
 - description: Application Controller
   name: application-controller
-- description: Instance Controller
-  name: instance-controller
-- description: Concourse Controller
-  name: concourse-controller
-- description: Pipeline Config Controller
-  name: pipeline-config-controller
-- description: Server Group Controller
-  name: server-group-controller
-- description: Network Controller
-  name: network-controller
-- description: Snapshot Controller
-  name: snapshot-controller
-- description: Webhook Controller
-  name: webhook-controller
-- description: Subnet Controller
-  name: subnet-controller
 - description: Artifact Controller
   name: artifact-controller
-- description: Executions Controller
-  name: executions-controller
-- description: Server Group Manager Controller
-  name: server-group-manager-controller
-- description: Reorder Pipelines Controller
-  name: reorder-pipelines-controller
-- description: Build Controller
-  name: build-controller
+- description: Auth Controller
+  name: auth-controller
 - description: Bake Controller
   name: bake-controller
+- description: Build Controller
+  name: build-controller
 - description: Cluster Controller
   name: cluster-controller
+- description: Concourse Controller
+  name: concourse-controller
+- description: Credentials Controller
+  name: credentials-controller
+- description: Ecs Server Group Events Controller
+  name: ecs-server-group-events-controller
+- description: Executions Controller
+  name: executions-controller
 - description: Firewall Controller
   name: firewall-controller
+- description: Image Controller
+  name: image-controller
+- description: Instance Controller
+  name: instance-controller
 - description: Job Controller
   name: job-controller
+- description: Load Balancer Controller
+  name: load-balancer-controller
+- description: Network Controller
+  name: network-controller
+- description: Pipeline Config Controller
+  name: pipeline-config-controller
+- description: Pipeline Controller
+  name: pipeline-controller
+- description: Pipeline Templates Controller
+  name: pipeline-templates-controller
+- description: Project Controller
+  name: project-controller
+- description: Pubsub Subscription Controller
+  name: pubsub-subscription-controller
+- description: Reorder Pipelines Controller
+  name: reorder-pipelines-controller
+- description: Search Controller
+  name: search-controller
+- description: Security Group Controller
+  name: security-group-controller
+- description: Server Group Controller
+  name: server-group-controller
+- description: Server Group Manager Controller
+  name: server-group-manager-controller
+- description: Snapshot Controller
+  name: snapshot-controller
+- description: Subnet Controller
+  name: subnet-controller
+- description: Task Controller
+  name: task-controller
+- description: V 2 Canary Config Controller
+  name: v-2-canary-config-controller
+- description: V 2 Canary Controller
+  name: v-2-canary-controller
+- description: V 2 Pipeline Templates Controller
+  name: v-2-pipeline-templates-controller
+- description: Version Controller
+  name: version-controller
+- description: Webhook Controller
+  name: webhook-controller
 paths:
   /actions/pipelines/reorder:
     post:
+      deprecated: false
       operationId: reorderPipelinesUsingPOST
       requestBody:
         content:
@@ -111,15 +112,18 @@ paths:
       x-codegen-request-body-name: reorderPipelinesCommand
   /applications:
     get:
+      deprecated: false
       operationId: getAllApplicationsUsingGET
       parameters:
-      - description: filters results to only include applications deployed in the
+      - allowEmptyValue: false
+        description: filters results to only include applications deployed in the
           specified account
         in: query
         name: account
         schema:
           type: string
-      - description: filteres results to only include applications owned by the specified
+      - allowEmptyValue: false
+        description: filteres results to only include applications owned by the specified
           email
         in: query
         name: owner
@@ -149,12 +153,12 @@ paths:
       - application-controller
   /applications/{applicationName}/jobs/{account}/{region}/{name}:
     get:
+      deprecated: false
       operationId: getJobUsingGET
       parameters:
-      - description: applicationName
-        in: path
-        name: applicationName
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -163,15 +167,9 @@ paths:
         required: true
         schema:
           type: string
-      - description: region
+      - description: applicationName
         in: path
-        name: region
-        required: true
-        schema:
-          type: string
-      - description: name
-        in: path
-        name: name
+        name: applicationName
         required: true
         schema:
           type: string
@@ -181,9 +179,16 @@ paths:
         schema:
           default: "false"
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
         schema:
           type: string
       responses:
@@ -210,19 +215,19 @@ paths:
       - job-controller
   /applications/{applicationName}/serverGroups:
     get:
+      deprecated: false
       operationId: getServerGroupsForApplicationUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: applicationName
         in: path
         name: applicationName
         required: true
         schema:
-          type: string
-      - description: expand
-        in: query
-        name: expand
-        schema:
-          default: "false"
           type: string
       - description: cloudProvider
         in: query
@@ -234,10 +239,11 @@ paths:
         name: clusters
         schema:
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: expand
+        in: query
+        name: expand
         schema:
+          default: "false"
           type: string
       responses:
         200:
@@ -263,12 +269,12 @@ paths:
       - server-group-controller
   /applications/{applicationName}/serverGroups/{account}/{region}/{serverGroupName}:
     get:
+      deprecated: false
       operationId: getServerGroupDetailsUsingGET
       parameters:
-      - description: applicationName
-        in: path
-        name: applicationName
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -276,6 +282,18 @@ paths:
         name: account
         required: true
         schema:
+          type: string
+      - description: applicationName
+        in: path
+        name: applicationName
+        required: true
+        schema:
+          type: string
+      - description: includeDetails
+        in: query
+        name: includeDetails
+        schema:
+          default: "true"
           type: string
       - description: region
         in: path
@@ -288,17 +306,6 @@ paths:
         name: serverGroupName
         required: true
         schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
-        schema:
-          type: string
-      - description: includeDetails
-        in: query
-        name: includeDetails
-        schema:
-          default: "true"
           type: string
       responses:
         200:
@@ -321,6 +328,7 @@ paths:
       - server-group-controller
   /applications/{application}:
     get:
+      deprecated: false
       operationId: getApplicationUsingGET
       parameters:
       - description: application
@@ -359,17 +367,18 @@ paths:
       - application-controller
   /applications/{application}/clusters:
     get:
+      deprecated: false
       operationId: getClustersUsingGET_2
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: application
         in: path
         name: application
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -396,12 +405,12 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}:
     get:
+      deprecated: false
       operationId: getClustersUsingGET_1
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -410,9 +419,10 @@ paths:
         required: true
         schema:
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: application
+        in: path
+        name: application
+        required: true
         schema:
           type: string
       responses:
@@ -439,12 +449,12 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}/{clusterName}:
     get:
+      deprecated: false
       operationId: getClustersUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -453,15 +463,16 @@ paths:
         required: true
         schema:
           type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
       - description: clusterName
         in: path
         name: clusterName
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -488,12 +499,12 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}/{clusterName}/serverGroups:
     get:
+      deprecated: false
       operationId: getServerGroupsUsingGET_1
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -502,15 +513,16 @@ paths:
         required: true
         schema:
           type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
       - description: clusterName
         in: path
         name: clusterName
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -537,17 +549,23 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}:
     get:
+      deprecated: false
       operationId: getServerGroupsUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
         in: path
         name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
         required: true
         schema:
           type: string
@@ -561,11 +579,6 @@ paths:
         in: path
         name: serverGroupName
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -592,12 +605,12 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}/scalingActivities:
     get:
+      deprecated: false
       operationId: getScalingActivitiesUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -606,15 +619,15 @@ paths:
         required: true
         schema:
           type: string
-      - description: clusterName
+      - description: application
         in: path
-        name: clusterName
+        name: application
         required: true
         schema:
           type: string
-      - description: serverGroupName
+      - description: clusterName
         in: path
-        name: serverGroupName
+        name: clusterName
         required: true
         schema:
           type: string
@@ -629,9 +642,10 @@ paths:
         name: region
         schema:
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: serverGroupName
+        in: path
+        name: serverGroupName
+        required: true
         schema:
           type: string
       responses:
@@ -658,13 +672,13 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}/{clusterName}/{cloudProvider}/{scope}/serverGroups/target/{target}:
     get:
+      deprecated: false
       description: '`scope` is either a zone or a region'
       operationId: getTargetServerGroupUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
@@ -673,9 +687,9 @@ paths:
         required: true
         schema:
           type: string
-      - description: clusterName
+      - description: application
         in: path
-        name: clusterName
+        name: application
         required: true
         schema:
           type: string
@@ -685,6 +699,17 @@ paths:
         required: true
         schema:
           type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      - description: onlyEnabled
+        in: query
+        name: onlyEnabled
+        schema:
+          type: boolean
       - description: scope
         in: path
         name: scope
@@ -697,21 +722,11 @@ paths:
         required: true
         schema:
           type: string
-      - description: onlyEnabled
-        in: query
-        name: onlyEnabled
-        schema:
-          type: boolean
       - description: validateOldest
         in: query
         name: validateOldest
         schema:
           type: boolean
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
-        schema:
-          type: string
       responses:
         200:
           content:
@@ -737,17 +752,23 @@ paths:
       - cluster-controller
   /applications/{application}/clusters/{account}/{clusterName}/{type}/loadBalancers:
     get:
+      deprecated: false
       operationId: getClusterLoadBalancersUsingGET
       parameters:
-      - description: applicationName
-        in: path
-        name: applicationName
-        required: true
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
           type: string
       - description: account
         in: path
         name: account
+        required: true
+        schema:
+          type: string
+      - description: applicationName
+        in: path
+        name: applicationName
         required: true
         schema:
           type: string
@@ -761,11 +782,6 @@ paths:
         in: path
         name: type
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -792,6 +808,7 @@ paths:
       - cluster-controller
   /applications/{application}/executions/search:
     get:
+      deprecated: false
       operationId: searchForPipelineExecutionsByTriggerUsingGET
       parameters:
       - description: Only includes executions that are part of this application. If
@@ -801,26 +818,68 @@ paths:
         required: true
         schema:
           type: string
-      - description: Only includes executions that were triggered by a trigger with
-          a type that is equal to a type provided in this field. The list of trigger
-          types should be a comma-delimited string. If this value is missing, results
-          will includes executions of all trigger types.
-        in: query
-        name: triggerTypes
-        schema:
-          type: string
-      - description: Only includes executions that with this pipeline name.
-        in: query
-        name: pipelineName
-        schema:
-          type: string
-      - description: Only includes executions that were triggered by a trigger with
+      - allowEmptyValue: false
+        description: Only includes executions that were triggered by a trigger with
           this eventId.
         in: query
         name: eventId
         schema:
           type: string
-      - description: |-
+      - allowEmptyValue: false
+        description: Expands each execution object in the resulting list. If this
+          value is missing, it is defaulted to false.
+        example: false
+        in: query
+        name: expand
+        schema:
+          default: false
+          type: boolean
+      - allowEmptyValue: false
+        description: Only includes executions that with this pipeline name.
+        in: query
+        name: pipelineName
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Reverses the resulting list before it is paginated. If this value
+          is missing, it is defaulted to false.
+        example: false
+        in: query
+        name: reverse
+        schema:
+          default: false
+          type: boolean
+      - allowEmptyValue: false
+        description: Sets the size of the resulting list for pagination. This value
+          must be > 0. If this value is missing, it is defaulted to 10.
+        in: query
+        name: size
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: Sets the first item of the resulting list for pagination. The
+          list is 0-indexed. This value must be >= 0. If this value is missing, it
+          is defaulted to 0.
+        in: query
+        name: startIndex
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: 'Only includes executions with a status that is equal to a status
+          provided in this field. The list of statuses should be given as a comma-delimited
+          string. If this value is missing, includes executions of all statuses. Allowed
+          statuses are: NOT_STARTED, RUNNING, PAUSED, SUSPENDED, SUCCEEDED, FAILED_CONTINUE,
+          TERMINAL, CANCELED, REDIRECT, STOPPED, SKIPPED, BUFFERED.'
+        in: query
+        name: statuses
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: |-
           Only includes executions that were triggered by a trigger that matches the subset of fields provided by this value. This value should be a base64-encoded string of a JSON representation of a trigger object. The comparison succeeds if the execution trigger contains all the fields of the input trigger, the fields are of the same type, and each value of the field "matches". The term "matches" is specific for each field's type:
           - For Strings: A String value in the execution's trigger matches the input trigger's String value if the former equals the latter (case-insensitive) OR if the former matches the latter as a regular expression.
           - For Maps: A Map value in the execution's trigger matches the input trigger's Map value if the former contains all keys of the latter and their values match.
@@ -830,17 +889,8 @@ paths:
         name: trigger
         schema:
           type: string
-      - description: Only includes executions that were built at or after the given
-          time, represented as a Unix timestamp in ms (UTC). This value must be >=
-          0 and <= the value of [triggerTimeEndBoundary], if provided. If this value
-          is missing, it is defaulted to 0.
-        in: query
-        name: triggerTimeStartBoundary
-        schema:
-          default: 0
-          format: int64
-          type: integer
-      - description: Only includes executions that were built at or before the given
+      - allowEmptyValue: false
+        description: Only includes executions that were built at or before the given
           time, represented as a Unix timestamp in ms (UTC). This value must be <=
           9223372036854775807 (Long.MAX_VALUE) and >= the value of [triggerTimeStartBoundary],
           if provided. If this value is missing, it is defaulted to 9223372036854775807.
@@ -850,46 +900,26 @@ paths:
           default: 9223372036854775807
           format: int64
           type: integer
-      - description: 'Only includes executions with a status that is equal to a status
-          provided in this field. The list of statuses should be given as a comma-delimited
-          string. If this value is missing, includes executions of all statuses. Allowed
-          statuses are: NOT_STARTED, RUNNING, PAUSED, SUSPENDED, SUCCEEDED, FAILED_CONTINUE,
-          TERMINAL, CANCELED, REDIRECT, STOPPED, SKIPPED, BUFFERED.'
+      - allowEmptyValue: false
+        description: Only includes executions that were built at or after the given
+          time, represented as a Unix timestamp in ms (UTC). This value must be >=
+          0 and <= the value of [triggerTimeEndBoundary], if provided. If this value
+          is missing, it is defaulted to 0.
         in: query
-        name: statuses
-        schema:
-          type: string
-      - description: Sets the first item of the resulting list for pagination. The
-          list is 0-indexed. This value must be >= 0. If this value is missing, it
-          is defaulted to 0.
-        in: query
-        name: startIndex
+        name: triggerTimeStartBoundary
         schema:
           default: 0
-          format: int32
+          format: int64
           type: integer
-      - description: Sets the size of the resulting list for pagination. This value
-          must be > 0. If this value is missing, it is defaulted to 10.
+      - allowEmptyValue: false
+        description: Only includes executions that were triggered by a trigger with
+          a type that is equal to a type provided in this field. The list of trigger
+          types should be a comma-delimited string. If this value is missing, results
+          will includes executions of all trigger types.
         in: query
-        name: size
+        name: triggerTypes
         schema:
-          default: 10
-          format: int32
-          type: integer
-      - description: Reverses the resulting list before it is paginated. If this value
-          is missing, it is defaulted to false.
-        in: query
-        name: reverse
-        schema:
-          default: false
-          type: boolean
-      - description: Expands each execution object in the resulting list. If this
-          value is missing, it is defaulted to false.
-        in: query
-        name: expand
-        schema:
-          default: false
-          type: boolean
+          type: string
       responses:
         200:
           content:
@@ -914,8 +944,42 @@ paths:
         newer executions are first in the list.
       tags:
       - executions-controller
+  /applications/{application}/functions:
+    get:
+      deprecated: false
+      operationId: applicationFunctionsUsingGET
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Get application functions
+      tags:
+      - amazon-infrastructure-controller
   /applications/{application}/history:
     get:
+      deprecated: false
       operationId: getApplicationHistoryUsingGET
       parameters:
       - description: application
@@ -955,17 +1019,18 @@ paths:
       - application-controller
   /applications/{application}/loadBalancers:
     get:
+      deprecated: false
       operationId: getApplicationLoadBalancersUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: application
         in: path
         name: application
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -992,6 +1057,7 @@ paths:
       - load-balancer-controller
   /applications/{application}/pipelineConfigs:
     get:
+      deprecated: false
       operationId: getPipelineConfigsForApplicationUsingGET
       parameters:
       - description: application
@@ -1024,6 +1090,7 @@ paths:
       - application-controller
   /applications/{application}/pipelineConfigs/{pipelineName}:
     get:
+      deprecated: false
       operationId: getPipelineConfigUsingGET
       parameters:
       - description: application
@@ -1113,6 +1180,7 @@ paths:
       x-codegen-request-body-name: trigger
   /applications/{application}/pipelines:
     get:
+      deprecated: false
       operationId: getPipelinesUsingGET
       parameters:
       - description: application
@@ -1121,6 +1189,11 @@ paths:
         required: true
         schema:
           type: string
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          type: boolean
       - description: limit
         in: query
         name: limit
@@ -1132,11 +1205,6 @@ paths:
         name: statuses
         schema:
           type: string
-      - description: expand
-        in: query
-        name: expand
-        schema:
-          type: boolean
       responses:
         200:
           content:
@@ -1202,6 +1270,7 @@ paths:
       - application-controller
   /applications/{application}/serverGroupManagers:
     get:
+      deprecated: false
       operationId: getServerGroupManagersForApplicationUsingGET
       parameters:
       - description: application
@@ -1234,23 +1303,24 @@ paths:
       - server-group-manager-controller
   /applications/{application}/serverGroups/{account}/{serverGroupName}/events:
     get:
+      deprecated: false
       operationId: getEventsUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
-        schema:
-          type: string
       - description: account
         in: path
         name: account
         required: true
         schema:
           type: string
-      - description: serverGroupName
+      - description: application
         in: path
-        name: serverGroupName
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
         required: true
         schema:
           type: string
@@ -1260,9 +1330,9 @@ paths:
         required: true
         schema:
           type: string
-      - description: provider
-        in: query
-        name: provider
+      - description: serverGroupName
+        in: path
+        name: serverGroupName
         required: true
         schema:
           type: string
@@ -1290,17 +1360,18 @@ paths:
       - ecs-server-group-events-controller
   /applications/{application}/snapshots/{account}:
     get:
+      deprecated: false
       operationId: getCurrentSnapshotUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
-        schema:
-          type: string
       - description: account
         in: path
         name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
         required: true
         schema:
           type: string
@@ -1328,17 +1399,18 @@ paths:
       - snapshot-controller
   /applications/{application}/snapshots/{account}/history:
     get:
+      deprecated: false
       operationId: getSnapshotHistoryUsingGET
       parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
-        schema:
-          type: string
       - description: account
         in: path
         name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
         required: true
         schema:
           type: string
@@ -1373,6 +1445,7 @@ paths:
       - snapshot-controller
   /applications/{application}/strategyConfigs:
     get:
+      deprecated: false
       operationId: getStrategyConfigsForApplicationUsingGET
       parameters:
       - description: application
@@ -1405,6 +1478,7 @@ paths:
       - application-controller
   /applications/{application}/strategyConfigs/{strategyName}:
     get:
+      deprecated: false
       operationId: getStrategyConfigUsingGET
       parameters:
       - description: application
@@ -1443,6 +1517,7 @@ paths:
       - application-controller
   /applications/{application}/tasks:
     get:
+      deprecated: false
       operationId: getTasksUsingGET
       parameters:
       - description: application
@@ -1451,15 +1526,15 @@ paths:
         required: true
         schema:
           type: string
-      - description: page
-        in: query
-        name: page
-        schema:
-          format: int32
-          type: integer
       - description: limit
         in: query
         name: limit
+        schema:
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
         schema:
           format: int32
           type: integer
@@ -1607,6 +1682,11 @@ paths:
       deprecated: true
       operationId: getTaskDetailsUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: id
         in: path
         name: id
@@ -1617,11 +1697,6 @@ paths:
         in: path
         name: taskDetailsId
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -1648,17 +1723,17 @@ paths:
       - application-controller
   /artifacts/account/{accountName}/versions:
     get:
+      deprecated: false
       operationId: artifactVersionsUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: accountName
         in: path
         name: accountName
-        required: true
-        schema:
-          type: string
-      - description: type
-        in: query
-        name: type
         required: true
         schema:
           type: string
@@ -1668,9 +1743,10 @@ paths:
         required: true
         schema:
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: type
+        in: query
+        name: type
+        required: true
         schema:
           type: string
       responses:
@@ -1696,6 +1772,7 @@ paths:
       - artifact-controller
   /artifacts/credentials:
     get:
+      deprecated: false
       operationId: allUsingGET
       parameters:
       - description: X-RateLimit-App
@@ -1725,8 +1802,52 @@ paths:
       summary: Retrieve the list of artifact accounts configured in Clouddriver.
       tags:
       - artifact-controller
+  /artifacts/{provider}/{packageName}/{version}:
+    get:
+      deprecated: false
+      operationId: getArtifactUsingGET
+      parameters:
+      - description: packageName
+        in: path
+        name: packageName
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+      - description: version
+        in: path
+        name: version
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Retrieve the specified artifact version for an artifact provider and
+        package name
+      tags:
+      - artifact-controller
   /auth/loggedOut:
     get:
+      deprecated: false
       operationId: loggedOutUsingGET
       responses:
         200:
@@ -1749,6 +1870,7 @@ paths:
       - auth-controller
   /auth/redirect:
     get:
+      deprecated: false
       operationId: redirectUsingGET
       parameters:
       - description: to
@@ -1775,6 +1897,7 @@ paths:
       - auth-controller
   /auth/roles/sync:
     post:
+      deprecated: false
       operationId: syncUsingPOST
       responses:
         200:
@@ -1797,6 +1920,7 @@ paths:
       - auth-controller
   /auth/user:
     get:
+      deprecated: false
       operationId: userUsingGET
       responses:
         200:
@@ -1819,6 +1943,7 @@ paths:
       - auth-controller
   /auth/user/serviceAccounts:
     get:
+      deprecated: false
       operationId: getServiceAccountsUsingGET
       responses:
         200:
@@ -1844,6 +1969,7 @@ paths:
       - auth-controller
   /bakery/logs/{region}/{statusId}:
     get:
+      deprecated: false
       operationId: lookupLogsUsingGET
       parameters:
       - description: region
@@ -1879,6 +2005,7 @@ paths:
       - bake-controller
   /bakery/options:
     get:
+      deprecated: false
       operationId: bakeOptionsUsingGET_1
       responses:
         200:
@@ -1901,6 +2028,7 @@ paths:
       - bake-controller
   /bakery/options/{cloudProvider}:
     get:
+      deprecated: false
       operationId: bakeOptionsUsingGET
       parameters:
       - description: cloudProvider
@@ -1930,6 +2058,7 @@ paths:
       - bake-controller
   /concourse/{buildMaster}/teams/{team}/pipelines:
     get:
+      deprecated: false
       operationId: pipelinesUsingGET
       parameters:
       - description: buildMaster
@@ -1968,6 +2097,7 @@ paths:
       - concourse-controller
   /concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/jobs:
     get:
+      deprecated: false
       operationId: jobsUsingGET
       parameters:
       - description: buildMaster
@@ -1976,15 +2106,15 @@ paths:
         required: true
         schema:
           type: string
-      - description: team
-        in: path
-        name: team
-        required: true
-        schema:
-          type: string
       - description: pipeline
         in: path
         name: pipeline
+        required: true
+        schema:
+          type: string
+      - description: team
+        in: path
+        name: team
         required: true
         schema:
           type: string
@@ -2012,6 +2142,7 @@ paths:
       - concourse-controller
   /concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/resources:
     get:
+      deprecated: false
       operationId: resourcesUsingGET
       parameters:
       - description: buildMaster
@@ -2020,15 +2151,15 @@ paths:
         required: true
         schema:
           type: string
-      - description: team
-        in: path
-        name: team
-        required: true
-        schema:
-          type: string
       - description: pipeline
         in: path
         name: pipeline
+        required: true
+        schema:
+          type: string
+      - description: team
+        in: path
+        name: team
         required: true
         schema:
           type: string
@@ -2057,16 +2188,17 @@ paths:
       - concourse-controller
   /credentials:
     get:
+      deprecated: false
       operationId: getAccountsUsingGET
       parameters:
-      - explode: true
-        in: query
-        name: roles
+      - in: query
+        name: accountNonExpired
         schema:
-          items:
-            type: string
-          type: array
-        style: form
+          type: boolean
+      - in: query
+        name: accountNonLocked
+        schema:
+          type: boolean
       - explode: true
         in: query
         name: allowedAccounts
@@ -2076,13 +2208,26 @@ paths:
           type: array
         style: form
       - in: query
+        name: authorities[0].authority
+        schema:
+          type: string
+      - in: query
+        name: credentialsNonExpired
+        schema:
+          type: boolean
+      - in: query
         name: email
         schema:
           type: string
       - in: query
-        name: username
+        name: enabled
         schema:
-          type: string
+          type: boolean
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          type: boolean
       - in: query
         name: firstName
         schema:
@@ -2091,11 +2236,22 @@ paths:
         name: lastName
         schema:
           type: string
-      - description: expand
-        in: query
-        name: expand
+      - in: query
+        name: password
         schema:
-          type: boolean
+          type: string
+      - explode: true
+        in: query
+        name: roles
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: username
+        schema:
+          type: string
       responses:
         200:
           content:
@@ -2119,16 +2275,28 @@ paths:
       - credentials-controller
   /credentials/{account}:
     get:
+      deprecated: false
       operationId: getAccountUsingGET
       parameters:
-      - explode: true
-        in: query
-        name: roles
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
-          items:
-            type: string
-          type: array
-        style: form
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: accountNonExpired
+        schema:
+          type: boolean
+      - in: query
+        name: accountNonLocked
+        schema:
+          type: boolean
       - explode: true
         in: query
         name: allowedAccounts
@@ -2138,13 +2306,21 @@ paths:
           type: array
         style: form
       - in: query
+        name: authorities[0].authority
+        schema:
+          type: string
+      - in: query
+        name: credentialsNonExpired
+        schema:
+          type: boolean
+      - in: query
         name: email
         schema:
           type: string
       - in: query
-        name: username
+        name: enabled
         schema:
-          type: string
+          type: boolean
       - in: query
         name: firstName
         schema:
@@ -2153,15 +2329,20 @@ paths:
         name: lastName
         schema:
           type: string
-      - description: account
-        in: path
-        name: account
-        required: true
+      - in: query
+        name: password
         schema:
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - explode: true
+        in: query
+        name: roles
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: username
         schema:
           type: string
       responses:
@@ -2185,22 +2366,26 @@ paths:
       - credentials-controller
   /executions:
     get:
+      deprecated: false
       operationId: getLatestExecutionsByConfigIdsUsingGET
       parameters:
-      - description: A comma-separated list of pipeline configuration IDs to retrieve
-          recent executions for. Either this OR pipelineConfigIds must be supplied,
-          but not both.
-        in: query
-        name: pipelineConfigIds
-        schema:
-          type: string
-      - description: A comma-separated list of executions to retrieve. Either this
+      - allowEmptyValue: false
+        description: A comma-separated list of executions to retrieve. Either this
           OR pipelineConfigIds must be supplied, but not both.
         in: query
         name: executionIds
         schema:
           type: string
-      - description: The number of executions to return per pipeline configuration.
+      - allowEmptyValue: false
+        description: Expands each execution object in the resulting list. If this
+          value is missing, it is defaulted to true.
+        in: query
+        name: expand
+        schema:
+          default: true
+          type: boolean
+      - allowEmptyValue: false
+        description: The number of executions to return per pipeline configuration.
           Ignored if executionIds parameter is supplied. If this value is missing,
           it is defaulted to 1.
         in: query
@@ -2208,20 +2393,22 @@ paths:
         schema:
           format: int32
           type: integer
-      - description: A comma-separated list of execution statuses to filter by. Ignored
+      - allowEmptyValue: false
+        description: A comma-separated list of pipeline configuration IDs to retrieve
+          recent executions for. Either this OR pipelineConfigIds must be supplied,
+          but not both.
+        in: query
+        name: pipelineConfigIds
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: A comma-separated list of execution statuses to filter by. Ignored
           if executionIds parameter is supplied. If this value is missing, it is defaulted
           to all statuses.
         in: query
         name: statuses
         schema:
           type: string
-      - description: Expands each execution object in the resulting list. If this
-          value is missing, it is defaulted to true.
-        in: query
-        name: expand
-        schema:
-          default: true
-          type: boolean
       responses:
         200:
           content:
@@ -2248,16 +2435,17 @@ paths:
       - executions-controller
   /firewalls:
     get:
+      deprecated: false
       operationId: allUsingGET_1
       parameters:
-      - description: id
-        in: query
-        name: id
-        schema:
-          type: string
       - description: X-RateLimit-App
         in: header
         name: X-RateLimit-App
+        schema:
+          type: string
+      - description: id
+        in: query
+        name: id
         schema:
           type: string
       responses:
@@ -2282,8 +2470,14 @@ paths:
       - firewall-controller
   /firewalls/{account}:
     get:
+      deprecated: false
       operationId: allByAccountUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
@@ -2295,11 +2489,6 @@ paths:
         name: provider
         schema:
           default: aws
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
-        schema:
           type: string
       responses:
         200:
@@ -2322,17 +2511,17 @@ paths:
       - firewall-controller
   /firewalls/{account}/{region}:
     get:
+      deprecated: false
       operationId: allByAccountAndRegionUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -2342,9 +2531,10 @@ paths:
         schema:
           default: aws
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: region
+        in: path
+        name: region
+        required: true
         schema:
           type: string
       responses:
@@ -2371,17 +2561,17 @@ paths:
       - firewall-controller
   /firewalls/{account}/{region}/{name}:
     get:
+      deprecated: false
       operationId: getSecurityGroupUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -2397,14 +2587,15 @@ paths:
         schema:
           default: aws
           type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
       - description: vpcId
         in: query
         name: vpcId
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -2426,11 +2617,65 @@ paths:
       summary: Retrieve a firewall's details
       tags:
       - firewall-controller
+  /functions:
+    get:
+      deprecated: false
+      operationId: functionsUsingGET
+      parameters:
+      - description: account
+        in: query
+        name: account
+        schema:
+          type: string
+      - description: functionName
+        in: query
+        name: functionName
+        schema:
+          type: string
+      - description: region
+        in: query
+        name: region
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Get functions
+      tags:
+      - amazon-infrastructure-controller
   /images/find:
     get:
+      deprecated: false
       description: The query parameter `q` filters the list of images by image name
       operationId: findImagesUsingGET
       parameters:
+      - description: account
+        in: query
+        name: account
+        schema:
+          type: string
+      - description: count
+        in: query
+        name: count
+        schema:
+          format: int32
+          type: integer
       - description: provider
         in: query
         name: provider
@@ -2447,17 +2692,6 @@ paths:
         name: region
         schema:
           type: string
-      - description: account
-        in: query
-        name: account
-        schema:
-          type: string
-      - description: count
-        in: query
-        name: count
-        schema:
-          format: int32
-          type: integer
       responses:
         200:
           content:
@@ -2483,13 +2717,13 @@ paths:
       - image-controller
   /images/tags:
     get:
+      deprecated: false
       operationId: findTagsUsingGET
       parameters:
-      - description: provider
-        in: query
-        name: provider
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
         schema:
-          default: aws
           type: string
       - description: account
         in: query
@@ -2497,15 +2731,16 @@ paths:
         required: true
         schema:
           type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
       - description: repository
         in: query
         name: repository
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -2532,17 +2767,17 @@ paths:
       - image-controller
   /images/{account}/{region}/{imageId}:
     get:
+      deprecated: false
       operationId: getImageDetailsUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -2558,9 +2793,10 @@ paths:
         schema:
           default: aws
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: region
+        in: path
+        name: region
+        required: true
         schema:
           type: string
       responses:
@@ -2587,6 +2823,7 @@ paths:
       - image-controller
   /instanceTypes:
     get:
+      deprecated: false
       operationId: instanceTypesUsingGET
       responses:
         200:
@@ -2612,17 +2849,17 @@ paths:
       - amazon-infrastructure-controller
   /instances/{account}/{region}/{instanceId}:
     get:
+      deprecated: false
       operationId: getInstanceDetailsUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -2632,9 +2869,10 @@ paths:
         required: true
         schema:
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: region
+        in: path
+        name: region
+        required: true
         schema:
           type: string
       responses:
@@ -2658,17 +2896,17 @@ paths:
       - instance-controller
   /instances/{account}/{region}/{instanceId}/console:
     get:
+      deprecated: false
       operationId: getConsoleOutputUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -2684,9 +2922,10 @@ paths:
         schema:
           default: aws
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: region
+        in: path
+        name: region
+        required: true
         schema:
           type: string
       responses:
@@ -2710,18 +2949,19 @@ paths:
       - instance-controller
   /loadBalancers:
     get:
+      deprecated: false
       operationId: getAllUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: provider
         in: query
         name: provider
         schema:
           default: aws
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
-        schema:
           type: string
       responses:
         200:
@@ -2747,17 +2987,17 @@ paths:
       - load-balancer-controller
   /loadBalancers/{account}/{region}/{name}:
     get:
+      deprecated: false
       operationId: getLoadBalancerDetailsUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -2773,9 +3013,10 @@ paths:
         schema:
           default: aws
           type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
+      - description: region
+        in: path
+        name: region
+        required: true
         schema:
           type: string
       responses:
@@ -2803,8 +3044,14 @@ paths:
       - load-balancer-controller
   /loadBalancers/{name}:
     get:
+      deprecated: false
       operationId: getLoadBalancerUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: name
         in: path
         name: name
@@ -2816,11 +3063,6 @@ paths:
         name: provider
         schema:
           default: aws
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
-        schema:
           type: string
       responses:
         200:
@@ -2846,6 +3088,7 @@ paths:
       - load-balancer-controller
   /networks:
     get:
+      deprecated: false
       operationId: allUsingGET_2
       parameters:
       - description: X-RateLimit-App
@@ -2877,17 +3120,18 @@ paths:
       - network-controller
   /networks/{cloudProvider}:
     get:
+      deprecated: false
       operationId: allByCloudProviderUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: cloudProvider
         in: path
         name: cloudProvider
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -2914,6 +3158,7 @@ paths:
       - network-controller
   /pipelineConfigs:
     get:
+      deprecated: false
       operationId: getAllPipelineConfigsUsingGET
       responses:
         200:
@@ -2939,6 +3184,7 @@ paths:
       - pipeline-config-controller
   /pipelineConfigs/{pipelineConfigId}/convertToTemplate:
     get:
+      deprecated: false
       operationId: convertPipelineConfigToPipelineTemplateUsingGET
       parameters:
       - description: pipelineConfigId
@@ -2968,14 +3214,9 @@ paths:
       - pipeline-config-controller
   /pipelineConfigs/{pipelineConfigId}/history:
     get:
+      deprecated: false
       operationId: getPipelineConfigHistoryUsingGET
       parameters:
-      - description: pipelineConfigId
-        in: path
-        name: pipelineConfigId
-        required: true
-        schema:
-          type: string
       - description: limit
         in: query
         name: limit
@@ -2983,6 +3224,12 @@ paths:
           default: 20
           format: int32
           type: integer
+      - description: pipelineConfigId
+        in: path
+        name: pipelineConfigId
+        required: true
+        schema:
+          type: string
       responses:
         200:
           content:
@@ -3007,6 +3254,7 @@ paths:
       - pipeline-config-controller
   /pipelineTemplates:
     get:
+      deprecated: false
       operationId: listUsingGET
       parameters:
       - description: scopes
@@ -3041,6 +3289,7 @@ paths:
       tags:
       - pipeline-templates-controller
     post:
+      deprecated: false
       operationId: createUsingPOST
       requestBody:
         content:
@@ -3077,14 +3326,9 @@ paths:
       x-codegen-request-body-name: pipelineTemplate
   /pipelineTemplates/resolve:
     get:
+      deprecated: false
       operationId: resolveTemplatesUsingGET
       parameters:
-      - description: source
-        in: query
-        name: source
-        required: true
-        schema:
-          type: string
       - description: executionId
         in: query
         name: executionId
@@ -3093,6 +3337,12 @@ paths:
       - description: pipelineConfigId
         in: query
         name: pipelineConfigId
+        schema:
+          type: string
+      - description: source
+        in: query
+        name: source
+        required: true
         schema:
           type: string
       responses:
@@ -3119,17 +3369,18 @@ paths:
       - pipeline-templates-controller
   /pipelineTemplates/{id}:
     delete:
+      deprecated: false
       operationId: deleteUsingDELETE
       parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
       - description: id
         in: path
         name: id
         required: true
-        schema:
-          type: string
-      - description: application
-        in: query
-        name: application
         schema:
           type: string
       responses:
@@ -3155,6 +3406,7 @@ paths:
       tags:
       - pipeline-templates-controller
     get:
+      deprecated: false
       operationId: getUsingGET
       parameters:
       - description: id
@@ -3186,6 +3438,7 @@ paths:
       tags:
       - pipeline-templates-controller
     post:
+      deprecated: false
       operationId: updateUsingPOST
       parameters:
       - description: id
@@ -3235,6 +3488,7 @@ paths:
       x-codegen-request-body-name: pipelineTemplate
   /pipelineTemplates/{id}/dependents:
     get:
+      deprecated: false
       operationId: listPipelineTemplateDependentsUsingGET
       parameters:
       - description: id
@@ -3272,6 +3526,7 @@ paths:
       - pipeline-templates-controller
   /pipelines:
     post:
+      deprecated: false
       operationId: savePipelineUsingPOST
       requestBody:
         content:
@@ -3302,6 +3557,7 @@ paths:
       x-codegen-request-body-name: pipeline
   /pipelines/move:
     post:
+      deprecated: false
       operationId: renamePipelineUsingPOST
       requestBody:
         content:
@@ -3332,6 +3588,7 @@ paths:
       x-codegen-request-body-name: renameCommand
   /pipelines/start:
     post:
+      deprecated: false
       operationId: startUsingPOST
       requestBody:
         content:
@@ -3365,6 +3622,7 @@ paths:
       x-codegen-request-body-name: map
   /pipelines/v2/{application}/{pipelineNameOrId}:
     post:
+      deprecated: false
       operationId: invokePipelineConfigViaEchoUsingPOST
       parameters:
       - description: application
@@ -3411,6 +3669,7 @@ paths:
       x-codegen-request-body-name: trigger
   /pipelines/{application}/{pipelineNameOrId}:
     post:
+      deprecated: false
       operationId: invokePipelineConfigUsingPOST_1
       parameters:
       - description: application
@@ -3457,6 +3716,7 @@ paths:
       x-codegen-request-body-name: trigger
   /pipelines/{application}/{pipelineName}:
     delete:
+      deprecated: false
       operationId: deletePipelineUsingDELETE
       parameters:
       - description: application
@@ -3489,6 +3749,7 @@ paths:
       - pipeline-controller
   /pipelines/{id}:
     delete:
+      deprecated: false
       operationId: deletePipelineUsingDELETE_1
       parameters:
       - description: id
@@ -3520,6 +3781,7 @@ paths:
       tags:
       - pipeline-controller
     get:
+      deprecated: false
       operationId: getPipelineUsingGET
       parameters:
       - description: id
@@ -3548,6 +3810,7 @@ paths:
       tags:
       - pipeline-controller
     put:
+      deprecated: false
       operationId: updatePipelineUsingPUT
       parameters:
       - description: id
@@ -3591,8 +3854,15 @@ paths:
       x-codegen-request-body-name: pipeline
   /pipelines/{id}/cancel:
     put:
+      deprecated: false
       operationId: cancelPipelineUsingPUT_1
       parameters:
+      - description: force
+        in: query
+        name: force
+        schema:
+          default: false
+          type: boolean
       - description: id
         in: path
         name: id
@@ -3604,12 +3874,6 @@ paths:
         name: reason
         schema:
           type: string
-      - description: force
-        in: query
-        name: force
-        schema:
-          default: false
-          type: boolean
       responses:
         200:
           content: {}
@@ -3631,17 +3895,18 @@ paths:
       - pipeline-controller
   /pipelines/{id}/evaluateExpression:
     delete:
+      deprecated: false
       operationId: evaluateExpressionForExecutionUsingDELETE
       parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
       - description: expression
         in: query
         name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
         required: true
         schema:
           type: string
@@ -3668,17 +3933,18 @@ paths:
       tags:
       - pipeline-controller
     get:
+      deprecated: false
       operationId: evaluateExpressionForExecutionUsingGET
       parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
       - description: expression
         in: query
         name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
         required: true
         schema:
           type: string
@@ -3705,17 +3971,18 @@ paths:
       tags:
       - pipeline-controller
     head:
+      deprecated: false
       operationId: evaluateExpressionForExecutionUsingHEAD
       parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
       - description: expression
         in: query
         name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
         required: true
         schema:
           type: string
@@ -3742,17 +4009,18 @@ paths:
       tags:
       - pipeline-controller
     options:
+      deprecated: false
       operationId: evaluateExpressionForExecutionUsingOPTIONS
       parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
       - description: expression
         in: query
         name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
         required: true
         schema:
           type: string
@@ -3779,17 +4047,18 @@ paths:
       tags:
       - pipeline-controller
     patch:
+      deprecated: false
       operationId: evaluateExpressionForExecutionUsingPATCH
       parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
       - description: expression
         in: query
         name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
         required: true
         schema:
           type: string
@@ -3816,62 +4085,21 @@ paths:
       tags:
       - pipeline-controller
     post:
-      operationId: evaluateExpressionForExecutionViaPOSTUsingPOST_1
+      deprecated: false
+      operationId: evaluateExpressionForExecutionUsingPOST
       parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-        description: pipelineExpression
-        required: true
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Evaluate a pipeline expression using the provided execution as context
-      tags:
-      - pipeline-controller
-      x-codegen-request-body-name: pipelineExpression
-    put:
-      operationId: evaluateExpressionForExecutionUsingPUT
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
       - description: expression
         in: query
         name: expression
         required: true
         schema:
           type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
       responses:
         200:
           content:
@@ -3897,10 +4125,16 @@ paths:
       summary: Evaluate a pipeline expression using the provided execution as context
       tags:
       - pipeline-controller
-  /pipelines/{id}/logs:
-    get:
-      operationId: getPipelineLogsUsingGET
+    put:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionUsingPUT
       parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
       - description: id
         in: path
         name: id
@@ -3912,11 +4146,14 @@ paths:
           content:
             '*/*':
               schema:
-                items:
+                additionalProperties:
                   properties: {}
                   type: object
-                type: array
+                type: object
           description: OK
+        201:
+          content: {}
+          description: Created
         401:
           content: {}
           description: Unauthorized
@@ -3926,11 +4163,12 @@ paths:
         404:
           content: {}
           description: Not Found
-      summary: Retrieve pipeline execution logs
+      summary: Evaluate a pipeline expression using the provided execution as context
       tags:
       - pipeline-controller
   /pipelines/{id}/pause:
     put:
+      deprecated: false
       operationId: pausePipelineUsingPUT
       parameters:
       - description: id
@@ -3960,6 +4198,7 @@ paths:
       - pipeline-controller
   /pipelines/{id}/resume:
     put:
+      deprecated: false
       operationId: resumePipelineUsingPUT
       parameters:
       - description: id
@@ -3995,6 +4234,7 @@ paths:
       - pipeline-controller
   /pipelines/{id}/stages/{stageId}:
     patch:
+      deprecated: false
       operationId: updateStageUsingPATCH
       parameters:
       - description: id
@@ -4041,6 +4281,7 @@ paths:
       x-codegen-request-body-name: context
   /pipelines/{id}/stages/{stageId}/restart:
     put:
+      deprecated: false
       operationId: restartStageUsingPUT
       parameters:
       - description: id
@@ -4088,8 +4329,331 @@ paths:
       tags:
       - pipeline-controller
       x-codegen-request-body-name: context
+  /pipelines/{id}/{stageId}/evaluateExpression:
+    delete:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingDELETE
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        204:
+          content: {}
+          description: No Content
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+    get:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingGET
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+    head:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingHEAD
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        204:
+          content: {}
+          description: No Content
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+    options:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingOPTIONS
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        204:
+          content: {}
+          description: No Content
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+    patch:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingPATCH
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        204:
+          content: {}
+          description: No Content
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+    post:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingPOST
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        201:
+          content: {}
+          description: Created
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+    put:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStageUsingPUT
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        201:
+          content: {}
+          description: Created
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
   /projects:
     get:
+      deprecated: false
       operationId: allUsingGET_3
       responses:
         200:
@@ -4115,6 +4679,7 @@ paths:
       - project-controller
   /projects/{id}:
     get:
+      deprecated: false
       operationId: getUsingGET_1
       parameters:
       - description: id
@@ -4147,17 +4712,18 @@ paths:
       - project-controller
   /projects/{id}/clusters:
     get:
+      deprecated: false
       operationId: getClustersUsingGET_3
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: id
         in: path
         name: id
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -4184,6 +4750,7 @@ paths:
       - project-controller
   /projects/{id}/pipelines:
     get:
+      deprecated: false
       operationId: allPipelinesForProjectUsingGET
       parameters:
       - description: id
@@ -4228,6 +4795,7 @@ paths:
       - project-controller
   /pubsub/subscriptions:
     get:
+      deprecated: false
       operationId: allUsingGET_4
       responses:
         200:
@@ -4252,8 +4820,39 @@ paths:
       - pubsub-subscription-controller
   /search:
     get:
+      deprecated: false
       operationId: searchUsingGET
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: allowShortQuery
+        in: query
+        name: allowShortQuery
+        schema:
+          default: false
+          type: boolean
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: pageSize
+        in: query
+        name: pageSize
+        schema:
+          default: 10000
+          format: int32
+          type: integer
+      - description: platform
+        in: query
+        name: platform
+        schema:
+          type: string
       - description: q
         in: query
         name: q
@@ -4263,36 +4862,6 @@ paths:
         in: query
         name: type
         required: true
-        schema:
-          type: string
-      - description: platform
-        in: query
-        name: platform
-        schema:
-          type: string
-      - description: pageSize
-        in: query
-        name: pageSize
-        schema:
-          default: 10000
-          format: int32
-          type: integer
-      - description: page
-        in: query
-        name: page
-        schema:
-          default: 1
-          format: int32
-          type: integer
-      - description: allowShortQuery
-        in: query
-        name: allowShortQuery
-        schema:
-          default: false
-          type: boolean
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -4319,16 +4888,17 @@ paths:
       - search-controller
   /securityGroups:
     get:
+      deprecated: false
       operationId: allUsingGET_5
       parameters:
-      - description: id
-        in: query
-        name: id
-        schema:
-          type: string
       - description: X-RateLimit-App
         in: header
         name: X-RateLimit-App
+        schema:
+          type: string
+      - description: id
+        in: query
+        name: id
         schema:
           type: string
       responses:
@@ -4353,8 +4923,14 @@ paths:
       - security-group-controller
   /securityGroups/{account}:
     get:
+      deprecated: false
       operationId: allByAccountUsingGET_1
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
@@ -4366,11 +4942,6 @@ paths:
         name: provider
         schema:
           default: aws
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
-        schema:
           type: string
       responses:
         200:
@@ -4394,17 +4965,17 @@ paths:
       - security-group-controller
   /securityGroups/{account}/{region}/{name}:
     get:
+      deprecated: false
       operationId: getSecurityGroupUsingGET_1
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: account
         in: path
         name: account
-        required: true
-        schema:
-          type: string
-      - description: region
-        in: path
-        name: region
         required: true
         schema:
           type: string
@@ -4420,14 +4991,15 @@ paths:
         schema:
           default: aws
           type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
       - description: vpcId
         in: query
         name: vpcId
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -4451,6 +5023,7 @@ paths:
       - security-group-controller
   /subnets:
     get:
+      deprecated: false
       operationId: subnetsUsingGET
       responses:
         200:
@@ -4476,17 +5049,18 @@ paths:
       - amazon-infrastructure-controller
   /subnets/{cloudProvider}:
     get:
+      deprecated: false
       operationId: allByCloudProviderUsingGET_1
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: cloudProvider
         in: path
         name: cloudProvider
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -4513,6 +5087,7 @@ paths:
       - subnet-controller
   /tasks:
     post:
+      deprecated: false
       operationId: taskUsingPOST_1
       requestBody:
         content:
@@ -4549,6 +5124,7 @@ paths:
       x-codegen-request-body-name: map
   /tasks/cancel:
     put:
+      deprecated: false
       operationId: cancelTasksUsingPUT
       parameters:
       - description: ids
@@ -4588,6 +5164,7 @@ paths:
       - task-controller
   /tasks/{id}:
     delete:
+      deprecated: false
       operationId: deleteTaskUsingDELETE
       parameters:
       - description: id
@@ -4619,6 +5196,7 @@ paths:
       tags:
       - task-controller
     get:
+      deprecated: false
       operationId: getTaskUsingGET_1
       parameters:
       - description: id
@@ -4651,6 +5229,7 @@ paths:
       - task-controller
   /tasks/{id}/cancel:
     put:
+      deprecated: false
       operationId: cancelTaskUsingPUT_1
       parameters:
       - description: id
@@ -4686,8 +5265,14 @@ paths:
       - task-controller
   /tasks/{id}/details/{taskDetailsId}:
     get:
+      deprecated: false
       operationId: getTaskDetailsUsingGET_1
       parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
       - description: id
         in: path
         name: id
@@ -4698,11 +5283,6 @@ paths:
         in: path
         name: taskDetailsId
         required: true
-        schema:
-          type: string
-      - description: X-RateLimit-App
-        in: header
-        name: X-RateLimit-App
         schema:
           type: string
       responses:
@@ -4729,13 +5309,13 @@ paths:
       - task-controller
   /v2/builds:
     get:
+      deprecated: false
       description: Deprecated, use the v3 endpoint instead
       operationId: getBuildMastersUsingGET
       parameters:
       - description: type
         in: query
         name: type
-        required: true
         schema:
           type: string
       responses:
@@ -4762,6 +5342,7 @@ paths:
       - build-controller
   /v2/builds/{buildMaster}/build/{number}/**:
     get:
+      deprecated: false
       description: Deprecated, use the v3 endpoint instead
       operationId: getBuildUsingGET
       parameters:
@@ -4801,6 +5382,7 @@ paths:
       - build-controller
   /v2/builds/{buildMaster}/builds/**:
     get:
+      deprecated: false
       description: Deprecated, use the v3 endpoint instead
       operationId: getBuildsUsingGET
       parameters:
@@ -4834,6 +5416,7 @@ paths:
       - build-controller
   /v2/builds/{buildMaster}/jobs:
     get:
+      deprecated: false
       description: Deprecated, use the v3 endpoint instead
       operationId: getJobsForBuildMasterUsingGET
       parameters:
@@ -4867,6 +5450,7 @@ paths:
       - build-controller
   /v2/builds/{buildMaster}/jobs/**:
     get:
+      deprecated: false
       description: Deprecated, use the v3 endpoint instead
       operationId: getJobConfigUsingGET
       parameters:
@@ -4898,24 +5482,14 @@ paths:
       summary: Get job config
       tags:
       - build-controller
-  /v2/canaries/canary/{canaryConfigId}:
+  /v2/canaries/canary:
     post:
-      operationId: initiateCanaryUsingPOST
+      deprecated: false
+      operationId: initiateCanaryWithConfigUsingPOST
       parameters:
-      - description: canaryConfigId
-        in: path
-        name: canaryConfigId
-        required: true
-        schema:
-          type: string
       - description: application
         in: query
         name: application
-        schema:
-          type: string
-      - description: parentPipelineExecutionId
-        in: query
-        name: parentPipelineExecutionId
         schema:
           type: string
       - description: metricsAccountName
@@ -4923,14 +5497,80 @@ paths:
         name: metricsAccountName
         schema:
           type: string
+      - description: parentPipelineExecutionId
+        in: query
+        name: parentPipelineExecutionId
+        schema:
+          type: string
       - description: storageAccountName
         in: query
         name: storageAccountName
         schema:
           type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: adhocExecutionRequest
+        required: true
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        201:
+          content: {}
+          description: Created
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
+      summary: Start a canary execution with the supplied canary config
+      tags:
+      - v-2-canary-controller
+      x-codegen-request-body-name: adhocExecutionRequest
+  /v2/canaries/canary/{canaryConfigId}:
+    post:
+      deprecated: false
+      operationId: initiateCanaryUsingPOST
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: canaryConfigId
+        in: path
+        name: canaryConfigId
+        required: true
+        schema:
+          type: string
       - description: configurationAccountName
         in: query
         name: configurationAccountName
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      - description: parentPipelineExecutionId
+        in: query
+        name: parentPipelineExecutionId
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
         schema:
           type: string
       requestBody:
@@ -4965,6 +5605,7 @@ paths:
       x-codegen-request-body-name: executionRequest
   /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId}:
     get:
+      deprecated: true
       operationId: getCanaryResultUsingGET
       parameters:
       - description: canaryConfigId
@@ -5000,11 +5641,47 @@ paths:
         404:
           content: {}
           description: Not Found
+      summary: (DEPRECATED) Retrieve a canary result
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/canary/{canaryExecutionId}:
+    get:
+      deprecated: false
+      operationId: getCanaryResultUsingGET_1
+      parameters:
+      - description: canaryExecutionId
+        in: path
+        name: canaryExecutionId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        401:
+          content: {}
+          description: Unauthorized
+        403:
+          content: {}
+          description: Forbidden
+        404:
+          content: {}
+          description: Not Found
       summary: Retrieve a canary result
       tags:
       - v-2-canary-controller
   /v2/canaries/credentials:
     get:
+      deprecated: false
       operationId: listCredentialsUsingGET
       responses:
         200:
@@ -5030,6 +5707,7 @@ paths:
       - v-2-canary-controller
   /v2/canaries/judges:
     get:
+      deprecated: false
       operationId: listJudgesUsingGET
       responses:
         200:
@@ -5055,6 +5733,7 @@ paths:
       - v-2-canary-controller
   /v2/canaries/metadata/metricsService:
     get:
+      deprecated: false
       operationId: listMetricsServiceMetadataUsingGET
       parameters:
       - description: filter
@@ -5092,6 +5771,7 @@ paths:
       - v-2-canary-controller
   /v2/canaries/metricSetPairList/{metricSetPairListId}:
     get:
+      deprecated: false
       operationId: getMetricSetPairListUsingGET
       parameters:
       - description: metricSetPairListId
@@ -5129,6 +5809,7 @@ paths:
       - v-2-canary-controller
   /v2/canaries/{application}/executions:
     get:
+      deprecated: false
       operationId: getCanaryResultsByApplicationUsingGET
       parameters:
       - description: application
@@ -5144,7 +5825,8 @@ paths:
         schema:
           format: int32
           type: integer
-      - description: 'Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED,
+      - allowEmptyValue: false
+        description: 'Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED,
           TERMINAL'
         in: query
         name: statuses
@@ -5179,6 +5861,7 @@ paths:
       - v-2-canary-controller
   /v2/canaryConfig:
     get:
+      deprecated: false
       operationId: getCanaryConfigsUsingGET
       parameters:
       - description: application
@@ -5214,6 +5897,7 @@ paths:
       tags:
       - v-2-canary-config-controller
     post:
+      deprecated: false
       operationId: createCanaryConfigUsingPOST
       parameters:
       - description: configurationAccountName
@@ -5253,17 +5937,18 @@ paths:
       x-codegen-request-body-name: config
   /v2/canaryConfig/{id}:
     delete:
+      deprecated: false
       operationId: deleteCanaryConfigUsingDELETE
       parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
       - description: id
         in: path
         name: id
         required: true
-        schema:
-          type: string
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
         schema:
           type: string
       responses:
@@ -5283,17 +5968,18 @@ paths:
       tags:
       - v-2-canary-config-controller
     get:
+      deprecated: false
       operationId: getCanaryConfigUsingGET
       parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
       - description: id
         in: path
         name: id
         required: true
-        schema:
-          type: string
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
         schema:
           type: string
       responses:
@@ -5316,17 +6002,18 @@ paths:
       tags:
       - v-2-canary-config-controller
     put:
+      deprecated: false
       operationId: updateCanaryConfigUsingPUT
       parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
       - description: id
         in: path
         name: id
         required: true
-        schema:
-          type: string
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
         schema:
           type: string
       requestBody:
@@ -5361,6 +6048,7 @@ paths:
       x-codegen-request-body-name: config
   /v2/pipelineTemplates:
     get:
+      deprecated: false
       operationId: listUsingGET_1
       parameters:
       - description: scopes
@@ -5396,6 +6084,7 @@ paths:
       - v-2-pipeline-templates-controller
   /v2/pipelineTemplates/create:
     post:
+      deprecated: false
       operationId: createUsingPOST_1
       parameters:
       - description: tag
@@ -5438,6 +6127,7 @@ paths:
       x-codegen-request-body-name: pipelineTemplate
   /v2/pipelineTemplates/plan:
     post:
+      deprecated: false
       operationId: planUsingPOST
       requestBody:
         content:
@@ -5474,6 +6164,7 @@ paths:
       x-codegen-request-body-name: pipeline
   /v2/pipelineTemplates/update/{id}:
     post:
+      deprecated: false
       operationId: updateUsingPOST_1
       parameters:
       - description: id
@@ -5482,17 +6173,17 @@ paths:
         required: true
         schema:
           type: string
-      - description: tag
-        in: query
-        name: tag
-        schema:
-          type: string
       - description: skipPlanDependents
         in: query
         name: skipPlanDependents
         schema:
           default: false
           type: boolean
+      - description: tag
+        in: query
+        name: tag
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -5528,8 +6219,19 @@ paths:
       x-codegen-request-body-name: pipelineTemplate
   /v2/pipelineTemplates/{id}:
     delete:
+      deprecated: false
       operationId: deleteUsingDELETE_1
       parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: digest
+        in: query
+        name: digest
+        schema:
+          type: string
       - description: id
         in: path
         name: id
@@ -5539,16 +6241,6 @@ paths:
       - description: tag
         in: query
         name: tag
-        schema:
-          type: string
-      - description: digest
-        in: query
-        name: digest
-        schema:
-          type: string
-      - description: application
-        in: query
-        name: application
         schema:
           type: string
       responses:
@@ -5574,8 +6266,14 @@ paths:
       tags:
       - v-2-pipeline-templates-controller
     get:
+      deprecated: false
       operationId: getUsingGET_2
       parameters:
+      - description: digest
+        in: query
+        name: digest
+        schema:
+          type: string
       - description: id
         in: path
         name: id
@@ -5585,11 +6283,6 @@ paths:
       - description: tag
         in: query
         name: tag
-        schema:
-          type: string
-      - description: digest
-        in: query
-        name: digest
         schema:
           type: string
       responses:
@@ -5616,6 +6309,7 @@ paths:
       - v-2-pipeline-templates-controller
   /v2/pipelineTemplates/{id}/dependents:
     get:
+      deprecated: false
       operationId: listPipelineTemplateDependentsUsingGET_1
       parameters:
       - description: id
@@ -5648,12 +6342,12 @@ paths:
       - v-2-pipeline-templates-controller
   /v3/builds:
     get:
+      deprecated: false
       operationId: v3GetBuildMastersUsingGET
       parameters:
       - description: type
         in: query
         name: type
-        required: true
         schema:
           type: string
       responses:
@@ -5680,6 +6374,7 @@ paths:
       - build-controller
   /v3/builds/{buildMaster}/build/{number}:
     get:
+      deprecated: false
       operationId: v3GetBuildUsingGET
       parameters:
       - description: buildMaster
@@ -5688,15 +6383,15 @@ paths:
         required: true
         schema:
           type: string
-      - description: number
-        in: path
-        name: number
-        required: true
-        schema:
-          type: string
       - description: job
         in: query
         name: job
+        required: true
+        schema:
+          type: string
+      - description: number
+        in: path
+        name: number
         required: true
         schema:
           type: string
@@ -5724,6 +6419,7 @@ paths:
       - build-controller
   /v3/builds/{buildMaster}/builds:
     get:
+      deprecated: false
       operationId: v3GetBuildsUsingGET
       parameters:
       - description: buildMaster
@@ -5762,6 +6458,7 @@ paths:
       - build-controller
   /v3/builds/{buildMaster}/job:
     get:
+      deprecated: false
       operationId: v3GetJobConfigUsingGET
       parameters:
       - description: buildMaster
@@ -5800,6 +6497,7 @@ paths:
       - build-controller
   /v3/builds/{buildMaster}/jobs:
     get:
+      deprecated: false
       operationId: v3GetJobsForBuildMasterUsingGET
       parameters:
       - description: buildMaster
@@ -5832,6 +6530,7 @@ paths:
       - build-controller
   /version:
     get:
+      deprecated: false
       operationId: getVersionUsingGET
       responses:
         200:
@@ -5880,6 +6579,7 @@ paths:
       - amazon-infrastructure-controller
   /webhooks/preconfigured:
     get:
+      deprecated: false
       operationId: preconfiguredWebhooksUsingGET
       responses:
         200:
@@ -5905,12 +6605,17 @@ paths:
       - webhook-controller
   /webhooks/{type}/{source}:
     post:
+      deprecated: false
       operationId: webhooksUsingPOST
       parameters:
-      - description: type
-        in: path
-        name: type
-        required: true
+      - description: X-Event-Key
+        in: header
+        name: X-Event-Key
+        schema:
+          type: string
+      - description: X-Hub-Signature
+        in: header
+        name: X-Hub-Signature
         schema:
           type: string
       - description: source
@@ -5919,14 +6624,10 @@ paths:
         required: true
         schema:
           type: string
-      - description: X-Hub-Signature
-        in: header
-        name: X-Hub-Signature
-        schema:
-          type: string
-      - description: X-Event-Key
-        in: header
-        name: X-Event-Key
+      - description: type
+        in: path
+        name: type
+        required: true
         schema:
           type: string
       requestBody:
@@ -5996,6 +6697,7 @@ components:
           type: string
         type:
           type: string
+      title: Account
       type: object
     AccountDetails:
       example:
@@ -6047,6 +6749,7 @@ components:
           type: string
         type:
           type: string
+      title: AccountDetails
       type: object
     GrantedAuthority:
       example:
@@ -6054,11 +6757,13 @@ components:
       properties:
         authority:
           type: string
+      title: GrantedAuthority
       type: object
     HashMap«string,object»:
       additionalProperties:
         properties: {}
         type: object
+      title: HashMap«string,object»
       type: object
     HttpEntity:
       example:
@@ -6067,10 +6772,12 @@ components:
         body:
           properties: {}
           type: object
+      title: HttpEntity
       type: object
     Map«string,string»:
       additionalProperties:
         type: string
+      title: Map«string,string»
       type: object
     PipelineTemplateDependent:
       properties:
@@ -6080,6 +6787,7 @@ components:
           type: string
         pipelineName:
           type: string
+      title: PipelineTemplateDependent
       type: object
     ReorderPipelinesCommand:
       example:
@@ -6094,6 +6802,7 @@ components:
             format: int32
             type: integer
           type: object
+      title: ReorderPipelinesCommand
       type: object
     ResponseEntity:
       example:
@@ -6177,6 +6886,7 @@ components:
         statusCodeValue:
           format: int32
           type: integer
+      title: ResponseEntity
       type: object
     User:
       example:
@@ -6226,6 +6936,7 @@ components:
           type: array
         username:
           type: string
+      title: User
       type: object
     Version:
       example:
@@ -6233,4 +6944,5 @@ components:
       properties:
         version:
           type: string
+      title: Version
       type: object

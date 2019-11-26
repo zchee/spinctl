@@ -13,6 +13,7 @@ Method | HTTP request | Description
 ## ConvertPipelineConfigToPipelineTemplateUsingGET
 
 > string ConvertPipelineConfigToPipelineTemplateUsingGET(ctx, pipelineConfigId)
+
 Convert a pipeline config to a pipeline template.
 
 ### Required Parameters
@@ -44,6 +45,7 @@ No authorization required
 ## GetAllPipelineConfigsUsingGET
 
 > []map[string]interface{} GetAllPipelineConfigsUsingGET(ctx, )
+
 Get all pipeline configs.
 
 ### Required Parameters
@@ -71,6 +73,7 @@ No authorization required
 ## GetPipelineConfigHistoryUsingGET
 
 > []map[string]interface{} GetPipelineConfigHistoryUsingGET(ctx, pipelineConfigId, optional)
+
 Get pipeline config history.
 
 ### Required Parameters

@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ## ReorderPipelinesUsingPOST
 
 > map[string]interface{} ReorderPipelinesUsingPOST(ctx, reorderPipelinesCommand)
+
 Re-order pipelines
 
 ### Required Parameters

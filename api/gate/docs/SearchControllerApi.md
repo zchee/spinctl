@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ## SearchUsingGET
 
 > []map[string]interface{} SearchUsingGET(ctx, type_, optional)
+
 Search infrastructure
 
 ### Required Parameters
@@ -30,12 +31,12 @@ Optional parameters are passed through a pointer to a SearchUsingGETOpts struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **q** | **optional.String**| q | 
- **platform** | **optional.String**| platform | 
- **pageSize** | **optional.Int32**| pageSize | [default to 10000]
- **page** | **optional.Int32**| page | [default to 1]
- **allowShortQuery** | **optional.Bool**| allowShortQuery | [default to false]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **allowShortQuery** | **optional.Bool**| allowShortQuery | [default to false]
+ **page** | **optional.Int32**| page | [default to 1]
+ **pageSize** | **optional.Int32**| pageSize | [default to 10000]
+ **platform** | **optional.String**| platform | 
+ **q** | **optional.String**| q | 
 
 ### Return type
 

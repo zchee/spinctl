@@ -10,7 +10,8 @@ Method | HTTP request | Description
 
 ## GetJobUsingGET
 
-> map[string]map[string]interface{} GetJobUsingGET(ctx, applicationName, account, region, name, optional)
+> map[string]map[string]interface{} GetJobUsingGET(ctx, account, applicationName, name, region, optional)
+
 Get job
 
 ### Required Parameters
@@ -19,10 +20,10 @@ Get job
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**applicationName** | **string**| applicationName | 
 **account** | **string**| account | 
-**region** | **string**| region | 
+**applicationName** | **string**| applicationName | 
 **name** | **string**| name | 
+**region** | **string**| region | 
  **optional** | ***GetJobUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -36,8 +37,8 @@ Name | Type | Description  | Notes
 
 
 
- **expand** | **optional.String**| expand | [default to false]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **expand** | **optional.String**| expand | [default to false]
 
 ### Return type
 

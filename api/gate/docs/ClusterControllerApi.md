@@ -17,7 +17,8 @@ Method | HTTP request | Description
 
 ## GetClusterLoadBalancersUsingGET
 
-> []map[string]interface{} GetClusterLoadBalancersUsingGET(ctx, applicationName, account, clusterName, type_, optional)
+> []map[string]interface{} GetClusterLoadBalancersUsingGET(ctx, account, applicationName, clusterName, type_, optional)
+
 Retrieve a cluster's loadbalancers
 
 ### Required Parameters
@@ -26,8 +27,8 @@ Retrieve a cluster's loadbalancers
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**applicationName** | **string**| applicationName | 
 **account** | **string**| account | 
+**applicationName** | **string**| applicationName | 
 **clusterName** | **string**| clusterName | 
 **type_** | **string**| type | 
  **optional** | ***GetClusterLoadBalancersUsingGETOpts** | optional parameters | nil if no parameters
@@ -65,7 +66,8 @@ No authorization required
 
 ## GetClustersUsingGET
 
-> map[string]map[string]interface{} GetClustersUsingGET(ctx, application, account, clusterName, optional)
+> map[string]map[string]interface{} GetClustersUsingGET(ctx, account, application, clusterName, optional)
+
 Retrieve a cluster's details
 
 ### Required Parameters
@@ -74,8 +76,8 @@ Retrieve a cluster's details
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
 **clusterName** | **string**| clusterName | 
  **optional** | ***GetClustersUsingGETOpts** | optional parameters | nil if no parameters
 
@@ -111,7 +113,8 @@ No authorization required
 
 ## GetClustersUsingGET1
 
-> []map[string]interface{} GetClustersUsingGET1(ctx, application, account, optional)
+> []map[string]interface{} GetClustersUsingGET1(ctx, account, application, optional)
+
 Retrieve a list of clusters for an account
 
 ### Required Parameters
@@ -120,8 +123,8 @@ Retrieve a list of clusters for an account
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
  **optional** | ***GetClustersUsingGET1Opts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -156,6 +159,7 @@ No authorization required
 ## GetClustersUsingGET2
 
 > map[string]map[string]interface{} GetClustersUsingGET2(ctx, application, optional)
+
 Retrieve a list of cluster names for an application, grouped by account
 
 ### Required Parameters
@@ -197,7 +201,8 @@ No authorization required
 
 ## GetScalingActivitiesUsingGET
 
-> []map[string]interface{} GetScalingActivitiesUsingGET(ctx, application, account, clusterName, serverGroupName, optional)
+> []map[string]interface{} GetScalingActivitiesUsingGET(ctx, account, application, clusterName, serverGroupName, optional)
+
 Retrieve a list of scaling activities for a server group
 
 ### Required Parameters
@@ -206,8 +211,8 @@ Retrieve a list of scaling activities for a server group
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
 **clusterName** | **string**| clusterName | 
 **serverGroupName** | **string**| serverGroupName | 
  **optional** | ***GetScalingActivitiesUsingGETOpts** | optional parameters | nil if no parameters
@@ -223,9 +228,9 @@ Name | Type | Description  | Notes
 
 
 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
  **provider** | **optional.String**| provider | [default to aws]
  **region** | **optional.String**| region | 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 
@@ -247,7 +252,8 @@ No authorization required
 
 ## GetServerGroupsUsingGET
 
-> []map[string]interface{} GetServerGroupsUsingGET(ctx, application, account, clusterName, serverGroupName, optional)
+> []map[string]interface{} GetServerGroupsUsingGET(ctx, account, application, clusterName, serverGroupName, optional)
+
 Retrieve a server group's details
 
 ### Required Parameters
@@ -256,8 +262,8 @@ Retrieve a server group's details
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
 **clusterName** | **string**| clusterName | 
 **serverGroupName** | **string**| serverGroupName | 
  **optional** | ***GetServerGroupsUsingGETOpts** | optional parameters | nil if no parameters
@@ -295,7 +301,8 @@ No authorization required
 
 ## GetServerGroupsUsingGET1
 
-> []map[string]interface{} GetServerGroupsUsingGET1(ctx, application, account, clusterName, optional)
+> []map[string]interface{} GetServerGroupsUsingGET1(ctx, account, application, clusterName, optional)
+
 Retrieve a list of server groups for a cluster
 
 ### Required Parameters
@@ -304,8 +311,8 @@ Retrieve a list of server groups for a cluster
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
+**application** | **string**| application | 
 **clusterName** | **string**| clusterName | 
  **optional** | ***GetServerGroupsUsingGET1Opts** | optional parameters | nil if no parameters
 
@@ -341,7 +348,8 @@ No authorization required
 
 ## GetTargetServerGroupUsingGET
 
-> map[string]map[string]interface{} GetTargetServerGroupUsingGET(ctx, application, account, clusterName, cloudProvider, scope, target, optional)
+> map[string]map[string]interface{} GetTargetServerGroupUsingGET(ctx, account, application, cloudProvider, clusterName, scope, target, optional)
+
 Retrieve a server group that matches a target coordinate (e.g., newest, ancestor) relative to a cluster
 
 `scope` is either a zone or a region
@@ -352,10 +360,10 @@ Retrieve a server group that matches a target coordinate (e.g., newest, ancestor
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
-**clusterName** | **string**| clusterName | 
+**application** | **string**| application | 
 **cloudProvider** | **string**| cloudProvider | 
+**clusterName** | **string**| clusterName | 
 **scope** | **string**| scope | 
 **target** | **string**| target | 
  **optional** | ***GetTargetServerGroupUsingGETOpts** | optional parameters | nil if no parameters
@@ -373,9 +381,9 @@ Name | Type | Description  | Notes
 
 
 
+ **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
  **onlyEnabled** | **optional.Bool**| onlyEnabled | 
  **validateOldest** | **optional.Bool**| validateOldest | 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
 
 ### Return type
 

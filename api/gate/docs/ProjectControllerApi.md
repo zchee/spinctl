@@ -14,6 +14,7 @@ Method | HTTP request | Description
 ## AllPipelinesForProjectUsingGET
 
 > []map[string]interface{} AllPipelinesForProjectUsingGET(ctx, id, optional)
+
 Get all pipelines for project
 
 ### Required Parameters
@@ -57,6 +58,7 @@ No authorization required
 ## AllUsingGET3
 
 > []map[string]interface{} AllUsingGET3(ctx, )
+
 Get all projects
 
 ### Required Parameters
@@ -84,6 +86,7 @@ No authorization required
 ## GetClustersUsingGET3
 
 > []map[string]interface{} GetClustersUsingGET3(ctx, id, optional)
+
 Get a project's clusters
 
 ### Required Parameters
@@ -126,6 +129,7 @@ No authorization required
 ## GetUsingGET1
 
 > map[string]map[string]interface{} GetUsingGET1(ctx, id)
+
 Get a project
 
 ### Required Parameters

@@ -9,8 +9,136 @@
 
 package gate
 
+import (
+	"bytes"
+	"encoding/json"
+)
+
+// ResponseEntity struct for ResponseEntity
 type ResponseEntity struct {
-	Body            map[string]interface{} `json:"body,omitempty"`
-	StatusCode      string                 `json:"statusCode,omitempty"`
-	StatusCodeValue int32                  `json:"statusCodeValue,omitempty"`
+	Body            *map[string]interface{} `json:"body,omitempty"`
+	StatusCode      *string                 `json:"statusCode,omitempty"`
+	StatusCodeValue *int32                  `json:"statusCodeValue,omitempty"`
+}
+
+// GetBody returns the Body field value if set, zero value otherwise.
+func (o *ResponseEntity) GetBody() map[string]interface{} {
+	if o == nil || o.Body == nil {
+		var ret map[string]interface{}
+		return ret
+	}
+	return *o.Body
+}
+
+// GetBodyOk returns a tuple with the Body field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *ResponseEntity) GetBodyOk() (map[string]interface{}, bool) {
+	if o == nil || o.Body == nil {
+		var ret map[string]interface{}
+		return ret, false
+	}
+	return *o.Body, true
+}
+
+// HasBody returns a boolean if a field has been set.
+func (o *ResponseEntity) HasBody() bool {
+	if o != nil && o.Body != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBody gets a reference to the given map[string]interface{} and assigns it to the Body field.
+func (o *ResponseEntity) SetBody(v map[string]interface{}) {
+	o.Body = &v
+}
+
+// GetStatusCode returns the StatusCode field value if set, zero value otherwise.
+func (o *ResponseEntity) GetStatusCode() string {
+	if o == nil || o.StatusCode == nil {
+		var ret string
+		return ret
+	}
+	return *o.StatusCode
+}
+
+// GetStatusCodeOk returns a tuple with the StatusCode field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *ResponseEntity) GetStatusCodeOk() (string, bool) {
+	if o == nil || o.StatusCode == nil {
+		var ret string
+		return ret, false
+	}
+	return *o.StatusCode, true
+}
+
+// HasStatusCode returns a boolean if a field has been set.
+func (o *ResponseEntity) HasStatusCode() bool {
+	if o != nil && o.StatusCode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusCode gets a reference to the given string and assigns it to the StatusCode field.
+func (o *ResponseEntity) SetStatusCode(v string) {
+	o.StatusCode = &v
+}
+
+// GetStatusCodeValue returns the StatusCodeValue field value if set, zero value otherwise.
+func (o *ResponseEntity) GetStatusCodeValue() int32 {
+	if o == nil || o.StatusCodeValue == nil {
+		var ret int32
+		return ret
+	}
+	return *o.StatusCodeValue
+}
+
+// GetStatusCodeValueOk returns a tuple with the StatusCodeValue field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *ResponseEntity) GetStatusCodeValueOk() (int32, bool) {
+	if o == nil || o.StatusCodeValue == nil {
+		var ret int32
+		return ret, false
+	}
+	return *o.StatusCodeValue, true
+}
+
+// HasStatusCodeValue returns a boolean if a field has been set.
+func (o *ResponseEntity) HasStatusCodeValue() bool {
+	if o != nil && o.StatusCodeValue != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusCodeValue gets a reference to the given int32 and assigns it to the StatusCodeValue field.
+func (o *ResponseEntity) SetStatusCodeValue(v int32) {
+	o.StatusCodeValue = &v
+}
+
+type NullableResponseEntity struct {
+	Value        ResponseEntity
+	ExplicitNull bool
+}
+
+func (v NullableResponseEntity) MarshalJSON() ([]byte, error) {
+	switch {
+	case v.ExplicitNull:
+		return []byte("null"), nil
+	default:
+		return json.Marshal(v.Value)
+	}
+}
+
+func (v *NullableResponseEntity) UnmarshalJSON(src []byte) error {
+	if bytes.Equal(src, []byte("null")) {
+		v.ExplicitNull = true
+		return nil
+	}
+
+	return json.Unmarshal(src, &v.Value)
 }

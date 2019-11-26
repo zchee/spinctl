@@ -15,6 +15,7 @@ Method | HTTP request | Description
 ## CreateCanaryConfigUsingPOST
 
 > map[string]interface{} CreateCanaryConfigUsingPOST(ctx, config, optional)
+
 Create a canary configuration
 
 ### Required Parameters
@@ -57,6 +58,7 @@ No authorization required
 ## DeleteCanaryConfigUsingDELETE
 
 > DeleteCanaryConfigUsingDELETE(ctx, id, optional)
+
 Delete a canary configuration
 
 ### Required Parameters
@@ -99,6 +101,7 @@ No authorization required
 ## GetCanaryConfigUsingGET
 
 > map[string]interface{} GetCanaryConfigUsingGET(ctx, id, optional)
+
 Retrieve a canary configuration by id
 
 ### Required Parameters
@@ -141,6 +144,7 @@ No authorization required
 ## GetCanaryConfigsUsingGET
 
 > []map[string]interface{} GetCanaryConfigsUsingGET(ctx, optional)
+
 Retrieve a list of canary configurations
 
 ### Required Parameters
@@ -182,6 +186,7 @@ No authorization required
 ## UpdateCanaryConfigUsingPUT
 
 > map[string]interface{} UpdateCanaryConfigUsingPUT(ctx, config, id, optional)
+
 Update a canary configuration
 
 ### Required Parameters

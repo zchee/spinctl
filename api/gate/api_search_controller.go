@@ -19,37 +19,39 @@ import (
 )
 
 // Linger please
+var (
+	_ _context.Context
+)
 
-var _ _context.Context
-
+// SearchControllerApiService SearchControllerApi service
 type SearchControllerApiService service
 
+// SearchUsingGETOpts Optional parameters for the method 'SearchUsingGET'
+type SearchUsingGETOpts struct {
+	XRateLimitApp   optional.String
+	AllowShortQuery optional.Bool
+	Page            optional.Int32
+	PageSize        optional.Int32
+	Platform        optional.String
+	Q               optional.String
+}
+
 /*
-SearchControllerApiService Search infrastructure
+SearchUsingGET Search infrastructure
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param type_ type
  * @param optional nil or *SearchUsingGETOpts - Optional Parameters:
- * @param "Q" (optional.String) -  q
- * @param "Platform" (optional.String) -  platform
- * @param "PageSize" (optional.Int32) -  pageSize
- * @param "Page" (optional.Int32) -  page
- * @param "AllowShortQuery" (optional.Bool) -  allowShortQuery
  * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
+ * @param "AllowShortQuery" (optional.Bool) -  allowShortQuery
+ * @param "Page" (optional.Int32) -  page
+ * @param "PageSize" (optional.Int32) -  pageSize
+ * @param "Platform" (optional.String) -  platform
+ * @param "Q" (optional.String) -  q
 @return []map[string]interface{}
 */
-
-type SearchUsingGETOpts struct {
-	Q               optional.String
-	Platform        optional.String
-	PageSize        optional.Int32
-	Page            optional.Int32
-	AllowShortQuery optional.Bool
-	XRateLimitApp   optional.String
-}
-
 func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context, type_ string, localVarOptionals *SearchUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
-		localVarHttpMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -64,84 +66,85 @@ func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context, type_ 
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Q.IsSet() {
-		localVarQueryParams.Add("q", parameterToString(localVarOptionals.Q.Value(), ""))
-	}
-	localVarQueryParams.Add("type", parameterToString(type_, ""))
-	if localVarOptionals != nil && localVarOptionals.Platform.IsSet() {
-		localVarQueryParams.Add("platform", parameterToString(localVarOptionals.Platform.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.AllowShortQuery.IsSet() {
+		localVarQueryParams.Add("allowShortQuery", parameterToString(localVarOptionals.AllowShortQuery.Value(), ""))
 	}
 	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
 		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AllowShortQuery.IsSet() {
-		localVarQueryParams.Add("allowShortQuery", parameterToString(localVarOptionals.AllowShortQuery.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
+		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
 	}
+	if localVarOptionals != nil && localVarOptionals.Platform.IsSet() {
+		localVarQueryParams.Add("platform", parameterToString(localVarOptionals.Platform.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.Q.IsSet() {
+		localVarQueryParams.Add("q", parameterToString(localVarOptionals.Q.Value(), ""))
+	}
+	localVarQueryParams.Add("type", parameterToString(type_, ""))
 	// to determine the Content-Type header
-	localVarHttpContentTypes := []string{}
+	localVarHTTPContentTypes := []string{}
 
 	// set Content-Type header
-	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
-	if localVarHttpContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
 	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"*/*"}
+	localVarHTTPHeaderAccepts := []string{"*/*"}
 
 	// set Accept header
-	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
-	if localVarHttpHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
 		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHttpResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHttpResponse == nil {
-		return localVarReturnValue, localVarHttpResponse, err
+	localVarHTTPResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHttpResponse.Body)
-	localVarHttpResponse.Body.Close()
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
 	if err != nil {
-		return localVarReturnValue, localVarHttpResponse, err
+		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	if localVarHttpResponse.StatusCode >= 300 {
+	if localVarHTTPResponse.StatusCode >= 300 {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
-			error: localVarHttpResponse.Status,
+			error: localVarHTTPResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
+				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		return localVarReturnValue, localVarHttpResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
-		return localVarReturnValue, localVarHttpResponse, newErr
+		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	return localVarReturnValue, localVarHttpResponse, nil
+	return localVarReturnValue, localVarHTTPResponse, nil
 }

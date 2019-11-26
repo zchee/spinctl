@@ -10,7 +10,8 @@ Method | HTTP request | Description
 
 ## AllUsingGET4
 
-> []ModelMap AllUsingGET4(ctx, )
+> []map[string]string AllUsingGET4(ctx, )
+
 Retrieve the list of pub/sub subscriptions configured in Echo.
 
 ### Required Parameters
@@ -19,7 +20,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**[]ModelMap**](map.md)
+[**[]map[string]string**](map.md)
 
 ### Authorization
 

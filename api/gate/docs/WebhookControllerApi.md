@@ -12,6 +12,7 @@ Method | HTTP request | Description
 ## PreconfiguredWebhooksUsingGET
 
 > []map[string]interface{} PreconfiguredWebhooksUsingGET(ctx, )
+
 Retrieve a list of preconfigured webhooks in Orca
 
 ### Required Parameters
@@ -38,7 +39,8 @@ No authorization required
 
 ## WebhooksUsingPOST
 
-> map[string]interface{} WebhooksUsingPOST(ctx, type_, source, optional)
+> map[string]interface{} WebhooksUsingPOST(ctx, source, type_, optional)
+
 Endpoint for posting webhooks to Spinnaker's webhook service
 
 ### Required Parameters
@@ -47,8 +49,8 @@ Endpoint for posting webhooks to Spinnaker's webhook service
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**type_** | **string**| type | 
 **source** | **string**| source | 
+**type_** | **string**| type | 
  **optional** | ***WebhooksUsingPOSTOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -60,9 +62,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **event** | **optional.Map[string]interface{}**| event | 
- **xHubSignature** | **optional.String**| X-Hub-Signature | 
+ **event** | **optional.Interface**| event | 
  **xEventKey** | **optional.String**| X-Event-Key | 
+ **xHubSignature** | **optional.String**| X-Hub-Signature | 
 
 ### Return type
 

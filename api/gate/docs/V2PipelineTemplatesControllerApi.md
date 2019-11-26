@@ -17,6 +17,7 @@ Method | HTTP request | Description
 ## CreateUsingPOST1
 
 > CreateUsingPOST1(ctx, pipelineTemplate, optional)
+
 (ALPHA) Create a pipeline template.
 
 ### Required Parameters
@@ -59,6 +60,7 @@ No authorization required
 ## DeleteUsingDELETE1
 
 > map[string]map[string]interface{} DeleteUsingDELETE1(ctx, id, optional)
+
 Delete a pipeline template.
 
 ### Required Parameters
@@ -78,9 +80,9 @@ Optional parameters are passed through a pointer to a DeleteUsingDELETE1Opts str
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **tag** | **optional.String**| tag | 
- **digest** | **optional.String**| digest | 
  **application** | **optional.String**| application | 
+ **digest** | **optional.String**| digest | 
+ **tag** | **optional.String**| tag | 
 
 ### Return type
 
@@ -103,6 +105,7 @@ No authorization required
 ## GetUsingGET2
 
 > map[string]map[string]interface{} GetUsingGET2(ctx, id, optional)
+
 (ALPHA) Get a pipeline template.
 
 ### Required Parameters
@@ -122,8 +125,8 @@ Optional parameters are passed through a pointer to a GetUsingGET2Opts struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **tag** | **optional.String**| tag | 
  **digest** | **optional.String**| digest | 
+ **tag** | **optional.String**| tag | 
 
 ### Return type
 
@@ -146,6 +149,7 @@ No authorization required
 ## ListPipelineTemplateDependentsUsingGET1
 
 > []map[string]interface{} ListPipelineTemplateDependentsUsingGET1(ctx, id)
+
 (ALPHA) List all pipelines that implement a pipeline template
 
 ### Required Parameters
@@ -177,6 +181,7 @@ No authorization required
 ## ListUsingGET1
 
 > []map[string]interface{} ListUsingGET1(ctx, optional)
+
 (ALPHA) List pipeline templates.
 
 ### Required Parameters
@@ -217,6 +222,7 @@ No authorization required
 ## PlanUsingPOST
 
 > map[string]map[string]interface{} PlanUsingPOST(ctx, pipeline)
+
 (ALPHA) Plan a pipeline template configuration.
 
 ### Required Parameters
@@ -248,6 +254,7 @@ No authorization required
 ## UpdateUsingPOST1
 
 > UpdateUsingPOST1(ctx, pipelineTemplate, id, optional)
+
 (ALPHA) Update a pipeline template.
 
 ### Required Parameters
@@ -269,8 +276,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **tag** | **optional.String**| tag | 
  **skipPlanDependents** | **optional.Bool**| skipPlanDependents | [default to false]
+ **tag** | **optional.String**| tag | 
 
 ### Return type
 

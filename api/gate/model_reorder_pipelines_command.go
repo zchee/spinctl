@@ -9,7 +9,102 @@
 
 package gate
 
+import (
+	"bytes"
+	"encoding/json"
+)
+
+// ReorderPipelinesCommand struct for ReorderPipelinesCommand
 type ReorderPipelinesCommand struct {
-	Application  string           `json:"application,omitempty"`
-	IdsToIndices map[string]int32 `json:"idsToIndices,omitempty"`
+	Application  *string           `json:"application,omitempty"`
+	IdsToIndices *map[string]int32 `json:"idsToIndices,omitempty"`
+}
+
+// GetApplication returns the Application field value if set, zero value otherwise.
+func (o *ReorderPipelinesCommand) GetApplication() string {
+	if o == nil || o.Application == nil {
+		var ret string
+		return ret
+	}
+	return *o.Application
+}
+
+// GetApplicationOk returns a tuple with the Application field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *ReorderPipelinesCommand) GetApplicationOk() (string, bool) {
+	if o == nil || o.Application == nil {
+		var ret string
+		return ret, false
+	}
+	return *o.Application, true
+}
+
+// HasApplication returns a boolean if a field has been set.
+func (o *ReorderPipelinesCommand) HasApplication() bool {
+	if o != nil && o.Application != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetApplication gets a reference to the given string and assigns it to the Application field.
+func (o *ReorderPipelinesCommand) SetApplication(v string) {
+	o.Application = &v
+}
+
+// GetIdsToIndices returns the IdsToIndices field value if set, zero value otherwise.
+func (o *ReorderPipelinesCommand) GetIdsToIndices() map[string]int32 {
+	if o == nil || o.IdsToIndices == nil {
+		var ret map[string]int32
+		return ret
+	}
+	return *o.IdsToIndices
+}
+
+// GetIdsToIndicesOk returns a tuple with the IdsToIndices field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *ReorderPipelinesCommand) GetIdsToIndicesOk() (map[string]int32, bool) {
+	if o == nil || o.IdsToIndices == nil {
+		var ret map[string]int32
+		return ret, false
+	}
+	return *o.IdsToIndices, true
+}
+
+// HasIdsToIndices returns a boolean if a field has been set.
+func (o *ReorderPipelinesCommand) HasIdsToIndices() bool {
+	if o != nil && o.IdsToIndices != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIdsToIndices gets a reference to the given map[string]int32 and assigns it to the IdsToIndices field.
+func (o *ReorderPipelinesCommand) SetIdsToIndices(v map[string]int32) {
+	o.IdsToIndices = &v
+}
+
+type NullableReorderPipelinesCommand struct {
+	Value        ReorderPipelinesCommand
+	ExplicitNull bool
+}
+
+func (v NullableReorderPipelinesCommand) MarshalJSON() ([]byte, error) {
+	switch {
+	case v.ExplicitNull:
+		return []byte("null"), nil
+	default:
+		return json.Marshal(v.Value)
+	}
+}
+
+func (v *NullableReorderPipelinesCommand) UnmarshalJSON(src []byte) error {
+	if bytes.Equal(src, []byte("null")) {
+		v.ExplicitNull = true
+		return nil
+	}
+
+	return json.Unmarshal(src, &v.Value)
 }

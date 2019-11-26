@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ## AllByCloudProviderUsingGET1
 
 > []map[string]interface{} AllByCloudProviderUsingGET1(ctx, cloudProvider, optional)
+
 Retrieve a list of subnets for a given cloud provider
 
 ### Required Parameters

@@ -12,6 +12,7 @@ Method | HTTP request | Description
 ## AllByCloudProviderUsingGET
 
 > []map[string]interface{} AllByCloudProviderUsingGET(ctx, cloudProvider, optional)
+
 Retrieve a list of networks for a given cloud provider
 
 ### Required Parameters
@@ -54,6 +55,7 @@ No authorization required
 ## AllUsingGET2
 
 > map[string]map[string]interface{} AllUsingGET2(ctx, optional)
+
 Retrieve a list of networks, grouped by cloud provider
 
 ### Required Parameters

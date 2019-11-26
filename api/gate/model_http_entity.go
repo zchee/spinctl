@@ -9,6 +9,68 @@
 
 package gate
 
+import (
+	"bytes"
+	"encoding/json"
+)
+
+// HttpEntity struct for HttpEntity
 type HttpEntity struct {
-	Body map[string]interface{} `json:"body,omitempty"`
+	Body *map[string]interface{} `json:"body,omitempty"`
+}
+
+// GetBody returns the Body field value if set, zero value otherwise.
+func (o *HttpEntity) GetBody() map[string]interface{} {
+	if o == nil || o.Body == nil {
+		var ret map[string]interface{}
+		return ret
+	}
+	return *o.Body
+}
+
+// GetBodyOk returns a tuple with the Body field value if set, zero value otherwise
+// and a boolean to check if the value has been set.
+func (o *HttpEntity) GetBodyOk() (map[string]interface{}, bool) {
+	if o == nil || o.Body == nil {
+		var ret map[string]interface{}
+		return ret, false
+	}
+	return *o.Body, true
+}
+
+// HasBody returns a boolean if a field has been set.
+func (o *HttpEntity) HasBody() bool {
+	if o != nil && o.Body != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBody gets a reference to the given map[string]interface{} and assigns it to the Body field.
+func (o *HttpEntity) SetBody(v map[string]interface{}) {
+	o.Body = &v
+}
+
+type NullableHttpEntity struct {
+	Value        HttpEntity
+	ExplicitNull bool
+}
+
+func (v NullableHttpEntity) MarshalJSON() ([]byte, error) {
+	switch {
+	case v.ExplicitNull:
+		return []byte("null"), nil
+	default:
+		return json.Marshal(v.Value)
+	}
+}
+
+func (v *NullableHttpEntity) UnmarshalJSON(src []byte) error {
+	if bytes.Equal(src, []byte("null")) {
+		v.ExplicitNull = true
+		return nil
+	}
+
+	return json.Unmarshal(src, &v.Value)
 }

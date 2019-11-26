@@ -10,7 +10,8 @@ Method | HTTP request | Description
 
 ## GetEventsUsingGET
 
-> []map[string]interface{} GetEventsUsingGET(ctx, application, account, serverGroupName, region, provider)
+> []map[string]interface{} GetEventsUsingGET(ctx, account, application, provider, region, serverGroupName)
+
 Retrieves a list of events for a server group
 
 ### Required Parameters
@@ -19,11 +20,11 @@ Retrieves a list of events for a server group
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
 **account** | **string**| account | 
-**serverGroupName** | **string**| serverGroupName | 
-**region** | **string**| region | 
+**application** | **string**| application | 
 **provider** | **string**| provider | 
+**region** | **string**| region | 
+**serverGroupName** | **string**| serverGroupName | 
 
 ### Return type
 

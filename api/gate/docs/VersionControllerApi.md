@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ## GetVersionUsingGET
 
 > Version GetVersionUsingGET(ctx, )
+
 Fetch Gate's current version
 
 ### Required Parameters

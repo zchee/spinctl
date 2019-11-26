@@ -17,6 +17,7 @@ Method | HTTP request | Description
 ## CreateUsingPOST
 
 > CreateUsingPOST(ctx, pipelineTemplate)
+
 Create a pipeline template.
 
 ### Required Parameters
@@ -48,6 +49,7 @@ No authorization required
 ## DeleteUsingDELETE
 
 > map[string]map[string]interface{} DeleteUsingDELETE(ctx, id, optional)
+
 Delete a pipeline template.
 
 ### Required Parameters
@@ -90,6 +92,7 @@ No authorization required
 ## GetUsingGET
 
 > map[string]map[string]interface{} GetUsingGET(ctx, id)
+
 Get a pipeline template.
 
 ### Required Parameters
@@ -121,6 +124,7 @@ No authorization required
 ## ListPipelineTemplateDependentsUsingGET
 
 > []map[string]interface{} ListPipelineTemplateDependentsUsingGET(ctx, id, optional)
+
 List all pipelines that implement a pipeline template
 
 ### Required Parameters
@@ -163,6 +167,7 @@ No authorization required
 ## ListUsingGET
 
 > []map[string]interface{} ListUsingGET(ctx, optional)
+
 List pipeline templates.
 
 ### Required Parameters
@@ -203,6 +208,7 @@ No authorization required
 ## ResolveTemplatesUsingGET
 
 > map[string]map[string]interface{} ResolveTemplatesUsingGET(ctx, source, optional)
+
 Resolve a pipeline template.
 
 ### Required Parameters
@@ -246,6 +252,7 @@ No authorization required
 ## UpdateUsingPOST
 
 > UpdateUsingPOST(ctx, pipelineTemplate, id, optional)
+
 Update a pipeline template.
 
 ### Required Parameters

@@ -11,6 +11,7 @@ Method | HTTP request | Description
 ## GetServerGroupManagersForApplicationUsingGET
 
 > []map[string]interface{} GetServerGroupManagersForApplicationUsingGET(ctx, application)
+
 Retrieve a list of server group managers for an application
 
 ### Required Parameters

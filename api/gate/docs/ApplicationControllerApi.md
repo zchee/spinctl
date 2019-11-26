@@ -25,6 +25,7 @@ Method | HTTP request | Description
 ## CancelPipelineUsingPUT
 
 > map[string]map[string]interface{} CancelPipelineUsingPUT(ctx, id, optional)
+
 Cancel pipeline
 
 ### Required Parameters
@@ -67,6 +68,7 @@ No authorization required
 ## CancelTaskUsingPUT
 
 > map[string]map[string]interface{} CancelTaskUsingPUT(ctx, id)
+
 Cancel task
 
 ### Required Parameters
@@ -98,6 +100,7 @@ No authorization required
 ## GetAllApplicationsUsingGET
 
 > []map[string]interface{} GetAllApplicationsUsingGET(ctx, optional)
+
 Retrieve a list of applications
 
 ### Required Parameters
@@ -139,6 +142,7 @@ No authorization required
 ## GetApplicationHistoryUsingGET
 
 > []map[string]interface{} GetApplicationHistoryUsingGET(ctx, application, optional)
+
 Retrieve a list of an application's configuration revision history
 
 ### Required Parameters
@@ -181,6 +185,7 @@ No authorization required
 ## GetApplicationUsingGET
 
 > map[string]map[string]interface{} GetApplicationUsingGET(ctx, application, optional)
+
 Retrieve an application's details
 
 ### Required Parameters
@@ -223,6 +228,7 @@ No authorization required
 ## GetPipelineConfigUsingGET
 
 > map[string]map[string]interface{} GetPipelineConfigUsingGET(ctx, application, pipelineName)
+
 Retrieve a pipeline configuration
 
 ### Required Parameters
@@ -255,6 +261,7 @@ No authorization required
 ## GetPipelineConfigsForApplicationUsingGET
 
 > []map[string]interface{} GetPipelineConfigsForApplicationUsingGET(ctx, application)
+
 Retrieve a list of an application's pipeline configurations
 
 ### Required Parameters
@@ -286,6 +293,7 @@ No authorization required
 ## GetPipelinesUsingGET
 
 > []map[string]interface{} GetPipelinesUsingGET(ctx, application, optional)
+
 Retrieve a list of an application's pipeline executions
 
 ### Required Parameters
@@ -305,9 +313,9 @@ Optional parameters are passed through a pointer to a GetPipelinesUsingGETOpts s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **expand** | **optional.Bool**| expand | 
  **limit** | **optional.Int32**| limit | 
  **statuses** | **optional.String**| statuses | 
- **expand** | **optional.Bool**| expand | 
 
 ### Return type
 
@@ -330,6 +338,7 @@ No authorization required
 ## GetStrategyConfigUsingGET
 
 > map[string]map[string]interface{} GetStrategyConfigUsingGET(ctx, application, strategyName)
+
 Retrieve a pipeline strategy configuration
 
 ### Required Parameters
@@ -362,6 +371,7 @@ No authorization required
 ## GetStrategyConfigsForApplicationUsingGET
 
 > []map[string]interface{} GetStrategyConfigsForApplicationUsingGET(ctx, application)
+
 Retrieve a list of an application's pipeline strategy configurations
 
 ### Required Parameters
@@ -393,6 +403,7 @@ No authorization required
 ## GetTaskDetailsUsingGET
 
 > map[string]map[string]interface{} GetTaskDetailsUsingGET(ctx, id, taskDetailsId, optional)
+
 Get task details
 
 ### Required Parameters
@@ -437,6 +448,7 @@ No authorization required
 ## GetTaskUsingGET
 
 > map[string]map[string]interface{} GetTaskUsingGET(ctx, id)
+
 Get task
 
 ### Required Parameters
@@ -468,6 +480,7 @@ No authorization required
 ## GetTasksUsingGET
 
 > []map[string]interface{} GetTasksUsingGET(ctx, application, optional)
+
 Retrieve a list of an application's tasks
 
 ### Required Parameters
@@ -487,8 +500,8 @@ Optional parameters are passed through a pointer to a GetTasksUsingGETOpts struc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **page** | **optional.Int32**| page | 
  **limit** | **optional.Int32**| limit | 
+ **page** | **optional.Int32**| page | 
  **statuses** | **optional.String**| statuses | 
 
 ### Return type
@@ -512,6 +525,7 @@ No authorization required
 ## InvokePipelineConfigUsingPOST
 
 > HttpEntity InvokePipelineConfigUsingPOST(ctx, application, pipelineName, optional)
+
 Invoke pipeline config
 
 ### Required Parameters
@@ -533,7 +547,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **trigger** | **optional.Map[string]interface{}**| trigger | 
+ **trigger** | **optional.Interface**| trigger | 
  **user** | **optional.String**| user | 
 
 ### Return type
@@ -557,6 +571,7 @@ No authorization required
 ## TaskUsingPOST
 
 > map[string]map[string]interface{} TaskUsingPOST(ctx, map_, application)
+
 Create task
 
 ### Required Parameters

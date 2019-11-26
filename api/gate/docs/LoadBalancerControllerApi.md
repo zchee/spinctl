@@ -14,6 +14,7 @@ Method | HTTP request | Description
 ## GetAllUsingGET
 
 > []map[string]interface{} GetAllUsingGET(ctx, optional)
+
 Retrieve a list of load balancers for a given cloud provider
 
 ### Required Parameters
@@ -31,8 +32,8 @@ Optional parameters are passed through a pointer to a GetAllUsingGETOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -55,6 +56,7 @@ No authorization required
 ## GetApplicationLoadBalancersUsingGET
 
 > []map[string]interface{} GetApplicationLoadBalancersUsingGET(ctx, application, optional)
+
 Retrieve a list of load balancers for a given application
 
 ### Required Parameters
@@ -96,7 +98,8 @@ No authorization required
 
 ## GetLoadBalancerDetailsUsingGET
 
-> []map[string]interface{} GetLoadBalancerDetailsUsingGET(ctx, account, region, name, optional)
+> []map[string]interface{} GetLoadBalancerDetailsUsingGET(ctx, account, name, region, optional)
+
 Retrieve a load balancer's details as a single element list for a given account, region, cloud provider and load balancer name
 
 ### Required Parameters
@@ -106,8 +109,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **account** | **string**| account | 
-**region** | **string**| region | 
 **name** | **string**| name | 
+**region** | **string**| region | 
  **optional** | ***GetLoadBalancerDetailsUsingGETOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
@@ -120,8 +123,8 @@ Name | Type | Description  | Notes
 
 
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 
@@ -144,6 +147,7 @@ No authorization required
 ## GetLoadBalancerUsingGET
 
 > map[string]map[string]interface{} GetLoadBalancerUsingGET(ctx, name, optional)
+
 Retrieve a load balancer for a given cloud provider
 
 ### Required Parameters
@@ -163,8 +167,8 @@ Optional parameters are passed through a pointer to a GetLoadBalancerUsingGETOpt
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **provider** | **optional.String**| provider | [default to aws]
  **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **provider** | **optional.String**| provider | [default to aws]
 
 ### Return type
 

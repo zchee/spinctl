@@ -16,6 +16,7 @@ Method | HTTP request | Description
 ## CancelTaskUsingPUT1
 
 > map[string]map[string]interface{} CancelTaskUsingPUT1(ctx, id)
+
 Cancel task
 
 ### Required Parameters
@@ -47,6 +48,7 @@ No authorization required
 ## CancelTasksUsingPUT
 
 > map[string]map[string]interface{} CancelTasksUsingPUT(ctx, ids)
+
 Cancel tasks
 
 ### Required Parameters
@@ -78,6 +80,7 @@ No authorization required
 ## DeleteTaskUsingDELETE
 
 > map[string]map[string]interface{} DeleteTaskUsingDELETE(ctx, id)
+
 Delete task
 
 ### Required Parameters
@@ -109,6 +112,7 @@ No authorization required
 ## GetTaskDetailsUsingGET1
 
 > map[string]map[string]interface{} GetTaskDetailsUsingGET1(ctx, id, taskDetailsId, optional)
+
 Get task details
 
 ### Required Parameters
@@ -153,6 +157,7 @@ No authorization required
 ## GetTaskUsingGET1
 
 > map[string]map[string]interface{} GetTaskUsingGET1(ctx, id)
+
 Get task
 
 ### Required Parameters
@@ -184,6 +189,7 @@ No authorization required
 ## TaskUsingPOST1
 
 > map[string]map[string]interface{} TaskUsingPOST1(ctx, map_)
+
 Create task
 
 ### Required Parameters

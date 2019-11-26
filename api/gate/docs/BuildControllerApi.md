@@ -19,7 +19,8 @@ Method | HTTP request | Description
 
 ## GetBuildMastersUsingGET
 
-> []map[string]interface{} GetBuildMastersUsingGET(ctx, type_)
+> []map[string]interface{} GetBuildMastersUsingGET(ctx, optional)
+
 Get build masters
 
 Deprecated, use the v3 endpoint instead
@@ -30,7 +31,16 @@ Deprecated, use the v3 endpoint instead
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**type_** | **string**| type | 
+ **optional** | ***GetBuildMastersUsingGETOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetBuildMastersUsingGETOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **type_** | **optional.String**| type | 
 
 ### Return type
 
@@ -53,6 +63,7 @@ No authorization required
 ## GetBuildUsingGET
 
 > map[string]map[string]interface{} GetBuildUsingGET(ctx, buildMaster, number)
+
 Get build for build master
 
 Deprecated, use the v3 endpoint instead
@@ -87,6 +98,7 @@ No authorization required
 ## GetBuildsUsingGET
 
 > []map[string]interface{} GetBuildsUsingGET(ctx, buildMaster)
+
 Get builds for build master
 
 Deprecated, use the v3 endpoint instead
@@ -120,6 +132,7 @@ No authorization required
 ## GetJobConfigUsingGET
 
 > map[string]map[string]interface{} GetJobConfigUsingGET(ctx, buildMaster)
+
 Get job config
 
 Deprecated, use the v3 endpoint instead
@@ -153,6 +166,7 @@ No authorization required
 ## GetJobsForBuildMasterUsingGET
 
 > []map[string]interface{} GetJobsForBuildMasterUsingGET(ctx, buildMaster)
+
 Get jobs for build master
 
 Deprecated, use the v3 endpoint instead
@@ -185,7 +199,8 @@ No authorization required
 
 ## V3GetBuildMastersUsingGET
 
-> []map[string]interface{} V3GetBuildMastersUsingGET(ctx, type_)
+> []map[string]interface{} V3GetBuildMastersUsingGET(ctx, optional)
+
 Get build masters
 
 ### Required Parameters
@@ -194,7 +209,16 @@ Get build masters
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**type_** | **string**| type | 
+ **optional** | ***V3GetBuildMastersUsingGETOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a V3GetBuildMastersUsingGETOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **type_** | **optional.String**| type | 
 
 ### Return type
 
@@ -216,7 +240,8 @@ No authorization required
 
 ## V3GetBuildUsingGET
 
-> map[string]map[string]interface{} V3GetBuildUsingGET(ctx, buildMaster, number, job)
+> map[string]map[string]interface{} V3GetBuildUsingGET(ctx, buildMaster, job, number)
+
 Get build for build master
 
 ### Required Parameters
@@ -226,8 +251,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **buildMaster** | **string**| buildMaster | 
-**number** | **string**| number | 
 **job** | **string**| job | 
+**number** | **string**| number | 
 
 ### Return type
 
@@ -250,6 +275,7 @@ No authorization required
 ## V3GetBuildsUsingGET
 
 > []map[string]interface{} V3GetBuildsUsingGET(ctx, buildMaster, job)
+
 Get builds for build master
 
 ### Required Parameters
@@ -282,6 +308,7 @@ No authorization required
 ## V3GetJobConfigUsingGET
 
 > map[string]map[string]interface{} V3GetJobConfigUsingGET(ctx, buildMaster, job)
+
 Get job config
 
 ### Required Parameters
@@ -314,6 +341,7 @@ No authorization required
 ## V3GetJobsForBuildMasterUsingGET
 
 > []map[string]interface{} V3GetJobsForBuildMasterUsingGET(ctx, buildMaster)
+
 Get jobs for build master
 
 ### Required Parameters
