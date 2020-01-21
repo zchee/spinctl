@@ -1,38 +1,35 @@
 module github.com/zchee/spinctl
 
-go 1.11
+go 1.13
 
 require (
-	cloud.google.com/go v0.43.0
+	cloud.google.com/go v0.51.0
 	contrib.go.opencensus.io/exporter/stackdriver v0.12.5
-	github.com/antihax/optional v0.0.0-20180407024304-ca021399b1a6
-	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/antihax/optional v1.0.0
 	github.com/golang/protobuf v1.3.2
-	github.com/google/go-cmp v0.3.1
-	github.com/googleapis/gnostic v0.2.0 // indirect
-	github.com/imdario/mergo v0.3.7 // indirect
-	github.com/json-iterator/go v1.1.7
+	github.com/google/go-cmp v0.4.0
+	github.com/googleapis/gnostic v0.3.2-0.20200106192335-99384834bf8c // indirect
+	github.com/imdario/mergo v0.3.9-0.20200120102109-4c8d33afe3b2 // indirect
+	github.com/json-iterator/go v1.1.9
 	github.com/minio/sha256-simd v0.0.0-20190131020904-2d45a736cd16
 	github.com/pkg/errors v0.8.1
 	github.com/spf13/cobra v0.0.5
-	github.com/spf13/pflag v1.0.3
-	github.com/stretchr/testify v1.4.0 // indirect
+	github.com/spf13/pflag v1.0.5
 	github.com/zchee/go-open v1.0.0
 	github.com/zchee/go-xdgbasedir v1.0.3
-	go.opencensus.io v0.22.0
-	go.uber.org/atomic v1.3.3-0.20181018215023-8dc6146f7569 // indirect
-	go.uber.org/multierr v1.1.1-0.20180122172545-ddea229ff1df // indirect
-	go.uber.org/zap v1.9.2-0.20190122184550-82e3b47c1fe4
-	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4 // indirect
-	golang.org/x/net v0.0.0-20190812203447-cdfb69ac37fc
-	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
-	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a // indirect
-	google.golang.org/api v0.7.0
-	google.golang.org/genproto v0.0.0-20190801165951-fa694d86fc64
+	go.opencensus.io v0.22.2
+	go.uber.org/atomic v1.5.1 // indirect
+	go.uber.org/multierr v1.4.0 // indirect
+	go.uber.org/zap v1.13.0
+	golang.org/x/exp v0.0.0-20200119233911-0405dc783f0a // indirect
+	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
+	golang.org/x/tools v0.0.0-20200121042740-dbc83e6dc05e // indirect
+	google.golang.org/api v0.15.0
+	google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24
 	google.golang.org/protobuf v0.0.0-20190914210843-3c4ab8c6f158
-	gopkg.in/inf.v0 v0.9.1 // indirect
-	gopkg.in/yaml.v2 v2.2.2
-	k8s.io/cli-runtime v0.0.0-20190831080432-9d670f2021f4
-	k8s.io/client-go v0.0.0-20190831074946-3fe2abece89e
+	gopkg.in/yaml.v2 v2.2.7
+	k8s.io/cli-runtime v0.17.1
+	k8s.io/client-go v11.0.0+incompatible
 	sigs.k8s.io/yaml v1.1.0
 )
