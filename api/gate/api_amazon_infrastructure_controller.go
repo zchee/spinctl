@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,13 +25,31 @@ var (
 // AmazonInfrastructureControllerApiService AmazonInfrastructureControllerApi service
 type AmazonInfrastructureControllerApiService service
 
+type apiApplicationFunctionsUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *AmazonInfrastructureControllerApiService
+	application string
+}
+
 /*
 ApplicationFunctionsUsingGET Get application functions
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
-@return []map[string]interface{}
+@return apiApplicationFunctionsUsingGETRequest
 */
-func (a *AmazonInfrastructureControllerApiService) ApplicationFunctionsUsingGET(ctx _context.Context, application string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) ApplicationFunctionsUsingGET(ctx _context.Context, application string) apiApplicationFunctionsUsingGETRequest {
+	return apiApplicationFunctionsUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiApplicationFunctionsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -44,9 +59,13 @@ func (a *AmazonInfrastructureControllerApiService) ApplicationFunctionsUsingGET(
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/functions"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AmazonInfrastructureControllerApiService.ApplicationFunctionsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/functions"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -69,12 +88,12 @@ func (a *AmazonInfrastructureControllerApiService) ApplicationFunctionsUsingGET(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -92,19 +111,18 @@ func (a *AmazonInfrastructureControllerApiService) ApplicationFunctionsUsingGET(
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -116,23 +134,46 @@ func (a *AmazonInfrastructureControllerApiService) ApplicationFunctionsUsingGET(
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// FunctionsUsingGETOpts Optional parameters for the method 'FunctionsUsingGET'
-type FunctionsUsingGETOpts struct {
-	Account      optional.String
-	FunctionName optional.String
-	Region       optional.String
+type apiFunctionsUsingGETRequest struct {
+	ctx          _context.Context
+	apiService   *AmazonInfrastructureControllerApiService
+	account      *string
+	functionName *string
+	region       *string
+}
+
+func (r apiFunctionsUsingGETRequest) Account(account string) apiFunctionsUsingGETRequest {
+	r.account = &account
+	return r
+}
+
+func (r apiFunctionsUsingGETRequest) FunctionName(functionName string) apiFunctionsUsingGETRequest {
+	r.functionName = &functionName
+	return r
+}
+
+func (r apiFunctionsUsingGETRequest) Region(region string) apiFunctionsUsingGETRequest {
+	r.region = &region
+	return r
 }
 
 /*
 FunctionsUsingGET Get functions
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *FunctionsUsingGETOpts - Optional Parameters:
- * @param "Account" (optional.String) -  account
- * @param "FunctionName" (optional.String) -  functionName
- * @param "Region" (optional.String) -  region
-@return []map[string]interface{}
+@return apiFunctionsUsingGETRequest
 */
-func (a *AmazonInfrastructureControllerApiService) FunctionsUsingGET(ctx _context.Context, localVarOptionals *FunctionsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) FunctionsUsingGET(ctx _context.Context) apiFunctionsUsingGETRequest {
+	return apiFunctionsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiFunctionsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -142,21 +183,25 @@ func (a *AmazonInfrastructureControllerApiService) FunctionsUsingGET(ctx _contex
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/functions"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AmazonInfrastructureControllerApiService.FunctionsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/functions"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Account.IsSet() {
-		localVarQueryParams.Add("account", parameterToString(localVarOptionals.Account.Value(), ""))
+	if r.account != nil {
+		localVarQueryParams.Add("account", parameterToString(*r.account, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.FunctionName.IsSet() {
-		localVarQueryParams.Add("functionName", parameterToString(localVarOptionals.FunctionName.Value(), ""))
+	if r.functionName != nil {
+		localVarQueryParams.Add("functionName", parameterToString(*r.functionName, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Region.IsSet() {
-		localVarQueryParams.Add("region", parameterToString(localVarOptionals.Region.Value(), ""))
+	if r.region != nil {
+		localVarQueryParams.Add("region", parameterToString(*r.region, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -175,12 +220,12 @@ func (a *AmazonInfrastructureControllerApiService) FunctionsUsingGET(ctx _contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -198,19 +243,18 @@ func (a *AmazonInfrastructureControllerApiService) FunctionsUsingGET(ctx _contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -220,14 +264,30 @@ func (a *AmazonInfrastructureControllerApiService) FunctionsUsingGET(ctx _contex
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiInstanceTypesUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AmazonInfrastructureControllerApiService
 }
 
 /*
 InstanceTypesUsingGET Get instance types
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiInstanceTypesUsingGETRequest
 */
-func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx _context.Context) apiInstanceTypesUsingGETRequest {
+	return apiInstanceTypesUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiInstanceTypesUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -237,8 +297,12 @@ func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx _co
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/instanceTypes"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AmazonInfrastructureControllerApiService.InstanceTypesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/instanceTypes"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -261,12 +325,12 @@ func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx _co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -284,19 +348,18 @@ func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx _co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -306,14 +369,30 @@ func (a *AmazonInfrastructureControllerApiService) InstanceTypesUsingGET(ctx _co
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiSubnetsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AmazonInfrastructureControllerApiService
 }
 
 /*
 SubnetsUsingGET Get subnets
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiSubnetsUsingGETRequest
 */
-func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx _context.Context) apiSubnetsUsingGETRequest {
+	return apiSubnetsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiSubnetsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -323,8 +402,12 @@ func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx _context.
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/subnets"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AmazonInfrastructureControllerApiService.SubnetsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/subnets"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -347,12 +430,12 @@ func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx _context.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -370,19 +453,18 @@ func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx _context.
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -394,12 +476,28 @@ func (a *AmazonInfrastructureControllerApiService) SubnetsUsingGET(ctx _context.
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiVpcsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AmazonInfrastructureControllerApiService
+}
+
 /*
 VpcsUsingGET Get VPCs
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiVpcsUsingGETRequest
 */
-func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx _context.Context) apiVpcsUsingGETRequest {
+	return apiVpcsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiVpcsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -409,8 +507,12 @@ func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx _context.Con
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/vpcs"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AmazonInfrastructureControllerApiService.VpcsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/vpcs"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -433,12 +535,12 @@ func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx _context.Con
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -456,19 +558,18 @@ func (a *AmazonInfrastructureControllerApiService) VpcsUsingGET(ctx _context.Con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

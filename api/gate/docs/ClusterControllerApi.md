@@ -1,6 +1,6 @@
 # \ClusterControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -17,25 +17,24 @@ Method | HTTP request | Description
 
 ## GetClusterLoadBalancersUsingGET
 
-> []map[string]interface{} GetClusterLoadBalancersUsingGET(ctx, account, applicationName, clusterName, type_, optional)
+> []map[string]interface{} GetClusterLoadBalancersUsingGET(ctx, account, applicationName, clusterName, type_).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a cluster's loadbalancers
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**applicationName** | **string**| applicationName | 
-**clusterName** | **string**| clusterName | 
-**type_** | **string**| type | 
- **optional** | ***GetClusterLoadBalancersUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**applicationName** | **string** | applicationName | 
+**clusterName** | **string** | clusterName | 
+**type_** | **string** | type | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetClusterLoadBalancersUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetClusterLoadBalancersUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -44,7 +43,7 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -66,24 +65,23 @@ No authorization required
 
 ## GetClustersUsingGET
 
-> map[string]map[string]interface{} GetClustersUsingGET(ctx, account, application, clusterName, optional)
+> map[string]map[string]interface{} GetClustersUsingGET(ctx, account, application, clusterName).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a cluster's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
-**clusterName** | **string**| clusterName | 
- **optional** | ***GetClustersUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
+**clusterName** | **string** | clusterName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetClustersUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetClustersUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -91,7 +89,7 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -113,30 +111,29 @@ No authorization required
 
 ## GetClustersUsingGET1
 
-> []map[string]interface{} GetClustersUsingGET1(ctx, account, application, optional)
+> []map[string]interface{} GetClustersUsingGET1(ctx, account, application).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a list of clusters for an account
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
- **optional** | ***GetClustersUsingGET1Opts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetClustersUsingGET1Opts struct
+Other parameters are passed through a pointer to a apiGetClustersUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -158,28 +155,27 @@ No authorization required
 
 ## GetClustersUsingGET2
 
-> map[string]map[string]interface{} GetClustersUsingGET2(ctx, application, optional)
+> map[string]map[string]interface{} GetClustersUsingGET2(ctx, application).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a list of cluster names for an application, grouped by account
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
- **optional** | ***GetClustersUsingGET2Opts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetClustersUsingGET2Opts struct
+Other parameters are passed through a pointer to a apiGetClustersUsingGET2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -201,25 +197,24 @@ No authorization required
 
 ## GetScalingActivitiesUsingGET
 
-> []map[string]interface{} GetScalingActivitiesUsingGET(ctx, account, application, clusterName, serverGroupName, optional)
+> []map[string]interface{} GetScalingActivitiesUsingGET(ctx, account, application, clusterName, serverGroupName).XRateLimitApp(xRateLimitApp).Provider(provider).Region(region).Execute()
 
 Retrieve a list of scaling activities for a server group
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
-**clusterName** | **string**| clusterName | 
-**serverGroupName** | **string**| serverGroupName | 
- **optional** | ***GetScalingActivitiesUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
+**clusterName** | **string** | clusterName | 
+**serverGroupName** | **string** | serverGroupName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetScalingActivitiesUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetScalingActivitiesUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -228,9 +223,9 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
- **region** | **optional.String**| region | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
+ **region** | **string** | region | 
 
 ### Return type
 
@@ -252,25 +247,24 @@ No authorization required
 
 ## GetServerGroupsUsingGET
 
-> []map[string]interface{} GetServerGroupsUsingGET(ctx, account, application, clusterName, serverGroupName, optional)
+> []map[string]interface{} GetServerGroupsUsingGET(ctx, account, application, clusterName, serverGroupName).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a server group's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
-**clusterName** | **string**| clusterName | 
-**serverGroupName** | **string**| serverGroupName | 
- **optional** | ***GetServerGroupsUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
+**clusterName** | **string** | clusterName | 
+**serverGroupName** | **string** | serverGroupName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetServerGroupsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetServerGroupsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -279,7 +273,7 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -301,24 +295,23 @@ No authorization required
 
 ## GetServerGroupsUsingGET1
 
-> []map[string]interface{} GetServerGroupsUsingGET1(ctx, account, application, clusterName, optional)
+> []map[string]interface{} GetServerGroupsUsingGET1(ctx, account, application, clusterName).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a list of server groups for a cluster
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
-**clusterName** | **string**| clusterName | 
- **optional** | ***GetServerGroupsUsingGET1Opts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
+**clusterName** | **string** | clusterName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetServerGroupsUsingGET1Opts struct
+Other parameters are passed through a pointer to a apiGetServerGroupsUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -326,7 +319,7 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -348,29 +341,28 @@ No authorization required
 
 ## GetTargetServerGroupUsingGET
 
-> map[string]map[string]interface{} GetTargetServerGroupUsingGET(ctx, account, application, cloudProvider, clusterName, scope, target, optional)
+> map[string]map[string]interface{} GetTargetServerGroupUsingGET(ctx, account, application, cloudProvider, clusterName, scope, target).XRateLimitApp(xRateLimitApp).OnlyEnabled(onlyEnabled).ValidateOldest(validateOldest).Execute()
 
 Retrieve a server group that matches a target coordinate (e.g., newest, ancestor) relative to a cluster
 
-`scope` is either a zone or a region
 
-### Required Parameters
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
-**cloudProvider** | **string**| cloudProvider | 
-**clusterName** | **string**| clusterName | 
-**scope** | **string**| scope | 
-**target** | **string**| target | 
- **optional** | ***GetTargetServerGroupUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
+**cloudProvider** | **string** | cloudProvider | 
+**clusterName** | **string** | clusterName | 
+**scope** | **string** | scope | 
+**target** | **string** | target | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetTargetServerGroupUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetTargetServerGroupUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -381,9 +373,9 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **onlyEnabled** | **optional.Bool**| onlyEnabled | 
- **validateOldest** | **optional.Bool**| validateOldest | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **onlyEnabled** | **bool** | onlyEnabled | 
+ **validateOldest** | **bool** | validateOldest | 
 
 ### Return type
 

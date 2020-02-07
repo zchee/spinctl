@@ -1,6 +1,6 @@
 # \V2PipelineTemplatesControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**GetUsingGET2**](V2PipelineTemplatesControllerApi.md#GetUsingGET2) | **Get** /v2/pipelineTemplates/{id} | (ALPHA) Get a pipeline template.
 [**ListPipelineTemplateDependentsUsingGET1**](V2PipelineTemplatesControllerApi.md#ListPipelineTemplateDependentsUsingGET1) | **Get** /v2/pipelineTemplates/{id}/dependents | (ALPHA) List all pipelines that implement a pipeline template
 [**ListUsingGET1**](V2PipelineTemplatesControllerApi.md#ListUsingGET1) | **Get** /v2/pipelineTemplates | (ALPHA) List pipeline templates.
+[**ListVersionsUsingGET**](V2PipelineTemplatesControllerApi.md#ListVersionsUsingGET) | **Get** /v2/pipelineTemplates/versions | List pipeline templates with versions
 [**PlanUsingPOST**](V2PipelineTemplatesControllerApi.md#PlanUsingPOST) | **Post** /v2/pipelineTemplates/plan | (ALPHA) Plan a pipeline template configuration.
 [**UpdateUsingPOST1**](V2PipelineTemplatesControllerApi.md#UpdateUsingPOST1) | **Post** /v2/pipelineTemplates/update/{id} | (ALPHA) Update a pipeline template.
 
@@ -16,28 +17,23 @@ Method | HTTP request | Description
 
 ## CreateUsingPOST1
 
-> CreateUsingPOST1(ctx, pipelineTemplate, optional)
+> CreateUsingPOST1(ctx).PipelineTemplate(pipelineTemplate).Tag(tag).Execute()
 
 (ALPHA) Create a pipeline template.
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateUsingPOST1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipelineTemplate** | **map[string]interface{}**| pipelineTemplate | 
- **optional** | ***CreateUsingPOST1Opts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a CreateUsingPOST1Opts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **tag** | **optional.String**| tag | 
+ **pipelineTemplate** | **map[string]interface{}** | pipelineTemplate | 
+ **tag** | **string** | tag | 
 
 ### Return type
 
@@ -59,30 +55,29 @@ No authorization required
 
 ## DeleteUsingDELETE1
 
-> map[string]map[string]interface{} DeleteUsingDELETE1(ctx, id, optional)
+> map[string]map[string]interface{} DeleteUsingDELETE1(ctx, id).Application(application).Digest(digest).Tag(tag).Execute()
 
 Delete a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***DeleteUsingDELETE1Opts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a DeleteUsingDELETE1Opts struct
+Other parameters are passed through a pointer to a apiDeleteUsingDELETE1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **application** | **optional.String**| application | 
- **digest** | **optional.String**| digest | 
- **tag** | **optional.String**| tag | 
+ **application** | **string** | application | 
+ **digest** | **string** | digest | 
+ **tag** | **string** | tag | 
 
 ### Return type
 
@@ -104,29 +99,28 @@ No authorization required
 
 ## GetUsingGET2
 
-> map[string]map[string]interface{} GetUsingGET2(ctx, id, optional)
+> map[string]map[string]interface{} GetUsingGET2(ctx, id).Digest(digest).Tag(tag).Execute()
 
 (ALPHA) Get a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***GetUsingGET2Opts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetUsingGET2Opts struct
+Other parameters are passed through a pointer to a apiGetUsingGET2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **digest** | **optional.String**| digest | 
- **tag** | **optional.String**| tag | 
+ **digest** | **string** | digest | 
+ **tag** | **string** | tag | 
 
 ### Return type
 
@@ -148,17 +142,26 @@ No authorization required
 
 ## ListPipelineTemplateDependentsUsingGET1
 
-> []map[string]interface{} ListPipelineTemplateDependentsUsingGET1(ctx, id)
+> []map[string]interface{} ListPipelineTemplateDependentsUsingGET1(ctx, id).Execute()
 
 (ALPHA) List all pipelines that implement a pipeline template
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListPipelineTemplateDependentsUsingGET1Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -180,26 +183,22 @@ No authorization required
 
 ## ListUsingGET1
 
-> []map[string]interface{} ListUsingGET1(ctx, optional)
+> []map[string]interface{} ListUsingGET1(ctx).Scopes(scopes).Execute()
 
 (ALPHA) List pipeline templates.
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***ListUsingGET1Opts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a ListUsingGET1Opts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scopes** | [**optional.Interface of []string**](string.md)| scopes | 
+ **scopes** | [**[]string**](string.md) | scopes | 
 
 ### Return type
 
@@ -219,19 +218,61 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## PlanUsingPOST
+## ListVersionsUsingGET
 
-> map[string]map[string]interface{} PlanUsingPOST(ctx, pipeline)
+> map[string]interface{} ListVersionsUsingGET(ctx).Scopes(scopes).Execute()
 
-(ALPHA) Plan a pipeline template configuration.
+List pipeline templates with versions
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListVersionsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipeline** | **map[string]interface{}**| pipeline | 
+ **scopes** | [**[]string**](string.md) | scopes | 
+
+### Return type
+
+[**map[string]interface{}**](map[string]interface{}.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PlanUsingPOST
+
+> map[string]map[string]interface{} PlanUsingPOST(ctx).Pipeline(pipeline).Execute()
+
+(ALPHA) Plan a pipeline template configuration.
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPlanUsingPOSTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pipeline** | **map[string]interface{}** | pipeline | 
 
 ### Return type
 
@@ -253,31 +294,29 @@ No authorization required
 
 ## UpdateUsingPOST1
 
-> UpdateUsingPOST1(ctx, pipelineTemplate, id, optional)
+> UpdateUsingPOST1(ctx, id).PipelineTemplate(pipelineTemplate).SkipPlanDependents(skipPlanDependents).Tag(tag).Execute()
 
 (ALPHA) Update a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipelineTemplate** | **map[string]interface{}**| pipelineTemplate | 
-**id** | **string**| id | 
- **optional** | ***UpdateUsingPOST1Opts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a UpdateUsingPOST1Opts struct
+Other parameters are passed through a pointer to a apiUpdateUsingPOST1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **pipelineTemplate** | **map[string]interface{}** | pipelineTemplate | 
 
-
- **skipPlanDependents** | **optional.Bool**| skipPlanDependents | [default to false]
- **tag** | **optional.String**| tag | 
+ **skipPlanDependents** | **bool** | skipPlanDependents | [default to false]
+ **tag** | **string** | tag | 
 
 ### Return type
 

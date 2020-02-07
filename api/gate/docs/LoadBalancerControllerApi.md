@@ -1,6 +1,6 @@
 # \LoadBalancerControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -13,27 +13,23 @@ Method | HTTP request | Description
 
 ## GetAllUsingGET
 
-> []map[string]interface{} GetAllUsingGET(ctx, optional)
+> []map[string]interface{} GetAllUsingGET(ctx).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve a list of load balancers for a given cloud provider
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAllUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***GetAllUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a GetAllUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -55,28 +51,27 @@ No authorization required
 
 ## GetApplicationLoadBalancersUsingGET
 
-> []map[string]interface{} GetApplicationLoadBalancersUsingGET(ctx, application, optional)
+> []map[string]interface{} GetApplicationLoadBalancersUsingGET(ctx, application).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a list of load balancers for a given application
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
- **optional** | ***GetApplicationLoadBalancersUsingGETOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetApplicationLoadBalancersUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetApplicationLoadBalancersUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -98,24 +93,23 @@ No authorization required
 
 ## GetLoadBalancerDetailsUsingGET
 
-> []map[string]interface{} GetLoadBalancerDetailsUsingGET(ctx, account, name, region, optional)
+> []map[string]interface{} GetLoadBalancerDetailsUsingGET(ctx, account, name, region).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve a load balancer's details as a single element list for a given account, region, cloud provider and load balancer name
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**name** | **string**| name | 
-**region** | **string**| region | 
- **optional** | ***GetLoadBalancerDetailsUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**name** | **string** | name | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetLoadBalancerDetailsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetLoadBalancerDetailsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -123,8 +117,8 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -146,29 +140,28 @@ No authorization required
 
 ## GetLoadBalancerUsingGET
 
-> map[string]map[string]interface{} GetLoadBalancerUsingGET(ctx, name, optional)
+> map[string]map[string]interface{} GetLoadBalancerUsingGET(ctx, name).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve a load balancer for a given cloud provider
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**name** | **string**| name | 
- **optional** | ***GetLoadBalancerUsingGETOpts** | optional parameters | nil if no parameters
+**name** | **string** | name | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetLoadBalancerUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetLoadBalancerUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 

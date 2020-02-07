@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,27 +25,58 @@ var (
 // ExecutionsControllerApiService ExecutionsControllerApi service
 type ExecutionsControllerApiService service
 
-// GetLatestExecutionsByConfigIdsUsingGETOpts Optional parameters for the method 'GetLatestExecutionsByConfigIdsUsingGET'
-type GetLatestExecutionsByConfigIdsUsingGETOpts struct {
-	ExecutionIds      optional.String
-	Expand            optional.Bool
-	Limit             optional.Int32
-	PipelineConfigIds optional.String
-	Statuses          optional.String
+type apiGetLatestExecutionsByConfigIdsUsingGETRequest struct {
+	ctx               _context.Context
+	apiService        *ExecutionsControllerApiService
+	executionIds      *string
+	expand            *bool
+	limit             *int32
+	pipelineConfigIds *string
+	statuses          *string
+}
+
+func (r apiGetLatestExecutionsByConfigIdsUsingGETRequest) ExecutionIds(executionIds string) apiGetLatestExecutionsByConfigIdsUsingGETRequest {
+	r.executionIds = &executionIds
+	return r
+}
+
+func (r apiGetLatestExecutionsByConfigIdsUsingGETRequest) Expand(expand bool) apiGetLatestExecutionsByConfigIdsUsingGETRequest {
+	r.expand = &expand
+	return r
+}
+
+func (r apiGetLatestExecutionsByConfigIdsUsingGETRequest) Limit(limit int32) apiGetLatestExecutionsByConfigIdsUsingGETRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r apiGetLatestExecutionsByConfigIdsUsingGETRequest) PipelineConfigIds(pipelineConfigIds string) apiGetLatestExecutionsByConfigIdsUsingGETRequest {
+	r.pipelineConfigIds = &pipelineConfigIds
+	return r
+}
+
+func (r apiGetLatestExecutionsByConfigIdsUsingGETRequest) Statuses(statuses string) apiGetLatestExecutionsByConfigIdsUsingGETRequest {
+	r.statuses = &statuses
+	return r
 }
 
 /*
 GetLatestExecutionsByConfigIdsUsingGET Retrieves an ad-hoc collection of executions based on a number of user-supplied parameters. Either executionIds or pipelineConfigIds must be supplied in order to return any results. If both are supplied, an exception will be thrown.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetLatestExecutionsByConfigIdsUsingGETOpts - Optional Parameters:
- * @param "ExecutionIds" (optional.String) -  A comma-separated list of executions to retrieve. Either this OR pipelineConfigIds must be supplied, but not both.
- * @param "Expand" (optional.Bool) -  Expands each execution object in the resulting list. If this value is missing, it is defaulted to true.
- * @param "Limit" (optional.Int32) -  The number of executions to return per pipeline configuration. Ignored if executionIds parameter is supplied. If this value is missing, it is defaulted to 1.
- * @param "PipelineConfigIds" (optional.String) -  A comma-separated list of pipeline configuration IDs to retrieve recent executions for. Either this OR pipelineConfigIds must be supplied, but not both.
- * @param "Statuses" (optional.String) -  A comma-separated list of execution statuses to filter by. Ignored if executionIds parameter is supplied. If this value is missing, it is defaulted to all statuses.
-@return []map[string]interface{}
+@return apiGetLatestExecutionsByConfigIdsUsingGETRequest
 */
-func (a *ExecutionsControllerApiService) GetLatestExecutionsByConfigIdsUsingGET(ctx _context.Context, localVarOptionals *GetLatestExecutionsByConfigIdsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ExecutionsControllerApiService) GetLatestExecutionsByConfigIdsUsingGET(ctx _context.Context) apiGetLatestExecutionsByConfigIdsUsingGETRequest {
+	return apiGetLatestExecutionsByConfigIdsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetLatestExecutionsByConfigIdsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -58,27 +86,31 @@ func (a *ExecutionsControllerApiService) GetLatestExecutionsByConfigIdsUsingGET(
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/executions"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ExecutionsControllerApiService.GetLatestExecutionsByConfigIdsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/executions"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.ExecutionIds.IsSet() {
-		localVarQueryParams.Add("executionIds", parameterToString(localVarOptionals.ExecutionIds.Value(), ""))
+	if r.executionIds != nil {
+		localVarQueryParams.Add("executionIds", parameterToString(*r.executionIds, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PipelineConfigIds.IsSet() {
-		localVarQueryParams.Add("pipelineConfigIds", parameterToString(localVarOptionals.PipelineConfigIds.Value(), ""))
+	if r.pipelineConfigIds != nil {
+		localVarQueryParams.Add("pipelineConfigIds", parameterToString(*r.pipelineConfigIds, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Statuses.IsSet() {
-		localVarQueryParams.Add("statuses", parameterToString(localVarOptionals.Statuses.Value(), ""))
+	if r.statuses != nil {
+		localVarQueryParams.Add("statuses", parameterToString(*r.statuses, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -97,12 +129,12 @@ func (a *ExecutionsControllerApiService) GetLatestExecutionsByConfigIdsUsingGET(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -120,19 +152,18 @@ func (a *ExecutionsControllerApiService) GetLatestExecutionsByConfigIdsUsingGET(
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -144,40 +175,97 @@ func (a *ExecutionsControllerApiService) GetLatestExecutionsByConfigIdsUsingGET(
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// SearchForPipelineExecutionsByTriggerUsingGETOpts Optional parameters for the method 'SearchForPipelineExecutionsByTriggerUsingGET'
-type SearchForPipelineExecutionsByTriggerUsingGETOpts struct {
-	EventId                  optional.String
-	Expand                   optional.Bool
-	PipelineName             optional.String
-	Reverse                  optional.Bool
-	Size                     optional.Int32
-	StartIndex               optional.Int32
-	Statuses                 optional.String
-	Trigger                  optional.String
-	TriggerTimeEndBoundary   optional.Int64
-	TriggerTimeStartBoundary optional.Int64
-	TriggerTypes             optional.String
+type apiSearchForPipelineExecutionsByTriggerUsingGETRequest struct {
+	ctx                      _context.Context
+	apiService               *ExecutionsControllerApiService
+	application              string
+	eventId                  *string
+	expand                   *bool
+	pipelineName             *string
+	reverse                  *bool
+	size                     *int32
+	startIndex               *int32
+	statuses                 *string
+	trigger                  *string
+	triggerTimeEndBoundary   *int64
+	triggerTimeStartBoundary *int64
+	triggerTypes             *string
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) EventId(eventId string) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.eventId = &eventId
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) Expand(expand bool) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.expand = &expand
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) PipelineName(pipelineName string) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.pipelineName = &pipelineName
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) Reverse(reverse bool) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.reverse = &reverse
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) Size(size int32) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.size = &size
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) StartIndex(startIndex int32) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.startIndex = &startIndex
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) Statuses(statuses string) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.statuses = &statuses
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) Trigger(trigger string) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.trigger = &trigger
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) TriggerTimeEndBoundary(triggerTimeEndBoundary int64) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.triggerTimeEndBoundary = &triggerTimeEndBoundary
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) TriggerTimeStartBoundary(triggerTimeStartBoundary int64) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.triggerTimeStartBoundary = &triggerTimeStartBoundary
+	return r
+}
+
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) TriggerTypes(triggerTypes string) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	r.triggerTypes = &triggerTypes
+	return r
 }
 
 /*
 SearchForPipelineExecutionsByTriggerUsingGET Search for pipeline executions using a combination of criteria. The returned list is sorted by buildTime (trigger time) in reverse order so that newer executions are first in the list.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application Only includes executions that are part of this application. If this value is \"*\", results will include executions of all applications.
- * @param optional nil or *SearchForPipelineExecutionsByTriggerUsingGETOpts - Optional Parameters:
- * @param "EventId" (optional.String) -  Only includes executions that were triggered by a trigger with this eventId.
- * @param "Expand" (optional.Bool) -  Expands each execution object in the resulting list. If this value is missing, it is defaulted to false.
- * @param "PipelineName" (optional.String) -  Only includes executions that with this pipeline name.
- * @param "Reverse" (optional.Bool) -  Reverses the resulting list before it is paginated. If this value is missing, it is defaulted to false.
- * @param "Size" (optional.Int32) -  Sets the size of the resulting list for pagination. This value must be > 0. If this value is missing, it is defaulted to 10.
- * @param "StartIndex" (optional.Int32) -  Sets the first item of the resulting list for pagination. The list is 0-indexed. This value must be >= 0. If this value is missing, it is defaulted to 0.
- * @param "Statuses" (optional.String) -  Only includes executions with a status that is equal to a status provided in this field. The list of statuses should be given as a comma-delimited string. If this value is missing, includes executions of all statuses. Allowed statuses are: NOT_STARTED, RUNNING, PAUSED, SUSPENDED, SUCCEEDED, FAILED_CONTINUE, TERMINAL, CANCELED, REDIRECT, STOPPED, SKIPPED, BUFFERED.
- * @param "Trigger" (optional.String) -  Only includes executions that were triggered by a trigger that matches the subset of fields provided by this value. This value should be a base64-encoded string of a JSON representation of a trigger object. The comparison succeeds if the execution trigger contains all the fields of the input trigger, the fields are of the same type, and each value of the field \"matches\". The term \"matches\" is specific for each field's type: - For Strings: A String value in the execution's trigger matches the input trigger's String value if the former equals the latter (case-insensitive) OR if the former matches the latter as a regular expression. - For Maps: A Map value in the execution's trigger matches the input trigger's Map value if the former contains all keys of the latter and their values match. - For Collections: A Collection value in the execution's trigger matches the input trigger's Collection value if the former has a unique element that matches each element of the latter. - Every other value is compared using the Java \"equals\" method (Groovy \"==\" operator)
- * @param "TriggerTimeEndBoundary" (optional.Int64) -  Only includes executions that were built at or before the given time, represented as a Unix timestamp in ms (UTC). This value must be <= 9223372036854775807 (Long.MAX_VALUE) and >= the value of [triggerTimeStartBoundary], if provided. If this value is missing, it is defaulted to 9223372036854775807.
- * @param "TriggerTimeStartBoundary" (optional.Int64) -  Only includes executions that were built at or after the given time, represented as a Unix timestamp in ms (UTC). This value must be >= 0 and <= the value of [triggerTimeEndBoundary], if provided. If this value is missing, it is defaulted to 0.
- * @param "TriggerTypes" (optional.String) -  Only includes executions that were triggered by a trigger with a type that is equal to a type provided in this field. The list of trigger types should be a comma-delimited string. If this value is missing, results will includes executions of all trigger types.
-@return []map[string]interface{}
+@return apiSearchForPipelineExecutionsByTriggerUsingGETRequest
 */
-func (a *ExecutionsControllerApiService) SearchForPipelineExecutionsByTriggerUsingGET(ctx _context.Context, application string, localVarOptionals *SearchForPipelineExecutionsByTriggerUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ExecutionsControllerApiService) SearchForPipelineExecutionsByTriggerUsingGET(ctx _context.Context, application string) apiSearchForPipelineExecutionsByTriggerUsingGETRequest {
+	return apiSearchForPipelineExecutionsByTriggerUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiSearchForPipelineExecutionsByTriggerUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -187,46 +275,50 @@ func (a *ExecutionsControllerApiService) SearchForPipelineExecutionsByTriggerUsi
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/executions/search"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ExecutionsControllerApiService.SearchForPipelineExecutionsByTriggerUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/executions/search"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.EventId.IsSet() {
-		localVarQueryParams.Add("eventId", parameterToString(localVarOptionals.EventId.Value(), ""))
+	if r.eventId != nil {
+		localVarQueryParams.Add("eventId", parameterToString(*r.eventId, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PipelineName.IsSet() {
-		localVarQueryParams.Add("pipelineName", parameterToString(localVarOptionals.PipelineName.Value(), ""))
+	if r.pipelineName != nil {
+		localVarQueryParams.Add("pipelineName", parameterToString(*r.pipelineName, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Reverse.IsSet() {
-		localVarQueryParams.Add("reverse", parameterToString(localVarOptionals.Reverse.Value(), ""))
+	if r.reverse != nil {
+		localVarQueryParams.Add("reverse", parameterToString(*r.reverse, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Size.IsSet() {
-		localVarQueryParams.Add("size", parameterToString(localVarOptionals.Size.Value(), ""))
+	if r.size != nil {
+		localVarQueryParams.Add("size", parameterToString(*r.size, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.StartIndex.IsSet() {
-		localVarQueryParams.Add("startIndex", parameterToString(localVarOptionals.StartIndex.Value(), ""))
+	if r.startIndex != nil {
+		localVarQueryParams.Add("startIndex", parameterToString(*r.startIndex, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Statuses.IsSet() {
-		localVarQueryParams.Add("statuses", parameterToString(localVarOptionals.Statuses.Value(), ""))
+	if r.statuses != nil {
+		localVarQueryParams.Add("statuses", parameterToString(*r.statuses, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Trigger.IsSet() {
-		localVarQueryParams.Add("trigger", parameterToString(localVarOptionals.Trigger.Value(), ""))
+	if r.trigger != nil {
+		localVarQueryParams.Add("trigger", parameterToString(*r.trigger, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.TriggerTimeEndBoundary.IsSet() {
-		localVarQueryParams.Add("triggerTimeEndBoundary", parameterToString(localVarOptionals.TriggerTimeEndBoundary.Value(), ""))
+	if r.triggerTimeEndBoundary != nil {
+		localVarQueryParams.Add("triggerTimeEndBoundary", parameterToString(*r.triggerTimeEndBoundary, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.TriggerTimeStartBoundary.IsSet() {
-		localVarQueryParams.Add("triggerTimeStartBoundary", parameterToString(localVarOptionals.TriggerTimeStartBoundary.Value(), ""))
+	if r.triggerTimeStartBoundary != nil {
+		localVarQueryParams.Add("triggerTimeStartBoundary", parameterToString(*r.triggerTimeStartBoundary, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.TriggerTypes.IsSet() {
-		localVarQueryParams.Add("triggerTypes", parameterToString(localVarOptionals.TriggerTypes.Value(), ""))
+	if r.triggerTypes != nil {
+		localVarQueryParams.Add("triggerTypes", parameterToString(*r.triggerTypes, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -245,12 +337,12 @@ func (a *ExecutionsControllerApiService) SearchForPipelineExecutionsByTriggerUsi
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -268,19 +360,18 @@ func (a *ExecutionsControllerApiService) SearchForPipelineExecutionsByTriggerUsi
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

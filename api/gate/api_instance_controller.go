@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,10 +25,24 @@ var (
 // InstanceControllerApiService InstanceControllerApi service
 type InstanceControllerApiService service
 
-// GetConsoleOutputUsingGETOpts Optional parameters for the method 'GetConsoleOutputUsingGET'
-type GetConsoleOutputUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiGetConsoleOutputUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *InstanceControllerApiService
+	account       string
+	instanceId    string
+	region        string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiGetConsoleOutputUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetConsoleOutputUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetConsoleOutputUsingGETRequest) Provider(provider string) apiGetConsoleOutputUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
@@ -40,12 +51,23 @@ GetConsoleOutputUsingGET Retrieve an instance's console output
  * @param account account
  * @param instanceId instanceId
  * @param region region
- * @param optional nil or *GetConsoleOutputUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return map[string]interface{}
+@return apiGetConsoleOutputUsingGETRequest
 */
-func (a *InstanceControllerApiService) GetConsoleOutputUsingGET(ctx _context.Context, account string, instanceId string, region string, localVarOptionals *GetConsoleOutputUsingGETOpts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *InstanceControllerApiService) GetConsoleOutputUsingGET(ctx _context.Context, account string, instanceId string, region string) apiGetConsoleOutputUsingGETRequest {
+	return apiGetConsoleOutputUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		instanceId: instanceId,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetConsoleOutputUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -55,18 +77,22 @@ func (a *InstanceControllerApiService) GetConsoleOutputUsingGET(ctx _context.Con
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/instances/{account}/{region}/{instanceId}/console"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"instanceId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", instanceId)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InstanceControllerApiService.GetConsoleOutputUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/instances/{account}/{region}/{instanceId}/console"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"instanceId"+"}", _neturl.QueryEscape(parameterToString(r.instanceId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -85,15 +111,15 @@ func (a *InstanceControllerApiService) GetConsoleOutputUsingGET(ctx _context.Con
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -111,19 +137,18 @@ func (a *InstanceControllerApiService) GetConsoleOutputUsingGET(ctx _context.Con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -135,9 +160,18 @@ func (a *InstanceControllerApiService) GetConsoleOutputUsingGET(ctx _context.Con
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetInstanceDetailsUsingGETOpts Optional parameters for the method 'GetInstanceDetailsUsingGET'
-type GetInstanceDetailsUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiGetInstanceDetailsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *InstanceControllerApiService
+	account       string
+	instanceId    string
+	region        string
+	xRateLimitApp *string
+}
+
+func (r apiGetInstanceDetailsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetInstanceDetailsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -146,11 +180,23 @@ GetInstanceDetailsUsingGET Retrieve an instance's details
  * @param account account
  * @param instanceId instanceId
  * @param region region
- * @param optional nil or *GetInstanceDetailsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return map[string]interface{}
+@return apiGetInstanceDetailsUsingGETRequest
 */
-func (a *InstanceControllerApiService) GetInstanceDetailsUsingGET(ctx _context.Context, account string, instanceId string, region string, localVarOptionals *GetInstanceDetailsUsingGETOpts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *InstanceControllerApiService) GetInstanceDetailsUsingGET(ctx _context.Context, account string, instanceId string, region string) apiGetInstanceDetailsUsingGETRequest {
+	return apiGetInstanceDetailsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		instanceId: instanceId,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetInstanceDetailsUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -160,11 +206,15 @@ func (a *InstanceControllerApiService) GetInstanceDetailsUsingGET(ctx _context.C
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/instances/{account}/{region}/{instanceId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"instanceId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", instanceId)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InstanceControllerApiService.GetInstanceDetailsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/instances/{account}/{region}/{instanceId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"instanceId"+"}", _neturl.QueryEscape(parameterToString(r.instanceId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -187,15 +237,15 @@ func (a *InstanceControllerApiService) GetInstanceDetailsUsingGET(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -213,19 +263,18 @@ func (a *InstanceControllerApiService) GetInstanceDetailsUsingGET(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

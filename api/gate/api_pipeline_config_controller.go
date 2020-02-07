@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,13 +25,31 @@ var (
 // PipelineConfigControllerApiService PipelineConfigControllerApi service
 type PipelineConfigControllerApiService service
 
+type apiConvertPipelineConfigToPipelineTemplateUsingGETRequest struct {
+	ctx              _context.Context
+	apiService       *PipelineConfigControllerApiService
+	pipelineConfigId string
+}
+
 /*
 ConvertPipelineConfigToPipelineTemplateUsingGET Convert a pipeline config to a pipeline template.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param pipelineConfigId pipelineConfigId
-@return string
+@return apiConvertPipelineConfigToPipelineTemplateUsingGETRequest
 */
-func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemplateUsingGET(ctx _context.Context, pipelineConfigId string) (string, *_nethttp.Response, error) {
+func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemplateUsingGET(ctx _context.Context, pipelineConfigId string) apiConvertPipelineConfigToPipelineTemplateUsingGETRequest {
+	return apiConvertPipelineConfigToPipelineTemplateUsingGETRequest{
+		apiService:       a,
+		ctx:              ctx,
+		pipelineConfigId: pipelineConfigId,
+	}
+}
+
+/*
+Execute executes the request
+ @return string
+*/
+func (r apiConvertPipelineConfigToPipelineTemplateUsingGETRequest) Execute() (string, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -44,9 +59,13 @@ func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemp
 		localVarReturnValue  string
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineConfigs/{pipelineConfigId}/convertToTemplate"
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineConfigId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineConfigId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineConfigControllerApiService.ConvertPipelineConfigToPipelineTemplateUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineConfigs/{pipelineConfigId}/convertToTemplate"
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineConfigId"+"}", _neturl.QueryEscape(parameterToString(r.pipelineConfigId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -69,12 +88,12 @@ func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -92,19 +111,18 @@ func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemp
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v string
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -116,12 +134,28 @@ func (a *PipelineConfigControllerApiService) ConvertPipelineConfigToPipelineTemp
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiGetAllPipelineConfigsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineConfigControllerApiService
+}
+
 /*
 GetAllPipelineConfigsUsingGET Get all pipeline configs.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiGetAllPipelineConfigsUsingGETRequest
 */
-func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx _context.Context) apiGetAllPipelineConfigsUsingGETRequest {
+	return apiGetAllPipelineConfigsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetAllPipelineConfigsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -131,8 +165,12 @@ func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx _
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineConfigs"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineConfigControllerApiService.GetAllPipelineConfigsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineConfigs"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -155,12 +193,12 @@ func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx _
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -178,19 +216,18 @@ func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx _
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -202,20 +239,37 @@ func (a *PipelineConfigControllerApiService) GetAllPipelineConfigsUsingGET(ctx _
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetPipelineConfigHistoryUsingGETOpts Optional parameters for the method 'GetPipelineConfigHistoryUsingGET'
-type GetPipelineConfigHistoryUsingGETOpts struct {
-	Limit optional.Int32
+type apiGetPipelineConfigHistoryUsingGETRequest struct {
+	ctx              _context.Context
+	apiService       *PipelineConfigControllerApiService
+	pipelineConfigId string
+	limit            *int32
+}
+
+func (r apiGetPipelineConfigHistoryUsingGETRequest) Limit(limit int32) apiGetPipelineConfigHistoryUsingGETRequest {
+	r.limit = &limit
+	return r
 }
 
 /*
 GetPipelineConfigHistoryUsingGET Get pipeline config history.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param pipelineConfigId pipelineConfigId
- * @param optional nil or *GetPipelineConfigHistoryUsingGETOpts - Optional Parameters:
- * @param "Limit" (optional.Int32) -  limit
-@return []map[string]interface{}
+@return apiGetPipelineConfigHistoryUsingGETRequest
 */
-func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ctx _context.Context, pipelineConfigId string, localVarOptionals *GetPipelineConfigHistoryUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ctx _context.Context, pipelineConfigId string) apiGetPipelineConfigHistoryUsingGETRequest {
+	return apiGetPipelineConfigHistoryUsingGETRequest{
+		apiService:       a,
+		ctx:              ctx,
+		pipelineConfigId: pipelineConfigId,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetPipelineConfigHistoryUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -225,16 +279,20 @@ func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ct
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineConfigs/{pipelineConfigId}/history"
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineConfigId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineConfigId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineConfigControllerApiService.GetPipelineConfigHistoryUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineConfigs/{pipelineConfigId}/history"
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineConfigId"+"}", _neturl.QueryEscape(parameterToString(r.pipelineConfigId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -253,12 +311,12 @@ func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ct
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -276,19 +334,18 @@ func (a *PipelineConfigControllerApiService) GetPipelineConfigHistoryUsingGET(ct
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

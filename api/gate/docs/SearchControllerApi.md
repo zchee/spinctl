@@ -1,6 +1,6 @@
 # \SearchControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,33 +10,28 @@ Method | HTTP request | Description
 
 ## SearchUsingGET
 
-> []map[string]interface{} SearchUsingGET(ctx, type_, optional)
+> []map[string]interface{} SearchUsingGET(ctx).Type_(type_).XRateLimitApp(xRateLimitApp).AllowShortQuery(allowShortQuery).Page(page).PageSize(pageSize).Platform(platform).Q(q).Execute()
 
 Search infrastructure
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSearchUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**type_** | **string**| type | 
- **optional** | ***SearchUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a SearchUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **allowShortQuery** | **optional.Bool**| allowShortQuery | [default to false]
- **page** | **optional.Int32**| page | [default to 1]
- **pageSize** | **optional.Int32**| pageSize | [default to 10000]
- **platform** | **optional.String**| platform | 
- **q** | **optional.String**| q | 
+ **type_** | **string** | type | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **allowShortQuery** | **bool** | allowShortQuery | [default to false]
+ **page** | **int32** | page | [default to 1]
+ **pageSize** | **int32** | pageSize | [default to 10000]
+ **platform** | **string** | platform | 
+ **q** | **string** | q | 
 
 ### Return type
 

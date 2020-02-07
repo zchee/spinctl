@@ -1,6 +1,6 @@
 # \BakeControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,17 +12,26 @@ Method | HTTP request | Description
 
 ## BakeOptionsUsingGET
 
-> map[string]interface{} BakeOptionsUsingGET(ctx, cloudProvider)
+> map[string]interface{} BakeOptionsUsingGET(ctx, cloudProvider).Execute()
 
 Retrieve a list of available bakery base images for a given cloud provider
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**cloudProvider** | **string**| cloudProvider | 
+**cloudProvider** | **string** | cloudProvider | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiBakeOptionsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -44,13 +53,18 @@ No authorization required
 
 ## BakeOptionsUsingGET1
 
-> map[string]interface{} BakeOptionsUsingGET1(ctx, )
+> map[string]interface{} BakeOptionsUsingGET1(ctx).Execute()
 
 Retrieve a list of available bakery base images, grouped by cloud provider
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiBakeOptionsUsingGET1Request struct via the builder pattern
+
 
 ### Return type
 
@@ -72,18 +86,28 @@ No authorization required
 
 ## LookupLogsUsingGET
 
-> map[string]interface{} LookupLogsUsingGET(ctx, region, statusId)
+> map[string]interface{} LookupLogsUsingGET(ctx, region, statusId).Execute()
 
 Retrieve the logs for a given bake
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**region** | **string**| region | 
-**statusId** | **string**| statusId | 
+**region** | **string** | region | 
+**statusId** | **string** | statusId | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiLookupLogsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 

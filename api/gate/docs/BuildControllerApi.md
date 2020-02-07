@@ -1,6 +1,6 @@
 # \BuildControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -19,28 +19,24 @@ Method | HTTP request | Description
 
 ## GetBuildMastersUsingGET
 
-> []map[string]interface{} GetBuildMastersUsingGET(ctx, optional)
+> []map[string]interface{} GetBuildMastersUsingGET(ctx).Type_(type_).Execute()
 
 Get build masters
 
-Deprecated, use the v3 endpoint instead
-
-### Required Parameters
 
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***GetBuildMastersUsingGETOpts** | optional parameters | nil if no parameters
+### Path Parameters
 
-### Optional Parameters
 
-Optional parameters are passed through a pointer to a GetBuildMastersUsingGETOpts struct
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetBuildMastersUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **type_** | **optional.String**| type | 
+ **type_** | **string** | type | 
 
 ### Return type
 
@@ -62,20 +58,30 @@ No authorization required
 
 ## GetBuildUsingGET
 
-> map[string]map[string]interface{} GetBuildUsingGET(ctx, buildMaster, number)
+> map[string]map[string]interface{} GetBuildUsingGET(ctx, buildMaster, number).Execute()
 
 Get build for build master
 
-Deprecated, use the v3 endpoint instead
 
-### Required Parameters
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**number** | **string**| number | 
+**buildMaster** | **string** | buildMaster | 
+**number** | **string** | number | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetBuildUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -97,19 +103,28 @@ No authorization required
 
 ## GetBuildsUsingGET
 
-> []map[string]interface{} GetBuildsUsingGET(ctx, buildMaster)
+> []map[string]interface{} GetBuildsUsingGET(ctx, buildMaster).Execute()
 
 Get builds for build master
 
-Deprecated, use the v3 endpoint instead
 
-### Required Parameters
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
+**buildMaster** | **string** | buildMaster | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetBuildsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -131,19 +146,28 @@ No authorization required
 
 ## GetJobConfigUsingGET
 
-> map[string]map[string]interface{} GetJobConfigUsingGET(ctx, buildMaster)
+> map[string]map[string]interface{} GetJobConfigUsingGET(ctx, buildMaster).Execute()
 
 Get job config
 
-Deprecated, use the v3 endpoint instead
 
-### Required Parameters
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
+**buildMaster** | **string** | buildMaster | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetJobConfigUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -165,19 +189,28 @@ No authorization required
 
 ## GetJobsForBuildMasterUsingGET
 
-> []map[string]interface{} GetJobsForBuildMasterUsingGET(ctx, buildMaster)
+> []map[string]interface{} GetJobsForBuildMasterUsingGET(ctx, buildMaster).Execute()
 
 Get jobs for build master
 
-Deprecated, use the v3 endpoint instead
 
-### Required Parameters
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
+**buildMaster** | **string** | buildMaster | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetJobsForBuildMasterUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -199,26 +232,22 @@ No authorization required
 
 ## V3GetBuildMastersUsingGET
 
-> []map[string]interface{} V3GetBuildMastersUsingGET(ctx, optional)
+> []map[string]interface{} V3GetBuildMastersUsingGET(ctx).Type_(type_).Execute()
 
 Get build masters
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiV3GetBuildMastersUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***V3GetBuildMastersUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a V3GetBuildMastersUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **type_** | **optional.String**| type | 
+ **type_** | **string** | type | 
 
 ### Return type
 
@@ -240,19 +269,29 @@ No authorization required
 
 ## V3GetBuildUsingGET
 
-> map[string]map[string]interface{} V3GetBuildUsingGET(ctx, buildMaster, job, number)
+> map[string]map[string]interface{} V3GetBuildUsingGET(ctx, buildMaster, number).Job(job).Execute()
 
 Get build for build master
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**job** | **string**| job | 
-**number** | **string**| number | 
+**buildMaster** | **string** | buildMaster | 
+**number** | **string** | number | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiV3GetBuildUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **job** | **string** | job | 
+
 
 ### Return type
 
@@ -274,18 +313,27 @@ No authorization required
 
 ## V3GetBuildsUsingGET
 
-> []map[string]interface{} V3GetBuildsUsingGET(ctx, buildMaster, job)
+> []map[string]interface{} V3GetBuildsUsingGET(ctx, buildMaster).Job(job).Execute()
 
 Get builds for build master
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**job** | **string**| job | 
+**buildMaster** | **string** | buildMaster | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiV3GetBuildsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **job** | **string** | job | 
 
 ### Return type
 
@@ -307,18 +355,27 @@ No authorization required
 
 ## V3GetJobConfigUsingGET
 
-> map[string]map[string]interface{} V3GetJobConfigUsingGET(ctx, buildMaster, job)
+> map[string]map[string]interface{} V3GetJobConfigUsingGET(ctx, buildMaster).Job(job).Execute()
 
 Get job config
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**job** | **string**| job | 
+**buildMaster** | **string** | buildMaster | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiV3GetJobConfigUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **job** | **string** | job | 
 
 ### Return type
 
@@ -340,17 +397,26 @@ No authorization required
 
 ## V3GetJobsForBuildMasterUsingGET
 
-> []map[string]interface{} V3GetJobsForBuildMasterUsingGET(ctx, buildMaster)
+> []map[string]interface{} V3GetJobsForBuildMasterUsingGET(ctx, buildMaster).Execute()
 
 Get jobs for build master
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
+**buildMaster** | **string** | buildMaster | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiV3GetJobsForBuildMasterUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 

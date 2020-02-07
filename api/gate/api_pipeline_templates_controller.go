@@ -11,14 +11,11 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"reflect"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -29,12 +26,34 @@ var (
 // PipelineTemplatesControllerApiService PipelineTemplatesControllerApi service
 type PipelineTemplatesControllerApiService service
 
+type apiCreateUsingPOSTRequest struct {
+	ctx              _context.Context
+	apiService       *PipelineTemplatesControllerApiService
+	pipelineTemplate *map[string]interface{}
+}
+
+func (r apiCreateUsingPOSTRequest) PipelineTemplate(pipelineTemplate map[string]interface{}) apiCreateUsingPOSTRequest {
+	r.pipelineTemplate = &pipelineTemplate
+	return r
+}
+
 /*
 CreateUsingPOST Create a pipeline template.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param pipelineTemplate pipelineTemplate
+@return apiCreateUsingPOSTRequest
 */
-func (a *PipelineTemplatesControllerApiService) CreateUsingPOST(ctx _context.Context, pipelineTemplate map[string]interface{}) (*_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) CreateUsingPOST(ctx _context.Context) apiCreateUsingPOSTRequest {
+	return apiCreateUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiCreateUsingPOSTRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -43,12 +62,20 @@ func (a *PipelineTemplatesControllerApiService) CreateUsingPOST(ctx _context.Con
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.CreateUsingPOST")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.pipelineTemplate == nil {
+		return nil, reportError("pipelineTemplate is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -68,13 +95,13 @@ func (a *PipelineTemplatesControllerApiService) CreateUsingPOST(ctx _context.Con
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &pipelineTemplate
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.pipelineTemplate
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -92,13 +119,12 @@ func (a *PipelineTemplatesControllerApiService) CreateUsingPOST(ctx _context.Con
 		}
 		if localVarHTTPResponse.StatusCode == 202 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
 			newErr.model = v
-			return localVarHTTPResponse, newErr
 			return localVarHTTPResponse, newErr
 		}
 		return localVarHTTPResponse, newErr
@@ -107,20 +133,37 @@ func (a *PipelineTemplatesControllerApiService) CreateUsingPOST(ctx _context.Con
 	return localVarHTTPResponse, nil
 }
 
-// DeleteUsingDELETEOpts Optional parameters for the method 'DeleteUsingDELETE'
-type DeleteUsingDELETEOpts struct {
-	Application optional.String
+type apiDeleteUsingDELETERequest struct {
+	ctx         _context.Context
+	apiService  *PipelineTemplatesControllerApiService
+	id          string
+	application *string
+}
+
+func (r apiDeleteUsingDELETERequest) Application(application string) apiDeleteUsingDELETERequest {
+	r.application = &application
+	return r
 }
 
 /*
 DeleteUsingDELETE Delete a pipeline template.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
- * @param optional nil or *DeleteUsingDELETEOpts - Optional Parameters:
- * @param "Application" (optional.String) -  application
-@return map[string]map[string]interface{}
+@return apiDeleteUsingDELETERequest
 */
-func (a *PipelineTemplatesControllerApiService) DeleteUsingDELETE(ctx _context.Context, id string, localVarOptionals *DeleteUsingDELETEOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) DeleteUsingDELETE(ctx _context.Context, id string) apiDeleteUsingDELETERequest {
+	return apiDeleteUsingDELETERequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiDeleteUsingDELETERequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -130,16 +173,20 @@ func (a *PipelineTemplatesControllerApiService) DeleteUsingDELETE(ctx _context.C
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.DeleteUsingDELETE")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Application.IsSet() {
-		localVarQueryParams.Add("application", parameterToString(localVarOptionals.Application.Value(), ""))
+	if r.application != nil {
+		localVarQueryParams.Add("application", parameterToString(*r.application, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -158,12 +205,12 @@ func (a *PipelineTemplatesControllerApiService) DeleteUsingDELETE(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -181,19 +228,18 @@ func (a *PipelineTemplatesControllerApiService) DeleteUsingDELETE(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 202 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -205,13 +251,31 @@ func (a *PipelineTemplatesControllerApiService) DeleteUsingDELETE(ctx _context.C
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiGetUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineTemplatesControllerApiService
+	id         string
+}
+
 /*
 GetUsingGET Get a pipeline template.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiGetUsingGETRequest
 */
-func (a *PipelineTemplatesControllerApiService) GetUsingGET(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) GetUsingGET(ctx _context.Context, id string) apiGetUsingGETRequest {
+	return apiGetUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -221,9 +285,13 @@ func (a *PipelineTemplatesControllerApiService) GetUsingGET(ctx _context.Context
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.GetUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -246,12 +314,12 @@ func (a *PipelineTemplatesControllerApiService) GetUsingGET(ctx _context.Context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -269,19 +337,18 @@ func (a *PipelineTemplatesControllerApiService) GetUsingGET(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -293,20 +360,37 @@ func (a *PipelineTemplatesControllerApiService) GetUsingGET(ctx _context.Context
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// ListPipelineTemplateDependentsUsingGETOpts Optional parameters for the method 'ListPipelineTemplateDependentsUsingGET'
-type ListPipelineTemplateDependentsUsingGETOpts struct {
-	Recursive optional.Bool
+type apiListPipelineTemplateDependentsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineTemplatesControllerApiService
+	id         string
+	recursive  *bool
+}
+
+func (r apiListPipelineTemplateDependentsUsingGETRequest) Recursive(recursive bool) apiListPipelineTemplateDependentsUsingGETRequest {
+	r.recursive = &recursive
+	return r
 }
 
 /*
 ListPipelineTemplateDependentsUsingGET List all pipelines that implement a pipeline template
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
- * @param optional nil or *ListPipelineTemplateDependentsUsingGETOpts - Optional Parameters:
- * @param "Recursive" (optional.Bool) -  recursive
-@return []map[string]interface{}
+@return apiListPipelineTemplateDependentsUsingGETRequest
 */
-func (a *PipelineTemplatesControllerApiService) ListPipelineTemplateDependentsUsingGET(ctx _context.Context, id string, localVarOptionals *ListPipelineTemplateDependentsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) ListPipelineTemplateDependentsUsingGET(ctx _context.Context, id string) apiListPipelineTemplateDependentsUsingGETRequest {
+	return apiListPipelineTemplateDependentsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiListPipelineTemplateDependentsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -316,16 +400,20 @@ func (a *PipelineTemplatesControllerApiService) ListPipelineTemplateDependentsUs
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates/{id}/dependents"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.ListPipelineTemplateDependentsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates/{id}/dependents"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Recursive.IsSet() {
-		localVarQueryParams.Add("recursive", parameterToString(localVarOptionals.Recursive.Value(), ""))
+	if r.recursive != nil {
+		localVarQueryParams.Add("recursive", parameterToString(*r.recursive, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -344,12 +432,12 @@ func (a *PipelineTemplatesControllerApiService) ListPipelineTemplateDependentsUs
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -367,19 +455,18 @@ func (a *PipelineTemplatesControllerApiService) ListPipelineTemplateDependentsUs
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -391,19 +478,34 @@ func (a *PipelineTemplatesControllerApiService) ListPipelineTemplateDependentsUs
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// ListUsingGETOpts Optional parameters for the method 'ListUsingGET'
-type ListUsingGETOpts struct {
-	Scopes optional.Interface
+type apiListUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineTemplatesControllerApiService
+	scopes     *[]string
+}
+
+func (r apiListUsingGETRequest) Scopes(scopes []string) apiListUsingGETRequest {
+	r.scopes = &scopes
+	return r
 }
 
 /*
 ListUsingGET List pipeline templates.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *ListUsingGETOpts - Optional Parameters:
- * @param "Scopes" (optional.Interface of []string) -  scopes
-@return []map[string]interface{}
+@return apiListUsingGETRequest
 */
-func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx _context.Context, localVarOptionals *ListUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx _context.Context) apiListUsingGETRequest {
+	return apiListUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiListUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -413,15 +515,19 @@ func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx _context.Contex
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.ListUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Scopes.IsSet() {
-		t := localVarOptionals.Scopes.Value()
+	if r.scopes != nil {
+		t := *r.scopes
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -448,12 +554,12 @@ func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx _context.Contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -471,19 +577,18 @@ func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx _context.Contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -495,22 +600,46 @@ func (a *PipelineTemplatesControllerApiService) ListUsingGET(ctx _context.Contex
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// ResolveTemplatesUsingGETOpts Optional parameters for the method 'ResolveTemplatesUsingGET'
-type ResolveTemplatesUsingGETOpts struct {
-	ExecutionId      optional.String
-	PipelineConfigId optional.String
+type apiResolveTemplatesUsingGETRequest struct {
+	ctx              _context.Context
+	apiService       *PipelineTemplatesControllerApiService
+	source           *string
+	executionId      *string
+	pipelineConfigId *string
+}
+
+func (r apiResolveTemplatesUsingGETRequest) Source(source string) apiResolveTemplatesUsingGETRequest {
+	r.source = &source
+	return r
+}
+
+func (r apiResolveTemplatesUsingGETRequest) ExecutionId(executionId string) apiResolveTemplatesUsingGETRequest {
+	r.executionId = &executionId
+	return r
+}
+
+func (r apiResolveTemplatesUsingGETRequest) PipelineConfigId(pipelineConfigId string) apiResolveTemplatesUsingGETRequest {
+	r.pipelineConfigId = &pipelineConfigId
+	return r
 }
 
 /*
 ResolveTemplatesUsingGET Resolve a pipeline template.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param source source
- * @param optional nil or *ResolveTemplatesUsingGETOpts - Optional Parameters:
- * @param "ExecutionId" (optional.String) -  executionId
- * @param "PipelineConfigId" (optional.String) -  pipelineConfigId
-@return map[string]map[string]interface{}
+@return apiResolveTemplatesUsingGETRequest
 */
-func (a *PipelineTemplatesControllerApiService) ResolveTemplatesUsingGET(ctx _context.Context, source string, localVarOptionals *ResolveTemplatesUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) ResolveTemplatesUsingGET(ctx _context.Context) apiResolveTemplatesUsingGETRequest {
+	return apiResolveTemplatesUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiResolveTemplatesUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -520,20 +649,28 @@ func (a *PipelineTemplatesControllerApiService) ResolveTemplatesUsingGET(ctx _co
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates/resolve"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.ResolveTemplatesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates/resolve"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.ExecutionId.IsSet() {
-		localVarQueryParams.Add("executionId", parameterToString(localVarOptionals.ExecutionId.Value(), ""))
+	if r.source == nil {
+		return localVarReturnValue, nil, reportError("source is required and must be specified")
 	}
-	if localVarOptionals != nil && localVarOptionals.PipelineConfigId.IsSet() {
-		localVarQueryParams.Add("pipelineConfigId", parameterToString(localVarOptionals.PipelineConfigId.Value(), ""))
+
+	if r.executionId != nil {
+		localVarQueryParams.Add("executionId", parameterToString(*r.executionId, ""))
 	}
-	localVarQueryParams.Add("source", parameterToString(source, ""))
+	if r.pipelineConfigId != nil {
+		localVarQueryParams.Add("pipelineConfigId", parameterToString(*r.pipelineConfigId, ""))
+	}
+	localVarQueryParams.Add("source", parameterToString(*r.source, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -551,12 +688,12 @@ func (a *PipelineTemplatesControllerApiService) ResolveTemplatesUsingGET(ctx _co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -574,19 +711,18 @@ func (a *PipelineTemplatesControllerApiService) ResolveTemplatesUsingGET(ctx _co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -598,20 +734,43 @@ func (a *PipelineTemplatesControllerApiService) ResolveTemplatesUsingGET(ctx _co
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// UpdateUsingPOSTOpts Optional parameters for the method 'UpdateUsingPOST'
-type UpdateUsingPOSTOpts struct {
-	SkipPlanDependents optional.Bool
+type apiUpdateUsingPOSTRequest struct {
+	ctx                _context.Context
+	apiService         *PipelineTemplatesControllerApiService
+	pipelineTemplate   *map[string]interface{}
+	id                 string
+	skipPlanDependents *bool
+}
+
+func (r apiUpdateUsingPOSTRequest) PipelineTemplate(pipelineTemplate map[string]interface{}) apiUpdateUsingPOSTRequest {
+	r.pipelineTemplate = &pipelineTemplate
+	return r
+}
+
+func (r apiUpdateUsingPOSTRequest) SkipPlanDependents(skipPlanDependents bool) apiUpdateUsingPOSTRequest {
+	r.skipPlanDependents = &skipPlanDependents
+	return r
 }
 
 /*
 UpdateUsingPOST Update a pipeline template.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param pipelineTemplate pipelineTemplate
  * @param id id
- * @param optional nil or *UpdateUsingPOSTOpts - Optional Parameters:
- * @param "SkipPlanDependents" (optional.Bool) -  skipPlanDependents
+@return apiUpdateUsingPOSTRequest
 */
-func (a *PipelineTemplatesControllerApiService) UpdateUsingPOST(ctx _context.Context, pipelineTemplate map[string]interface{}, id string, localVarOptionals *UpdateUsingPOSTOpts) (*_nethttp.Response, error) {
+func (a *PipelineTemplatesControllerApiService) UpdateUsingPOST(ctx _context.Context, id string) apiUpdateUsingPOSTRequest {
+	return apiUpdateUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiUpdateUsingPOSTRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -620,16 +779,24 @@ func (a *PipelineTemplatesControllerApiService) UpdateUsingPOST(ctx _context.Con
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelineTemplates/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineTemplatesControllerApiService.UpdateUsingPOST")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelineTemplates/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.SkipPlanDependents.IsSet() {
-		localVarQueryParams.Add("skipPlanDependents", parameterToString(localVarOptionals.SkipPlanDependents.Value(), ""))
+	if r.pipelineTemplate == nil {
+		return nil, reportError("pipelineTemplate is required and must be specified")
+	}
+
+	if r.skipPlanDependents != nil {
+		localVarQueryParams.Add("skipPlanDependents", parameterToString(*r.skipPlanDependents, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -649,13 +816,13 @@ func (a *PipelineTemplatesControllerApiService) UpdateUsingPOST(ctx _context.Con
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &pipelineTemplate
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.pipelineTemplate
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -673,13 +840,12 @@ func (a *PipelineTemplatesControllerApiService) UpdateUsingPOST(ctx _context.Con
 		}
 		if localVarHTTPResponse.StatusCode == 202 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
 			newErr.model = v
-			return localVarHTTPResponse, newErr
 			return localVarHTTPResponse, newErr
 		}
 		return localVarHTTPResponse, newErr

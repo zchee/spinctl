@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,10 +25,25 @@ var (
 // ServerGroupControllerApiService ServerGroupControllerApi service
 type ServerGroupControllerApiService service
 
-// GetServerGroupDetailsUsingGETOpts Optional parameters for the method 'GetServerGroupDetailsUsingGET'
-type GetServerGroupDetailsUsingGETOpts struct {
-	XRateLimitApp  optional.String
-	IncludeDetails optional.String
+type apiGetServerGroupDetailsUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *ServerGroupControllerApiService
+	account         string
+	applicationName string
+	region          string
+	serverGroupName string
+	xRateLimitApp   *string
+	includeDetails  *string
+}
+
+func (r apiGetServerGroupDetailsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetServerGroupDetailsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetServerGroupDetailsUsingGETRequest) IncludeDetails(includeDetails string) apiGetServerGroupDetailsUsingGETRequest {
+	r.includeDetails = &includeDetails
+	return r
 }
 
 /*
@@ -41,12 +53,24 @@ GetServerGroupDetailsUsingGET Retrieve a server group's details
  * @param applicationName applicationName
  * @param region region
  * @param serverGroupName serverGroupName
- * @param optional nil or *GetServerGroupDetailsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "IncludeDetails" (optional.String) -  includeDetails
-@return map[string]interface{}
+@return apiGetServerGroupDetailsUsingGETRequest
 */
-func (a *ServerGroupControllerApiService) GetServerGroupDetailsUsingGET(ctx _context.Context, account string, applicationName string, region string, serverGroupName string, localVarOptionals *GetServerGroupDetailsUsingGETOpts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *ServerGroupControllerApiService) GetServerGroupDetailsUsingGET(ctx _context.Context, account string, applicationName string, region string, serverGroupName string) apiGetServerGroupDetailsUsingGETRequest {
+	return apiGetServerGroupDetailsUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		account:         account,
+		applicationName: applicationName,
+		region:          region,
+		serverGroupName: serverGroupName,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetServerGroupDetailsUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -56,19 +80,23 @@ func (a *ServerGroupControllerApiService) GetServerGroupDetailsUsingGET(ctx _con
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{applicationName}/serverGroups/{account}/{region}/{serverGroupName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", applicationName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", serverGroupName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerGroupControllerApiService.GetServerGroupDetailsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{applicationName}/serverGroups/{account}/{region}/{serverGroupName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(parameterToString(r.applicationName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(parameterToString(r.serverGroupName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.IncludeDetails.IsSet() {
-		localVarQueryParams.Add("includeDetails", parameterToString(localVarOptionals.IncludeDetails.Value(), ""))
+	if r.includeDetails != nil {
+		localVarQueryParams.Add("includeDetails", parameterToString(*r.includeDetails, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -87,15 +115,15 @@ func (a *ServerGroupControllerApiService) GetServerGroupDetailsUsingGET(ctx _con
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -113,19 +141,18 @@ func (a *ServerGroupControllerApiService) GetServerGroupDetailsUsingGET(ctx _con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -137,26 +164,55 @@ func (a *ServerGroupControllerApiService) GetServerGroupDetailsUsingGET(ctx _con
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetServerGroupsForApplicationUsingGETOpts Optional parameters for the method 'GetServerGroupsForApplicationUsingGET'
-type GetServerGroupsForApplicationUsingGETOpts struct {
-	XRateLimitApp optional.String
-	CloudProvider optional.String
-	Clusters      optional.String
-	Expand        optional.String
+type apiGetServerGroupsForApplicationUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *ServerGroupControllerApiService
+	applicationName string
+	xRateLimitApp   *string
+	cloudProvider   *string
+	clusters        *string
+	expand          *string
+}
+
+func (r apiGetServerGroupsForApplicationUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetServerGroupsForApplicationUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetServerGroupsForApplicationUsingGETRequest) CloudProvider(cloudProvider string) apiGetServerGroupsForApplicationUsingGETRequest {
+	r.cloudProvider = &cloudProvider
+	return r
+}
+
+func (r apiGetServerGroupsForApplicationUsingGETRequest) Clusters(clusters string) apiGetServerGroupsForApplicationUsingGETRequest {
+	r.clusters = &clusters
+	return r
+}
+
+func (r apiGetServerGroupsForApplicationUsingGETRequest) Expand(expand string) apiGetServerGroupsForApplicationUsingGETRequest {
+	r.expand = &expand
+	return r
 }
 
 /*
 GetServerGroupsForApplicationUsingGET Retrieve a list of server groups for a given application
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param applicationName applicationName
- * @param optional nil or *GetServerGroupsForApplicationUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "CloudProvider" (optional.String) -  cloudProvider
- * @param "Clusters" (optional.String) -  clusters
- * @param "Expand" (optional.String) -  expand
-@return []map[string]interface{}
+@return apiGetServerGroupsForApplicationUsingGETRequest
 */
-func (a *ServerGroupControllerApiService) GetServerGroupsForApplicationUsingGET(ctx _context.Context, applicationName string, localVarOptionals *GetServerGroupsForApplicationUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ServerGroupControllerApiService) GetServerGroupsForApplicationUsingGET(ctx _context.Context, applicationName string) apiGetServerGroupsForApplicationUsingGETRequest {
+	return apiGetServerGroupsForApplicationUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		applicationName: applicationName,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetServerGroupsForApplicationUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -166,22 +222,26 @@ func (a *ServerGroupControllerApiService) GetServerGroupsForApplicationUsingGET(
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{applicationName}/serverGroups"
-	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", applicationName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerGroupControllerApiService.GetServerGroupsForApplicationUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{applicationName}/serverGroups"
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(parameterToString(r.applicationName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.CloudProvider.IsSet() {
-		localVarQueryParams.Add("cloudProvider", parameterToString(localVarOptionals.CloudProvider.Value(), ""))
+	if r.cloudProvider != nil {
+		localVarQueryParams.Add("cloudProvider", parameterToString(*r.cloudProvider, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Clusters.IsSet() {
-		localVarQueryParams.Add("clusters", parameterToString(localVarOptionals.Clusters.Value(), ""))
+	if r.clusters != nil {
+		localVarQueryParams.Add("clusters", parameterToString(*r.clusters, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -200,15 +260,15 @@ func (a *ServerGroupControllerApiService) GetServerGroupsForApplicationUsingGET(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -226,19 +286,18 @@ func (a *ServerGroupControllerApiService) GetServerGroupsForApplicationUsingGET(
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

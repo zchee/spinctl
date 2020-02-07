@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,22 +25,43 @@ var (
 // SecurityGroupControllerApiService SecurityGroupControllerApi service
 type SecurityGroupControllerApiService service
 
-// AllByAccountUsingGET1Opts Optional parameters for the method 'AllByAccountUsingGET1'
-type AllByAccountUsingGET1Opts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiAllByAccountUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *SecurityGroupControllerApiService
+	account       string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiAllByAccountUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiAllByAccountUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiAllByAccountUsingGET1Request) Provider(provider string) apiAllByAccountUsingGET1Request {
+	r.provider = &provider
+	return r
 }
 
 /*
 AllByAccountUsingGET1 Retrieve a list of security groups for a given account, grouped by region
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
- * @param optional nil or *AllByAccountUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return map[string]interface{}
+@return apiAllByAccountUsingGET1Request
 */
-func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx _context.Context, account string, localVarOptionals *AllByAccountUsingGET1Opts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx _context.Context, account string) apiAllByAccountUsingGET1Request {
+	return apiAllByAccountUsingGET1Request{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiAllByAccountUsingGET1Request) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -53,16 +71,20 @@ func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx _context.C
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/securityGroups/{account}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SecurityGroupControllerApiService.AllByAccountUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/securityGroups/{account}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -81,15 +103,15 @@ func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -107,19 +129,18 @@ func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -131,21 +152,40 @@ func (a *SecurityGroupControllerApiService) AllByAccountUsingGET1(ctx _context.C
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// AllUsingGET5Opts Optional parameters for the method 'AllUsingGET5'
-type AllUsingGET5Opts struct {
-	XRateLimitApp optional.String
-	Id            optional.String
+type apiAllUsingGET5Request struct {
+	ctx           _context.Context
+	apiService    *SecurityGroupControllerApiService
+	xRateLimitApp *string
+	id            *string
+}
+
+func (r apiAllUsingGET5Request) XRateLimitApp(xRateLimitApp string) apiAllUsingGET5Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiAllUsingGET5Request) Id(id string) apiAllUsingGET5Request {
+	r.id = &id
+	return r
 }
 
 /*
 AllUsingGET5 Retrieve a list of security groups, grouped by account, cloud provider, and region
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *AllUsingGET5Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Id" (optional.String) -  id
-@return map[string]interface{}
+@return apiAllUsingGET5Request
 */
-func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx _context.Context, localVarOptionals *AllUsingGET5Opts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx _context.Context) apiAllUsingGET5Request {
+	return apiAllUsingGET5Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiAllUsingGET5Request) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -155,15 +195,19 @@ func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx _context.Context, l
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/securityGroups"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SecurityGroupControllerApiService.AllUsingGET5")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/securityGroups"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
-		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
+	if r.id != nil {
+		localVarQueryParams.Add("id", parameterToString(*r.id, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -182,15 +226,15 @@ func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx _context.Context, l
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -208,19 +252,18 @@ func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx _context.Context, l
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -232,11 +275,30 @@ func (a *SecurityGroupControllerApiService) AllUsingGET5(ctx _context.Context, l
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetSecurityGroupUsingGET1Opts Optional parameters for the method 'GetSecurityGroupUsingGET1'
-type GetSecurityGroupUsingGET1Opts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
-	VpcId         optional.String
+type apiGetSecurityGroupUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *SecurityGroupControllerApiService
+	account       string
+	name          string
+	region        string
+	xRateLimitApp *string
+	provider      *string
+	vpcId         *string
+}
+
+func (r apiGetSecurityGroupUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiGetSecurityGroupUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetSecurityGroupUsingGET1Request) Provider(provider string) apiGetSecurityGroupUsingGET1Request {
+	r.provider = &provider
+	return r
+}
+
+func (r apiGetSecurityGroupUsingGET1Request) VpcId(vpcId string) apiGetSecurityGroupUsingGET1Request {
+	r.vpcId = &vpcId
+	return r
 }
 
 /*
@@ -245,13 +307,23 @@ GetSecurityGroupUsingGET1 Retrieve a security group's details
  * @param account account
  * @param name name
  * @param region region
- * @param optional nil or *GetSecurityGroupUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
- * @param "VpcId" (optional.String) -  vpcId
-@return map[string]interface{}
+@return apiGetSecurityGroupUsingGET1Request
 */
-func (a *SecurityGroupControllerApiService) GetSecurityGroupUsingGET1(ctx _context.Context, account string, name string, region string, localVarOptionals *GetSecurityGroupUsingGET1Opts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *SecurityGroupControllerApiService) GetSecurityGroupUsingGET1(ctx _context.Context, account string, name string, region string) apiGetSecurityGroupUsingGET1Request {
+	return apiGetSecurityGroupUsingGET1Request{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		name:       name,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetSecurityGroupUsingGET1Request) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -261,21 +333,25 @@ func (a *SecurityGroupControllerApiService) GetSecurityGroupUsingGET1(ctx _conte
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/securityGroups/{account}/{region}/{name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", name)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SecurityGroupControllerApiService.GetSecurityGroupUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/securityGroups/{account}/{region}/{name}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(parameterToString(r.name, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.VpcId.IsSet() {
-		localVarQueryParams.Add("vpcId", parameterToString(localVarOptionals.VpcId.Value(), ""))
+	if r.vpcId != nil {
+		localVarQueryParams.Add("vpcId", parameterToString(*r.vpcId, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -294,15 +370,15 @@ func (a *SecurityGroupControllerApiService) GetSecurityGroupUsingGET1(ctx _conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -320,19 +396,18 @@ func (a *SecurityGroupControllerApiService) GetSecurityGroupUsingGET1(ctx _conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

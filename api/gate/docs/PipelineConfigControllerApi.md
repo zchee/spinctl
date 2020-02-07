@@ -1,6 +1,6 @@
 # \PipelineConfigControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,17 +12,26 @@ Method | HTTP request | Description
 
 ## ConvertPipelineConfigToPipelineTemplateUsingGET
 
-> string ConvertPipelineConfigToPipelineTemplateUsingGET(ctx, pipelineConfigId)
+> string ConvertPipelineConfigToPipelineTemplateUsingGET(ctx, pipelineConfigId).Execute()
 
 Convert a pipeline config to a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipelineConfigId** | **string**| pipelineConfigId | 
+**pipelineConfigId** | **string** | pipelineConfigId | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiConvertPipelineConfigToPipelineTemplateUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -44,13 +53,18 @@ No authorization required
 
 ## GetAllPipelineConfigsUsingGET
 
-> []map[string]interface{} GetAllPipelineConfigsUsingGET(ctx, )
+> []map[string]interface{} GetAllPipelineConfigsUsingGET(ctx).Execute()
 
 Get all pipeline configs.
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAllPipelineConfigsUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -72,28 +86,27 @@ No authorization required
 
 ## GetPipelineConfigHistoryUsingGET
 
-> []map[string]interface{} GetPipelineConfigHistoryUsingGET(ctx, pipelineConfigId, optional)
+> []map[string]interface{} GetPipelineConfigHistoryUsingGET(ctx, pipelineConfigId).Limit(limit).Execute()
 
 Get pipeline config history.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipelineConfigId** | **string**| pipelineConfigId | 
- **optional** | ***GetPipelineConfigHistoryUsingGETOpts** | optional parameters | nil if no parameters
+**pipelineConfigId** | **string** | pipelineConfigId | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetPipelineConfigHistoryUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetPipelineConfigHistoryUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **limit** | **optional.Int32**| limit | [default to 20]
+ **limit** | **int32** | limit | [default to 20]
 
 ### Return type
 

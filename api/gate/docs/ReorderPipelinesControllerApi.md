@@ -1,6 +1,6 @@
 # \ReorderPipelinesControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,17 +10,22 @@ Method | HTTP request | Description
 
 ## ReorderPipelinesUsingPOST
 
-> map[string]interface{} ReorderPipelinesUsingPOST(ctx, reorderPipelinesCommand)
+> map[string]interface{} ReorderPipelinesUsingPOST(ctx).ReorderPipelinesCommand(reorderPipelinesCommand).Execute()
 
 Re-order pipelines
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiReorderPipelinesUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**reorderPipelinesCommand** | [**ReorderPipelinesCommand**](ReorderPipelinesCommand.md)| reorderPipelinesCommand | 
+ **reorderPipelinesCommand** | [**ReorderPipelinesCommand**](ReorderPipelinesCommand.md) | reorderPipelinesCommand | 
 
 ### Return type
 

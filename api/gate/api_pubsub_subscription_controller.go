@@ -24,12 +24,28 @@ var (
 // PubsubSubscriptionControllerApiService PubsubSubscriptionControllerApi service
 type PubsubSubscriptionControllerApiService service
 
+type apiAllUsingGET4Request struct {
+	ctx        _context.Context
+	apiService *PubsubSubscriptionControllerApiService
+}
+
 /*
 AllUsingGET4 Retrieve the list of pub/sub subscriptions configured in Echo.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]string
+@return apiAllUsingGET4Request
 */
-func (a *PubsubSubscriptionControllerApiService) AllUsingGET4(ctx _context.Context) ([]map[string]string, *_nethttp.Response, error) {
+func (a *PubsubSubscriptionControllerApiService) AllUsingGET4(ctx _context.Context) apiAllUsingGET4Request {
+	return apiAllUsingGET4Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]string
+*/
+func (r apiAllUsingGET4Request) Execute() ([]map[string]string, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -39,8 +55,12 @@ func (a *PubsubSubscriptionControllerApiService) AllUsingGET4(ctx _context.Conte
 		localVarReturnValue  []map[string]string
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pubsub/subscriptions"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PubsubSubscriptionControllerApiService.AllUsingGET4")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pubsub/subscriptions"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -63,12 +83,12 @@ func (a *PubsubSubscriptionControllerApiService) AllUsingGET4(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -86,19 +106,18 @@ func (a *PubsubSubscriptionControllerApiService) AllUsingGET4(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]string
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

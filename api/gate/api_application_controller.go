@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,20 +25,37 @@ var (
 // ApplicationControllerApiService ApplicationControllerApi service
 type ApplicationControllerApiService service
 
-// CancelPipelineUsingPUTOpts Optional parameters for the method 'CancelPipelineUsingPUT'
-type CancelPipelineUsingPUTOpts struct {
-	Reason optional.String
+type apiCancelPipelineUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *ApplicationControllerApiService
+	id         string
+	reason     *string
+}
+
+func (r apiCancelPipelineUsingPUTRequest) Reason(reason string) apiCancelPipelineUsingPUTRequest {
+	r.reason = &reason
+	return r
 }
 
 /*
 CancelPipelineUsingPUT Cancel pipeline
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
- * @param optional nil or *CancelPipelineUsingPUTOpts - Optional Parameters:
- * @param "Reason" (optional.String) -  reason
-@return map[string]map[string]interface{}
+@return apiCancelPipelineUsingPUTRequest
 */
-func (a *ApplicationControllerApiService) CancelPipelineUsingPUT(ctx _context.Context, id string, localVarOptionals *CancelPipelineUsingPUTOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) CancelPipelineUsingPUT(ctx _context.Context, id string) apiCancelPipelineUsingPUTRequest {
+	return apiCancelPipelineUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiCancelPipelineUsingPUTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -51,16 +65,20 @@ func (a *ApplicationControllerApiService) CancelPipelineUsingPUT(ctx _context.Co
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/pipelines/{id}/cancel"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.CancelPipelineUsingPUT")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/pipelines/{id}/cancel"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Reason.IsSet() {
-		localVarQueryParams.Add("reason", parameterToString(localVarOptionals.Reason.Value(), ""))
+	if r.reason != nil {
+		localVarQueryParams.Add("reason", parameterToString(*r.reason, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -79,12 +97,12 @@ func (a *ApplicationControllerApiService) CancelPipelineUsingPUT(ctx _context.Co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -102,19 +120,18 @@ func (a *ApplicationControllerApiService) CancelPipelineUsingPUT(ctx _context.Co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -124,15 +141,33 @@ func (a *ApplicationControllerApiService) CancelPipelineUsingPUT(ctx _context.Co
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiCancelTaskUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *ApplicationControllerApiService
+	id         string
 }
 
 /*
 CancelTaskUsingPUT Cancel task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiCancelTaskUsingPUTRequest
 */
-func (a *ApplicationControllerApiService) CancelTaskUsingPUT(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) CancelTaskUsingPUT(ctx _context.Context, id string) apiCancelTaskUsingPUTRequest {
+	return apiCancelTaskUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiCancelTaskUsingPUTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -142,9 +177,13 @@ func (a *ApplicationControllerApiService) CancelTaskUsingPUT(ctx _context.Contex
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/tasks/{id}/cancel"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.CancelTaskUsingPUT")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/tasks/{id}/cancel"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -167,12 +206,12 @@ func (a *ApplicationControllerApiService) CancelTaskUsingPUT(ctx _context.Contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -190,19 +229,18 @@ func (a *ApplicationControllerApiService) CancelTaskUsingPUT(ctx _context.Contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -214,21 +252,40 @@ func (a *ApplicationControllerApiService) CancelTaskUsingPUT(ctx _context.Contex
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetAllApplicationsUsingGETOpts Optional parameters for the method 'GetAllApplicationsUsingGET'
-type GetAllApplicationsUsingGETOpts struct {
-	Account optional.String
-	Owner   optional.String
+type apiGetAllApplicationsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *ApplicationControllerApiService
+	account    *string
+	owner      *string
+}
+
+func (r apiGetAllApplicationsUsingGETRequest) Account(account string) apiGetAllApplicationsUsingGETRequest {
+	r.account = &account
+	return r
+}
+
+func (r apiGetAllApplicationsUsingGETRequest) Owner(owner string) apiGetAllApplicationsUsingGETRequest {
+	r.owner = &owner
+	return r
 }
 
 /*
 GetAllApplicationsUsingGET Retrieve a list of applications
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetAllApplicationsUsingGETOpts - Optional Parameters:
- * @param "Account" (optional.String) -  filters results to only include applications deployed in the specified account
- * @param "Owner" (optional.String) -  filteres results to only include applications owned by the specified email
-@return []map[string]interface{}
+@return apiGetAllApplicationsUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetAllApplicationsUsingGET(ctx _context.Context, localVarOptionals *GetAllApplicationsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetAllApplicationsUsingGET(ctx _context.Context) apiGetAllApplicationsUsingGETRequest {
+	return apiGetAllApplicationsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetAllApplicationsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -238,18 +295,22 @@ func (a *ApplicationControllerApiService) GetAllApplicationsUsingGET(ctx _contex
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetAllApplicationsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Account.IsSet() {
-		localVarQueryParams.Add("account", parameterToString(localVarOptionals.Account.Value(), ""))
+	if r.account != nil {
+		localVarQueryParams.Add("account", parameterToString(*r.account, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Owner.IsSet() {
-		localVarQueryParams.Add("owner", parameterToString(localVarOptionals.Owner.Value(), ""))
+	if r.owner != nil {
+		localVarQueryParams.Add("owner", parameterToString(*r.owner, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -268,12 +329,12 @@ func (a *ApplicationControllerApiService) GetAllApplicationsUsingGET(ctx _contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -291,19 +352,18 @@ func (a *ApplicationControllerApiService) GetAllApplicationsUsingGET(ctx _contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -315,20 +375,37 @@ func (a *ApplicationControllerApiService) GetAllApplicationsUsingGET(ctx _contex
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetApplicationHistoryUsingGETOpts Optional parameters for the method 'GetApplicationHistoryUsingGET'
-type GetApplicationHistoryUsingGETOpts struct {
-	Limit optional.Int32
+type apiGetApplicationHistoryUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	application string
+	limit       *int32
+}
+
+func (r apiGetApplicationHistoryUsingGETRequest) Limit(limit int32) apiGetApplicationHistoryUsingGETRequest {
+	r.limit = &limit
+	return r
 }
 
 /*
 GetApplicationHistoryUsingGET Retrieve a list of an application's configuration revision history
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
- * @param optional nil or *GetApplicationHistoryUsingGETOpts - Optional Parameters:
- * @param "Limit" (optional.Int32) -  limit
-@return []map[string]interface{}
+@return apiGetApplicationHistoryUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx _context.Context, application string, localVarOptionals *GetApplicationHistoryUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx _context.Context, application string) apiGetApplicationHistoryUsingGETRequest {
+	return apiGetApplicationHistoryUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetApplicationHistoryUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -338,16 +415,20 @@ func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx _con
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/history"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetApplicationHistoryUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/history"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -366,12 +447,12 @@ func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx _con
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -389,19 +470,18 @@ func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx _con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -413,20 +493,37 @@ func (a *ApplicationControllerApiService) GetApplicationHistoryUsingGET(ctx _con
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetApplicationUsingGETOpts Optional parameters for the method 'GetApplicationUsingGET'
-type GetApplicationUsingGETOpts struct {
-	Expand optional.Bool
+type apiGetApplicationUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	application string
+	expand      *bool
+}
+
+func (r apiGetApplicationUsingGETRequest) Expand(expand bool) apiGetApplicationUsingGETRequest {
+	r.expand = &expand
+	return r
 }
 
 /*
 GetApplicationUsingGET Retrieve an application's details
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
- * @param optional nil or *GetApplicationUsingGETOpts - Optional Parameters:
- * @param "Expand" (optional.Bool) -  expand
-@return map[string]map[string]interface{}
+@return apiGetApplicationUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetApplicationUsingGET(ctx _context.Context, application string, localVarOptionals *GetApplicationUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetApplicationUsingGET(ctx _context.Context, application string) apiGetApplicationUsingGETRequest {
+	return apiGetApplicationUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetApplicationUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -436,16 +533,20 @@ func (a *ApplicationControllerApiService) GetApplicationUsingGET(ctx _context.Co
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetApplicationUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -464,12 +565,12 @@ func (a *ApplicationControllerApiService) GetApplicationUsingGET(ctx _context.Co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -487,19 +588,18 @@ func (a *ApplicationControllerApiService) GetApplicationUsingGET(ctx _context.Co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -509,6 +609,13 @@ func (a *ApplicationControllerApiService) GetApplicationUsingGET(ctx _context.Co
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetPipelineConfigUsingGETRequest struct {
+	ctx          _context.Context
+	apiService   *ApplicationControllerApiService
+	application  string
+	pipelineName string
 }
 
 /*
@@ -516,9 +623,22 @@ GetPipelineConfigUsingGET Retrieve a pipeline configuration
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
  * @param pipelineName pipelineName
-@return map[string]map[string]interface{}
+@return apiGetPipelineConfigUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetPipelineConfigUsingGET(ctx _context.Context, application string, pipelineName string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetPipelineConfigUsingGET(ctx _context.Context, application string, pipelineName string) apiGetPipelineConfigUsingGETRequest {
+	return apiGetPipelineConfigUsingGETRequest{
+		apiService:   a,
+		ctx:          ctx,
+		application:  application,
+		pipelineName: pipelineName,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetPipelineConfigUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -528,10 +648,14 @@ func (a *ApplicationControllerApiService) GetPipelineConfigUsingGET(ctx _context
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/pipelineConfigs/{pipelineName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetPipelineConfigUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/pipelineConfigs/{pipelineName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineName"+"}", _neturl.QueryEscape(parameterToString(r.pipelineName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -554,12 +678,12 @@ func (a *ApplicationControllerApiService) GetPipelineConfigUsingGET(ctx _context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -577,19 +701,18 @@ func (a *ApplicationControllerApiService) GetPipelineConfigUsingGET(ctx _context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -599,15 +722,33 @@ func (a *ApplicationControllerApiService) GetPipelineConfigUsingGET(ctx _context
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetPipelineConfigsForApplicationUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	application string
 }
 
 /*
 GetPipelineConfigsForApplicationUsingGET Retrieve a list of an application's pipeline configurations
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
-@return []map[string]interface{}
+@return apiGetPipelineConfigsForApplicationUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetPipelineConfigsForApplicationUsingGET(ctx _context.Context, application string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetPipelineConfigsForApplicationUsingGET(ctx _context.Context, application string) apiGetPipelineConfigsForApplicationUsingGETRequest {
+	return apiGetPipelineConfigsForApplicationUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetPipelineConfigsForApplicationUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -617,9 +758,13 @@ func (a *ApplicationControllerApiService) GetPipelineConfigsForApplicationUsingG
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/pipelineConfigs"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetPipelineConfigsForApplicationUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/pipelineConfigs"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -642,12 +787,12 @@ func (a *ApplicationControllerApiService) GetPipelineConfigsForApplicationUsingG
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -665,19 +810,18 @@ func (a *ApplicationControllerApiService) GetPipelineConfigsForApplicationUsingG
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -689,24 +833,49 @@ func (a *ApplicationControllerApiService) GetPipelineConfigsForApplicationUsingG
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetPipelinesUsingGETOpts Optional parameters for the method 'GetPipelinesUsingGET'
-type GetPipelinesUsingGETOpts struct {
-	Expand   optional.Bool
-	Limit    optional.Int32
-	Statuses optional.String
+type apiGetPipelinesUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	application string
+	expand      *bool
+	limit       *int32
+	statuses    *string
+}
+
+func (r apiGetPipelinesUsingGETRequest) Expand(expand bool) apiGetPipelinesUsingGETRequest {
+	r.expand = &expand
+	return r
+}
+
+func (r apiGetPipelinesUsingGETRequest) Limit(limit int32) apiGetPipelinesUsingGETRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r apiGetPipelinesUsingGETRequest) Statuses(statuses string) apiGetPipelinesUsingGETRequest {
+	r.statuses = &statuses
+	return r
 }
 
 /*
 GetPipelinesUsingGET Retrieve a list of an application's pipeline executions
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
- * @param optional nil or *GetPipelinesUsingGETOpts - Optional Parameters:
- * @param "Expand" (optional.Bool) -  expand
- * @param "Limit" (optional.Int32) -  limit
- * @param "Statuses" (optional.String) -  statuses
-@return []map[string]interface{}
+@return apiGetPipelinesUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetPipelinesUsingGET(ctx _context.Context, application string, localVarOptionals *GetPipelinesUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetPipelinesUsingGET(ctx _context.Context, application string) apiGetPipelinesUsingGETRequest {
+	return apiGetPipelinesUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetPipelinesUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -716,22 +885,26 @@ func (a *ApplicationControllerApiService) GetPipelinesUsingGET(ctx _context.Cont
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/pipelines"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetPipelinesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/pipelines"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Statuses.IsSet() {
-		localVarQueryParams.Add("statuses", parameterToString(localVarOptionals.Statuses.Value(), ""))
+	if r.statuses != nil {
+		localVarQueryParams.Add("statuses", parameterToString(*r.statuses, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -750,12 +923,12 @@ func (a *ApplicationControllerApiService) GetPipelinesUsingGET(ctx _context.Cont
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -773,19 +946,18 @@ func (a *ApplicationControllerApiService) GetPipelinesUsingGET(ctx _context.Cont
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -795,6 +967,13 @@ func (a *ApplicationControllerApiService) GetPipelinesUsingGET(ctx _context.Cont
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetStrategyConfigUsingGETRequest struct {
+	ctx          _context.Context
+	apiService   *ApplicationControllerApiService
+	application  string
+	strategyName string
 }
 
 /*
@@ -802,9 +981,22 @@ GetStrategyConfigUsingGET Retrieve a pipeline strategy configuration
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
  * @param strategyName strategyName
-@return map[string]map[string]interface{}
+@return apiGetStrategyConfigUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetStrategyConfigUsingGET(ctx _context.Context, application string, strategyName string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetStrategyConfigUsingGET(ctx _context.Context, application string, strategyName string) apiGetStrategyConfigUsingGETRequest {
+	return apiGetStrategyConfigUsingGETRequest{
+		apiService:   a,
+		ctx:          ctx,
+		application:  application,
+		strategyName: strategyName,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetStrategyConfigUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -814,10 +1006,14 @@ func (a *ApplicationControllerApiService) GetStrategyConfigUsingGET(ctx _context
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/strategyConfigs/{strategyName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"strategyName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", strategyName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetStrategyConfigUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/strategyConfigs/{strategyName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"strategyName"+"}", _neturl.QueryEscape(parameterToString(r.strategyName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -840,12 +1036,12 @@ func (a *ApplicationControllerApiService) GetStrategyConfigUsingGET(ctx _context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -863,19 +1059,18 @@ func (a *ApplicationControllerApiService) GetStrategyConfigUsingGET(ctx _context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -887,13 +1082,31 @@ func (a *ApplicationControllerApiService) GetStrategyConfigUsingGET(ctx _context
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiGetStrategyConfigsForApplicationUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	application string
+}
+
 /*
 GetStrategyConfigsForApplicationUsingGET Retrieve a list of an application's pipeline strategy configurations
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
-@return []map[string]interface{}
+@return apiGetStrategyConfigsForApplicationUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetStrategyConfigsForApplicationUsingGET(ctx _context.Context, application string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetStrategyConfigsForApplicationUsingGET(ctx _context.Context, application string) apiGetStrategyConfigsForApplicationUsingGETRequest {
+	return apiGetStrategyConfigsForApplicationUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetStrategyConfigsForApplicationUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -903,9 +1116,13 @@ func (a *ApplicationControllerApiService) GetStrategyConfigsForApplicationUsingG
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/strategyConfigs"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetStrategyConfigsForApplicationUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/strategyConfigs"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -928,12 +1145,12 @@ func (a *ApplicationControllerApiService) GetStrategyConfigsForApplicationUsingG
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -951,19 +1168,18 @@ func (a *ApplicationControllerApiService) GetStrategyConfigsForApplicationUsingG
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -975,9 +1191,17 @@ func (a *ApplicationControllerApiService) GetStrategyConfigsForApplicationUsingG
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetTaskDetailsUsingGETOpts Optional parameters for the method 'GetTaskDetailsUsingGET'
-type GetTaskDetailsUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiGetTaskDetailsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *ApplicationControllerApiService
+	id            string
+	taskDetailsId string
+	xRateLimitApp *string
+}
+
+func (r apiGetTaskDetailsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetTaskDetailsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -985,11 +1209,22 @@ GetTaskDetailsUsingGET Get task details
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
  * @param taskDetailsId taskDetailsId
- * @param optional nil or *GetTaskDetailsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return map[string]map[string]interface{}
+@return apiGetTaskDetailsUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetTaskDetailsUsingGET(ctx _context.Context, id string, taskDetailsId string, localVarOptionals *GetTaskDetailsUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetTaskDetailsUsingGET(ctx _context.Context, id string, taskDetailsId string) apiGetTaskDetailsUsingGETRequest {
+	return apiGetTaskDetailsUsingGETRequest{
+		apiService:    a,
+		ctx:           ctx,
+		id:            id,
+		taskDetailsId: taskDetailsId,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetTaskDetailsUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -999,10 +1234,14 @@ func (a *ApplicationControllerApiService) GetTaskDetailsUsingGET(ctx _context.Co
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/tasks/{id}/details/{taskDetailsId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"taskDetailsId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", taskDetailsId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetTaskDetailsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/tasks/{id}/details/{taskDetailsId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"taskDetailsId"+"}", _neturl.QueryEscape(parameterToString(r.taskDetailsId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1025,15 +1264,15 @@ func (a *ApplicationControllerApiService) GetTaskDetailsUsingGET(ctx _context.Co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1051,19 +1290,18 @@ func (a *ApplicationControllerApiService) GetTaskDetailsUsingGET(ctx _context.Co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1073,15 +1311,33 @@ func (a *ApplicationControllerApiService) GetTaskDetailsUsingGET(ctx _context.Co
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetTaskUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *ApplicationControllerApiService
+	id         string
 }
 
 /*
 GetTaskUsingGET Get task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiGetTaskUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetTaskUsingGET(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetTaskUsingGET(ctx _context.Context, id string) apiGetTaskUsingGETRequest {
+	return apiGetTaskUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetTaskUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1091,9 +1347,13 @@ func (a *ApplicationControllerApiService) GetTaskUsingGET(ctx _context.Context, 
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/tasks/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetTaskUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/tasks/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1116,12 +1376,12 @@ func (a *ApplicationControllerApiService) GetTaskUsingGET(ctx _context.Context, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1139,19 +1399,18 @@ func (a *ApplicationControllerApiService) GetTaskUsingGET(ctx _context.Context, 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1163,24 +1422,49 @@ func (a *ApplicationControllerApiService) GetTaskUsingGET(ctx _context.Context, 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetTasksUsingGETOpts Optional parameters for the method 'GetTasksUsingGET'
-type GetTasksUsingGETOpts struct {
-	Limit    optional.Int32
-	Page     optional.Int32
-	Statuses optional.String
+type apiGetTasksUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	application string
+	limit       *int32
+	page        *int32
+	statuses    *string
+}
+
+func (r apiGetTasksUsingGETRequest) Limit(limit int32) apiGetTasksUsingGETRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r apiGetTasksUsingGETRequest) Page(page int32) apiGetTasksUsingGETRequest {
+	r.page = &page
+	return r
+}
+
+func (r apiGetTasksUsingGETRequest) Statuses(statuses string) apiGetTasksUsingGETRequest {
+	r.statuses = &statuses
+	return r
 }
 
 /*
 GetTasksUsingGET Retrieve a list of an application's tasks
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
- * @param optional nil or *GetTasksUsingGETOpts - Optional Parameters:
- * @param "Limit" (optional.Int32) -  limit
- * @param "Page" (optional.Int32) -  page
- * @param "Statuses" (optional.String) -  statuses
-@return []map[string]interface{}
+@return apiGetTasksUsingGETRequest
 */
-func (a *ApplicationControllerApiService) GetTasksUsingGET(ctx _context.Context, application string, localVarOptionals *GetTasksUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) GetTasksUsingGET(ctx _context.Context, application string) apiGetTasksUsingGETRequest {
+	return apiGetTasksUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetTasksUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1190,22 +1474,26 @@ func (a *ApplicationControllerApiService) GetTasksUsingGET(ctx _context.Context,
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/tasks"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.GetTasksUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/tasks"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
-		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
+	if r.page != nil {
+		localVarQueryParams.Add("page", parameterToString(*r.page, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Statuses.IsSet() {
-		localVarQueryParams.Add("statuses", parameterToString(localVarOptionals.Statuses.Value(), ""))
+	if r.statuses != nil {
+		localVarQueryParams.Add("statuses", parameterToString(*r.statuses, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1224,12 +1512,12 @@ func (a *ApplicationControllerApiService) GetTasksUsingGET(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1247,19 +1535,18 @@ func (a *ApplicationControllerApiService) GetTasksUsingGET(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1271,10 +1558,23 @@ func (a *ApplicationControllerApiService) GetTasksUsingGET(ctx _context.Context,
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// InvokePipelineConfigUsingPOSTOpts Optional parameters for the method 'InvokePipelineConfigUsingPOST'
-type InvokePipelineConfigUsingPOSTOpts struct {
-	Trigger optional.Interface
-	User    optional.String
+type apiInvokePipelineConfigUsingPOSTRequest struct {
+	ctx          _context.Context
+	apiService   *ApplicationControllerApiService
+	application  string
+	pipelineName string
+	trigger      *map[string]interface{}
+	user         *string
+}
+
+func (r apiInvokePipelineConfigUsingPOSTRequest) Trigger(trigger map[string]interface{}) apiInvokePipelineConfigUsingPOSTRequest {
+	r.trigger = &trigger
+	return r
+}
+
+func (r apiInvokePipelineConfigUsingPOSTRequest) User(user string) apiInvokePipelineConfigUsingPOSTRequest {
+	r.user = &user
+	return r
 }
 
 /*
@@ -1282,12 +1582,22 @@ InvokePipelineConfigUsingPOST Invoke pipeline config
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
  * @param pipelineName pipelineName
- * @param optional nil or *InvokePipelineConfigUsingPOSTOpts - Optional Parameters:
- * @param "Trigger" (optional.Interface) -  trigger
- * @param "User" (optional.String) -  user
-@return HttpEntity
+@return apiInvokePipelineConfigUsingPOSTRequest
 */
-func (a *ApplicationControllerApiService) InvokePipelineConfigUsingPOST(ctx _context.Context, application string, pipelineName string, localVarOptionals *InvokePipelineConfigUsingPOSTOpts) (HttpEntity, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) InvokePipelineConfigUsingPOST(ctx _context.Context, application string, pipelineName string) apiInvokePipelineConfigUsingPOSTRequest {
+	return apiInvokePipelineConfigUsingPOSTRequest{
+		apiService:   a,
+		ctx:          ctx,
+		application:  application,
+		pipelineName: pipelineName,
+	}
+}
+
+/*
+Execute executes the request
+ @return HttpEntity
+*/
+func (r apiInvokePipelineConfigUsingPOSTRequest) Execute() (HttpEntity, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -1297,17 +1607,21 @@ func (a *ApplicationControllerApiService) InvokePipelineConfigUsingPOST(ctx _con
 		localVarReturnValue  HttpEntity
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/pipelineConfigs/{pipelineName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.InvokePipelineConfigUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/pipelineConfigs/{pipelineName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineName"+"}", _neturl.QueryEscape(parameterToString(r.pipelineName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.User.IsSet() {
-		localVarQueryParams.Add("user", parameterToString(localVarOptionals.User.Value(), ""))
+	if r.user != nil {
+		localVarQueryParams.Add("user", parameterToString(*r.user, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1327,16 +1641,13 @@ func (a *ApplicationControllerApiService) InvokePipelineConfigUsingPOST(ctx _con
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Trigger.IsSet() {
-		localVarPostBody = localVarOptionals.Trigger.Value()
-	}
-
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.trigger
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1354,19 +1665,18 @@ func (a *ApplicationControllerApiService) InvokePipelineConfigUsingPOST(ctx _con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v HttpEntity
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1378,14 +1688,37 @@ func (a *ApplicationControllerApiService) InvokePipelineConfigUsingPOST(ctx _con
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiTaskUsingPOSTRequest struct {
+	ctx         _context.Context
+	apiService  *ApplicationControllerApiService
+	map_        *map[string]interface{}
+	application string
+}
+
+func (r apiTaskUsingPOSTRequest) Map_(map_ map[string]interface{}) apiTaskUsingPOSTRequest {
+	r.map_ = &map_
+	return r
+}
+
 /*
 TaskUsingPOST Create task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param map_ map
  * @param application application
-@return map[string]map[string]interface{}
+@return apiTaskUsingPOSTRequest
 */
-func (a *ApplicationControllerApiService) TaskUsingPOST(ctx _context.Context, map_ map[string]interface{}, application string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ApplicationControllerApiService) TaskUsingPOST(ctx _context.Context, application string) apiTaskUsingPOSTRequest {
+	return apiTaskUsingPOSTRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiTaskUsingPOSTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -1395,13 +1728,21 @@ func (a *ApplicationControllerApiService) TaskUsingPOST(ctx _context.Context, ma
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/tasks"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ApplicationControllerApiService.TaskUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/tasks"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.map_ == nil {
+		return localVarReturnValue, nil, reportError("map_ is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1421,13 +1762,13 @@ func (a *ApplicationControllerApiService) TaskUsingPOST(ctx _context.Context, ma
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &map_
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.map_
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1445,19 +1786,18 @@ func (a *ApplicationControllerApiService) TaskUsingPOST(ctx _context.Context, ma
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

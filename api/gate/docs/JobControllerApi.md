@@ -1,6 +1,6 @@
 # \JobControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,25 +10,24 @@ Method | HTTP request | Description
 
 ## GetJobUsingGET
 
-> map[string]map[string]interface{} GetJobUsingGET(ctx, account, applicationName, name, region, optional)
+> map[string]map[string]interface{} GetJobUsingGET(ctx, account, applicationName, name, region).XRateLimitApp(xRateLimitApp).Expand(expand).Execute()
 
 Get job
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**applicationName** | **string**| applicationName | 
-**name** | **string**| name | 
-**region** | **string**| region | 
- **optional** | ***GetJobUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**applicationName** | **string** | applicationName | 
+**name** | **string** | name | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetJobUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetJobUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -37,8 +36,8 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **expand** | **optional.String**| expand | [default to false]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **expand** | **string** | expand | [default to false]
 
 ### Return type
 

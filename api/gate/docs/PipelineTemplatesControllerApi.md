@@ -1,6 +1,6 @@
 # \PipelineTemplatesControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -16,17 +16,22 @@ Method | HTTP request | Description
 
 ## CreateUsingPOST
 
-> CreateUsingPOST(ctx, pipelineTemplate)
+> CreateUsingPOST(ctx).PipelineTemplate(pipelineTemplate).Execute()
 
 Create a pipeline template.
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipelineTemplate** | **map[string]interface{}**| pipelineTemplate | 
+ **pipelineTemplate** | **map[string]interface{}** | pipelineTemplate | 
 
 ### Return type
 
@@ -48,28 +53,27 @@ No authorization required
 
 ## DeleteUsingDELETE
 
-> map[string]map[string]interface{} DeleteUsingDELETE(ctx, id, optional)
+> map[string]map[string]interface{} DeleteUsingDELETE(ctx, id).Application(application).Execute()
 
 Delete a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***DeleteUsingDELETEOpts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a DeleteUsingDELETEOpts struct
+Other parameters are passed through a pointer to a apiDeleteUsingDELETERequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **application** | **optional.String**| application | 
+ **application** | **string** | application | 
 
 ### Return type
 
@@ -91,17 +95,26 @@ No authorization required
 
 ## GetUsingGET
 
-> map[string]map[string]interface{} GetUsingGET(ctx, id)
+> map[string]map[string]interface{} GetUsingGET(ctx, id).Execute()
 
 Get a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -123,28 +136,27 @@ No authorization required
 
 ## ListPipelineTemplateDependentsUsingGET
 
-> []map[string]interface{} ListPipelineTemplateDependentsUsingGET(ctx, id, optional)
+> []map[string]interface{} ListPipelineTemplateDependentsUsingGET(ctx, id).Recursive(recursive).Execute()
 
 List all pipelines that implement a pipeline template
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***ListPipelineTemplateDependentsUsingGETOpts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a ListPipelineTemplateDependentsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiListPipelineTemplateDependentsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **recursive** | **optional.Bool**| recursive | 
+ **recursive** | **bool** | recursive | 
 
 ### Return type
 
@@ -166,26 +178,22 @@ No authorization required
 
 ## ListUsingGET
 
-> []map[string]interface{} ListUsingGET(ctx, optional)
+> []map[string]interface{} ListUsingGET(ctx).Scopes(scopes).Execute()
 
 List pipeline templates.
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***ListUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a ListUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **scopes** | [**optional.Interface of []string**](string.md)| scopes | 
+ **scopes** | [**[]string**](string.md) | scopes | 
 
 ### Return type
 
@@ -207,29 +215,24 @@ No authorization required
 
 ## ResolveTemplatesUsingGET
 
-> map[string]map[string]interface{} ResolveTemplatesUsingGET(ctx, source, optional)
+> map[string]map[string]interface{} ResolveTemplatesUsingGET(ctx).Source(source).ExecutionId(executionId).PipelineConfigId(pipelineConfigId).Execute()
 
 Resolve a pipeline template.
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiResolveTemplatesUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**source** | **string**| source | 
- **optional** | ***ResolveTemplatesUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a ResolveTemplatesUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **executionId** | **optional.String**| executionId | 
- **pipelineConfigId** | **optional.String**| pipelineConfigId | 
+ **source** | **string** | source | 
+ **executionId** | **string** | executionId | 
+ **pipelineConfigId** | **string** | pipelineConfigId | 
 
 ### Return type
 
@@ -251,30 +254,28 @@ No authorization required
 
 ## UpdateUsingPOST
 
-> UpdateUsingPOST(ctx, pipelineTemplate, id, optional)
+> UpdateUsingPOST(ctx, id).PipelineTemplate(pipelineTemplate).SkipPlanDependents(skipPlanDependents).Execute()
 
 Update a pipeline template.
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipelineTemplate** | **map[string]interface{}**| pipelineTemplate | 
-**id** | **string**| id | 
- **optional** | ***UpdateUsingPOSTOpts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a UpdateUsingPOSTOpts struct
+Other parameters are passed through a pointer to a apiUpdateUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **pipelineTemplate** | **map[string]interface{}** | pipelineTemplate | 
 
-
- **skipPlanDependents** | **optional.Bool**| skipPlanDependents | [default to false]
+ **skipPlanDependents** | **bool** | skipPlanDependents | [default to false]
 
 ### Return type
 

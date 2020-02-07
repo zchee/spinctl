@@ -1,6 +1,6 @@
 # \InstanceControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,24 +11,23 @@ Method | HTTP request | Description
 
 ## GetConsoleOutputUsingGET
 
-> map[string]interface{} GetConsoleOutputUsingGET(ctx, account, instanceId, region, optional)
+> map[string]interface{} GetConsoleOutputUsingGET(ctx, account, instanceId, region).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve an instance's console output
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**instanceId** | **string**| instanceId | 
-**region** | **string**| region | 
- **optional** | ***GetConsoleOutputUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**instanceId** | **string** | instanceId | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetConsoleOutputUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetConsoleOutputUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -36,8 +35,8 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -59,24 +58,23 @@ No authorization required
 
 ## GetInstanceDetailsUsingGET
 
-> map[string]interface{} GetInstanceDetailsUsingGET(ctx, account, instanceId, region, optional)
+> map[string]interface{} GetInstanceDetailsUsingGET(ctx, account, instanceId, region).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve an instance's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**instanceId** | **string**| instanceId | 
-**region** | **string**| region | 
- **optional** | ***GetInstanceDetailsUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**instanceId** | **string** | instanceId | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetInstanceDetailsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetInstanceDetailsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -84,7 +82,7 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 

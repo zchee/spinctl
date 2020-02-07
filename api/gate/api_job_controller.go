@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,10 +25,25 @@ var (
 // JobControllerApiService JobControllerApi service
 type JobControllerApiService service
 
-// GetJobUsingGETOpts Optional parameters for the method 'GetJobUsingGET'
-type GetJobUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Expand        optional.String
+type apiGetJobUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *JobControllerApiService
+	account         string
+	applicationName string
+	name            string
+	region          string
+	xRateLimitApp   *string
+	expand          *string
+}
+
+func (r apiGetJobUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetJobUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetJobUsingGETRequest) Expand(expand string) apiGetJobUsingGETRequest {
+	r.expand = &expand
+	return r
 }
 
 /*
@@ -41,12 +53,24 @@ GetJobUsingGET Get job
  * @param applicationName applicationName
  * @param name name
  * @param region region
- * @param optional nil or *GetJobUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Expand" (optional.String) -  expand
-@return map[string]map[string]interface{}
+@return apiGetJobUsingGETRequest
 */
-func (a *JobControllerApiService) GetJobUsingGET(ctx _context.Context, account string, applicationName string, name string, region string, localVarOptionals *GetJobUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *JobControllerApiService) GetJobUsingGET(ctx _context.Context, account string, applicationName string, name string, region string) apiGetJobUsingGETRequest {
+	return apiGetJobUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		account:         account,
+		applicationName: applicationName,
+		name:            name,
+		region:          region,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetJobUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -56,19 +80,23 @@ func (a *JobControllerApiService) GetJobUsingGET(ctx _context.Context, account s
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{applicationName}/jobs/{account}/{region}/{name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", applicationName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", name)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "JobControllerApiService.GetJobUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{applicationName}/jobs/{account}/{region}/{name}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(parameterToString(r.applicationName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(parameterToString(r.name, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -87,15 +115,15 @@ func (a *JobControllerApiService) GetJobUsingGET(ctx _context.Context, account s
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -113,19 +141,18 @@ func (a *JobControllerApiService) GetJobUsingGET(ctx _context.Context, account s
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

@@ -1,6 +1,6 @@
 # \PubsubSubscriptionControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,13 +10,18 @@ Method | HTTP request | Description
 
 ## AllUsingGET4
 
-> []map[string]string AllUsingGET4(ctx, )
+> []map[string]string AllUsingGET4(ctx).Execute()
 
 Retrieve the list of pub/sub subscriptions configured in Echo.
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAllUsingGET4Request struct via the builder pattern
+
 
 ### Return type
 

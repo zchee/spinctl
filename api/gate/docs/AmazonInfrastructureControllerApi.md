@@ -1,6 +1,6 @@
 # \AmazonInfrastructureControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -14,17 +14,26 @@ Method | HTTP request | Description
 
 ## ApplicationFunctionsUsingGET
 
-> []map[string]interface{} ApplicationFunctionsUsingGET(ctx, application)
+> []map[string]interface{} ApplicationFunctionsUsingGET(ctx, application).Execute()
 
 Get application functions
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
+**application** | **string** | application | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApplicationFunctionsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -46,28 +55,24 @@ No authorization required
 
 ## FunctionsUsingGET
 
-> []map[string]interface{} FunctionsUsingGET(ctx, optional)
+> []map[string]interface{} FunctionsUsingGET(ctx).Account(account).FunctionName(functionName).Region(region).Execute()
 
 Get functions
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiFunctionsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***FunctionsUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a FunctionsUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **account** | **optional.String**| account | 
- **functionName** | **optional.String**| functionName | 
- **region** | **optional.String**| region | 
+ **account** | **string** | account | 
+ **functionName** | **string** | functionName | 
+ **region** | **string** | region | 
 
 ### Return type
 
@@ -89,13 +94,18 @@ No authorization required
 
 ## InstanceTypesUsingGET
 
-> []map[string]interface{} InstanceTypesUsingGET(ctx, )
+> []map[string]interface{} InstanceTypesUsingGET(ctx).Execute()
 
 Get instance types
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiInstanceTypesUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -117,13 +127,18 @@ No authorization required
 
 ## SubnetsUsingGET
 
-> []map[string]interface{} SubnetsUsingGET(ctx, )
+> []map[string]interface{} SubnetsUsingGET(ctx).Execute()
 
 Get subnets
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSubnetsUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -145,13 +160,18 @@ No authorization required
 
 ## VpcsUsingGET
 
-> []map[string]interface{} VpcsUsingGET(ctx, )
+> []map[string]interface{} VpcsUsingGET(ctx).Execute()
 
 Get VPCs
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiVpcsUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 

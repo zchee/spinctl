@@ -1,6 +1,6 @@
 # \CredentialsControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,40 +11,39 @@ Method | HTTP request | Description
 
 ## GetAccountUsingGET
 
-> AccountDetails GetAccountUsingGET(ctx, account, optional)
+> AccountDetails GetAccountUsingGET(ctx, account).XRateLimitApp(xRateLimitApp).AccountNonExpired(accountNonExpired).AccountNonLocked(accountNonLocked).AllowedAccounts(allowedAccounts).Authorities0Authority(authorities0Authority).CredentialsNonExpired(credentialsNonExpired).Email(email).Enabled(enabled).FirstName(firstName).LastName(lastName).Password(password).Roles(roles).Username(username).Execute()
 
 Retrieve an account's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
- **optional** | ***GetAccountUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetAccountUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetAccountUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **accountNonExpired** | **optional.Bool**|  | 
- **accountNonLocked** | **optional.Bool**|  | 
- **allowedAccounts** | [**optional.Interface of []string**](string.md)|  | 
- **authorities0Authority** | **optional.String**|  | 
- **credentialsNonExpired** | **optional.Bool**|  | 
- **email** | **optional.String**|  | 
- **enabled** | **optional.Bool**|  | 
- **firstName** | **optional.String**|  | 
- **lastName** | **optional.String**|  | 
- **password** | **optional.String**|  | 
- **roles** | [**optional.Interface of []string**](string.md)|  | 
- **username** | **optional.String**|  | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **accountNonExpired** | **bool** |  | 
+ **accountNonLocked** | **bool** |  | 
+ **allowedAccounts** | [**[]string**](string.md) |  | 
+ **authorities0Authority** | **string** |  | 
+ **credentialsNonExpired** | **bool** |  | 
+ **email** | **string** |  | 
+ **enabled** | **bool** |  | 
+ **firstName** | **string** |  | 
+ **lastName** | **string** |  | 
+ **password** | **string** |  | 
+ **roles** | [**[]string**](string.md) |  | 
+ **username** | **string** |  | 
 
 ### Return type
 
@@ -66,38 +65,34 @@ No authorization required
 
 ## GetAccountsUsingGET
 
-> []Account GetAccountsUsingGET(ctx, optional)
+> []Account GetAccountsUsingGET(ctx).AccountNonExpired(accountNonExpired).AccountNonLocked(accountNonLocked).AllowedAccounts(allowedAccounts).Authorities0Authority(authorities0Authority).CredentialsNonExpired(credentialsNonExpired).Email(email).Enabled(enabled).Expand(expand).FirstName(firstName).LastName(lastName).Password(password).Roles(roles).Username(username).Execute()
 
 Retrieve a list of accounts
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAccountsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***GetAccountsUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a GetAccountsUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **accountNonExpired** | **optional.Bool**|  | 
- **accountNonLocked** | **optional.Bool**|  | 
- **allowedAccounts** | [**optional.Interface of []string**](string.md)|  | 
- **authorities0Authority** | **optional.String**|  | 
- **credentialsNonExpired** | **optional.Bool**|  | 
- **email** | **optional.String**|  | 
- **enabled** | **optional.Bool**|  | 
- **expand** | **optional.Bool**| expand | 
- **firstName** | **optional.String**|  | 
- **lastName** | **optional.String**|  | 
- **password** | **optional.String**|  | 
- **roles** | [**optional.Interface of []string**](string.md)|  | 
- **username** | **optional.String**|  | 
+ **accountNonExpired** | **bool** |  | 
+ **accountNonLocked** | **bool** |  | 
+ **allowedAccounts** | [**[]string**](string.md) |  | 
+ **authorities0Authority** | **string** |  | 
+ **credentialsNonExpired** | **bool** |  | 
+ **email** | **string** |  | 
+ **enabled** | **bool** |  | 
+ **expand** | **bool** | expand | 
+ **firstName** | **string** |  | 
+ **lastName** | **string** |  | 
+ **password** | **string** |  | 
+ **roles** | [**[]string**](string.md) |  | 
+ **username** | **string** |  | 
 
 ### Return type
 

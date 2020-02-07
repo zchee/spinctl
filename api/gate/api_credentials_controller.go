@@ -11,14 +11,11 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"reflect"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -29,44 +26,109 @@ var (
 // CredentialsControllerApiService CredentialsControllerApi service
 type CredentialsControllerApiService service
 
-// GetAccountUsingGETOpts Optional parameters for the method 'GetAccountUsingGET'
-type GetAccountUsingGETOpts struct {
-	XRateLimitApp         optional.String
-	AccountNonExpired     optional.Bool
-	AccountNonLocked      optional.Bool
-	AllowedAccounts       optional.Interface
-	Authorities0Authority optional.String
-	CredentialsNonExpired optional.Bool
-	Email                 optional.String
-	Enabled               optional.Bool
-	FirstName             optional.String
-	LastName              optional.String
-	Password              optional.String
-	Roles                 optional.Interface
-	Username              optional.String
+type apiGetAccountUsingGETRequest struct {
+	ctx                   _context.Context
+	apiService            *CredentialsControllerApiService
+	account               string
+	xRateLimitApp         *string
+	accountNonExpired     *bool
+	accountNonLocked      *bool
+	allowedAccounts       *[]string
+	authorities0Authority *string
+	credentialsNonExpired *bool
+	email                 *string
+	enabled               *bool
+	firstName             *string
+	lastName              *string
+	password              *string
+	roles                 *[]string
+	username              *string
+}
+
+func (r apiGetAccountUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetAccountUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) AccountNonExpired(accountNonExpired bool) apiGetAccountUsingGETRequest {
+	r.accountNonExpired = &accountNonExpired
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) AccountNonLocked(accountNonLocked bool) apiGetAccountUsingGETRequest {
+	r.accountNonLocked = &accountNonLocked
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) AllowedAccounts(allowedAccounts []string) apiGetAccountUsingGETRequest {
+	r.allowedAccounts = &allowedAccounts
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) Authorities0Authority(authorities0Authority string) apiGetAccountUsingGETRequest {
+	r.authorities0Authority = &authorities0Authority
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) CredentialsNonExpired(credentialsNonExpired bool) apiGetAccountUsingGETRequest {
+	r.credentialsNonExpired = &credentialsNonExpired
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) Email(email string) apiGetAccountUsingGETRequest {
+	r.email = &email
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) Enabled(enabled bool) apiGetAccountUsingGETRequest {
+	r.enabled = &enabled
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) FirstName(firstName string) apiGetAccountUsingGETRequest {
+	r.firstName = &firstName
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) LastName(lastName string) apiGetAccountUsingGETRequest {
+	r.lastName = &lastName
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) Password(password string) apiGetAccountUsingGETRequest {
+	r.password = &password
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) Roles(roles []string) apiGetAccountUsingGETRequest {
+	r.roles = &roles
+	return r
+}
+
+func (r apiGetAccountUsingGETRequest) Username(username string) apiGetAccountUsingGETRequest {
+	r.username = &username
+	return r
 }
 
 /*
 GetAccountUsingGET Retrieve an account's details
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
- * @param optional nil or *GetAccountUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "AccountNonExpired" (optional.Bool) -
- * @param "AccountNonLocked" (optional.Bool) -
- * @param "AllowedAccounts" (optional.Interface of []string) -
- * @param "Authorities0Authority" (optional.String) -
- * @param "CredentialsNonExpired" (optional.Bool) -
- * @param "Email" (optional.String) -
- * @param "Enabled" (optional.Bool) -
- * @param "FirstName" (optional.String) -
- * @param "LastName" (optional.String) -
- * @param "Password" (optional.String) -
- * @param "Roles" (optional.Interface of []string) -
- * @param "Username" (optional.String) -
-@return AccountDetails
+@return apiGetAccountUsingGETRequest
 */
-func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Context, account string, localVarOptionals *GetAccountUsingGETOpts) (AccountDetails, *_nethttp.Response, error) {
+func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Context, account string) apiGetAccountUsingGETRequest {
+	return apiGetAccountUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+	}
+}
+
+/*
+Execute executes the request
+ @return AccountDetails
+*/
+func (r apiGetAccountUsingGETRequest) Execute() (AccountDetails, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -76,22 +138,26 @@ func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Contex
 		localVarReturnValue  AccountDetails
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/credentials/{account}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CredentialsControllerApiService.GetAccountUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/credentials/{account}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.AccountNonExpired.IsSet() {
-		localVarQueryParams.Add("accountNonExpired", parameterToString(localVarOptionals.AccountNonExpired.Value(), ""))
+	if r.accountNonExpired != nil {
+		localVarQueryParams.Add("accountNonExpired", parameterToString(*r.accountNonExpired, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AccountNonLocked.IsSet() {
-		localVarQueryParams.Add("accountNonLocked", parameterToString(localVarOptionals.AccountNonLocked.Value(), ""))
+	if r.accountNonLocked != nil {
+		localVarQueryParams.Add("accountNonLocked", parameterToString(*r.accountNonLocked, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AllowedAccounts.IsSet() {
-		t := localVarOptionals.AllowedAccounts.Value()
+	if r.allowedAccounts != nil {
+		t := *r.allowedAccounts
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -101,29 +167,29 @@ func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Contex
 			localVarQueryParams.Add("allowedAccounts", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Authorities0Authority.IsSet() {
-		localVarQueryParams.Add("authorities[0].authority", parameterToString(localVarOptionals.Authorities0Authority.Value(), ""))
+	if r.authorities0Authority != nil {
+		localVarQueryParams.Add("authorities[0].authority", parameterToString(*r.authorities0Authority, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.CredentialsNonExpired.IsSet() {
-		localVarQueryParams.Add("credentialsNonExpired", parameterToString(localVarOptionals.CredentialsNonExpired.Value(), ""))
+	if r.credentialsNonExpired != nil {
+		localVarQueryParams.Add("credentialsNonExpired", parameterToString(*r.credentialsNonExpired, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Email.IsSet() {
-		localVarQueryParams.Add("email", parameterToString(localVarOptionals.Email.Value(), ""))
+	if r.email != nil {
+		localVarQueryParams.Add("email", parameterToString(*r.email, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Enabled.IsSet() {
-		localVarQueryParams.Add("enabled", parameterToString(localVarOptionals.Enabled.Value(), ""))
+	if r.enabled != nil {
+		localVarQueryParams.Add("enabled", parameterToString(*r.enabled, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.FirstName.IsSet() {
-		localVarQueryParams.Add("firstName", parameterToString(localVarOptionals.FirstName.Value(), ""))
+	if r.firstName != nil {
+		localVarQueryParams.Add("firstName", parameterToString(*r.firstName, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.LastName.IsSet() {
-		localVarQueryParams.Add("lastName", parameterToString(localVarOptionals.LastName.Value(), ""))
+	if r.lastName != nil {
+		localVarQueryParams.Add("lastName", parameterToString(*r.lastName, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Password.IsSet() {
-		localVarQueryParams.Add("password", parameterToString(localVarOptionals.Password.Value(), ""))
+	if r.password != nil {
+		localVarQueryParams.Add("password", parameterToString(*r.password, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Roles.IsSet() {
-		t := localVarOptionals.Roles.Value()
+	if r.roles != nil {
+		t := *r.roles
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -133,8 +199,8 @@ func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Contex
 			localVarQueryParams.Add("roles", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Username.IsSet() {
-		localVarQueryParams.Add("username", parameterToString(localVarOptionals.Username.Value(), ""))
+	if r.username != nil {
+		localVarQueryParams.Add("username", parameterToString(*r.username, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -153,15 +219,15 @@ func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -179,19 +245,18 @@ func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v AccountDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -203,43 +268,106 @@ func (a *CredentialsControllerApiService) GetAccountUsingGET(ctx _context.Contex
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetAccountsUsingGETOpts Optional parameters for the method 'GetAccountsUsingGET'
-type GetAccountsUsingGETOpts struct {
-	AccountNonExpired     optional.Bool
-	AccountNonLocked      optional.Bool
-	AllowedAccounts       optional.Interface
-	Authorities0Authority optional.String
-	CredentialsNonExpired optional.Bool
-	Email                 optional.String
-	Enabled               optional.Bool
-	Expand                optional.Bool
-	FirstName             optional.String
-	LastName              optional.String
-	Password              optional.String
-	Roles                 optional.Interface
-	Username              optional.String
+type apiGetAccountsUsingGETRequest struct {
+	ctx                   _context.Context
+	apiService            *CredentialsControllerApiService
+	accountNonExpired     *bool
+	accountNonLocked      *bool
+	allowedAccounts       *[]string
+	authorities0Authority *string
+	credentialsNonExpired *bool
+	email                 *string
+	enabled               *bool
+	expand                *bool
+	firstName             *string
+	lastName              *string
+	password              *string
+	roles                 *[]string
+	username              *string
+}
+
+func (r apiGetAccountsUsingGETRequest) AccountNonExpired(accountNonExpired bool) apiGetAccountsUsingGETRequest {
+	r.accountNonExpired = &accountNonExpired
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) AccountNonLocked(accountNonLocked bool) apiGetAccountsUsingGETRequest {
+	r.accountNonLocked = &accountNonLocked
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) AllowedAccounts(allowedAccounts []string) apiGetAccountsUsingGETRequest {
+	r.allowedAccounts = &allowedAccounts
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Authorities0Authority(authorities0Authority string) apiGetAccountsUsingGETRequest {
+	r.authorities0Authority = &authorities0Authority
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) CredentialsNonExpired(credentialsNonExpired bool) apiGetAccountsUsingGETRequest {
+	r.credentialsNonExpired = &credentialsNonExpired
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Email(email string) apiGetAccountsUsingGETRequest {
+	r.email = &email
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Enabled(enabled bool) apiGetAccountsUsingGETRequest {
+	r.enabled = &enabled
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Expand(expand bool) apiGetAccountsUsingGETRequest {
+	r.expand = &expand
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) FirstName(firstName string) apiGetAccountsUsingGETRequest {
+	r.firstName = &firstName
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) LastName(lastName string) apiGetAccountsUsingGETRequest {
+	r.lastName = &lastName
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Password(password string) apiGetAccountsUsingGETRequest {
+	r.password = &password
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Roles(roles []string) apiGetAccountsUsingGETRequest {
+	r.roles = &roles
+	return r
+}
+
+func (r apiGetAccountsUsingGETRequest) Username(username string) apiGetAccountsUsingGETRequest {
+	r.username = &username
+	return r
 }
 
 /*
 GetAccountsUsingGET Retrieve a list of accounts
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetAccountsUsingGETOpts - Optional Parameters:
- * @param "AccountNonExpired" (optional.Bool) -
- * @param "AccountNonLocked" (optional.Bool) -
- * @param "AllowedAccounts" (optional.Interface of []string) -
- * @param "Authorities0Authority" (optional.String) -
- * @param "CredentialsNonExpired" (optional.Bool) -
- * @param "Email" (optional.String) -
- * @param "Enabled" (optional.Bool) -
- * @param "Expand" (optional.Bool) -  expand
- * @param "FirstName" (optional.String) -
- * @param "LastName" (optional.String) -
- * @param "Password" (optional.String) -
- * @param "Roles" (optional.Interface of []string) -
- * @param "Username" (optional.String) -
-@return []Account
+@return apiGetAccountsUsingGETRequest
 */
-func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Context, localVarOptionals *GetAccountsUsingGETOpts) ([]Account, *_nethttp.Response, error) {
+func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Context) apiGetAccountsUsingGETRequest {
+	return apiGetAccountsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []Account
+*/
+func (r apiGetAccountsUsingGETRequest) Execute() ([]Account, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -249,21 +377,25 @@ func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Conte
 		localVarReturnValue  []Account
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/credentials"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CredentialsControllerApiService.GetAccountsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/credentials"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.AccountNonExpired.IsSet() {
-		localVarQueryParams.Add("accountNonExpired", parameterToString(localVarOptionals.AccountNonExpired.Value(), ""))
+	if r.accountNonExpired != nil {
+		localVarQueryParams.Add("accountNonExpired", parameterToString(*r.accountNonExpired, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AccountNonLocked.IsSet() {
-		localVarQueryParams.Add("accountNonLocked", parameterToString(localVarOptionals.AccountNonLocked.Value(), ""))
+	if r.accountNonLocked != nil {
+		localVarQueryParams.Add("accountNonLocked", parameterToString(*r.accountNonLocked, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AllowedAccounts.IsSet() {
-		t := localVarOptionals.AllowedAccounts.Value()
+	if r.allowedAccounts != nil {
+		t := *r.allowedAccounts
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -273,32 +405,32 @@ func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Conte
 			localVarQueryParams.Add("allowedAccounts", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Authorities0Authority.IsSet() {
-		localVarQueryParams.Add("authorities[0].authority", parameterToString(localVarOptionals.Authorities0Authority.Value(), ""))
+	if r.authorities0Authority != nil {
+		localVarQueryParams.Add("authorities[0].authority", parameterToString(*r.authorities0Authority, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.CredentialsNonExpired.IsSet() {
-		localVarQueryParams.Add("credentialsNonExpired", parameterToString(localVarOptionals.CredentialsNonExpired.Value(), ""))
+	if r.credentialsNonExpired != nil {
+		localVarQueryParams.Add("credentialsNonExpired", parameterToString(*r.credentialsNonExpired, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Email.IsSet() {
-		localVarQueryParams.Add("email", parameterToString(localVarOptionals.Email.Value(), ""))
+	if r.email != nil {
+		localVarQueryParams.Add("email", parameterToString(*r.email, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Enabled.IsSet() {
-		localVarQueryParams.Add("enabled", parameterToString(localVarOptionals.Enabled.Value(), ""))
+	if r.enabled != nil {
+		localVarQueryParams.Add("enabled", parameterToString(*r.enabled, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Expand.IsSet() {
-		localVarQueryParams.Add("expand", parameterToString(localVarOptionals.Expand.Value(), ""))
+	if r.expand != nil {
+		localVarQueryParams.Add("expand", parameterToString(*r.expand, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.FirstName.IsSet() {
-		localVarQueryParams.Add("firstName", parameterToString(localVarOptionals.FirstName.Value(), ""))
+	if r.firstName != nil {
+		localVarQueryParams.Add("firstName", parameterToString(*r.firstName, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.LastName.IsSet() {
-		localVarQueryParams.Add("lastName", parameterToString(localVarOptionals.LastName.Value(), ""))
+	if r.lastName != nil {
+		localVarQueryParams.Add("lastName", parameterToString(*r.lastName, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Password.IsSet() {
-		localVarQueryParams.Add("password", parameterToString(localVarOptionals.Password.Value(), ""))
+	if r.password != nil {
+		localVarQueryParams.Add("password", parameterToString(*r.password, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Roles.IsSet() {
-		t := localVarOptionals.Roles.Value()
+	if r.roles != nil {
+		t := *r.roles
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -308,8 +440,8 @@ func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Conte
 			localVarQueryParams.Add("roles", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Username.IsSet() {
-		localVarQueryParams.Add("username", parameterToString(localVarOptionals.Username.Value(), ""))
+	if r.username != nil {
+		localVarQueryParams.Add("username", parameterToString(*r.username, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -328,12 +460,12 @@ func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -351,19 +483,18 @@ func (a *CredentialsControllerApiService) GetAccountsUsingGET(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []Account
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

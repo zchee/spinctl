@@ -11,7 +11,6 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
@@ -26,13 +25,31 @@ var (
 // ServerGroupManagerControllerApiService ServerGroupManagerControllerApi service
 type ServerGroupManagerControllerApiService service
 
+type apiGetServerGroupManagersForApplicationUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ServerGroupManagerControllerApiService
+	application string
+}
+
 /*
 GetServerGroupManagersForApplicationUsingGET Retrieve a list of server group managers for an application
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
-@return []map[string]interface{}
+@return apiGetServerGroupManagersForApplicationUsingGETRequest
 */
-func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplicationUsingGET(ctx _context.Context, application string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplicationUsingGET(ctx _context.Context, application string) apiGetServerGroupManagersForApplicationUsingGETRequest {
+	return apiGetServerGroupManagersForApplicationUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetServerGroupManagersForApplicationUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -42,9 +59,13 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/serverGroupManagers"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerGroupManagerControllerApiService.GetServerGroupManagersForApplicationUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/serverGroupManagers"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -67,12 +88,12 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -90,19 +111,18 @@ func (a *ServerGroupManagerControllerApiService) GetServerGroupManagersForApplic
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

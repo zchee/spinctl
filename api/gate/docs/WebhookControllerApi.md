@@ -1,6 +1,6 @@
 # \WebhookControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,13 +11,18 @@ Method | HTTP request | Description
 
 ## PreconfiguredWebhooksUsingGET
 
-> []map[string]interface{} PreconfiguredWebhooksUsingGET(ctx, )
+> []map[string]interface{} PreconfiguredWebhooksUsingGET(ctx).Execute()
 
 Retrieve a list of preconfigured webhooks in Orca
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPreconfiguredWebhooksUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -39,32 +44,31 @@ No authorization required
 
 ## WebhooksUsingPOST
 
-> map[string]interface{} WebhooksUsingPOST(ctx, source, type_, optional)
+> map[string]interface{} WebhooksUsingPOST(ctx, source, type_).Event(event).XEventKey(xEventKey).XHubSignature(xHubSignature).Execute()
 
 Endpoint for posting webhooks to Spinnaker's webhook service
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**source** | **string**| source | 
-**type_** | **string**| type | 
- **optional** | ***WebhooksUsingPOSTOpts** | optional parameters | nil if no parameters
+**source** | **string** | source | 
+**type_** | **string** | type | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a WebhooksUsingPOSTOpts struct
+Other parameters are passed through a pointer to a apiWebhooksUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **event** | **optional.Interface**| event | 
- **xEventKey** | **optional.String**| X-Event-Key | 
- **xHubSignature** | **optional.String**| X-Hub-Signature | 
+ **event** | **map[string]interface{}** | event | 
+ **xEventKey** | **string** | X-Event-Key | 
+ **xHubSignature** | **string** | X-Hub-Signature | 
 
 ### Return type
 

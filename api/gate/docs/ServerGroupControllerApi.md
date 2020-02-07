@@ -1,6 +1,6 @@
 # \ServerGroupControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,25 +11,24 @@ Method | HTTP request | Description
 
 ## GetServerGroupDetailsUsingGET
 
-> map[string]interface{} GetServerGroupDetailsUsingGET(ctx, account, applicationName, region, serverGroupName, optional)
+> map[string]interface{} GetServerGroupDetailsUsingGET(ctx, account, applicationName, region, serverGroupName).XRateLimitApp(xRateLimitApp).IncludeDetails(includeDetails).Execute()
 
 Retrieve a server group's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**applicationName** | **string**| applicationName | 
-**region** | **string**| region | 
-**serverGroupName** | **string**| serverGroupName | 
- **optional** | ***GetServerGroupDetailsUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**applicationName** | **string** | applicationName | 
+**region** | **string** | region | 
+**serverGroupName** | **string** | serverGroupName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetServerGroupDetailsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetServerGroupDetailsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -38,8 +37,8 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **includeDetails** | **optional.String**| includeDetails | [default to true]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **includeDetails** | **string** | includeDetails | [default to true]
 
 ### Return type
 
@@ -61,31 +60,30 @@ No authorization required
 
 ## GetServerGroupsForApplicationUsingGET
 
-> []map[string]interface{} GetServerGroupsForApplicationUsingGET(ctx, applicationName, optional)
+> []map[string]interface{} GetServerGroupsForApplicationUsingGET(ctx, applicationName).XRateLimitApp(xRateLimitApp).CloudProvider(cloudProvider).Clusters(clusters).Expand(expand).Execute()
 
 Retrieve a list of server groups for a given application
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**applicationName** | **string**| applicationName | 
- **optional** | ***GetServerGroupsForApplicationUsingGETOpts** | optional parameters | nil if no parameters
+**applicationName** | **string** | applicationName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetServerGroupsForApplicationUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetServerGroupsForApplicationUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **cloudProvider** | **optional.String**| cloudProvider | 
- **clusters** | **optional.String**| clusters | 
- **expand** | **optional.String**| expand | [default to false]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **cloudProvider** | **string** | cloudProvider | 
+ **clusters** | **string** | clusters | 
+ **expand** | **string** | expand | [default to false]
 
 ### Return type
 

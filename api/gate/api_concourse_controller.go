@@ -11,7 +11,6 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
@@ -26,15 +25,37 @@ var (
 // ConcourseControllerApiService ConcourseControllerApi service
 type ConcourseControllerApiService service
 
+type apiJobsUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ConcourseControllerApiService
+	buildMaster string
+	pipeline    string
+	team        string
+}
+
 /*
 JobsUsingGET Retrieve the list of job names for a given pipeline available to triggers
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
  * @param pipeline pipeline
  * @param team team
-@return []map[string]interface{}
+@return apiJobsUsingGETRequest
 */
-func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, buildMaster string, pipeline string, team string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, buildMaster string, pipeline string, team string) apiJobsUsingGETRequest {
+	return apiJobsUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+		pipeline:    pipeline,
+		team:        team,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiJobsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -44,11 +65,15 @@ func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, build
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/jobs"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipeline"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipeline)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", team)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConcourseControllerApiService.JobsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/jobs"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipeline"+"}", _neturl.QueryEscape(parameterToString(r.pipeline, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(parameterToString(r.team, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -71,12 +96,12 @@ func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, build
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -94,19 +119,18 @@ func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, build
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -118,14 +142,34 @@ func (a *ConcourseControllerApiService) JobsUsingGET(ctx _context.Context, build
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiPipelinesUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ConcourseControllerApiService
+	buildMaster string
+	team        string
+}
+
 /*
 PipelinesUsingGET Retrieve the list of pipeline names for a given team available to triggers
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
  * @param team team
-@return []map[string]interface{}
+@return apiPipelinesUsingGETRequest
 */
-func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, buildMaster string, team string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, buildMaster string, team string) apiPipelinesUsingGETRequest {
+	return apiPipelinesUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+		team:        team,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiPipelinesUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -135,10 +179,14 @@ func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, 
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/concourse/{buildMaster}/teams/{team}/pipelines"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", team)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConcourseControllerApiService.PipelinesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/concourse/{buildMaster}/teams/{team}/pipelines"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(parameterToString(r.team, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -161,12 +209,12 @@ func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -184,19 +232,18 @@ func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -206,6 +253,14 @@ func (a *ConcourseControllerApiService) PipelinesUsingGET(ctx _context.Context, 
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiResourcesUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ConcourseControllerApiService
+	buildMaster string
+	pipeline    string
+	team        string
 }
 
 /*
@@ -214,9 +269,23 @@ ResourcesUsingGET Retrieve the list of resource names for a given pipeline avail
  * @param buildMaster buildMaster
  * @param pipeline pipeline
  * @param team team
-@return []map[string]interface{}
+@return apiResourcesUsingGETRequest
 */
-func (a *ConcourseControllerApiService) ResourcesUsingGET(ctx _context.Context, buildMaster string, pipeline string, team string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ConcourseControllerApiService) ResourcesUsingGET(ctx _context.Context, buildMaster string, pipeline string, team string) apiResourcesUsingGETRequest {
+	return apiResourcesUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+		pipeline:    pipeline,
+		team:        team,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiResourcesUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -226,11 +295,15 @@ func (a *ConcourseControllerApiService) ResourcesUsingGET(ctx _context.Context, 
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/resources"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipeline"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipeline)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", team)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConcourseControllerApiService.ResourcesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/resources"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipeline"+"}", _neturl.QueryEscape(parameterToString(r.pipeline, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"team"+"}", _neturl.QueryEscape(parameterToString(r.team, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -253,12 +326,12 @@ func (a *ConcourseControllerApiService) ResourcesUsingGET(ctx _context.Context, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -276,19 +349,18 @@ func (a *ConcourseControllerApiService) ResourcesUsingGET(ctx _context.Context, 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

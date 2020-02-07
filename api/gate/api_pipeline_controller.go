@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,21 +25,43 @@ var (
 // PipelineControllerApiService PipelineControllerApi service
 type PipelineControllerApiService service
 
-// CancelPipelineUsingPUT1Opts Optional parameters for the method 'CancelPipelineUsingPUT1'
-type CancelPipelineUsingPUT1Opts struct {
-	Force  optional.Bool
-	Reason optional.String
+type apiCancelPipelineUsingPUT1Request struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	id         string
+	force      *bool
+	reason     *string
+}
+
+func (r apiCancelPipelineUsingPUT1Request) Force(force bool) apiCancelPipelineUsingPUT1Request {
+	r.force = &force
+	return r
+}
+
+func (r apiCancelPipelineUsingPUT1Request) Reason(reason string) apiCancelPipelineUsingPUT1Request {
+	r.reason = &reason
+	return r
 }
 
 /*
 CancelPipelineUsingPUT1 Cancel a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
- * @param optional nil or *CancelPipelineUsingPUT1Opts - Optional Parameters:
- * @param "Force" (optional.Bool) -  force
- * @param "Reason" (optional.String) -  reason
+@return apiCancelPipelineUsingPUT1Request
 */
-func (a *PipelineControllerApiService) CancelPipelineUsingPUT1(ctx _context.Context, id string, localVarOptionals *CancelPipelineUsingPUT1Opts) (*_nethttp.Response, error) {
+func (a *PipelineControllerApiService) CancelPipelineUsingPUT1(ctx _context.Context, id string) apiCancelPipelineUsingPUT1Request {
+	return apiCancelPipelineUsingPUT1Request{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiCancelPipelineUsingPUT1Request) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -51,19 +70,23 @@ func (a *PipelineControllerApiService) CancelPipelineUsingPUT1(ctx _context.Cont
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/cancel"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.CancelPipelineUsingPUT1")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/cancel"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Force.IsSet() {
-		localVarQueryParams.Add("force", parameterToString(localVarOptionals.Force.Value(), ""))
+	if r.force != nil {
+		localVarQueryParams.Add("force", parameterToString(*r.force, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Reason.IsSet() {
-		localVarQueryParams.Add("reason", parameterToString(localVarOptionals.Reason.Value(), ""))
+	if r.reason != nil {
+		localVarQueryParams.Add("reason", parameterToString(*r.reason, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -82,12 +105,12 @@ func (a *PipelineControllerApiService) CancelPipelineUsingPUT1(ctx _context.Cont
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -107,6 +130,13 @@ func (a *PipelineControllerApiService) CancelPipelineUsingPUT1(ctx _context.Cont
 	}
 
 	return localVarHTTPResponse, nil
+}
+
+type apiDeletePipelineUsingDELETERequest struct {
+	ctx          _context.Context
+	apiService   *PipelineControllerApiService
+	application  string
+	pipelineName string
 }
 
 /*
@@ -114,8 +144,22 @@ DeletePipelineUsingDELETE Delete a pipeline definition
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
  * @param pipelineName pipelineName
+@return apiDeletePipelineUsingDELETERequest
 */
-func (a *PipelineControllerApiService) DeletePipelineUsingDELETE(ctx _context.Context, application string, pipelineName string) (*_nethttp.Response, error) {
+func (a *PipelineControllerApiService) DeletePipelineUsingDELETE(ctx _context.Context, application string, pipelineName string) apiDeletePipelineUsingDELETERequest {
+	return apiDeletePipelineUsingDELETERequest{
+		apiService:   a,
+		ctx:          ctx,
+		application:  application,
+		pipelineName: pipelineName,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeletePipelineUsingDELETERequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -124,10 +168,14 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE(ctx _context.Co
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{application}/{pipelineName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.DeletePipelineUsingDELETE")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{application}/{pipelineName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineName"+"}", _neturl.QueryEscape(parameterToString(r.pipelineName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -150,12 +198,12 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE(ctx _context.Co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -177,13 +225,31 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE(ctx _context.Co
 	return localVarHTTPResponse, nil
 }
 
+type apiDeletePipelineUsingDELETE1Request struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	id         string
+}
+
 /*
 DeletePipelineUsingDELETE1 Delete a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiDeletePipelineUsingDELETE1Request
 */
-func (a *PipelineControllerApiService) DeletePipelineUsingDELETE1(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) DeletePipelineUsingDELETE1(ctx _context.Context, id string) apiDeletePipelineUsingDELETE1Request {
+	return apiDeletePipelineUsingDELETE1Request{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiDeletePipelineUsingDELETE1Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -193,9 +259,13 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE1(ctx _context.C
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.DeletePipelineUsingDELETE1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -218,12 +288,12 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE1(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -241,19 +311,18 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE1(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -265,107 +334,40 @@ func (a *PipelineControllerApiService) DeletePipelineUsingDELETE1(ctx _context.C
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-/*
-EvaluateExpressionForExecutionAtStageUsingDELETE Evaluate a pipeline expression at a specific stage using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
- * @param stageId stageId
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingDELETE(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
+type apiEvaluateExpressionForExecutionAtStageUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	expression *string
+	id         string
+	stageId    string
+}
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+func (r apiEvaluateExpressionForExecutionAtStageUsingGETRequest) Expression(expression string) apiEvaluateExpressionForExecutionAtStageUsingGETRequest {
+	r.expression = &expression
+	return r
 }
 
 /*
 EvaluateExpressionForExecutionAtStageUsingGET Evaluate a pipeline expression at a specific stage using the provided execution as context
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
  * @param id id
  * @param stageId stageId
-@return map[string]map[string]interface{}
+@return apiEvaluateExpressionForExecutionAtStageUsingGETRequest
 */
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingGET(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingGET(ctx _context.Context, id string, stageId string) apiEvaluateExpressionForExecutionAtStageUsingGETRequest {
+	return apiEvaluateExpressionForExecutionAtStageUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+		stageId:    stageId,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiEvaluateExpressionForExecutionAtStageUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -375,16 +377,24 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsin
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.EvaluateExpressionForExecutionAtStageUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(parameterToString(r.stageId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
+	if r.expression == nil {
+		return localVarReturnValue, nil, reportError("expression is required and must be specified")
+	}
+
+	localVarQueryParams.Add("expression", parameterToString(*r.expression, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -402,12 +412,12 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsin
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -425,19 +435,18 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsin
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -449,564 +458,37 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsin
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-/*
-EvaluateExpressionForExecutionAtStageUsingHEAD Evaluate a pipeline expression at a specific stage using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
- * @param stageId stageId
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingHEAD(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodHead
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+type apiEvaluateExpressionForExecutionUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	expression *string
+	id         string
 }
 
-/*
-EvaluateExpressionForExecutionAtStageUsingOPTIONS Evaluate a pipeline expression at a specific stage using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
- * @param stageId stageId
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingOPTIONS(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodOptions
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-/*
-EvaluateExpressionForExecutionAtStageUsingPATCH Evaluate a pipeline expression at a specific stage using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
- * @param stageId stageId
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingPATCH(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-/*
-EvaluateExpressionForExecutionAtStageUsingPOST Evaluate a pipeline expression at a specific stage using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
- * @param stageId stageId
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingPOST(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-/*
-EvaluateExpressionForExecutionAtStageUsingPUT Evaluate a pipeline expression at a specific stage using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
- * @param stageId stageId
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionAtStageUsingPUT(ctx _context.Context, expression string, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/{stageId}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-/*
-EvaluateExpressionForExecutionUsingDELETE Evaluate a pipeline expression using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingDELETE(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+func (r apiEvaluateExpressionForExecutionUsingGETRequest) Expression(expression string) apiEvaluateExpressionForExecutionUsingGETRequest {
+	r.expression = &expression
+	return r
 }
 
 /*
 EvaluateExpressionForExecutionUsingGET Evaluate a pipeline expression using the provided execution as context
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
  * @param id id
-@return map[string]map[string]interface{}
+@return apiEvaluateExpressionForExecutionUsingGETRequest
 */
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingGET(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingGET(ctx _context.Context, id string) apiEvaluateExpressionForExecutionUsingGETRequest {
+	return apiEvaluateExpressionForExecutionUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiEvaluateExpressionForExecutionUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1016,15 +498,23 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingGET(ct
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.EvaluateExpressionForExecutionUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/evaluateExpression"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
+	if r.expression == nil {
+		return localVarReturnValue, nil, reportError("expression is required and must be specified")
+	}
+
+	localVarQueryParams.Add("expression", parameterToString(*r.expression, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1042,12 +532,12 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingGET(ct
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1065,19 +555,18 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingGET(ct
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1089,284 +578,37 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingGET(ct
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-/*
-EvaluateExpressionForExecutionUsingHEAD Evaluate a pipeline expression using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingHEAD(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodHead
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
+type apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest struct {
+	ctx                _context.Context
+	apiService         *PipelineControllerApiService
+	pipelineExpression *string
+	id                 string
+}
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+func (r apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest) PipelineExpression(pipelineExpression string) apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest {
+	r.pipelineExpression = &pipelineExpression
+	return r
 }
 
 /*
-EvaluateExpressionForExecutionUsingOPTIONS Evaluate a pipeline expression using the provided execution as context
+EvaluateExpressionForExecutionViaPOSTUsingPOST Evaluate a pipeline expression using the provided execution as context
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
  * @param id id
-@return map[string]map[string]interface{}
+@return apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest
 */
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingOPTIONS(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodOptions
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+func (a *PipelineControllerApiService) EvaluateExpressionForExecutionViaPOSTUsingPOST(ctx _context.Context, id string) apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest {
+	return apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
 	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
 /*
-EvaluateExpressionForExecutionUsingPATCH Evaluate a pipeline expression using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
-@return map[string]map[string]interface{}
+Execute executes the request
+ @return map[string]map[string]interface{}
 */
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPATCH(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  map[string]map[string]interface{}
-	)
-
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"*/*"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(r)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
-/*
-EvaluateExpressionForExecutionUsingPOST Evaluate a pipeline expression using the provided execution as context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
-@return map[string]map[string]interface{}
-*/
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPOST(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (r apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -1376,17 +618,24 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPOST(c
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.EvaluateExpressionForExecutionViaPOSTUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/evaluateExpression"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
+	if r.pipelineExpression == nil {
+		return localVarReturnValue, nil, reportError("pipelineExpression is required and must be specified")
+	}
+
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"text/plain"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1402,12 +651,14 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPOST(c
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	// body params
+	localVarPostBody = r.pipelineExpression
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1425,19 +676,18 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPOST(c
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1449,16 +699,54 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPOST(c
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiEvaluateVariablesUsingPOSTRequest struct {
+	ctx                  _context.Context
+	apiService           *PipelineControllerApiService
+	expressions          *[]map[string]string
+	executionId          *string
+	requisiteStageRefIds *string
+	spelVersion          *string
+}
+
+func (r apiEvaluateVariablesUsingPOSTRequest) Expressions(expressions []map[string]string) apiEvaluateVariablesUsingPOSTRequest {
+	r.expressions = &expressions
+	return r
+}
+
+func (r apiEvaluateVariablesUsingPOSTRequest) ExecutionId(executionId string) apiEvaluateVariablesUsingPOSTRequest {
+	r.executionId = &executionId
+	return r
+}
+
+func (r apiEvaluateVariablesUsingPOSTRequest) RequisiteStageRefIds(requisiteStageRefIds string) apiEvaluateVariablesUsingPOSTRequest {
+	r.requisiteStageRefIds = &requisiteStageRefIds
+	return r
+}
+
+func (r apiEvaluateVariablesUsingPOSTRequest) SpelVersion(spelVersion string) apiEvaluateVariablesUsingPOSTRequest {
+	r.spelVersion = &spelVersion
+	return r
+}
+
 /*
-EvaluateExpressionForExecutionUsingPUT Evaluate a pipeline expression using the provided execution as context
+EvaluateVariablesUsingPOST Evaluate variables same as Evaluate Variables stage using the provided execution as context
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param expression expression
- * @param id id
-@return map[string]map[string]interface{}
+@return apiEvaluateVariablesUsingPOSTRequest
 */
-func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPUT(ctx _context.Context, expression string, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) EvaluateVariablesUsingPOST(ctx _context.Context) apiEvaluateVariablesUsingPOSTRequest {
+	return apiEvaluateVariablesUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiEvaluateVariablesUsingPOSTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
@@ -1466,17 +754,34 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPUT(ct
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/evaluateExpression"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.EvaluateVariablesUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/evaluateVariables"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("expression", parameterToString(expression, ""))
+	if r.expressions == nil {
+		return localVarReturnValue, nil, reportError("expressions is required and must be specified")
+	}
+
+	if r.executionId == nil {
+		return localVarReturnValue, nil, reportError("executionId is required and must be specified")
+	}
+
+	localVarQueryParams.Add("executionId", parameterToString(*r.executionId, ""))
+	if r.requisiteStageRefIds != nil {
+		localVarQueryParams.Add("requisiteStageRefIds", parameterToString(*r.requisiteStageRefIds, ""))
+	}
+	if r.spelVersion != nil {
+		localVarQueryParams.Add("spelVersion", parameterToString(*r.spelVersion, ""))
+	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1492,12 +797,14 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPUT(ct
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	// body params
+	localVarPostBody = r.expressions
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1515,19 +822,18 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPUT(ct
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1537,15 +843,33 @@ func (a *PipelineControllerApiService) EvaluateExpressionForExecutionUsingPUT(ct
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetPipelineUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	id         string
 }
 
 /*
 GetPipelineUsingGET Retrieve a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]interface{}
+@return apiGetPipelineUsingGETRequest
 */
-func (a *PipelineControllerApiService) GetPipelineUsingGET(ctx _context.Context, id string) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) GetPipelineUsingGET(ctx _context.Context, id string) apiGetPipelineUsingGETRequest {
+	return apiGetPipelineUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetPipelineUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1555,9 +879,13 @@ func (a *PipelineControllerApiService) GetPipelineUsingGET(ctx _context.Context,
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.GetPipelineUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1580,12 +908,12 @@ func (a *PipelineControllerApiService) GetPipelineUsingGET(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1603,19 +931,18 @@ func (a *PipelineControllerApiService) GetPipelineUsingGET(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1627,9 +954,17 @@ func (a *PipelineControllerApiService) GetPipelineUsingGET(ctx _context.Context,
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// InvokePipelineConfigUsingPOST1Opts Optional parameters for the method 'InvokePipelineConfigUsingPOST1'
-type InvokePipelineConfigUsingPOST1Opts struct {
-	Trigger optional.Interface
+type apiInvokePipelineConfigUsingPOST1Request struct {
+	ctx              _context.Context
+	apiService       *PipelineControllerApiService
+	application      string
+	pipelineNameOrId string
+	trigger          *map[string]interface{}
+}
+
+func (r apiInvokePipelineConfigUsingPOST1Request) Trigger(trigger map[string]interface{}) apiInvokePipelineConfigUsingPOST1Request {
+	r.trigger = &trigger
+	return r
 }
 
 /*
@@ -1637,24 +972,38 @@ InvokePipelineConfigUsingPOST1 Trigger a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
  * @param pipelineNameOrId pipelineNameOrId
- * @param optional nil or *InvokePipelineConfigUsingPOST1Opts - Optional Parameters:
- * @param "Trigger" (optional.Interface) -  trigger
-@return HttpEntity
+@return apiInvokePipelineConfigUsingPOST1Request
 */
-func (a *PipelineControllerApiService) InvokePipelineConfigUsingPOST1(ctx _context.Context, application string, pipelineNameOrId string, localVarOptionals *InvokePipelineConfigUsingPOST1Opts) (HttpEntity, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) InvokePipelineConfigUsingPOST1(ctx _context.Context, application string, pipelineNameOrId string) apiInvokePipelineConfigUsingPOST1Request {
+	return apiInvokePipelineConfigUsingPOST1Request{
+		apiService:       a,
+		ctx:              ctx,
+		application:      application,
+		pipelineNameOrId: pipelineNameOrId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiInvokePipelineConfigUsingPOST1Request) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  HttpEntity
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{application}/{pipelineNameOrId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineNameOrId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineNameOrId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.InvokePipelineConfigUsingPOST1")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{application}/{pipelineNameOrId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineNameOrId"+"}", _neturl.QueryEscape(parameterToString(r.pipelineNameOrId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1678,24 +1027,21 @@ func (a *PipelineControllerApiService) InvokePipelineConfigUsingPOST1(ctx _conte
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Trigger.IsSet() {
-		localVarPostBody = localVarOptionals.Trigger.Value()
-	}
-
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.trigger
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
-		return localVarReturnValue, nil, err
+		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
 	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
+		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
@@ -1703,35 +1049,33 @@ func (a *PipelineControllerApiService) InvokePipelineConfigUsingPOST1(ctx _conte
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		if localVarHTTPResponse.StatusCode == 200 {
-			var v HttpEntity
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if localVarHTTPResponse.StatusCode == 202 {
+			var v map[string]interface{}
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
+				return localVarHTTPResponse, newErr
 			}
 			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
+			return localVarHTTPResponse, newErr
 		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
+		return localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
+	return localVarHTTPResponse, nil
 }
 
-// InvokePipelineConfigViaEchoUsingPOSTOpts Optional parameters for the method 'InvokePipelineConfigViaEchoUsingPOST'
-type InvokePipelineConfigViaEchoUsingPOSTOpts struct {
-	Trigger optional.Interface
+type apiInvokePipelineConfigViaEchoUsingPOSTRequest struct {
+	ctx              _context.Context
+	apiService       *PipelineControllerApiService
+	application      string
+	pipelineNameOrId string
+	trigger          *map[string]interface{}
+}
+
+func (r apiInvokePipelineConfigViaEchoUsingPOSTRequest) Trigger(trigger map[string]interface{}) apiInvokePipelineConfigViaEchoUsingPOSTRequest {
+	r.trigger = &trigger
+	return r
 }
 
 /*
@@ -1739,11 +1083,22 @@ InvokePipelineConfigViaEchoUsingPOST Trigger a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
  * @param pipelineNameOrId pipelineNameOrId
- * @param optional nil or *InvokePipelineConfigViaEchoUsingPOSTOpts - Optional Parameters:
- * @param "Trigger" (optional.Interface) -  trigger
-@return HttpEntity
+@return apiInvokePipelineConfigViaEchoUsingPOSTRequest
 */
-func (a *PipelineControllerApiService) InvokePipelineConfigViaEchoUsingPOST(ctx _context.Context, application string, pipelineNameOrId string, localVarOptionals *InvokePipelineConfigViaEchoUsingPOSTOpts) (HttpEntity, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) InvokePipelineConfigViaEchoUsingPOST(ctx _context.Context, application string, pipelineNameOrId string) apiInvokePipelineConfigViaEchoUsingPOSTRequest {
+	return apiInvokePipelineConfigViaEchoUsingPOSTRequest{
+		apiService:       a,
+		ctx:              ctx,
+		application:      application,
+		pipelineNameOrId: pipelineNameOrId,
+	}
+}
+
+/*
+Execute executes the request
+ @return HttpEntity
+*/
+func (r apiInvokePipelineConfigViaEchoUsingPOSTRequest) Execute() (HttpEntity, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -1753,10 +1108,14 @@ func (a *PipelineControllerApiService) InvokePipelineConfigViaEchoUsingPOST(ctx 
 		localVarReturnValue  HttpEntity
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/v2/{application}/{pipelineNameOrId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"pipelineNameOrId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", pipelineNameOrId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.InvokePipelineConfigViaEchoUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/v2/{application}/{pipelineNameOrId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"pipelineNameOrId"+"}", _neturl.QueryEscape(parameterToString(r.pipelineNameOrId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1780,16 +1139,13 @@ func (a *PipelineControllerApiService) InvokePipelineConfigViaEchoUsingPOST(ctx 
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Trigger.IsSet() {
-		localVarPostBody = localVarOptionals.Trigger.Value()
-	}
-
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.trigger
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1807,19 +1163,18 @@ func (a *PipelineControllerApiService) InvokePipelineConfigViaEchoUsingPOST(ctx 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v HttpEntity
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1829,14 +1184,33 @@ func (a *PipelineControllerApiService) InvokePipelineConfigViaEchoUsingPOST(ctx 
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiPausePipelineUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	id         string
 }
 
 /*
 PausePipelineUsingPUT Pause a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
+@return apiPausePipelineUsingPUTRequest
 */
-func (a *PipelineControllerApiService) PausePipelineUsingPUT(ctx _context.Context, id string) (*_nethttp.Response, error) {
+func (a *PipelineControllerApiService) PausePipelineUsingPUT(ctx _context.Context, id string) apiPausePipelineUsingPUTRequest {
+	return apiPausePipelineUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiPausePipelineUsingPUTRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -1845,9 +1219,13 @@ func (a *PipelineControllerApiService) PausePipelineUsingPUT(ctx _context.Contex
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/pause"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.PausePipelineUsingPUT")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/pause"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1870,12 +1248,12 @@ func (a *PipelineControllerApiService) PausePipelineUsingPUT(ctx _context.Contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -1897,12 +1275,34 @@ func (a *PipelineControllerApiService) PausePipelineUsingPUT(ctx _context.Contex
 	return localVarHTTPResponse, nil
 }
 
+type apiRenamePipelineUsingPOSTRequest struct {
+	ctx           _context.Context
+	apiService    *PipelineControllerApiService
+	renameCommand *map[string]interface{}
+}
+
+func (r apiRenamePipelineUsingPOSTRequest) RenameCommand(renameCommand map[string]interface{}) apiRenamePipelineUsingPOSTRequest {
+	r.renameCommand = &renameCommand
+	return r
+}
+
 /*
 RenamePipelineUsingPOST Rename a pipeline definition
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param renameCommand renameCommand
+@return apiRenamePipelineUsingPOSTRequest
 */
-func (a *PipelineControllerApiService) RenamePipelineUsingPOST(ctx _context.Context, renameCommand map[string]interface{}) (*_nethttp.Response, error) {
+func (a *PipelineControllerApiService) RenamePipelineUsingPOST(ctx _context.Context) apiRenamePipelineUsingPOSTRequest {
+	return apiRenamePipelineUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiRenamePipelineUsingPOSTRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -1911,12 +1311,20 @@ func (a *PipelineControllerApiService) RenamePipelineUsingPOST(ctx _context.Cont
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/move"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.RenamePipelineUsingPOST")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/move"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.renameCommand == nil {
+		return nil, reportError("renameCommand is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1936,13 +1344,13 @@ func (a *PipelineControllerApiService) RenamePipelineUsingPOST(ctx _context.Cont
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &renameCommand
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.renameCommand
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -1964,15 +1372,40 @@ func (a *PipelineControllerApiService) RenamePipelineUsingPOST(ctx _context.Cont
 	return localVarHTTPResponse, nil
 }
 
+type apiRestartStageUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	context    *map[string]interface{}
+	id         string
+	stageId    string
+}
+
+func (r apiRestartStageUsingPUTRequest) Context(context map[string]interface{}) apiRestartStageUsingPUTRequest {
+	r.context = &context
+	return r
+}
+
 /*
 RestartStageUsingPUT Restart a stage execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param context context
  * @param id id
  * @param stageId stageId
-@return map[string]map[string]interface{}
+@return apiRestartStageUsingPUTRequest
 */
-func (a *PipelineControllerApiService) RestartStageUsingPUT(ctx _context.Context, context map[string]interface{}, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) RestartStageUsingPUT(ctx _context.Context, id string, stageId string) apiRestartStageUsingPUTRequest {
+	return apiRestartStageUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+		stageId:    stageId,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiRestartStageUsingPUTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -1982,14 +1415,22 @@ func (a *PipelineControllerApiService) RestartStageUsingPUT(ctx _context.Context
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/stages/{stageId}/restart"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.RestartStageUsingPUT")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/stages/{stageId}/restart"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(parameterToString(r.stageId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.context == nil {
+		return localVarReturnValue, nil, reportError("context is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2009,13 +1450,13 @@ func (a *PipelineControllerApiService) RestartStageUsingPUT(ctx _context.Context
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &context
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.context
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -2033,19 +1474,18 @@ func (a *PipelineControllerApiService) RestartStageUsingPUT(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -2055,15 +1495,33 @@ func (a *PipelineControllerApiService) RestartStageUsingPUT(ctx _context.Context
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiResumePipelineUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	id         string
 }
 
 /*
 ResumePipelineUsingPUT Resume a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiResumePipelineUsingPUTRequest
 */
-func (a *PipelineControllerApiService) ResumePipelineUsingPUT(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) ResumePipelineUsingPUT(ctx _context.Context, id string) apiResumePipelineUsingPUTRequest {
+	return apiResumePipelineUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiResumePipelineUsingPUTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -2073,9 +1531,13 @@ func (a *PipelineControllerApiService) ResumePipelineUsingPUT(ctx _context.Conte
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/resume"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.ResumePipelineUsingPUT")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/resume"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -2098,12 +1560,12 @@ func (a *PipelineControllerApiService) ResumePipelineUsingPUT(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -2121,19 +1583,18 @@ func (a *PipelineControllerApiService) ResumePipelineUsingPUT(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -2145,12 +1606,34 @@ func (a *PipelineControllerApiService) ResumePipelineUsingPUT(ctx _context.Conte
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiSavePipelineUsingPOSTRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	pipeline   *map[string]interface{}
+}
+
+func (r apiSavePipelineUsingPOSTRequest) Pipeline(pipeline map[string]interface{}) apiSavePipelineUsingPOSTRequest {
+	r.pipeline = &pipeline
+	return r
+}
+
 /*
 SavePipelineUsingPOST Save a pipeline definition
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param pipeline pipeline
+@return apiSavePipelineUsingPOSTRequest
 */
-func (a *PipelineControllerApiService) SavePipelineUsingPOST(ctx _context.Context, pipeline map[string]interface{}) (*_nethttp.Response, error) {
+func (a *PipelineControllerApiService) SavePipelineUsingPOST(ctx _context.Context) apiSavePipelineUsingPOSTRequest {
+	return apiSavePipelineUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiSavePipelineUsingPOSTRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -2159,12 +1642,20 @@ func (a *PipelineControllerApiService) SavePipelineUsingPOST(ctx _context.Contex
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.SavePipelineUsingPOST")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.pipeline == nil {
+		return nil, reportError("pipeline is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2184,13 +1675,13 @@ func (a *PipelineControllerApiService) SavePipelineUsingPOST(ctx _context.Contex
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &pipeline
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.pipeline
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -2212,13 +1703,34 @@ func (a *PipelineControllerApiService) SavePipelineUsingPOST(ctx _context.Contex
 	return localVarHTTPResponse, nil
 }
 
+type apiStartUsingPOSTRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	map_       *map[string]interface{}
+}
+
+func (r apiStartUsingPOSTRequest) Map_(map_ map[string]interface{}) apiStartUsingPOSTRequest {
+	r.map_ = &map_
+	return r
+}
+
 /*
 StartUsingPOST Initiate a pipeline execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param map_ map
-@return ResponseEntity
+@return apiStartUsingPOSTRequest
 */
-func (a *PipelineControllerApiService) StartUsingPOST(ctx _context.Context, map_ map[string]interface{}) (ResponseEntity, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) StartUsingPOST(ctx _context.Context) apiStartUsingPOSTRequest {
+	return apiStartUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return ResponseEntity
+*/
+func (r apiStartUsingPOSTRequest) Execute() (ResponseEntity, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -2228,12 +1740,20 @@ func (a *PipelineControllerApiService) StartUsingPOST(ctx _context.Context, map_
 		localVarReturnValue  ResponseEntity
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/start"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.StartUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/start"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.map_ == nil {
+		return localVarReturnValue, nil, reportError("map_ is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2253,13 +1773,13 @@ func (a *PipelineControllerApiService) StartUsingPOST(ctx _context.Context, map_
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &map_
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.map_
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -2277,19 +1797,18 @@ func (a *PipelineControllerApiService) StartUsingPOST(ctx _context.Context, map_
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v ResponseEntity
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -2301,14 +1820,37 @@ func (a *PipelineControllerApiService) StartUsingPOST(ctx _context.Context, map_
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiUpdatePipelineUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	pipeline   *map[string]interface{}
+	id         string
+}
+
+func (r apiUpdatePipelineUsingPUTRequest) Pipeline(pipeline map[string]interface{}) apiUpdatePipelineUsingPUTRequest {
+	r.pipeline = &pipeline
+	return r
+}
+
 /*
 UpdatePipelineUsingPUT Update a pipeline definition
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param pipeline pipeline
  * @param id id
-@return map[string]map[string]interface{}
+@return apiUpdatePipelineUsingPUTRequest
 */
-func (a *PipelineControllerApiService) UpdatePipelineUsingPUT(ctx _context.Context, pipeline map[string]interface{}, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) UpdatePipelineUsingPUT(ctx _context.Context, id string) apiUpdatePipelineUsingPUTRequest {
+	return apiUpdatePipelineUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiUpdatePipelineUsingPUTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -2318,13 +1860,21 @@ func (a *PipelineControllerApiService) UpdatePipelineUsingPUT(ctx _context.Conte
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.UpdatePipelineUsingPUT")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.pipeline == nil {
+		return localVarReturnValue, nil, reportError("pipeline is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2344,13 +1894,13 @@ func (a *PipelineControllerApiService) UpdatePipelineUsingPUT(ctx _context.Conte
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &pipeline
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.pipeline
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -2368,19 +1918,18 @@ func (a *PipelineControllerApiService) UpdatePipelineUsingPUT(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -2392,15 +1941,40 @@ func (a *PipelineControllerApiService) UpdatePipelineUsingPUT(ctx _context.Conte
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiUpdateStageUsingPATCHRequest struct {
+	ctx        _context.Context
+	apiService *PipelineControllerApiService
+	context    *map[string]interface{}
+	id         string
+	stageId    string
+}
+
+func (r apiUpdateStageUsingPATCHRequest) Context(context map[string]interface{}) apiUpdateStageUsingPATCHRequest {
+	r.context = &context
+	return r
+}
+
 /*
 UpdateStageUsingPATCH Update a stage execution
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param context context
  * @param id id
  * @param stageId stageId
-@return map[string]map[string]interface{}
+@return apiUpdateStageUsingPATCHRequest
 */
-func (a *PipelineControllerApiService) UpdateStageUsingPATCH(ctx _context.Context, context map[string]interface{}, id string, stageId string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *PipelineControllerApiService) UpdateStageUsingPATCH(ctx _context.Context, id string, stageId string) apiUpdateStageUsingPATCHRequest {
+	return apiUpdateStageUsingPATCHRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+		stageId:    stageId,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiUpdateStageUsingPATCHRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -2410,14 +1984,22 @@ func (a *PipelineControllerApiService) UpdateStageUsingPATCH(ctx _context.Contex
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/pipelines/{id}/stages/{stageId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", stageId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PipelineControllerApiService.UpdateStageUsingPATCH")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/pipelines/{id}/stages/{stageId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"stageId"+"}", _neturl.QueryEscape(parameterToString(r.stageId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.context == nil {
+		return localVarReturnValue, nil, reportError("context is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -2437,13 +2019,13 @@ func (a *PipelineControllerApiService) UpdateStageUsingPATCH(ctx _context.Contex
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &context
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.context
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -2461,19 +2043,18 @@ func (a *PipelineControllerApiService) UpdateStageUsingPATCH(ctx _context.Contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

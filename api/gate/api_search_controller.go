@@ -14,8 +14,6 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,30 +24,70 @@ var (
 // SearchControllerApiService SearchControllerApi service
 type SearchControllerApiService service
 
-// SearchUsingGETOpts Optional parameters for the method 'SearchUsingGET'
-type SearchUsingGETOpts struct {
-	XRateLimitApp   optional.String
-	AllowShortQuery optional.Bool
-	Page            optional.Int32
-	PageSize        optional.Int32
-	Platform        optional.String
-	Q               optional.String
+type apiSearchUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *SearchControllerApiService
+	type_           *string
+	xRateLimitApp   *string
+	allowShortQuery *bool
+	page            *int32
+	pageSize        *int32
+	platform        *string
+	q               *string
+}
+
+func (r apiSearchUsingGETRequest) Type_(type_ string) apiSearchUsingGETRequest {
+	r.type_ = &type_
+	return r
+}
+
+func (r apiSearchUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiSearchUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiSearchUsingGETRequest) AllowShortQuery(allowShortQuery bool) apiSearchUsingGETRequest {
+	r.allowShortQuery = &allowShortQuery
+	return r
+}
+
+func (r apiSearchUsingGETRequest) Page(page int32) apiSearchUsingGETRequest {
+	r.page = &page
+	return r
+}
+
+func (r apiSearchUsingGETRequest) PageSize(pageSize int32) apiSearchUsingGETRequest {
+	r.pageSize = &pageSize
+	return r
+}
+
+func (r apiSearchUsingGETRequest) Platform(platform string) apiSearchUsingGETRequest {
+	r.platform = &platform
+	return r
+}
+
+func (r apiSearchUsingGETRequest) Q(q string) apiSearchUsingGETRequest {
+	r.q = &q
+	return r
 }
 
 /*
 SearchUsingGET Search infrastructure
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param type_ type
- * @param optional nil or *SearchUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "AllowShortQuery" (optional.Bool) -  allowShortQuery
- * @param "Page" (optional.Int32) -  page
- * @param "PageSize" (optional.Int32) -  pageSize
- * @param "Platform" (optional.String) -  platform
- * @param "Q" (optional.String) -  q
-@return []map[string]interface{}
+@return apiSearchUsingGETRequest
 */
-func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context, type_ string, localVarOptionals *SearchUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context) apiSearchUsingGETRequest {
+	return apiSearchUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiSearchUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -59,29 +97,37 @@ func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context, type_ 
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/search"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SearchControllerApiService.SearchUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/search"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.AllowShortQuery.IsSet() {
-		localVarQueryParams.Add("allowShortQuery", parameterToString(localVarOptionals.AllowShortQuery.Value(), ""))
+	if r.type_ == nil {
+		return localVarReturnValue, nil, reportError("type_ is required and must be specified")
 	}
-	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
-		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
+
+	if r.allowShortQuery != nil {
+		localVarQueryParams.Add("allowShortQuery", parameterToString(*r.allowShortQuery, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	if r.page != nil {
+		localVarQueryParams.Add("page", parameterToString(*r.page, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Platform.IsSet() {
-		localVarQueryParams.Add("platform", parameterToString(localVarOptionals.Platform.Value(), ""))
+	if r.pageSize != nil {
+		localVarQueryParams.Add("pageSize", parameterToString(*r.pageSize, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Q.IsSet() {
-		localVarQueryParams.Add("q", parameterToString(localVarOptionals.Q.Value(), ""))
+	if r.platform != nil {
+		localVarQueryParams.Add("platform", parameterToString(*r.platform, ""))
 	}
-	localVarQueryParams.Add("type", parameterToString(type_, ""))
+	if r.q != nil {
+		localVarQueryParams.Add("q", parameterToString(*r.q, ""))
+	}
+	localVarQueryParams.Add("type", parameterToString(*r.type_, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -99,15 +145,15 @@ func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context, type_ 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -125,19 +171,18 @@ func (a *SearchControllerApiService) SearchUsingGET(ctx _context.Context, type_ 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

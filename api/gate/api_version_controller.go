@@ -24,12 +24,28 @@ var (
 // VersionControllerApiService VersionControllerApi service
 type VersionControllerApiService service
 
+type apiGetVersionUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *VersionControllerApiService
+}
+
 /*
 GetVersionUsingGET Fetch Gate's current version
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return Version
+@return apiGetVersionUsingGETRequest
 */
-func (a *VersionControllerApiService) GetVersionUsingGET(ctx _context.Context) (Version, *_nethttp.Response, error) {
+func (a *VersionControllerApiService) GetVersionUsingGET(ctx _context.Context) apiGetVersionUsingGETRequest {
+	return apiGetVersionUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return Version
+*/
+func (r apiGetVersionUsingGETRequest) Execute() (Version, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -39,8 +55,12 @@ func (a *VersionControllerApiService) GetVersionUsingGET(ctx _context.Context) (
 		localVarReturnValue  Version
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/version"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VersionControllerApiService.GetVersionUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/version"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -63,12 +83,12 @@ func (a *VersionControllerApiService) GetVersionUsingGET(ctx _context.Context) (
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -86,19 +106,18 @@ func (a *VersionControllerApiService) GetVersionUsingGET(ctx _context.Context) (
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v Version
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

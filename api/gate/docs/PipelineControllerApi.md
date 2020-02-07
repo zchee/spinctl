@@ -1,26 +1,16 @@
 # \PipelineControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CancelPipelineUsingPUT1**](PipelineControllerApi.md#CancelPipelineUsingPUT1) | **Put** /pipelines/{id}/cancel | Cancel a pipeline execution
 [**DeletePipelineUsingDELETE**](PipelineControllerApi.md#DeletePipelineUsingDELETE) | **Delete** /pipelines/{application}/{pipelineName} | Delete a pipeline definition
 [**DeletePipelineUsingDELETE1**](PipelineControllerApi.md#DeletePipelineUsingDELETE1) | **Delete** /pipelines/{id} | Delete a pipeline execution
-[**EvaluateExpressionForExecutionAtStageUsingDELETE**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingDELETE) | **Delete** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
 [**EvaluateExpressionForExecutionAtStageUsingGET**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingGET) | **Get** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-[**EvaluateExpressionForExecutionAtStageUsingHEAD**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingHEAD) | **Head** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-[**EvaluateExpressionForExecutionAtStageUsingOPTIONS**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingOPTIONS) | **Options** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-[**EvaluateExpressionForExecutionAtStageUsingPATCH**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingPATCH) | **Patch** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-[**EvaluateExpressionForExecutionAtStageUsingPOST**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingPOST) | **Post** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-[**EvaluateExpressionForExecutionAtStageUsingPUT**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingPUT) | **Put** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-[**EvaluateExpressionForExecutionUsingDELETE**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingDELETE) | **Delete** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
 [**EvaluateExpressionForExecutionUsingGET**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingGET) | **Get** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-[**EvaluateExpressionForExecutionUsingHEAD**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingHEAD) | **Head** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-[**EvaluateExpressionForExecutionUsingOPTIONS**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingOPTIONS) | **Options** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-[**EvaluateExpressionForExecutionUsingPATCH**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingPATCH) | **Patch** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-[**EvaluateExpressionForExecutionUsingPOST**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingPOST) | **Post** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-[**EvaluateExpressionForExecutionUsingPUT**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingPUT) | **Put** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
+[**EvaluateExpressionForExecutionViaPOSTUsingPOST**](PipelineControllerApi.md#EvaluateExpressionForExecutionViaPOSTUsingPOST) | **Post** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
+[**EvaluateVariablesUsingPOST**](PipelineControllerApi.md#EvaluateVariablesUsingPOST) | **Post** /pipelines/{id}/evaluateVariables | Evaluate variables same as Evaluate Variables stage using the provided execution as context
 [**GetPipelineUsingGET**](PipelineControllerApi.md#GetPipelineUsingGET) | **Get** /pipelines/{id} | Retrieve a pipeline execution
 [**InvokePipelineConfigUsingPOST1**](PipelineControllerApi.md#InvokePipelineConfigUsingPOST1) | **Post** /pipelines/{application}/{pipelineNameOrId} | Trigger a pipeline execution
 [**InvokePipelineConfigViaEchoUsingPOST**](PipelineControllerApi.md#InvokePipelineConfigViaEchoUsingPOST) | **Post** /pipelines/v2/{application}/{pipelineNameOrId} | Trigger a pipeline execution
@@ -37,29 +27,28 @@ Method | HTTP request | Description
 
 ## CancelPipelineUsingPUT1
 
-> CancelPipelineUsingPUT1(ctx, id, optional)
+> CancelPipelineUsingPUT1(ctx, id).Force(force).Reason(reason).Execute()
 
 Cancel a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***CancelPipelineUsingPUT1Opts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a CancelPipelineUsingPUT1Opts struct
+Other parameters are passed through a pointer to a apiCancelPipelineUsingPUT1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **force** | **optional.Bool**| force | [default to false]
- **reason** | **optional.String**| reason | 
+ **force** | **bool** | force | [default to false]
+ **reason** | **string** | reason | 
 
 ### Return type
 
@@ -81,18 +70,28 @@ No authorization required
 
 ## DeletePipelineUsingDELETE
 
-> DeletePipelineUsingDELETE(ctx, application, pipelineName)
+> DeletePipelineUsingDELETE(ctx, application, pipelineName).Execute()
 
 Delete a pipeline definition
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
-**pipelineName** | **string**| pipelineName | 
+**application** | **string** | application | 
+**pipelineName** | **string** | pipelineName | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeletePipelineUsingDELETERequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -114,51 +113,26 @@ No authorization required
 
 ## DeletePipelineUsingDELETE1
 
-> map[string]map[string]interface{} DeletePipelineUsingDELETE1(ctx, id)
+> map[string]map[string]interface{} DeletePipelineUsingDELETE1(ctx, id).Execute()
 
 Delete a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
 
-### Return type
+### Other Parameters
 
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionAtStageUsingDELETE
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingDELETE(ctx, expression, id, stageId)
-
-Evaluate a pipeline expression at a specific stage using the provided execution as context
-
-### Required Parameters
+Other parameters are passed through a pointer to a apiDeletePipelineUsingDELETE1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
+
 
 ### Return type
 
@@ -180,222 +154,29 @@ No authorization required
 
 ## EvaluateExpressionForExecutionAtStageUsingGET
 
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingGET(ctx, expression, id, stageId)
+> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingGET(ctx, id, stageId).Expression(expression).Execute()
 
 Evaluate a pipeline expression at a specific stage using the provided execution as context
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
+**id** | **string** | id | 
+**stageId** | **string** | stageId | 
 
-### Return type
+### Other Parameters
 
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionAtStageUsingHEAD
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingHEAD(ctx, expression, id, stageId)
-
-Evaluate a pipeline expression at a specific stage using the provided execution as context
-
-### Required Parameters
+Other parameters are passed through a pointer to a apiEvaluateExpressionForExecutionAtStageUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
+ **expression** | **string** | expression | 
 
-### Return type
 
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionAtStageUsingOPTIONS
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingOPTIONS(ctx, expression, id, stageId)
-
-Evaluate a pipeline expression at a specific stage using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionAtStageUsingPATCH
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingPATCH(ctx, expression, id, stageId)
-
-Evaluate a pipeline expression at a specific stage using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionAtStageUsingPOST
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingPOST(ctx, expression, id, stageId)
-
-Evaluate a pipeline expression at a specific stage using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionAtStageUsingPUT
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionAtStageUsingPUT(ctx, expression, id, stageId)
-
-Evaluate a pipeline expression at a specific stage using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionUsingDELETE
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingDELETE(ctx, expression, id)
-
-Evaluate a pipeline expression using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
 
 ### Return type
 
@@ -417,18 +198,27 @@ No authorization required
 
 ## EvaluateExpressionForExecutionUsingGET
 
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingGET(ctx, expression, id)
+> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingGET(ctx, id).Expression(expression).Execute()
 
 Evaluate a pipeline expression using the provided execution as context
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiEvaluateExpressionForExecutionUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **expression** | **string** | expression | 
+
 
 ### Return type
 
@@ -448,20 +238,29 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## EvaluateExpressionForExecutionUsingHEAD
+## EvaluateExpressionForExecutionViaPOSTUsingPOST
 
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingHEAD(ctx, expression, id)
+> map[string]map[string]interface{} EvaluateExpressionForExecutionViaPOSTUsingPOST(ctx, id).PipelineExpression(pipelineExpression).Execute()
 
 Evaluate a pipeline expression using the provided execution as context
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pipelineExpression** | **string** | pipelineExpression | 
+
 
 ### Return type
 
@@ -473,7 +272,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: text/plain
 - **Accept**: */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -481,20 +280,27 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## EvaluateExpressionForExecutionUsingOPTIONS
+## EvaluateVariablesUsingPOST
 
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingOPTIONS(ctx, expression, id)
+> map[string]map[string]interface{} EvaluateVariablesUsingPOST(ctx).Expressions(expressions).ExecutionId(executionId).RequisiteStageRefIds(requisiteStageRefIds).SpelVersion(spelVersion).Execute()
 
-Evaluate a pipeline expression using the provided execution as context
+Evaluate variables same as Evaluate Variables stage using the provided execution as context
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiEvaluateVariablesUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
+ **expressions** | [**[]map[string]string**](map.md) | List of variables/expressions to evaluate | 
+ **executionId** | **string** | Execution id to run against | 
+ **requisiteStageRefIds** | **string** | Comma separated list of requisite stage IDs for the evaluation stage | 
+ **spelVersion** | **string** | Version of SpEL evaluation logic to use (v3 or v4) | 
 
 ### Return type
 
@@ -506,106 +312,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionUsingPATCH
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingPATCH(ctx, expression, id)
-
-Evaluate a pipeline expression using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionUsingPOST
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingPOST(ctx, expression, id)
-
-Evaluate a pipeline expression using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: */*
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
-## EvaluateExpressionForExecutionUsingPUT
-
-> map[string]map[string]interface{} EvaluateExpressionForExecutionUsingPUT(ctx, expression, id)
-
-Evaluate a pipeline expression using the provided execution as context
-
-### Required Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**expression** | **string**| expression | 
-**id** | **string**| id | 
-
-### Return type
-
-[**map[string]map[string]interface{}**](map[string]interface{}.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -615,17 +322,26 @@ No authorization required
 
 ## GetPipelineUsingGET
 
-> map[string]interface{} GetPipelineUsingGET(ctx, id)
+> map[string]interface{} GetPipelineUsingGET(ctx, id).Execute()
 
 Retrieve a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPipelineUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -647,34 +363,33 @@ No authorization required
 
 ## InvokePipelineConfigUsingPOST1
 
-> HttpEntity InvokePipelineConfigUsingPOST1(ctx, application, pipelineNameOrId, optional)
+> InvokePipelineConfigUsingPOST1(ctx, application, pipelineNameOrId).Trigger(trigger).Execute()
 
 Trigger a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
-**pipelineNameOrId** | **string**| pipelineNameOrId | 
- **optional** | ***InvokePipelineConfigUsingPOST1Opts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
+**pipelineNameOrId** | **string** | pipelineNameOrId | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a InvokePipelineConfigUsingPOST1Opts struct
+Other parameters are passed through a pointer to a apiInvokePipelineConfigUsingPOST1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **trigger** | **optional.Interface**| trigger | 
+ **trigger** | **map[string]interface{}** | trigger | 
 
 ### Return type
 
-[**HttpEntity**](HttpEntity.md)
+ (empty response body)
 
 ### Authorization
 
@@ -692,30 +407,29 @@ No authorization required
 
 ## InvokePipelineConfigViaEchoUsingPOST
 
-> HttpEntity InvokePipelineConfigViaEchoUsingPOST(ctx, application, pipelineNameOrId, optional)
+> HttpEntity InvokePipelineConfigViaEchoUsingPOST(ctx, application, pipelineNameOrId).Trigger(trigger).Execute()
 
 Trigger a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
-**pipelineNameOrId** | **string**| pipelineNameOrId | 
- **optional** | ***InvokePipelineConfigViaEchoUsingPOSTOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
+**pipelineNameOrId** | **string** | pipelineNameOrId | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a InvokePipelineConfigViaEchoUsingPOSTOpts struct
+Other parameters are passed through a pointer to a apiInvokePipelineConfigViaEchoUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **trigger** | **optional.Interface**| trigger | 
+ **trigger** | **map[string]interface{}** | trigger | 
 
 ### Return type
 
@@ -737,17 +451,26 @@ No authorization required
 
 ## PausePipelineUsingPUT
 
-> PausePipelineUsingPUT(ctx, id)
+> PausePipelineUsingPUT(ctx, id).Execute()
 
 Pause a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPausePipelineUsingPUTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -769,17 +492,22 @@ No authorization required
 
 ## RenamePipelineUsingPOST
 
-> RenamePipelineUsingPOST(ctx, renameCommand)
+> RenamePipelineUsingPOST(ctx).RenameCommand(renameCommand).Execute()
 
 Rename a pipeline definition
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRenamePipelineUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**renameCommand** | **map[string]interface{}**| renameCommand | 
+ **renameCommand** | **map[string]interface{}** | renameCommand | 
 
 ### Return type
 
@@ -801,19 +529,29 @@ No authorization required
 
 ## RestartStageUsingPUT
 
-> map[string]map[string]interface{} RestartStageUsingPUT(ctx, context, id, stageId)
+> map[string]map[string]interface{} RestartStageUsingPUT(ctx, id, stageId).Context(context).Execute()
 
 Restart a stage execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**context** | **map[string]interface{}**| context | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
+**id** | **string** | id | 
+**stageId** | **string** | stageId | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRestartStageUsingPUTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **context** | **map[string]interface{}** | context | 
+
+
 
 ### Return type
 
@@ -835,17 +573,26 @@ No authorization required
 
 ## ResumePipelineUsingPUT
 
-> map[string]map[string]interface{} ResumePipelineUsingPUT(ctx, id)
+> map[string]map[string]interface{} ResumePipelineUsingPUT(ctx, id).Execute()
 
 Resume a pipeline execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiResumePipelineUsingPUTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -867,17 +614,22 @@ No authorization required
 
 ## SavePipelineUsingPOST
 
-> SavePipelineUsingPOST(ctx, pipeline)
+> SavePipelineUsingPOST(ctx).Pipeline(pipeline).Execute()
 
 Save a pipeline definition
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSavePipelineUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipeline** | **map[string]interface{}**| pipeline | 
+ **pipeline** | **map[string]interface{}** | pipeline | 
 
 ### Return type
 
@@ -899,17 +651,22 @@ No authorization required
 
 ## StartUsingPOST
 
-> ResponseEntity StartUsingPOST(ctx, map_)
+> ResponseEntity StartUsingPOST(ctx).Map_(map_).Execute()
 
 Initiate a pipeline execution
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiStartUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**map_** | **map[string]interface{}**| map | 
+ **map_** | **map[string]interface{}** | map | 
 
 ### Return type
 
@@ -931,18 +688,27 @@ No authorization required
 
 ## UpdatePipelineUsingPUT
 
-> map[string]map[string]interface{} UpdatePipelineUsingPUT(ctx, pipeline, id)
+> map[string]map[string]interface{} UpdatePipelineUsingPUT(ctx, id).Pipeline(pipeline).Execute()
 
 Update a pipeline definition
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**pipeline** | **map[string]interface{}**| pipeline | 
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdatePipelineUsingPUTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **pipeline** | **map[string]interface{}** | pipeline | 
+
 
 ### Return type
 
@@ -964,19 +730,29 @@ No authorization required
 
 ## UpdateStageUsingPATCH
 
-> map[string]map[string]interface{} UpdateStageUsingPATCH(ctx, context, id, stageId)
+> map[string]map[string]interface{} UpdateStageUsingPATCH(ctx, id, stageId).Context(context).Execute()
 
 Update a stage execution
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**context** | **map[string]interface{}**| context | 
-**id** | **string**| id | 
-**stageId** | **string**| stageId | 
+**id** | **string** | id | 
+**stageId** | **string** | stageId | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateStageUsingPATCHRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **context** | **map[string]interface{}** | context | 
+
+
 
 ### Return type
 

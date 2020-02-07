@@ -24,12 +24,28 @@ var (
 // AuthControllerApiService AuthControllerApi service
 type AuthControllerApiService service
 
+type apiGetServiceAccountsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AuthControllerApiService
+}
+
 /*
 GetServiceAccountsUsingGET Get service accounts
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiGetServiceAccountsUsingGETRequest
 */
-func (a *AuthControllerApiService) GetServiceAccountsUsingGET(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *AuthControllerApiService) GetServiceAccountsUsingGET(ctx _context.Context) apiGetServiceAccountsUsingGETRequest {
+	return apiGetServiceAccountsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetServiceAccountsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -39,8 +55,12 @@ func (a *AuthControllerApiService) GetServiceAccountsUsingGET(ctx _context.Conte
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/auth/user/serviceAccounts"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthControllerApiService.GetServiceAccountsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/auth/user/serviceAccounts"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -63,12 +83,12 @@ func (a *AuthControllerApiService) GetServiceAccountsUsingGET(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -86,19 +106,18 @@ func (a *AuthControllerApiService) GetServiceAccountsUsingGET(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -110,12 +129,28 @@ func (a *AuthControllerApiService) GetServiceAccountsUsingGET(ctx _context.Conte
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiLoggedOutUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AuthControllerApiService
+}
+
 /*
 LoggedOutUsingGET Get logged out message
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return string
+@return apiLoggedOutUsingGETRequest
 */
-func (a *AuthControllerApiService) LoggedOutUsingGET(ctx _context.Context) (string, *_nethttp.Response, error) {
+func (a *AuthControllerApiService) LoggedOutUsingGET(ctx _context.Context) apiLoggedOutUsingGETRequest {
+	return apiLoggedOutUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return string
+*/
+func (r apiLoggedOutUsingGETRequest) Execute() (string, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -125,8 +160,12 @@ func (a *AuthControllerApiService) LoggedOutUsingGET(ctx _context.Context) (stri
 		localVarReturnValue  string
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/auth/loggedOut"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthControllerApiService.LoggedOutUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/auth/loggedOut"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -149,12 +188,12 @@ func (a *AuthControllerApiService) LoggedOutUsingGET(ctx _context.Context) (stri
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -172,19 +211,18 @@ func (a *AuthControllerApiService) LoggedOutUsingGET(ctx _context.Context) (stri
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v string
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -196,12 +234,34 @@ func (a *AuthControllerApiService) LoggedOutUsingGET(ctx _context.Context) (stri
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiRedirectUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AuthControllerApiService
+	to         *string
+}
+
+func (r apiRedirectUsingGETRequest) To(to string) apiRedirectUsingGETRequest {
+	r.to = &to
+	return r
+}
+
 /*
 RedirectUsingGET Redirect to Deck
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param to to
+@return apiRedirectUsingGETRequest
 */
-func (a *AuthControllerApiService) RedirectUsingGET(ctx _context.Context, to string) (*_nethttp.Response, error) {
+func (a *AuthControllerApiService) RedirectUsingGET(ctx _context.Context) apiRedirectUsingGETRequest {
+	return apiRedirectUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiRedirectUsingGETRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -210,14 +270,22 @@ func (a *AuthControllerApiService) RedirectUsingGET(ctx _context.Context, to str
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/auth/redirect"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthControllerApiService.RedirectUsingGET")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/auth/redirect"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("to", parameterToString(to, ""))
+	if r.to == nil {
+		return nil, reportError("to is required and must be specified")
+	}
+
+	localVarQueryParams.Add("to", parameterToString(*r.to, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -235,12 +303,12 @@ func (a *AuthControllerApiService) RedirectUsingGET(ctx _context.Context, to str
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -262,11 +330,28 @@ func (a *AuthControllerApiService) RedirectUsingGET(ctx _context.Context, to str
 	return localVarHTTPResponse, nil
 }
 
+type apiSyncUsingPOSTRequest struct {
+	ctx        _context.Context
+	apiService *AuthControllerApiService
+}
+
 /*
 SyncUsingPOST Sync user roles
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+@return apiSyncUsingPOSTRequest
 */
-func (a *AuthControllerApiService) SyncUsingPOST(ctx _context.Context) (*_nethttp.Response, error) {
+func (a *AuthControllerApiService) SyncUsingPOST(ctx _context.Context) apiSyncUsingPOSTRequest {
+	return apiSyncUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiSyncUsingPOSTRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -275,8 +360,12 @@ func (a *AuthControllerApiService) SyncUsingPOST(ctx _context.Context) (*_nethtt
 		localVarFileBytes    []byte
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/auth/roles/sync"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthControllerApiService.SyncUsingPOST")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/auth/roles/sync"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -299,12 +388,12 @@ func (a *AuthControllerApiService) SyncUsingPOST(ctx _context.Context) (*_nethtt
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -326,12 +415,28 @@ func (a *AuthControllerApiService) SyncUsingPOST(ctx _context.Context) (*_nethtt
 	return localVarHTTPResponse, nil
 }
 
+type apiUserUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *AuthControllerApiService
+}
+
 /*
 UserUsingGET Get user
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return User
+@return apiUserUsingGETRequest
 */
-func (a *AuthControllerApiService) UserUsingGET(ctx _context.Context) (User, *_nethttp.Response, error) {
+func (a *AuthControllerApiService) UserUsingGET(ctx _context.Context) apiUserUsingGETRequest {
+	return apiUserUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return User
+*/
+func (r apiUserUsingGETRequest) Execute() (User, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -341,8 +446,12 @@ func (a *AuthControllerApiService) UserUsingGET(ctx _context.Context) (User, *_n
 		localVarReturnValue  User
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/auth/user"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthControllerApiService.UserUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/auth/user"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -365,12 +474,12 @@ func (a *AuthControllerApiService) UserUsingGET(ctx _context.Context) (User, *_n
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -388,19 +497,18 @@ func (a *AuthControllerApiService) UserUsingGET(ctx _context.Context) (User, *_n
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v User
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

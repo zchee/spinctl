@@ -17,7 +17,6 @@ Install the following dependencies:
 go get github.com/stretchr/testify/assert
 go get golang.org/x/oauth2
 go get golang.org/x/net/context
-go get github.com/antihax/optional
 ```
 
 Put the package under your project folder and add the following in import:
@@ -26,9 +25,50 @@ Put the package under your project folder and add the following in import:
 import sw "./gate"
 ```
 
+## Configuration of Server URL
+
+Default configuration comes with `Servers` field that contains server objects as defined in the OpenAPI specification.
+
+### Select Server Configuration
+
+For using other server than the one defined on index 0 set context value `sw.ContextServerIndex` of type `int`.
+
+```golang
+ctx := context.WithValue(context.Background(), sw.ContextServerIndex, 1)
+```
+
+### Templated Server URL
+
+Templated server URL is formatted using default variables from configuration or from context value `sw.ContextServerVariables` of type `map[string]string`.
+
+```golang
+ctx := context.WithValue(context.Background(), sw.ContextServerVariables, map[string]string{
+	"basePath": "v2",
+})
+```
+
+Note, enum values are always validated and all unused variables are silently ignored.
+
+### URLs Configuration per Operation
+
+Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
+An operation is uniquely identifield by `"{classname}Service.{nickname}"` string.
+Similar rules for overriding default operation server index and variables applies by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
+
+```
+ctx := context.WithValue(context.Background(), sw.ContextOperationServerIndices, map[string]int{
+	"{classname}Service.{nickname}": 2,
+})
+ctx = context.WithValue(context.Background(), sw.ContextOperationServerVariables, map[string]map[string]string{
+	"{classname}Service.{nickname}": {
+		"port": "8443",
+	},
+})
+```
+
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -111,20 +151,10 @@ Class | Method | HTTP request | Description
 *PipelineControllerApi* | [**CancelPipelineUsingPUT1**](docs/PipelineControllerApi.md#cancelpipelineusingput1) | **Put** /pipelines/{id}/cancel | Cancel a pipeline execution
 *PipelineControllerApi* | [**DeletePipelineUsingDELETE**](docs/PipelineControllerApi.md#deletepipelineusingdelete) | **Delete** /pipelines/{application}/{pipelineName} | Delete a pipeline definition
 *PipelineControllerApi* | [**DeletePipelineUsingDELETE1**](docs/PipelineControllerApi.md#deletepipelineusingdelete1) | **Delete** /pipelines/{id} | Delete a pipeline execution
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingDELETE**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusingdelete) | **Delete** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
 *PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingGET**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusingget) | **Get** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingHEAD**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusinghead) | **Head** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingOPTIONS**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusingoptions) | **Options** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingPATCH**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusingpatch) | **Patch** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingPOST**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusingpost) | **Post** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionAtStageUsingPUT**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionatstageusingput) | **Put** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingDELETE**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusingdelete) | **Delete** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
 *PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingGET**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusingget) | **Get** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingHEAD**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusinghead) | **Head** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingOPTIONS**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusingoptions) | **Options** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingPATCH**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusingpatch) | **Patch** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingPOST**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusingpost) | **Post** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-*PipelineControllerApi* | [**EvaluateExpressionForExecutionUsingPUT**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionusingput) | **Put** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
+*PipelineControllerApi* | [**EvaluateExpressionForExecutionViaPOSTUsingPOST**](docs/PipelineControllerApi.md#evaluateexpressionforexecutionviapostusingpost) | **Post** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
+*PipelineControllerApi* | [**EvaluateVariablesUsingPOST**](docs/PipelineControllerApi.md#evaluatevariablesusingpost) | **Post** /pipelines/{id}/evaluateVariables | Evaluate variables same as Evaluate Variables stage using the provided execution as context
 *PipelineControllerApi* | [**GetPipelineUsingGET**](docs/PipelineControllerApi.md#getpipelineusingget) | **Get** /pipelines/{id} | Retrieve a pipeline execution
 *PipelineControllerApi* | [**InvokePipelineConfigUsingPOST1**](docs/PipelineControllerApi.md#invokepipelineconfigusingpost1) | **Post** /pipelines/{application}/{pipelineNameOrId} | Trigger a pipeline execution
 *PipelineControllerApi* | [**InvokePipelineConfigViaEchoUsingPOST**](docs/PipelineControllerApi.md#invokepipelineconfigviaechousingpost) | **Post** /pipelines/v2/{application}/{pipelineNameOrId} | Trigger a pipeline execution
@@ -165,25 +195,12 @@ Class | Method | HTTP request | Description
 *TaskControllerApi* | [**GetTaskDetailsUsingGET1**](docs/TaskControllerApi.md#gettaskdetailsusingget1) | **Get** /tasks/{id}/details/{taskDetailsId} | Get task details
 *TaskControllerApi* | [**GetTaskUsingGET1**](docs/TaskControllerApi.md#gettaskusingget1) | **Get** /tasks/{id} | Get task
 *TaskControllerApi* | [**TaskUsingPOST1**](docs/TaskControllerApi.md#taskusingpost1) | **Post** /tasks | Create task
-*V2CanaryConfigControllerApi* | [**CreateCanaryConfigUsingPOST**](docs/V2CanaryConfigControllerApi.md#createcanaryconfigusingpost) | **Post** /v2/canaryConfig | Create a canary configuration
-*V2CanaryConfigControllerApi* | [**DeleteCanaryConfigUsingDELETE**](docs/V2CanaryConfigControllerApi.md#deletecanaryconfigusingdelete) | **Delete** /v2/canaryConfig/{id} | Delete a canary configuration
-*V2CanaryConfigControllerApi* | [**GetCanaryConfigUsingGET**](docs/V2CanaryConfigControllerApi.md#getcanaryconfigusingget) | **Get** /v2/canaryConfig/{id} | Retrieve a canary configuration by id
-*V2CanaryConfigControllerApi* | [**GetCanaryConfigsUsingGET**](docs/V2CanaryConfigControllerApi.md#getcanaryconfigsusingget) | **Get** /v2/canaryConfig | Retrieve a list of canary configurations
-*V2CanaryConfigControllerApi* | [**UpdateCanaryConfigUsingPUT**](docs/V2CanaryConfigControllerApi.md#updatecanaryconfigusingput) | **Put** /v2/canaryConfig/{id} | Update a canary configuration
-*V2CanaryControllerApi* | [**GetCanaryResultUsingGET**](docs/V2CanaryControllerApi.md#getcanaryresultusingget) | **Get** /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId} | (DEPRECATED) Retrieve a canary result
-*V2CanaryControllerApi* | [**GetCanaryResultUsingGET1**](docs/V2CanaryControllerApi.md#getcanaryresultusingget1) | **Get** /v2/canaries/canary/{canaryExecutionId} | Retrieve a canary result
-*V2CanaryControllerApi* | [**GetCanaryResultsByApplicationUsingGET**](docs/V2CanaryControllerApi.md#getcanaryresultsbyapplicationusingget) | **Get** /v2/canaries/{application}/executions | Retrieve a list of an application&#39;s canary results
-*V2CanaryControllerApi* | [**GetMetricSetPairListUsingGET**](docs/V2CanaryControllerApi.md#getmetricsetpairlistusingget) | **Get** /v2/canaries/metricSetPairList/{metricSetPairListId} | Retrieve a metric set pair list
-*V2CanaryControllerApi* | [**InitiateCanaryUsingPOST**](docs/V2CanaryControllerApi.md#initiatecanaryusingpost) | **Post** /v2/canaries/canary/{canaryConfigId} | Start a canary execution
-*V2CanaryControllerApi* | [**InitiateCanaryWithConfigUsingPOST**](docs/V2CanaryControllerApi.md#initiatecanarywithconfigusingpost) | **Post** /v2/canaries/canary | Start a canary execution with the supplied canary config
-*V2CanaryControllerApi* | [**ListCredentialsUsingGET**](docs/V2CanaryControllerApi.md#listcredentialsusingget) | **Get** /v2/canaries/credentials | Retrieve a list of configured Kayenta accounts
-*V2CanaryControllerApi* | [**ListJudgesUsingGET**](docs/V2CanaryControllerApi.md#listjudgesusingget) | **Get** /v2/canaries/judges | Retrieve a list of all configured canary judges
-*V2CanaryControllerApi* | [**ListMetricsServiceMetadataUsingGET**](docs/V2CanaryControllerApi.md#listmetricsservicemetadatausingget) | **Get** /v2/canaries/metadata/metricsService | Retrieve a list of descriptors for use in populating the canary config ui
 *V2PipelineTemplatesControllerApi* | [**CreateUsingPOST1**](docs/V2PipelineTemplatesControllerApi.md#createusingpost1) | **Post** /v2/pipelineTemplates/create | (ALPHA) Create a pipeline template.
 *V2PipelineTemplatesControllerApi* | [**DeleteUsingDELETE1**](docs/V2PipelineTemplatesControllerApi.md#deleteusingdelete1) | **Delete** /v2/pipelineTemplates/{id} | Delete a pipeline template.
 *V2PipelineTemplatesControllerApi* | [**GetUsingGET2**](docs/V2PipelineTemplatesControllerApi.md#getusingget2) | **Get** /v2/pipelineTemplates/{id} | (ALPHA) Get a pipeline template.
 *V2PipelineTemplatesControllerApi* | [**ListPipelineTemplateDependentsUsingGET1**](docs/V2PipelineTemplatesControllerApi.md#listpipelinetemplatedependentsusingget1) | **Get** /v2/pipelineTemplates/{id}/dependents | (ALPHA) List all pipelines that implement a pipeline template
 *V2PipelineTemplatesControllerApi* | [**ListUsingGET1**](docs/V2PipelineTemplatesControllerApi.md#listusingget1) | **Get** /v2/pipelineTemplates | (ALPHA) List pipeline templates.
+*V2PipelineTemplatesControllerApi* | [**ListVersionsUsingGET**](docs/V2PipelineTemplatesControllerApi.md#listversionsusingget) | **Get** /v2/pipelineTemplates/versions | List pipeline templates with versions
 *V2PipelineTemplatesControllerApi* | [**PlanUsingPOST**](docs/V2PipelineTemplatesControllerApi.md#planusingpost) | **Post** /v2/pipelineTemplates/plan | (ALPHA) Plan a pipeline template configuration.
 *V2PipelineTemplatesControllerApi* | [**UpdateUsingPOST1**](docs/V2PipelineTemplatesControllerApi.md#updateusingpost1) | **Post** /v2/pipelineTemplates/update/{id} | (ALPHA) Update a pipeline template.
 *VersionControllerApi* | [**GetVersionUsingGET**](docs/VersionControllerApi.md#getversionusingget) | **Get** /version | Fetch Gate&#39;s current version

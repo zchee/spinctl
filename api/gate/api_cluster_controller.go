@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,9 +25,19 @@ var (
 // ClusterControllerApiService ClusterControllerApi service
 type ClusterControllerApiService service
 
-// GetClusterLoadBalancersUsingGETOpts Optional parameters for the method 'GetClusterLoadBalancersUsingGET'
-type GetClusterLoadBalancersUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiGetClusterLoadBalancersUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *ClusterControllerApiService
+	account         string
+	applicationName string
+	clusterName     string
+	type_           string
+	xRateLimitApp   *string
+}
+
+func (r apiGetClusterLoadBalancersUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetClusterLoadBalancersUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -40,11 +47,24 @@ GetClusterLoadBalancersUsingGET Retrieve a cluster's loadbalancers
  * @param applicationName applicationName
  * @param clusterName clusterName
  * @param type_ type
- * @param optional nil or *GetClusterLoadBalancersUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiGetClusterLoadBalancersUsingGETRequest
 */
-func (a *ClusterControllerApiService) GetClusterLoadBalancersUsingGET(ctx _context.Context, account string, applicationName string, clusterName string, type_ string, localVarOptionals *GetClusterLoadBalancersUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetClusterLoadBalancersUsingGET(ctx _context.Context, account string, applicationName string, clusterName string, type_ string) apiGetClusterLoadBalancersUsingGETRequest {
+	return apiGetClusterLoadBalancersUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		account:         account,
+		applicationName: applicationName,
+		clusterName:     clusterName,
+		type_:           type_,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetClusterLoadBalancersUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -54,12 +74,16 @@ func (a *ClusterControllerApiService) GetClusterLoadBalancersUsingGET(ctx _conte
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}/{clusterName}/{type}/loadBalancers"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", applicationName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", clusterName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"type"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", type_)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetClusterLoadBalancersUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}/{clusterName}/{type}/loadBalancers"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"applicationName"+"}", _neturl.QueryEscape(parameterToString(r.applicationName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(parameterToString(r.clusterName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"type"+"}", _neturl.QueryEscape(parameterToString(r.type_, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -82,15 +106,15 @@ func (a *ClusterControllerApiService) GetClusterLoadBalancersUsingGET(ctx _conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -108,19 +132,18 @@ func (a *ClusterControllerApiService) GetClusterLoadBalancersUsingGET(ctx _conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -132,9 +155,18 @@ func (a *ClusterControllerApiService) GetClusterLoadBalancersUsingGET(ctx _conte
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetClustersUsingGETOpts Optional parameters for the method 'GetClustersUsingGET'
-type GetClustersUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiGetClustersUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *ClusterControllerApiService
+	account       string
+	application   string
+	clusterName   string
+	xRateLimitApp *string
+}
+
+func (r apiGetClustersUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetClustersUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -143,11 +175,23 @@ GetClustersUsingGET Retrieve a cluster's details
  * @param account account
  * @param application application
  * @param clusterName clusterName
- * @param optional nil or *GetClustersUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return map[string]map[string]interface{}
+@return apiGetClustersUsingGETRequest
 */
-func (a *ClusterControllerApiService) GetClustersUsingGET(ctx _context.Context, account string, application string, clusterName string, localVarOptionals *GetClustersUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetClustersUsingGET(ctx _context.Context, account string, application string, clusterName string) apiGetClustersUsingGETRequest {
+	return apiGetClustersUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		account:     account,
+		application: application,
+		clusterName: clusterName,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetClustersUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -157,11 +201,15 @@ func (a *ClusterControllerApiService) GetClustersUsingGET(ctx _context.Context, 
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}/{clusterName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", clusterName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetClustersUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}/{clusterName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(parameterToString(r.clusterName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -184,15 +232,15 @@ func (a *ClusterControllerApiService) GetClustersUsingGET(ctx _context.Context, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -210,19 +258,18 @@ func (a *ClusterControllerApiService) GetClustersUsingGET(ctx _context.Context, 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -234,9 +281,17 @@ func (a *ClusterControllerApiService) GetClustersUsingGET(ctx _context.Context, 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetClustersUsingGET1Opts Optional parameters for the method 'GetClustersUsingGET1'
-type GetClustersUsingGET1Opts struct {
-	XRateLimitApp optional.String
+type apiGetClustersUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *ClusterControllerApiService
+	account       string
+	application   string
+	xRateLimitApp *string
+}
+
+func (r apiGetClustersUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiGetClustersUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -244,11 +299,22 @@ GetClustersUsingGET1 Retrieve a list of clusters for an account
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
  * @param application application
- * @param optional nil or *GetClustersUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiGetClustersUsingGET1Request
 */
-func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx _context.Context, account string, application string, localVarOptionals *GetClustersUsingGET1Opts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx _context.Context, account string, application string) apiGetClustersUsingGET1Request {
+	return apiGetClustersUsingGET1Request{
+		apiService:  a,
+		ctx:         ctx,
+		account:     account,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetClustersUsingGET1Request) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -258,10 +324,14 @@ func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx _context.Context,
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetClustersUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -284,15 +354,15 @@ func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -310,19 +380,18 @@ func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -334,20 +403,37 @@ func (a *ClusterControllerApiService) GetClustersUsingGET1(ctx _context.Context,
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetClustersUsingGET2Opts Optional parameters for the method 'GetClustersUsingGET2'
-type GetClustersUsingGET2Opts struct {
-	XRateLimitApp optional.String
+type apiGetClustersUsingGET2Request struct {
+	ctx           _context.Context
+	apiService    *ClusterControllerApiService
+	application   string
+	xRateLimitApp *string
+}
+
+func (r apiGetClustersUsingGET2Request) XRateLimitApp(xRateLimitApp string) apiGetClustersUsingGET2Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 GetClustersUsingGET2 Retrieve a list of cluster names for an application, grouped by account
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
- * @param optional nil or *GetClustersUsingGET2Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return map[string]map[string]interface{}
+@return apiGetClustersUsingGET2Request
 */
-func (a *ClusterControllerApiService) GetClustersUsingGET2(ctx _context.Context, application string, localVarOptionals *GetClustersUsingGET2Opts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetClustersUsingGET2(ctx _context.Context, application string) apiGetClustersUsingGET2Request {
+	return apiGetClustersUsingGET2Request{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetClustersUsingGET2Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -357,9 +443,13 @@ func (a *ClusterControllerApiService) GetClustersUsingGET2(ctx _context.Context,
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetClustersUsingGET2")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -382,15 +472,15 @@ func (a *ClusterControllerApiService) GetClustersUsingGET2(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -408,19 +498,18 @@ func (a *ClusterControllerApiService) GetClustersUsingGET2(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -432,11 +521,31 @@ func (a *ClusterControllerApiService) GetClustersUsingGET2(ctx _context.Context,
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetScalingActivitiesUsingGETOpts Optional parameters for the method 'GetScalingActivitiesUsingGET'
-type GetScalingActivitiesUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
-	Region        optional.String
+type apiGetScalingActivitiesUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *ClusterControllerApiService
+	account         string
+	application     string
+	clusterName     string
+	serverGroupName string
+	xRateLimitApp   *string
+	provider        *string
+	region          *string
+}
+
+func (r apiGetScalingActivitiesUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetScalingActivitiesUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetScalingActivitiesUsingGETRequest) Provider(provider string) apiGetScalingActivitiesUsingGETRequest {
+	r.provider = &provider
+	return r
+}
+
+func (r apiGetScalingActivitiesUsingGETRequest) Region(region string) apiGetScalingActivitiesUsingGETRequest {
+	r.region = &region
+	return r
 }
 
 /*
@@ -446,13 +555,24 @@ GetScalingActivitiesUsingGET Retrieve a list of scaling activities for a server 
  * @param application application
  * @param clusterName clusterName
  * @param serverGroupName serverGroupName
- * @param optional nil or *GetScalingActivitiesUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
- * @param "Region" (optional.String) -  region
-@return []map[string]interface{}
+@return apiGetScalingActivitiesUsingGETRequest
 */
-func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx _context.Context, account string, application string, clusterName string, serverGroupName string, localVarOptionals *GetScalingActivitiesUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx _context.Context, account string, application string, clusterName string, serverGroupName string) apiGetScalingActivitiesUsingGETRequest {
+	return apiGetScalingActivitiesUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		account:         account,
+		application:     application,
+		clusterName:     clusterName,
+		serverGroupName: serverGroupName,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetScalingActivitiesUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -462,22 +582,26 @@ func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx _context.
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}/scalingActivities"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", clusterName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", serverGroupName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetScalingActivitiesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}/scalingActivities"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(parameterToString(r.clusterName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(parameterToString(r.serverGroupName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Region.IsSet() {
-		localVarQueryParams.Add("region", parameterToString(localVarOptionals.Region.Value(), ""))
+	if r.region != nil {
+		localVarQueryParams.Add("region", parameterToString(*r.region, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -496,15 +620,15 @@ func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx _context.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -522,19 +646,18 @@ func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx _context.
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -546,9 +669,19 @@ func (a *ClusterControllerApiService) GetScalingActivitiesUsingGET(ctx _context.
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetServerGroupsUsingGETOpts Optional parameters for the method 'GetServerGroupsUsingGET'
-type GetServerGroupsUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiGetServerGroupsUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *ClusterControllerApiService
+	account         string
+	application     string
+	clusterName     string
+	serverGroupName string
+	xRateLimitApp   *string
+}
+
+func (r apiGetServerGroupsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetServerGroupsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -558,11 +691,24 @@ GetServerGroupsUsingGET Retrieve a server group's details
  * @param application application
  * @param clusterName clusterName
  * @param serverGroupName serverGroupName
- * @param optional nil or *GetServerGroupsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiGetServerGroupsUsingGETRequest
 */
-func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx _context.Context, account string, application string, clusterName string, serverGroupName string, localVarOptionals *GetServerGroupsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx _context.Context, account string, application string, clusterName string, serverGroupName string) apiGetServerGroupsUsingGETRequest {
+	return apiGetServerGroupsUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		account:         account,
+		application:     application,
+		clusterName:     clusterName,
+		serverGroupName: serverGroupName,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetServerGroupsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -572,12 +718,16 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx _context.Conte
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", clusterName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", serverGroupName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetServerGroupsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(parameterToString(r.clusterName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(parameterToString(r.serverGroupName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -600,15 +750,15 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -626,19 +776,18 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -650,9 +799,18 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET(ctx _context.Conte
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetServerGroupsUsingGET1Opts Optional parameters for the method 'GetServerGroupsUsingGET1'
-type GetServerGroupsUsingGET1Opts struct {
-	XRateLimitApp optional.String
+type apiGetServerGroupsUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *ClusterControllerApiService
+	account       string
+	application   string
+	clusterName   string
+	xRateLimitApp *string
+}
+
+func (r apiGetServerGroupsUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiGetServerGroupsUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -661,11 +819,23 @@ GetServerGroupsUsingGET1 Retrieve a list of server groups for a cluster
  * @param account account
  * @param application application
  * @param clusterName clusterName
- * @param optional nil or *GetServerGroupsUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiGetServerGroupsUsingGET1Request
 */
-func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx _context.Context, account string, application string, clusterName string, localVarOptionals *GetServerGroupsUsingGET1Opts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx _context.Context, account string, application string, clusterName string) apiGetServerGroupsUsingGET1Request {
+	return apiGetServerGroupsUsingGET1Request{
+		apiService:  a,
+		ctx:         ctx,
+		account:     account,
+		application: application,
+		clusterName: clusterName,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetServerGroupsUsingGET1Request) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -675,11 +845,15 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx _context.Cont
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}/{clusterName}/serverGroups"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", clusterName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetServerGroupsUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}/{clusterName}/serverGroups"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(parameterToString(r.clusterName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -702,15 +876,15 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx _context.Cont
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -728,19 +902,18 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx _context.Cont
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -752,16 +925,38 @@ func (a *ClusterControllerApiService) GetServerGroupsUsingGET1(ctx _context.Cont
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetTargetServerGroupUsingGETOpts Optional parameters for the method 'GetTargetServerGroupUsingGET'
-type GetTargetServerGroupUsingGETOpts struct {
-	XRateLimitApp  optional.String
-	OnlyEnabled    optional.Bool
-	ValidateOldest optional.Bool
+type apiGetTargetServerGroupUsingGETRequest struct {
+	ctx            _context.Context
+	apiService     *ClusterControllerApiService
+	account        string
+	application    string
+	cloudProvider  string
+	clusterName    string
+	scope          string
+	target         string
+	xRateLimitApp  *string
+	onlyEnabled    *bool
+	validateOldest *bool
+}
+
+func (r apiGetTargetServerGroupUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetTargetServerGroupUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetTargetServerGroupUsingGETRequest) OnlyEnabled(onlyEnabled bool) apiGetTargetServerGroupUsingGETRequest {
+	r.onlyEnabled = &onlyEnabled
+	return r
+}
+
+func (r apiGetTargetServerGroupUsingGETRequest) ValidateOldest(validateOldest bool) apiGetTargetServerGroupUsingGETRequest {
+	r.validateOldest = &validateOldest
+	return r
 }
 
 /*
 GetTargetServerGroupUsingGET Retrieve a server group that matches a target coordinate (e.g., newest, ancestor) relative to a cluster
-&#x60;scope&#x60; is either a zone or a region
+`scope` is either a zone or a region
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
  * @param application application
@@ -769,13 +964,26 @@ GetTargetServerGroupUsingGET Retrieve a server group that matches a target coord
  * @param clusterName clusterName
  * @param scope scope
  * @param target target
- * @param optional nil or *GetTargetServerGroupUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "OnlyEnabled" (optional.Bool) -  onlyEnabled
- * @param "ValidateOldest" (optional.Bool) -  validateOldest
-@return map[string]map[string]interface{}
+@return apiGetTargetServerGroupUsingGETRequest
 */
-func (a *ClusterControllerApiService) GetTargetServerGroupUsingGET(ctx _context.Context, account string, application string, cloudProvider string, clusterName string, scope string, target string, localVarOptionals *GetTargetServerGroupUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ClusterControllerApiService) GetTargetServerGroupUsingGET(ctx _context.Context, account string, application string, cloudProvider string, clusterName string, scope string, target string) apiGetTargetServerGroupUsingGETRequest {
+	return apiGetTargetServerGroupUsingGETRequest{
+		apiService:    a,
+		ctx:           ctx,
+		account:       account,
+		application:   application,
+		cloudProvider: cloudProvider,
+		clusterName:   clusterName,
+		scope:         scope,
+		target:        target,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetTargetServerGroupUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -785,24 +993,28 @@ func (a *ClusterControllerApiService) GetTargetServerGroupUsingGET(ctx _context.
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/clusters/{account}/{clusterName}/{cloudProvider}/{scope}/serverGroups/target/{target}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", cloudProvider)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", clusterName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", scope)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"target"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", target)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ClusterControllerApiService.GetTargetServerGroupUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/clusters/{account}/{clusterName}/{cloudProvider}/{scope}/serverGroups/target/{target}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(parameterToString(r.cloudProvider, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"clusterName"+"}", _neturl.QueryEscape(parameterToString(r.clusterName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope"+"}", _neturl.QueryEscape(parameterToString(r.scope, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"target"+"}", _neturl.QueryEscape(parameterToString(r.target, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.OnlyEnabled.IsSet() {
-		localVarQueryParams.Add("onlyEnabled", parameterToString(localVarOptionals.OnlyEnabled.Value(), ""))
+	if r.onlyEnabled != nil {
+		localVarQueryParams.Add("onlyEnabled", parameterToString(*r.onlyEnabled, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.ValidateOldest.IsSet() {
-		localVarQueryParams.Add("validateOldest", parameterToString(localVarOptionals.ValidateOldest.Value(), ""))
+	if r.validateOldest != nil {
+		localVarQueryParams.Add("validateOldest", parameterToString(*r.validateOldest, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -821,15 +1033,15 @@ func (a *ClusterControllerApiService) GetTargetServerGroupUsingGET(ctx _context.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -847,19 +1059,18 @@ func (a *ClusterControllerApiService) GetTargetServerGroupUsingGET(ctx _context.
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

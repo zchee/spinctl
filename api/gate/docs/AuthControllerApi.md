@@ -1,6 +1,6 @@
 # \AuthControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -14,13 +14,18 @@ Method | HTTP request | Description
 
 ## GetServiceAccountsUsingGET
 
-> []map[string]interface{} GetServiceAccountsUsingGET(ctx, )
+> []map[string]interface{} GetServiceAccountsUsingGET(ctx).Execute()
 
 Get service accounts
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetServiceAccountsUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -42,13 +47,18 @@ No authorization required
 
 ## LoggedOutUsingGET
 
-> string LoggedOutUsingGET(ctx, )
+> string LoggedOutUsingGET(ctx).Execute()
 
 Get logged out message
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiLoggedOutUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -70,17 +80,22 @@ No authorization required
 
 ## RedirectUsingGET
 
-> RedirectUsingGET(ctx, to)
+> RedirectUsingGET(ctx).To(to).Execute()
 
 Redirect to Deck
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRedirectUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**to** | **string**| to | 
+ **to** | **string** | to | 
 
 ### Return type
 
@@ -102,13 +117,18 @@ No authorization required
 
 ## SyncUsingPOST
 
-> SyncUsingPOST(ctx, )
+> SyncUsingPOST(ctx).Execute()
 
 Sync user roles
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSyncUsingPOSTRequest struct via the builder pattern
+
 
 ### Return type
 
@@ -130,13 +150,18 @@ No authorization required
 
 ## UserUsingGET
 
-> User UserUsingGET(ctx, )
+> User UserUsingGET(ctx).Execute()
 
 Get user
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUserUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 

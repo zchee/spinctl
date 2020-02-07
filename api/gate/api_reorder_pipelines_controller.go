@@ -24,13 +24,34 @@ var (
 // ReorderPipelinesControllerApiService ReorderPipelinesControllerApi service
 type ReorderPipelinesControllerApiService service
 
+type apiReorderPipelinesUsingPOSTRequest struct {
+	ctx                     _context.Context
+	apiService              *ReorderPipelinesControllerApiService
+	reorderPipelinesCommand *ReorderPipelinesCommand
+}
+
+func (r apiReorderPipelinesUsingPOSTRequest) ReorderPipelinesCommand(reorderPipelinesCommand ReorderPipelinesCommand) apiReorderPipelinesUsingPOSTRequest {
+	r.reorderPipelinesCommand = &reorderPipelinesCommand
+	return r
+}
+
 /*
 ReorderPipelinesUsingPOST Re-order pipelines
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param reorderPipelinesCommand reorderPipelinesCommand
-@return map[string]interface{}
+@return apiReorderPipelinesUsingPOSTRequest
 */
-func (a *ReorderPipelinesControllerApiService) ReorderPipelinesUsingPOST(ctx _context.Context, reorderPipelinesCommand ReorderPipelinesCommand) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *ReorderPipelinesControllerApiService) ReorderPipelinesUsingPOST(ctx _context.Context) apiReorderPipelinesUsingPOSTRequest {
+	return apiReorderPipelinesUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiReorderPipelinesUsingPOSTRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -40,12 +61,20 @@ func (a *ReorderPipelinesControllerApiService) ReorderPipelinesUsingPOST(ctx _co
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/actions/pipelines/reorder"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ReorderPipelinesControllerApiService.ReorderPipelinesUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/actions/pipelines/reorder"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.reorderPipelinesCommand == nil {
+		return localVarReturnValue, nil, reportError("reorderPipelinesCommand is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -65,13 +94,13 @@ func (a *ReorderPipelinesControllerApiService) ReorderPipelinesUsingPOST(ctx _co
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &reorderPipelinesCommand
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.reorderPipelinesCommand
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -89,19 +118,18 @@ func (a *ReorderPipelinesControllerApiService) ReorderPipelinesUsingPOST(ctx _co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

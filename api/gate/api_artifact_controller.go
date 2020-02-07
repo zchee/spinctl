@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,19 +25,34 @@ var (
 // ArtifactControllerApiService ArtifactControllerApi service
 type ArtifactControllerApiService service
 
-// AllUsingGETOpts Optional parameters for the method 'AllUsingGET'
-type AllUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiAllUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *ArtifactControllerApiService
+	xRateLimitApp *string
+}
+
+func (r apiAllUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiAllUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 AllUsingGET Retrieve the list of artifact accounts configured in Clouddriver.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *AllUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiAllUsingGETRequest
 */
-func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVarOptionals *AllUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context) apiAllUsingGETRequest {
+	return apiAllUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiAllUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -50,8 +62,12 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/artifacts/credentials"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ArtifactControllerApiService.AllUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/artifacts/credentials"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -74,15 +90,15 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -100,19 +116,18 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -124,22 +139,49 @@ func (a *ArtifactControllerApiService) AllUsingGET(ctx _context.Context, localVa
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// ArtifactVersionsUsingGETOpts Optional parameters for the method 'ArtifactVersionsUsingGET'
-type ArtifactVersionsUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiArtifactVersionsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *ArtifactControllerApiService
+	accountName   string
+	artifactName  *string
+	type_         *string
+	xRateLimitApp *string
+}
+
+func (r apiArtifactVersionsUsingGETRequest) ArtifactName(artifactName string) apiArtifactVersionsUsingGETRequest {
+	r.artifactName = &artifactName
+	return r
+}
+
+func (r apiArtifactVersionsUsingGETRequest) Type_(type_ string) apiArtifactVersionsUsingGETRequest {
+	r.type_ = &type_
+	return r
+}
+
+func (r apiArtifactVersionsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiArtifactVersionsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 ArtifactVersionsUsingGET Retrieve the list of artifact versions by account and artifact names
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountName accountName
- * @param artifactName artifactName
- * @param type_ type
- * @param optional nil or *ArtifactVersionsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []string
+@return apiArtifactVersionsUsingGETRequest
 */
-func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Context, accountName string, artifactName string, type_ string, localVarOptionals *ArtifactVersionsUsingGETOpts) ([]string, *_nethttp.Response, error) {
+func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Context, accountName string) apiArtifactVersionsUsingGETRequest {
+	return apiArtifactVersionsUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		accountName: accountName,
+	}
+}
+
+/*
+Execute executes the request
+ @return []string
+*/
+func (r apiArtifactVersionsUsingGETRequest) Execute() ([]string, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -149,16 +191,28 @@ func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Con
 		localVarReturnValue  []string
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/artifacts/account/{accountName}/versions"
-	localVarPath = strings.Replace(localVarPath, "{"+"accountName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", accountName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ArtifactControllerApiService.ArtifactVersionsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/artifacts/account/{accountName}/versions"
+	localVarPath = strings.Replace(localVarPath, "{"+"accountName"+"}", _neturl.QueryEscape(parameterToString(r.accountName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("artifactName", parameterToString(artifactName, ""))
-	localVarQueryParams.Add("type", parameterToString(type_, ""))
+	if r.artifactName == nil {
+		return localVarReturnValue, nil, reportError("artifactName is required and must be specified")
+	}
+
+	if r.type_ == nil {
+		return localVarReturnValue, nil, reportError("type_ is required and must be specified")
+	}
+
+	localVarQueryParams.Add("artifactName", parameterToString(*r.artifactName, ""))
+	localVarQueryParams.Add("type", parameterToString(*r.type_, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -176,15 +230,15 @@ func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Con
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -202,19 +256,18 @@ func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []string
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -226,15 +279,37 @@ func (a *ArtifactControllerApiService) ArtifactVersionsUsingGET(ctx _context.Con
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiGetArtifactUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *ArtifactControllerApiService
+	packageName string
+	provider    string
+	version     string
+}
+
 /*
 GetArtifactUsingGET Retrieve the specified artifact version for an artifact provider and package name
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param packageName packageName
  * @param provider provider
  * @param version version
-@return map[string]interface{}
+@return apiGetArtifactUsingGETRequest
 */
-func (a *ArtifactControllerApiService) GetArtifactUsingGET(ctx _context.Context, packageName string, provider string, version string) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *ArtifactControllerApiService) GetArtifactUsingGET(ctx _context.Context, packageName string, provider string, version string) apiGetArtifactUsingGETRequest {
+	return apiGetArtifactUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		packageName: packageName,
+		provider:    provider,
+		version:     version,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetArtifactUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -244,11 +319,15 @@ func (a *ArtifactControllerApiService) GetArtifactUsingGET(ctx _context.Context,
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/artifacts/{provider}/{packageName}/{version}"
-	localVarPath = strings.Replace(localVarPath, "{"+"packageName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", packageName)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"provider"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", provider)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", version)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ArtifactControllerApiService.GetArtifactUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/artifacts/{provider}/{packageName}/{version}"
+	localVarPath = strings.Replace(localVarPath, "{"+"packageName"+"}", _neturl.QueryEscape(parameterToString(r.packageName, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"provider"+"}", _neturl.QueryEscape(parameterToString(r.provider, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", _neturl.QueryEscape(parameterToString(r.version, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -271,12 +350,12 @@ func (a *ArtifactControllerApiService) GetArtifactUsingGET(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -294,19 +373,18 @@ func (a *ArtifactControllerApiService) GetArtifactUsingGET(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

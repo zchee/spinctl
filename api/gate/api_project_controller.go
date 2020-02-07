@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,22 +25,43 @@ var (
 // ProjectControllerApiService ProjectControllerApi service
 type ProjectControllerApiService service
 
-// AllPipelinesForProjectUsingGETOpts Optional parameters for the method 'AllPipelinesForProjectUsingGET'
-type AllPipelinesForProjectUsingGETOpts struct {
-	Limit    optional.Int32
-	Statuses optional.String
+type apiAllPipelinesForProjectUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *ProjectControllerApiService
+	id         string
+	limit      *int32
+	statuses   *string
+}
+
+func (r apiAllPipelinesForProjectUsingGETRequest) Limit(limit int32) apiAllPipelinesForProjectUsingGETRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r apiAllPipelinesForProjectUsingGETRequest) Statuses(statuses string) apiAllPipelinesForProjectUsingGETRequest {
+	r.statuses = &statuses
+	return r
 }
 
 /*
 AllPipelinesForProjectUsingGET Get all pipelines for project
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
- * @param optional nil or *AllPipelinesForProjectUsingGETOpts - Optional Parameters:
- * @param "Limit" (optional.Int32) -  limit
- * @param "Statuses" (optional.String) -  statuses
-@return []map[string]interface{}
+@return apiAllPipelinesForProjectUsingGETRequest
 */
-func (a *ProjectControllerApiService) AllPipelinesForProjectUsingGET(ctx _context.Context, id string, localVarOptionals *AllPipelinesForProjectUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ProjectControllerApiService) AllPipelinesForProjectUsingGET(ctx _context.Context, id string) apiAllPipelinesForProjectUsingGETRequest {
+	return apiAllPipelinesForProjectUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiAllPipelinesForProjectUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -53,19 +71,23 @@ func (a *ProjectControllerApiService) AllPipelinesForProjectUsingGET(ctx _contex
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects/{id}/pipelines"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ProjectControllerApiService.AllPipelinesForProjectUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/projects/{id}/pipelines"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Statuses.IsSet() {
-		localVarQueryParams.Add("statuses", parameterToString(localVarOptionals.Statuses.Value(), ""))
+	if r.statuses != nil {
+		localVarQueryParams.Add("statuses", parameterToString(*r.statuses, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -84,12 +106,12 @@ func (a *ProjectControllerApiService) AllPipelinesForProjectUsingGET(ctx _contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -107,19 +129,18 @@ func (a *ProjectControllerApiService) AllPipelinesForProjectUsingGET(ctx _contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -129,14 +150,30 @@ func (a *ProjectControllerApiService) AllPipelinesForProjectUsingGET(ctx _contex
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiAllUsingGET3Request struct {
+	ctx        _context.Context
+	apiService *ProjectControllerApiService
 }
 
 /*
 AllUsingGET3 Get all projects
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiAllUsingGET3Request
 */
-func (a *ProjectControllerApiService) AllUsingGET3(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ProjectControllerApiService) AllUsingGET3(ctx _context.Context) apiAllUsingGET3Request {
+	return apiAllUsingGET3Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiAllUsingGET3Request) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -146,8 +183,12 @@ func (a *ProjectControllerApiService) AllUsingGET3(ctx _context.Context) ([]map[
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ProjectControllerApiService.AllUsingGET3")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/projects"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -170,12 +211,12 @@ func (a *ProjectControllerApiService) AllUsingGET3(ctx _context.Context) ([]map[
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -193,19 +234,18 @@ func (a *ProjectControllerApiService) AllUsingGET3(ctx _context.Context) ([]map[
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -217,20 +257,37 @@ func (a *ProjectControllerApiService) AllUsingGET3(ctx _context.Context) ([]map[
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetClustersUsingGET3Opts Optional parameters for the method 'GetClustersUsingGET3'
-type GetClustersUsingGET3Opts struct {
-	XRateLimitApp optional.String
+type apiGetClustersUsingGET3Request struct {
+	ctx           _context.Context
+	apiService    *ProjectControllerApiService
+	id            string
+	xRateLimitApp *string
+}
+
+func (r apiGetClustersUsingGET3Request) XRateLimitApp(xRateLimitApp string) apiGetClustersUsingGET3Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 GetClustersUsingGET3 Get a project's clusters
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
- * @param optional nil or *GetClustersUsingGET3Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiGetClustersUsingGET3Request
 */
-func (a *ProjectControllerApiService) GetClustersUsingGET3(ctx _context.Context, id string, localVarOptionals *GetClustersUsingGET3Opts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ProjectControllerApiService) GetClustersUsingGET3(ctx _context.Context, id string) apiGetClustersUsingGET3Request {
+	return apiGetClustersUsingGET3Request{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetClustersUsingGET3Request) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -240,9 +297,13 @@ func (a *ProjectControllerApiService) GetClustersUsingGET3(ctx _context.Context,
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects/{id}/clusters"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ProjectControllerApiService.GetClustersUsingGET3")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/projects/{id}/clusters"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -265,15 +326,15 @@ func (a *ProjectControllerApiService) GetClustersUsingGET3(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -291,19 +352,18 @@ func (a *ProjectControllerApiService) GetClustersUsingGET3(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -315,13 +375,31 @@ func (a *ProjectControllerApiService) GetClustersUsingGET3(ctx _context.Context,
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiGetUsingGET1Request struct {
+	ctx        _context.Context
+	apiService *ProjectControllerApiService
+	id         string
+}
+
 /*
 GetUsingGET1 Get a project
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiGetUsingGET1Request
 */
-func (a *ProjectControllerApiService) GetUsingGET1(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ProjectControllerApiService) GetUsingGET1(ctx _context.Context, id string) apiGetUsingGET1Request {
+	return apiGetUsingGET1Request{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetUsingGET1Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -331,9 +409,13 @@ func (a *ProjectControllerApiService) GetUsingGET1(ctx _context.Context, id stri
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ProjectControllerApiService.GetUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/projects/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -356,12 +438,12 @@ func (a *ProjectControllerApiService) GetUsingGET1(ctx _context.Context, id stri
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -379,19 +461,18 @@ func (a *ProjectControllerApiService) GetUsingGET1(ctx _context.Context, id stri
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

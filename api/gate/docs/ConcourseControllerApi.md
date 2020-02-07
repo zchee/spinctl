@@ -1,6 +1,6 @@
 # \ConcourseControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,19 +12,30 @@ Method | HTTP request | Description
 
 ## JobsUsingGET
 
-> []map[string]interface{} JobsUsingGET(ctx, buildMaster, pipeline, team)
+> []map[string]interface{} JobsUsingGET(ctx, buildMaster, pipeline, team).Execute()
 
 Retrieve the list of job names for a given pipeline available to triggers
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**pipeline** | **string**| pipeline | 
-**team** | **string**| team | 
+**buildMaster** | **string** | buildMaster | 
+**pipeline** | **string** | pipeline | 
+**team** | **string** | team | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiJobsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -46,18 +57,28 @@ No authorization required
 
 ## PipelinesUsingGET
 
-> []map[string]interface{} PipelinesUsingGET(ctx, buildMaster, team)
+> []map[string]interface{} PipelinesUsingGET(ctx, buildMaster, team).Execute()
 
 Retrieve the list of pipeline names for a given team available to triggers
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**team** | **string**| team | 
+**buildMaster** | **string** | buildMaster | 
+**team** | **string** | team | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPipelinesUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -79,19 +100,30 @@ No authorization required
 
 ## ResourcesUsingGET
 
-> []map[string]interface{} ResourcesUsingGET(ctx, buildMaster, pipeline, team)
+> []map[string]interface{} ResourcesUsingGET(ctx, buildMaster, pipeline, team).Execute()
 
 Retrieve the list of resource names for a given pipeline available to the Concourse stage
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**buildMaster** | **string**| buildMaster | 
-**pipeline** | **string**| pipeline | 
-**team** | **string**| team | 
+**buildMaster** | **string** | buildMaster | 
+**pipeline** | **string** | pipeline | 
+**team** | **string** | team | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiResourcesUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 

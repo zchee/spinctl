@@ -1,6 +1,6 @@
 # \ArtifactControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,26 +12,22 @@ Method | HTTP request | Description
 
 ## AllUsingGET
 
-> []map[string]interface{} AllUsingGET(ctx, optional)
+> []map[string]interface{} AllUsingGET(ctx).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve the list of artifact accounts configured in Clouddriver.
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAllUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***AllUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a AllUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -53,32 +49,29 @@ No authorization required
 
 ## ArtifactVersionsUsingGET
 
-> []string ArtifactVersionsUsingGET(ctx, accountName, artifactName, type_, optional)
+> []string ArtifactVersionsUsingGET(ctx, accountName).ArtifactName(artifactName).Type_(type_).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve the list of artifact versions by account and artifact names
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountName** | **string**| accountName | 
-**artifactName** | **string**| artifactName | 
-**type_** | **string**| type | 
- **optional** | ***ArtifactVersionsUsingGETOpts** | optional parameters | nil if no parameters
+**accountName** | **string** | accountName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a ArtifactVersionsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiArtifactVersionsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
-
-
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **artifactName** | **string** | artifactName | 
+ **type_** | **string** | type | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -100,19 +93,30 @@ No authorization required
 
 ## GetArtifactUsingGET
 
-> map[string]interface{} GetArtifactUsingGET(ctx, packageName, provider, version)
+> map[string]interface{} GetArtifactUsingGET(ctx, packageName, provider, version).Execute()
 
 Retrieve the specified artifact version for an artifact provider and package name
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**packageName** | **string**| packageName | 
-**provider** | **string**| provider | 
-**version** | **string**| version | 
+**packageName** | **string** | packageName | 
+**provider** | **string** | provider | 
+**version** | **string** | version | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetArtifactUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 

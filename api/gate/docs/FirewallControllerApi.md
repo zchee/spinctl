@@ -1,6 +1,6 @@
 # \FirewallControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -13,31 +13,30 @@ Method | HTTP request | Description
 
 ## AllByAccountAndRegionUsingGET
 
-> []map[string]interface{} AllByAccountAndRegionUsingGET(ctx, account, region, optional)
+> []map[string]interface{} AllByAccountAndRegionUsingGET(ctx, account, region).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve a list of firewalls for a given account and region
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**region** | **string**| region | 
- **optional** | ***AllByAccountAndRegionUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a AllByAccountAndRegionUsingGETOpts struct
+Other parameters are passed through a pointer to a apiAllByAccountAndRegionUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -59,29 +58,28 @@ No authorization required
 
 ## AllByAccountUsingGET
 
-> map[string]interface{} AllByAccountUsingGET(ctx, account, optional)
+> map[string]interface{} AllByAccountUsingGET(ctx, account).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve a list of firewalls for a given account, grouped by region
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
- **optional** | ***AllByAccountUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a AllByAccountUsingGETOpts struct
+Other parameters are passed through a pointer to a apiAllByAccountUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -103,27 +101,23 @@ No authorization required
 
 ## AllUsingGET1
 
-> map[string]interface{} AllUsingGET1(ctx, optional)
+> map[string]interface{} AllUsingGET1(ctx).XRateLimitApp(xRateLimitApp).Id(id).Execute()
 
 Retrieve a list of firewalls, grouped by account, cloud provider, and region
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAllUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***AllUsingGET1Opts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a AllUsingGET1Opts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **id** | **optional.String**| id | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **id** | **string** | id | 
 
 ### Return type
 
@@ -145,24 +139,23 @@ No authorization required
 
 ## GetSecurityGroupUsingGET
 
-> map[string]interface{} GetSecurityGroupUsingGET(ctx, account, name, region, optional)
+> map[string]interface{} GetSecurityGroupUsingGET(ctx, account, name, region).XRateLimitApp(xRateLimitApp).Provider(provider).VpcId(vpcId).Execute()
 
 Retrieve a firewall's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**name** | **string**| name | 
-**region** | **string**| region | 
- **optional** | ***GetSecurityGroupUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**name** | **string** | name | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSecurityGroupUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetSecurityGroupUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -170,9 +163,9 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
- **vpcId** | **optional.String**| vpcId | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
+ **vpcId** | **string** | vpcId | 
 
 ### Return type
 

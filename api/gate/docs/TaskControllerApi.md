@@ -1,6 +1,6 @@
 # \TaskControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -15,17 +15,26 @@ Method | HTTP request | Description
 
 ## CancelTaskUsingPUT1
 
-> map[string]map[string]interface{} CancelTaskUsingPUT1(ctx, id)
+> map[string]map[string]interface{} CancelTaskUsingPUT1(ctx, id).Execute()
 
 Cancel task
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCancelTaskUsingPUT1Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -47,17 +56,22 @@ No authorization required
 
 ## CancelTasksUsingPUT
 
-> map[string]map[string]interface{} CancelTasksUsingPUT(ctx, ids)
+> map[string]map[string]interface{} CancelTasksUsingPUT(ctx).Ids(ids).Execute()
 
 Cancel tasks
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCancelTasksUsingPUTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**ids** | [**[]string**](string.md)| ids | 
+ **ids** | [**[]string**](string.md) | ids | 
 
 ### Return type
 
@@ -79,17 +93,26 @@ No authorization required
 
 ## DeleteTaskUsingDELETE
 
-> map[string]map[string]interface{} DeleteTaskUsingDELETE(ctx, id)
+> map[string]map[string]interface{} DeleteTaskUsingDELETE(ctx, id).Execute()
 
 Delete task
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteTaskUsingDELETERequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -111,30 +134,29 @@ No authorization required
 
 ## GetTaskDetailsUsingGET1
 
-> map[string]map[string]interface{} GetTaskDetailsUsingGET1(ctx, id, taskDetailsId, optional)
+> map[string]map[string]interface{} GetTaskDetailsUsingGET1(ctx, id, taskDetailsId).XRateLimitApp(xRateLimitApp).Execute()
 
 Get task details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
-**taskDetailsId** | **string**| taskDetailsId | 
- **optional** | ***GetTaskDetailsUsingGET1Opts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
+**taskDetailsId** | **string** | taskDetailsId | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetTaskDetailsUsingGET1Opts struct
+Other parameters are passed through a pointer to a apiGetTaskDetailsUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -156,17 +178,26 @@ No authorization required
 
 ## GetTaskUsingGET1
 
-> map[string]map[string]interface{} GetTaskUsingGET1(ctx, id)
+> map[string]map[string]interface{} GetTaskUsingGET1(ctx, id).Execute()
 
 Get task
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTaskUsingGET1Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -188,17 +219,22 @@ No authorization required
 
 ## TaskUsingPOST1
 
-> map[string]map[string]interface{} TaskUsingPOST1(ctx, map_)
+> map[string]map[string]interface{} TaskUsingPOST1(ctx).Map_(map_).Execute()
 
 Create task
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiTaskUsingPOST1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**map_** | **map[string]interface{}**| map | 
+ **map_** | **map[string]interface{}** | map | 
 
 ### Return type
 

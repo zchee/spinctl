@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,28 +25,59 @@ var (
 // ImageControllerApiService ImageControllerApi service
 type ImageControllerApiService service
 
-// FindImagesUsingGETOpts Optional parameters for the method 'FindImagesUsingGET'
-type FindImagesUsingGETOpts struct {
-	Account  optional.String
-	Count    optional.Int32
-	Provider optional.String
-	Q        optional.String
-	Region   optional.String
+type apiFindImagesUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *ImageControllerApiService
+	account    *string
+	count      *int32
+	provider   *string
+	q          *string
+	region     *string
+}
+
+func (r apiFindImagesUsingGETRequest) Account(account string) apiFindImagesUsingGETRequest {
+	r.account = &account
+	return r
+}
+
+func (r apiFindImagesUsingGETRequest) Count(count int32) apiFindImagesUsingGETRequest {
+	r.count = &count
+	return r
+}
+
+func (r apiFindImagesUsingGETRequest) Provider(provider string) apiFindImagesUsingGETRequest {
+	r.provider = &provider
+	return r
+}
+
+func (r apiFindImagesUsingGETRequest) Q(q string) apiFindImagesUsingGETRequest {
+	r.q = &q
+	return r
+}
+
+func (r apiFindImagesUsingGETRequest) Region(region string) apiFindImagesUsingGETRequest {
+	r.region = &region
+	return r
 }
 
 /*
 FindImagesUsingGET Retrieve a list of images, filtered by cloud provider, region, and account
-The query parameter &#x60;q&#x60; filters the list of images by image name
+The query parameter `q` filters the list of images by image name
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *FindImagesUsingGETOpts - Optional Parameters:
- * @param "Account" (optional.String) -  account
- * @param "Count" (optional.Int32) -  count
- * @param "Provider" (optional.String) -  provider
- * @param "Q" (optional.String) -  q
- * @param "Region" (optional.String) -  region
-@return []map[string]interface{}
+@return apiFindImagesUsingGETRequest
 */
-func (a *ImageControllerApiService) FindImagesUsingGET(ctx _context.Context, localVarOptionals *FindImagesUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ImageControllerApiService) FindImagesUsingGET(ctx _context.Context) apiFindImagesUsingGETRequest {
+	return apiFindImagesUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiFindImagesUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -59,27 +87,31 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx _context.Context, loc
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/images/find"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ImageControllerApiService.FindImagesUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/images/find"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Account.IsSet() {
-		localVarQueryParams.Add("account", parameterToString(localVarOptionals.Account.Value(), ""))
+	if r.account != nil {
+		localVarQueryParams.Add("account", parameterToString(*r.account, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Count.IsSet() {
-		localVarQueryParams.Add("count", parameterToString(localVarOptionals.Count.Value(), ""))
+	if r.count != nil {
+		localVarQueryParams.Add("count", parameterToString(*r.count, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Q.IsSet() {
-		localVarQueryParams.Add("q", parameterToString(localVarOptionals.Q.Value(), ""))
+	if r.q != nil {
+		localVarQueryParams.Add("q", parameterToString(*r.q, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Region.IsSet() {
-		localVarQueryParams.Add("region", parameterToString(localVarOptionals.Region.Value(), ""))
+	if r.region != nil {
+		localVarQueryParams.Add("region", parameterToString(*r.region, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -98,12 +130,12 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx _context.Context, loc
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -121,19 +153,18 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx _context.Context, loc
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -145,23 +176,52 @@ func (a *ImageControllerApiService) FindImagesUsingGET(ctx _context.Context, loc
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// FindTagsUsingGETOpts Optional parameters for the method 'FindTagsUsingGET'
-type FindTagsUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiFindTagsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *ImageControllerApiService
+	account       *string
+	repository    *string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiFindTagsUsingGETRequest) Account(account string) apiFindTagsUsingGETRequest {
+	r.account = &account
+	return r
+}
+
+func (r apiFindTagsUsingGETRequest) Repository(repository string) apiFindTagsUsingGETRequest {
+	r.repository = &repository
+	return r
+}
+
+func (r apiFindTagsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiFindTagsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiFindTagsUsingGETRequest) Provider(provider string) apiFindTagsUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
 FindTagsUsingGET Find tags
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param account account
- * @param repository repository
- * @param optional nil or *FindTagsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return []map[string]interface{}
+@return apiFindTagsUsingGETRequest
 */
-func (a *ImageControllerApiService) FindTagsUsingGET(ctx _context.Context, account string, repository string, localVarOptionals *FindTagsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ImageControllerApiService) FindTagsUsingGET(ctx _context.Context) apiFindTagsUsingGETRequest {
+	return apiFindTagsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiFindTagsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -171,18 +231,30 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx _context.Context, accou
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/images/tags"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ImageControllerApiService.FindTagsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/images/tags"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("account", parameterToString(account, ""))
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.account == nil {
+		return localVarReturnValue, nil, reportError("account is required and must be specified")
 	}
-	localVarQueryParams.Add("repository", parameterToString(repository, ""))
+
+	if r.repository == nil {
+		return localVarReturnValue, nil, reportError("repository is required and must be specified")
+	}
+
+	localVarQueryParams.Add("account", parameterToString(*r.account, ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
+	}
+	localVarQueryParams.Add("repository", parameterToString(*r.repository, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -200,15 +272,15 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx _context.Context, accou
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -226,19 +298,18 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx _context.Context, accou
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -250,10 +321,24 @@ func (a *ImageControllerApiService) FindTagsUsingGET(ctx _context.Context, accou
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetImageDetailsUsingGETOpts Optional parameters for the method 'GetImageDetailsUsingGET'
-type GetImageDetailsUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiGetImageDetailsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *ImageControllerApiService
+	account       string
+	imageId       string
+	region        string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiGetImageDetailsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetImageDetailsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetImageDetailsUsingGETRequest) Provider(provider string) apiGetImageDetailsUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
@@ -262,12 +347,23 @@ GetImageDetailsUsingGET Get image details
  * @param account account
  * @param imageId imageId
  * @param region region
- * @param optional nil or *GetImageDetailsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return []map[string]interface{}
+@return apiGetImageDetailsUsingGETRequest
 */
-func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx _context.Context, account string, imageId string, region string, localVarOptionals *GetImageDetailsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx _context.Context, account string, imageId string, region string) apiGetImageDetailsUsingGETRequest {
+	return apiGetImageDetailsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		imageId:    imageId,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetImageDetailsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -277,18 +373,22 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx _context.Context
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/images/{account}/{region}/{imageId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"imageId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", imageId)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ImageControllerApiService.GetImageDetailsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/images/{account}/{region}/{imageId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"imageId"+"}", _neturl.QueryEscape(parameterToString(r.imageId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -307,15 +407,15 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx _context.Context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -333,19 +433,18 @@ func (a *ImageControllerApiService) GetImageDetailsUsingGET(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

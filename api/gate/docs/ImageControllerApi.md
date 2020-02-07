@@ -1,6 +1,6 @@
 # \ImageControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,32 +12,28 @@ Method | HTTP request | Description
 
 ## FindImagesUsingGET
 
-> []map[string]interface{} FindImagesUsingGET(ctx, optional)
+> []map[string]interface{} FindImagesUsingGET(ctx).Account(account).Count(count).Provider(provider).Q(q).Region(region).Execute()
 
 Retrieve a list of images, filtered by cloud provider, region, and account
 
-The query parameter `q` filters the list of images by image name
-
-### Required Parameters
 
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***FindImagesUsingGETOpts** | optional parameters | nil if no parameters
+### Path Parameters
 
-### Optional Parameters
 
-Optional parameters are passed through a pointer to a FindImagesUsingGETOpts struct
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiFindImagesUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account** | **optional.String**| account | 
- **count** | **optional.Int32**| count | 
- **provider** | **optional.String**| provider | [default to aws]
- **q** | **optional.String**| q | 
- **region** | **optional.String**| region | 
+ **account** | **string** | account | 
+ **count** | **int32** | count | 
+ **provider** | **string** | provider | [default to aws]
+ **q** | **string** | q | 
+ **region** | **string** | region | 
 
 ### Return type
 
@@ -59,31 +55,25 @@ No authorization required
 
 ## FindTagsUsingGET
 
-> []map[string]interface{} FindTagsUsingGET(ctx, account, repository, optional)
+> []map[string]interface{} FindTagsUsingGET(ctx).Account(account).Repository(repository).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Find tags
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiFindTagsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**repository** | **string**| repository | 
- **optional** | ***FindTagsUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a FindTagsUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **account** | **string** | account | 
+ **repository** | **string** | repository | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -105,24 +95,23 @@ No authorization required
 
 ## GetImageDetailsUsingGET
 
-> []map[string]interface{} GetImageDetailsUsingGET(ctx, account, imageId, region, optional)
+> []map[string]interface{} GetImageDetailsUsingGET(ctx, account, imageId, region).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Get image details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**imageId** | **string**| imageId | 
-**region** | **string**| region | 
- **optional** | ***GetImageDetailsUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**imageId** | **string** | imageId | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetImageDetailsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetImageDetailsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -130,8 +119,8 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 

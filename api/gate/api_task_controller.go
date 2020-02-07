@@ -11,14 +11,11 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"reflect"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -29,13 +26,31 @@ var (
 // TaskControllerApiService TaskControllerApi service
 type TaskControllerApiService service
 
+type apiCancelTaskUsingPUT1Request struct {
+	ctx        _context.Context
+	apiService *TaskControllerApiService
+	id         string
+}
+
 /*
 CancelTaskUsingPUT1 Cancel task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiCancelTaskUsingPUT1Request
 */
-func (a *TaskControllerApiService) CancelTaskUsingPUT1(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *TaskControllerApiService) CancelTaskUsingPUT1(ctx _context.Context, id string) apiCancelTaskUsingPUT1Request {
+	return apiCancelTaskUsingPUT1Request{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiCancelTaskUsingPUT1Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -45,9 +60,13 @@ func (a *TaskControllerApiService) CancelTaskUsingPUT1(ctx _context.Context, id 
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/tasks/{id}/cancel"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TaskControllerApiService.CancelTaskUsingPUT1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/tasks/{id}/cancel"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -70,12 +89,12 @@ func (a *TaskControllerApiService) CancelTaskUsingPUT1(ctx _context.Context, id 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -93,19 +112,18 @@ func (a *TaskControllerApiService) CancelTaskUsingPUT1(ctx _context.Context, id 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -117,13 +135,34 @@ func (a *TaskControllerApiService) CancelTaskUsingPUT1(ctx _context.Context, id 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiCancelTasksUsingPUTRequest struct {
+	ctx        _context.Context
+	apiService *TaskControllerApiService
+	ids        *[]string
+}
+
+func (r apiCancelTasksUsingPUTRequest) Ids(ids []string) apiCancelTasksUsingPUTRequest {
+	r.ids = &ids
+	return r
+}
+
 /*
 CancelTasksUsingPUT Cancel tasks
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param ids ids
-@return map[string]map[string]interface{}
+@return apiCancelTasksUsingPUTRequest
 */
-func (a *TaskControllerApiService) CancelTasksUsingPUT(ctx _context.Context, ids []string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *TaskControllerApiService) CancelTasksUsingPUT(ctx _context.Context) apiCancelTasksUsingPUTRequest {
+	return apiCancelTasksUsingPUTRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiCancelTasksUsingPUTRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -133,21 +172,31 @@ func (a *TaskControllerApiService) CancelTasksUsingPUT(ctx _context.Context, ids
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/tasks/cancel"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TaskControllerApiService.CancelTasksUsingPUT")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/tasks/cancel"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	t := ids
-	if reflect.TypeOf(t).Kind() == reflect.Slice {
-		s := reflect.ValueOf(t)
-		for i := 0; i < s.Len(); i++ {
-			localVarQueryParams.Add("ids", parameterToString(s.Index(i), "multi"))
+	if r.ids == nil {
+		return localVarReturnValue, nil, reportError("ids is required and must be specified")
+	}
+
+	{
+		t := *r.ids
+		if reflect.TypeOf(t).Kind() == reflect.Slice {
+			s := reflect.ValueOf(t)
+			for i := 0; i < s.Len(); i++ {
+				localVarQueryParams.Add("ids", parameterToString(s.Index(i), "multi"))
+			}
+		} else {
+			localVarQueryParams.Add("ids", parameterToString(t, "multi"))
 		}
-	} else {
-		localVarQueryParams.Add("ids", parameterToString(t, "multi"))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -166,12 +215,12 @@ func (a *TaskControllerApiService) CancelTasksUsingPUT(ctx _context.Context, ids
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -189,19 +238,18 @@ func (a *TaskControllerApiService) CancelTasksUsingPUT(ctx _context.Context, ids
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -211,15 +259,33 @@ func (a *TaskControllerApiService) CancelTasksUsingPUT(ctx _context.Context, ids
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiDeleteTaskUsingDELETERequest struct {
+	ctx        _context.Context
+	apiService *TaskControllerApiService
+	id         string
 }
 
 /*
 DeleteTaskUsingDELETE Delete task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiDeleteTaskUsingDELETERequest
 */
-func (a *TaskControllerApiService) DeleteTaskUsingDELETE(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *TaskControllerApiService) DeleteTaskUsingDELETE(ctx _context.Context, id string) apiDeleteTaskUsingDELETERequest {
+	return apiDeleteTaskUsingDELETERequest{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiDeleteTaskUsingDELETERequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -229,9 +295,13 @@ func (a *TaskControllerApiService) DeleteTaskUsingDELETE(ctx _context.Context, i
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/tasks/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TaskControllerApiService.DeleteTaskUsingDELETE")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/tasks/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -254,12 +324,12 @@ func (a *TaskControllerApiService) DeleteTaskUsingDELETE(ctx _context.Context, i
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -277,19 +347,18 @@ func (a *TaskControllerApiService) DeleteTaskUsingDELETE(ctx _context.Context, i
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -301,9 +370,17 @@ func (a *TaskControllerApiService) DeleteTaskUsingDELETE(ctx _context.Context, i
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetTaskDetailsUsingGET1Opts Optional parameters for the method 'GetTaskDetailsUsingGET1'
-type GetTaskDetailsUsingGET1Opts struct {
-	XRateLimitApp optional.String
+type apiGetTaskDetailsUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *TaskControllerApiService
+	id            string
+	taskDetailsId string
+	xRateLimitApp *string
+}
+
+func (r apiGetTaskDetailsUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiGetTaskDetailsUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
@@ -311,11 +388,22 @@ GetTaskDetailsUsingGET1 Get task details
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
  * @param taskDetailsId taskDetailsId
- * @param optional nil or *GetTaskDetailsUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return map[string]map[string]interface{}
+@return apiGetTaskDetailsUsingGET1Request
 */
-func (a *TaskControllerApiService) GetTaskDetailsUsingGET1(ctx _context.Context, id string, taskDetailsId string, localVarOptionals *GetTaskDetailsUsingGET1Opts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *TaskControllerApiService) GetTaskDetailsUsingGET1(ctx _context.Context, id string, taskDetailsId string) apiGetTaskDetailsUsingGET1Request {
+	return apiGetTaskDetailsUsingGET1Request{
+		apiService:    a,
+		ctx:           ctx,
+		id:            id,
+		taskDetailsId: taskDetailsId,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetTaskDetailsUsingGET1Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -325,10 +413,14 @@ func (a *TaskControllerApiService) GetTaskDetailsUsingGET1(ctx _context.Context,
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/tasks/{id}/details/{taskDetailsId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"taskDetailsId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", taskDetailsId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TaskControllerApiService.GetTaskDetailsUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/tasks/{id}/details/{taskDetailsId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"taskDetailsId"+"}", _neturl.QueryEscape(parameterToString(r.taskDetailsId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -351,15 +443,15 @@ func (a *TaskControllerApiService) GetTaskDetailsUsingGET1(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -377,19 +469,18 @@ func (a *TaskControllerApiService) GetTaskDetailsUsingGET1(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -399,15 +490,33 @@ func (a *TaskControllerApiService) GetTaskDetailsUsingGET1(ctx _context.Context,
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetTaskUsingGET1Request struct {
+	ctx        _context.Context
+	apiService *TaskControllerApiService
+	id         string
 }
 
 /*
 GetTaskUsingGET1 Get task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param id id
-@return map[string]map[string]interface{}
+@return apiGetTaskUsingGET1Request
 */
-func (a *TaskControllerApiService) GetTaskUsingGET1(ctx _context.Context, id string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *TaskControllerApiService) GetTaskUsingGET1(ctx _context.Context, id string) apiGetTaskUsingGET1Request {
+	return apiGetTaskUsingGET1Request{
+		apiService: a,
+		ctx:        ctx,
+		id:         id,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetTaskUsingGET1Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -417,9 +526,13 @@ func (a *TaskControllerApiService) GetTaskUsingGET1(ctx _context.Context, id str
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/tasks/{id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", id)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TaskControllerApiService.GetTaskUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/tasks/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", _neturl.QueryEscape(parameterToString(r.id, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -442,12 +555,12 @@ func (a *TaskControllerApiService) GetTaskUsingGET1(ctx _context.Context, id str
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -465,19 +578,18 @@ func (a *TaskControllerApiService) GetTaskUsingGET1(ctx _context.Context, id str
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -489,13 +601,34 @@ func (a *TaskControllerApiService) GetTaskUsingGET1(ctx _context.Context, id str
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiTaskUsingPOST1Request struct {
+	ctx        _context.Context
+	apiService *TaskControllerApiService
+	map_       *map[string]interface{}
+}
+
+func (r apiTaskUsingPOST1Request) Map_(map_ map[string]interface{}) apiTaskUsingPOST1Request {
+	r.map_ = &map_
+	return r
+}
+
 /*
 TaskUsingPOST1 Create task
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param map_ map
-@return map[string]map[string]interface{}
+@return apiTaskUsingPOST1Request
 */
-func (a *TaskControllerApiService) TaskUsingPOST1(ctx _context.Context, map_ map[string]interface{}) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *TaskControllerApiService) TaskUsingPOST1(ctx _context.Context) apiTaskUsingPOST1Request {
+	return apiTaskUsingPOST1Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiTaskUsingPOST1Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -505,12 +638,20 @@ func (a *TaskControllerApiService) TaskUsingPOST1(ctx _context.Context, map_ map
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/tasks"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TaskControllerApiService.TaskUsingPOST1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/tasks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+
+	if r.map_ == nil {
+		return localVarReturnValue, nil, reportError("map_ is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -530,13 +671,13 @@ func (a *TaskControllerApiService) TaskUsingPOST1(ctx _context.Context, map_ map
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &map_
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.map_
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -554,19 +695,18 @@ func (a *TaskControllerApiService) TaskUsingPOST1(ctx _context.Context, map_ map
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

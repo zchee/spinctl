@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,20 +25,37 @@ var (
 // SubnetControllerApiService SubnetControllerApi service
 type SubnetControllerApiService service
 
-// AllByCloudProviderUsingGET1Opts Optional parameters for the method 'AllByCloudProviderUsingGET1'
-type AllByCloudProviderUsingGET1Opts struct {
-	XRateLimitApp optional.String
+type apiAllByCloudProviderUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *SubnetControllerApiService
+	cloudProvider string
+	xRateLimitApp *string
+}
+
+func (r apiAllByCloudProviderUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiAllByCloudProviderUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 AllByCloudProviderUsingGET1 Retrieve a list of subnets for a given cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param cloudProvider cloudProvider
- * @param optional nil or *AllByCloudProviderUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiAllByCloudProviderUsingGET1Request
 */
-func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx _context.Context, cloudProvider string, localVarOptionals *AllByCloudProviderUsingGET1Opts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx _context.Context, cloudProvider string) apiAllByCloudProviderUsingGET1Request {
+	return apiAllByCloudProviderUsingGET1Request{
+		apiService:    a,
+		ctx:           ctx,
+		cloudProvider: cloudProvider,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiAllByCloudProviderUsingGET1Request) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -51,9 +65,13 @@ func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx _context.Co
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/subnets/{cloudProvider}"
-	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", cloudProvider)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SubnetControllerApiService.AllByCloudProviderUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/subnets/{cloudProvider}"
+	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(parameterToString(r.cloudProvider, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -76,15 +94,15 @@ func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx _context.Co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -102,19 +120,18 @@ func (a *SubnetControllerApiService) AllByCloudProviderUsingGET1(ctx _context.Co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

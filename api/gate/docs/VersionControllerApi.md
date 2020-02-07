@@ -1,6 +1,6 @@
 # \VersionControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,13 +10,18 @@ Method | HTTP request | Description
 
 ## GetVersionUsingGET
 
-> Version GetVersionUsingGET(ctx, )
+> Version GetVersionUsingGET(ctx).Execute()
 
 Fetch Gate's current version
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetVersionUsingGETRequest struct via the builder pattern
+
 
 ### Return type
 

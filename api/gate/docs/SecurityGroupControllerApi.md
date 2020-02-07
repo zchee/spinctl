@@ -1,6 +1,6 @@
 # \SecurityGroupControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,29 +12,28 @@ Method | HTTP request | Description
 
 ## AllByAccountUsingGET1
 
-> map[string]interface{} AllByAccountUsingGET1(ctx, account, optional)
+> map[string]interface{} AllByAccountUsingGET1(ctx, account).XRateLimitApp(xRateLimitApp).Provider(provider).Execute()
 
 Retrieve a list of security groups for a given account, grouped by region
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
- **optional** | ***AllByAccountUsingGET1Opts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a AllByAccountUsingGET1Opts struct
+Other parameters are passed through a pointer to a apiAllByAccountUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
 
 ### Return type
 
@@ -56,27 +55,23 @@ No authorization required
 
 ## AllUsingGET5
 
-> map[string]interface{} AllUsingGET5(ctx, optional)
+> map[string]interface{} AllUsingGET5(ctx).XRateLimitApp(xRateLimitApp).Id(id).Execute()
 
 Retrieve a list of security groups, grouped by account, cloud provider, and region
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAllUsingGET5Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***AllUsingGET5Opts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a AllUsingGET5Opts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **id** | **optional.String**| id | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **id** | **string** | id | 
 
 ### Return type
 
@@ -98,24 +93,23 @@ No authorization required
 
 ## GetSecurityGroupUsingGET1
 
-> map[string]interface{} GetSecurityGroupUsingGET1(ctx, account, name, region, optional)
+> map[string]interface{} GetSecurityGroupUsingGET1(ctx, account, name, region).XRateLimitApp(xRateLimitApp).Provider(provider).VpcId(vpcId).Execute()
 
 Retrieve a security group's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**name** | **string**| name | 
-**region** | **string**| region | 
- **optional** | ***GetSecurityGroupUsingGET1Opts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**name** | **string** | name | 
+**region** | **string** | region | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSecurityGroupUsingGET1Opts struct
+Other parameters are passed through a pointer to a apiGetSecurityGroupUsingGET1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -123,9 +117,9 @@ Name | Type | Description  | Notes
 
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
- **provider** | **optional.String**| provider | [default to aws]
- **vpcId** | **optional.String**| vpcId | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
+ **provider** | **string** | provider | [default to aws]
+ **vpcId** | **string** | vpcId | 
 
 ### Return type
 

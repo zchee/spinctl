@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,10 +25,23 @@ var (
 // FirewallControllerApiService FirewallControllerApi service
 type FirewallControllerApiService service
 
-// AllByAccountAndRegionUsingGETOpts Optional parameters for the method 'AllByAccountAndRegionUsingGET'
-type AllByAccountAndRegionUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiAllByAccountAndRegionUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *FirewallControllerApiService
+	account       string
+	region        string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiAllByAccountAndRegionUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiAllByAccountAndRegionUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiAllByAccountAndRegionUsingGETRequest) Provider(provider string) apiAllByAccountAndRegionUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
@@ -39,12 +49,22 @@ AllByAccountAndRegionUsingGET Retrieve a list of firewalls for a given account a
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
  * @param region region
- * @param optional nil or *AllByAccountAndRegionUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return []map[string]interface{}
+@return apiAllByAccountAndRegionUsingGETRequest
 */
-func (a *FirewallControllerApiService) AllByAccountAndRegionUsingGET(ctx _context.Context, account string, region string, localVarOptionals *AllByAccountAndRegionUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *FirewallControllerApiService) AllByAccountAndRegionUsingGET(ctx _context.Context, account string, region string) apiAllByAccountAndRegionUsingGETRequest {
+	return apiAllByAccountAndRegionUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiAllByAccountAndRegionUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -54,17 +74,21 @@ func (a *FirewallControllerApiService) AllByAccountAndRegionUsingGET(ctx _contex
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/firewalls/{account}/{region}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "FirewallControllerApiService.AllByAccountAndRegionUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/firewalls/{account}/{region}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -83,15 +107,15 @@ func (a *FirewallControllerApiService) AllByAccountAndRegionUsingGET(ctx _contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -109,19 +133,18 @@ func (a *FirewallControllerApiService) AllByAccountAndRegionUsingGET(ctx _contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -133,22 +156,43 @@ func (a *FirewallControllerApiService) AllByAccountAndRegionUsingGET(ctx _contex
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// AllByAccountUsingGETOpts Optional parameters for the method 'AllByAccountUsingGET'
-type AllByAccountUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiAllByAccountUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *FirewallControllerApiService
+	account       string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiAllByAccountUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiAllByAccountUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiAllByAccountUsingGETRequest) Provider(provider string) apiAllByAccountUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
 AllByAccountUsingGET Retrieve a list of firewalls for a given account, grouped by region
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
- * @param optional nil or *AllByAccountUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return map[string]interface{}
+@return apiAllByAccountUsingGETRequest
 */
-func (a *FirewallControllerApiService) AllByAccountUsingGET(ctx _context.Context, account string, localVarOptionals *AllByAccountUsingGETOpts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *FirewallControllerApiService) AllByAccountUsingGET(ctx _context.Context, account string) apiAllByAccountUsingGETRequest {
+	return apiAllByAccountUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiAllByAccountUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -158,16 +202,20 @@ func (a *FirewallControllerApiService) AllByAccountUsingGET(ctx _context.Context
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/firewalls/{account}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "FirewallControllerApiService.AllByAccountUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/firewalls/{account}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -186,15 +234,15 @@ func (a *FirewallControllerApiService) AllByAccountUsingGET(ctx _context.Context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -212,19 +260,18 @@ func (a *FirewallControllerApiService) AllByAccountUsingGET(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -236,21 +283,40 @@ func (a *FirewallControllerApiService) AllByAccountUsingGET(ctx _context.Context
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// AllUsingGET1Opts Optional parameters for the method 'AllUsingGET1'
-type AllUsingGET1Opts struct {
-	XRateLimitApp optional.String
-	Id            optional.String
+type apiAllUsingGET1Request struct {
+	ctx           _context.Context
+	apiService    *FirewallControllerApiService
+	xRateLimitApp *string
+	id            *string
+}
+
+func (r apiAllUsingGET1Request) XRateLimitApp(xRateLimitApp string) apiAllUsingGET1Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiAllUsingGET1Request) Id(id string) apiAllUsingGET1Request {
+	r.id = &id
+	return r
 }
 
 /*
 AllUsingGET1 Retrieve a list of firewalls, grouped by account, cloud provider, and region
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *AllUsingGET1Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Id" (optional.String) -  id
-@return map[string]interface{}
+@return apiAllUsingGET1Request
 */
-func (a *FirewallControllerApiService) AllUsingGET1(ctx _context.Context, localVarOptionals *AllUsingGET1Opts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *FirewallControllerApiService) AllUsingGET1(ctx _context.Context) apiAllUsingGET1Request {
+	return apiAllUsingGET1Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiAllUsingGET1Request) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -260,15 +326,19 @@ func (a *FirewallControllerApiService) AllUsingGET1(ctx _context.Context, localV
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/firewalls"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "FirewallControllerApiService.AllUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/firewalls"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Id.IsSet() {
-		localVarQueryParams.Add("id", parameterToString(localVarOptionals.Id.Value(), ""))
+	if r.id != nil {
+		localVarQueryParams.Add("id", parameterToString(*r.id, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -287,15 +357,15 @@ func (a *FirewallControllerApiService) AllUsingGET1(ctx _context.Context, localV
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -313,19 +383,18 @@ func (a *FirewallControllerApiService) AllUsingGET1(ctx _context.Context, localV
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -337,11 +406,30 @@ func (a *FirewallControllerApiService) AllUsingGET1(ctx _context.Context, localV
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetSecurityGroupUsingGETOpts Optional parameters for the method 'GetSecurityGroupUsingGET'
-type GetSecurityGroupUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
-	VpcId         optional.String
+type apiGetSecurityGroupUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *FirewallControllerApiService
+	account       string
+	name          string
+	region        string
+	xRateLimitApp *string
+	provider      *string
+	vpcId         *string
+}
+
+func (r apiGetSecurityGroupUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetSecurityGroupUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetSecurityGroupUsingGETRequest) Provider(provider string) apiGetSecurityGroupUsingGETRequest {
+	r.provider = &provider
+	return r
+}
+
+func (r apiGetSecurityGroupUsingGETRequest) VpcId(vpcId string) apiGetSecurityGroupUsingGETRequest {
+	r.vpcId = &vpcId
+	return r
 }
 
 /*
@@ -350,13 +438,23 @@ GetSecurityGroupUsingGET Retrieve a firewall's details
  * @param account account
  * @param name name
  * @param region region
- * @param optional nil or *GetSecurityGroupUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
- * @param "VpcId" (optional.String) -  vpcId
-@return map[string]interface{}
+@return apiGetSecurityGroupUsingGETRequest
 */
-func (a *FirewallControllerApiService) GetSecurityGroupUsingGET(ctx _context.Context, account string, name string, region string, localVarOptionals *GetSecurityGroupUsingGETOpts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *FirewallControllerApiService) GetSecurityGroupUsingGET(ctx _context.Context, account string, name string, region string) apiGetSecurityGroupUsingGETRequest {
+	return apiGetSecurityGroupUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		name:       name,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiGetSecurityGroupUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -366,21 +464,25 @@ func (a *FirewallControllerApiService) GetSecurityGroupUsingGET(ctx _context.Con
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/firewalls/{account}/{region}/{name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", name)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "FirewallControllerApiService.GetSecurityGroupUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/firewalls/{account}/{region}/{name}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(parameterToString(r.name, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.VpcId.IsSet() {
-		localVarQueryParams.Add("vpcId", parameterToString(localVarOptionals.VpcId.Value(), ""))
+	if r.vpcId != nil {
+		localVarQueryParams.Add("vpcId", parameterToString(*r.vpcId, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -399,15 +501,15 @@ func (a *FirewallControllerApiService) GetSecurityGroupUsingGET(ctx _context.Con
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -425,19 +527,18 @@ func (a *FirewallControllerApiService) GetSecurityGroupUsingGET(ctx _context.Con
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

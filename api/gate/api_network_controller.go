@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,20 +25,37 @@ var (
 // NetworkControllerApiService NetworkControllerApi service
 type NetworkControllerApiService service
 
-// AllByCloudProviderUsingGETOpts Optional parameters for the method 'AllByCloudProviderUsingGET'
-type AllByCloudProviderUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiAllByCloudProviderUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *NetworkControllerApiService
+	cloudProvider string
+	xRateLimitApp *string
+}
+
+func (r apiAllByCloudProviderUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiAllByCloudProviderUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 AllByCloudProviderUsingGET Retrieve a list of networks for a given cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param cloudProvider cloudProvider
- * @param optional nil or *AllByCloudProviderUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiAllByCloudProviderUsingGETRequest
 */
-func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx _context.Context, cloudProvider string, localVarOptionals *AllByCloudProviderUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx _context.Context, cloudProvider string) apiAllByCloudProviderUsingGETRequest {
+	return apiAllByCloudProviderUsingGETRequest{
+		apiService:    a,
+		ctx:           ctx,
+		cloudProvider: cloudProvider,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiAllByCloudProviderUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -51,9 +65,13 @@ func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx _context.Co
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/networks/{cloudProvider}"
-	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", cloudProvider)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkControllerApiService.AllByCloudProviderUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/networks/{cloudProvider}"
+	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(parameterToString(r.cloudProvider, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -76,15 +94,15 @@ func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx _context.Co
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -102,19 +120,18 @@ func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx _context.Co
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -126,19 +143,34 @@ func (a *NetworkControllerApiService) AllByCloudProviderUsingGET(ctx _context.Co
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// AllUsingGET2Opts Optional parameters for the method 'AllUsingGET2'
-type AllUsingGET2Opts struct {
-	XRateLimitApp optional.String
+type apiAllUsingGET2Request struct {
+	ctx           _context.Context
+	apiService    *NetworkControllerApiService
+	xRateLimitApp *string
+}
+
+func (r apiAllUsingGET2Request) XRateLimitApp(xRateLimitApp string) apiAllUsingGET2Request {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 AllUsingGET2 Retrieve a list of networks, grouped by cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *AllUsingGET2Opts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return map[string]map[string]interface{}
+@return apiAllUsingGET2Request
 */
-func (a *NetworkControllerApiService) AllUsingGET2(ctx _context.Context, localVarOptionals *AllUsingGET2Opts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *NetworkControllerApiService) AllUsingGET2(ctx _context.Context) apiAllUsingGET2Request {
+	return apiAllUsingGET2Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiAllUsingGET2Request) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -148,8 +180,12 @@ func (a *NetworkControllerApiService) AllUsingGET2(ctx _context.Context, localVa
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/networks"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkControllerApiService.AllUsingGET2")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/networks"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -172,15 +208,15 @@ func (a *NetworkControllerApiService) AllUsingGET2(ctx _context.Context, localVa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -198,19 +234,18 @@ func (a *NetworkControllerApiService) AllUsingGET2(ctx _context.Context, localVa
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

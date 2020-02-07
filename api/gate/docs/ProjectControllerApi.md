@@ -1,6 +1,6 @@
 # \ProjectControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -13,29 +13,28 @@ Method | HTTP request | Description
 
 ## AllPipelinesForProjectUsingGET
 
-> []map[string]interface{} AllPipelinesForProjectUsingGET(ctx, id, optional)
+> []map[string]interface{} AllPipelinesForProjectUsingGET(ctx, id).Limit(limit).Statuses(statuses).Execute()
 
 Get all pipelines for project
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***AllPipelinesForProjectUsingGETOpts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a AllPipelinesForProjectUsingGETOpts struct
+Other parameters are passed through a pointer to a apiAllPipelinesForProjectUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **limit** | **optional.Int32**| limit | [default to 5]
- **statuses** | **optional.String**| statuses | 
+ **limit** | **int32** | limit | [default to 5]
+ **statuses** | **string** | statuses | 
 
 ### Return type
 
@@ -57,13 +56,18 @@ No authorization required
 
 ## AllUsingGET3
 
-> []map[string]interface{} AllUsingGET3(ctx, )
+> []map[string]interface{} AllUsingGET3(ctx).Execute()
 
 Get all projects
 
-### Required Parameters
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAllUsingGET3Request struct via the builder pattern
+
 
 ### Return type
 
@@ -85,28 +89,27 @@ No authorization required
 
 ## GetClustersUsingGET3
 
-> []map[string]interface{} GetClustersUsingGET3(ctx, id, optional)
+> []map[string]interface{} GetClustersUsingGET3(ctx, id).XRateLimitApp(xRateLimitApp).Execute()
 
 Get a project's clusters
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***GetClustersUsingGET3Opts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetClustersUsingGET3Opts struct
+Other parameters are passed through a pointer to a apiGetClustersUsingGET3Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -128,17 +131,26 @@ No authorization required
 
 ## GetUsingGET1
 
-> map[string]map[string]interface{} GetUsingGET1(ctx, id)
+> map[string]map[string]interface{} GetUsingGET1(ctx, id).Execute()
 
 Get a project
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetUsingGET1Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 

@@ -1,6 +1,6 @@
 # \NetworkControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,28 +11,27 @@ Method | HTTP request | Description
 
 ## AllByCloudProviderUsingGET
 
-> []map[string]interface{} AllByCloudProviderUsingGET(ctx, cloudProvider, optional)
+> []map[string]interface{} AllByCloudProviderUsingGET(ctx, cloudProvider).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a list of networks for a given cloud provider
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**cloudProvider** | **string**| cloudProvider | 
- **optional** | ***AllByCloudProviderUsingGETOpts** | optional parameters | nil if no parameters
+**cloudProvider** | **string** | cloudProvider | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a AllByCloudProviderUsingGETOpts struct
+Other parameters are passed through a pointer to a apiAllByCloudProviderUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -54,26 +53,22 @@ No authorization required
 
 ## AllUsingGET2
 
-> map[string]map[string]interface{} AllUsingGET2(ctx, optional)
+> map[string]map[string]interface{} AllUsingGET2(ctx).XRateLimitApp(xRateLimitApp).Execute()
 
 Retrieve a list of networks, grouped by cloud provider
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAllUsingGET2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***AllUsingGET2Opts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a AllUsingGET2Opts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 

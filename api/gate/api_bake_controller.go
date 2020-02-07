@@ -11,7 +11,6 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
@@ -26,13 +25,31 @@ var (
 // BakeControllerApiService BakeControllerApi service
 type BakeControllerApiService service
 
+type apiBakeOptionsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *BakeControllerApiService
+	cloudProvider string
+}
+
 /*
 BakeOptionsUsingGET Retrieve a list of available bakery base images for a given cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param cloudProvider cloudProvider
-@return map[string]interface{}
+@return apiBakeOptionsUsingGETRequest
 */
-func (a *BakeControllerApiService) BakeOptionsUsingGET(ctx _context.Context, cloudProvider string) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *BakeControllerApiService) BakeOptionsUsingGET(ctx _context.Context, cloudProvider string) apiBakeOptionsUsingGETRequest {
+	return apiBakeOptionsUsingGETRequest{
+		apiService:    a,
+		ctx:           ctx,
+		cloudProvider: cloudProvider,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiBakeOptionsUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -42,9 +59,13 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET(ctx _context.Context, clo
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/bakery/options/{cloudProvider}"
-	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", cloudProvider)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BakeControllerApiService.BakeOptionsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/bakery/options/{cloudProvider}"
+	localVarPath = strings.Replace(localVarPath, "{"+"cloudProvider"+"}", _neturl.QueryEscape(parameterToString(r.cloudProvider, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -67,12 +88,12 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET(ctx _context.Context, clo
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -90,19 +111,18 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET(ctx _context.Context, clo
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -114,12 +134,28 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET(ctx _context.Context, clo
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiBakeOptionsUsingGET1Request struct {
+	ctx        _context.Context
+	apiService *BakeControllerApiService
+}
+
 /*
 BakeOptionsUsingGET1 Retrieve a list of available bakery base images, grouped by cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return map[string]interface{}
+@return apiBakeOptionsUsingGET1Request
 */
-func (a *BakeControllerApiService) BakeOptionsUsingGET1(ctx _context.Context) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *BakeControllerApiService) BakeOptionsUsingGET1(ctx _context.Context) apiBakeOptionsUsingGET1Request {
+	return apiBakeOptionsUsingGET1Request{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiBakeOptionsUsingGET1Request) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -129,8 +165,12 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET1(ctx _context.Context) (m
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/bakery/options"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BakeControllerApiService.BakeOptionsUsingGET1")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/bakery/options"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -153,12 +193,12 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET1(ctx _context.Context) (m
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -176,19 +216,18 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET1(ctx _context.Context) (m
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -198,6 +237,13 @@ func (a *BakeControllerApiService) BakeOptionsUsingGET1(ctx _context.Context) (m
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiLookupLogsUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *BakeControllerApiService
+	region     string
+	statusId   string
 }
 
 /*
@@ -205,9 +251,22 @@ LookupLogsUsingGET Retrieve the logs for a given bake
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param region region
  * @param statusId statusId
-@return map[string]interface{}
+@return apiLookupLogsUsingGETRequest
 */
-func (a *BakeControllerApiService) LookupLogsUsingGET(ctx _context.Context, region string, statusId string) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *BakeControllerApiService) LookupLogsUsingGET(ctx _context.Context, region string, statusId string) apiLookupLogsUsingGETRequest {
+	return apiLookupLogsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		region:     region,
+		statusId:   statusId,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiLookupLogsUsingGETRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -217,10 +276,14 @@ func (a *BakeControllerApiService) LookupLogsUsingGET(ctx _context.Context, regi
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/bakery/logs/{region}/{statusId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"statusId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", statusId)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BakeControllerApiService.LookupLogsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/bakery/logs/{region}/{statusId}"
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"statusId"+"}", _neturl.QueryEscape(parameterToString(r.statusId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -243,12 +306,12 @@ func (a *BakeControllerApiService) LookupLogsUsingGET(ctx _context.Context, regi
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -266,19 +329,18 @@ func (a *BakeControllerApiService) LookupLogsUsingGET(ctx _context.Context, regi
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

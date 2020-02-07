@@ -1,6 +1,6 @@
 # \EcsServerGroupEventsControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,21 +10,32 @@ Method | HTTP request | Description
 
 ## GetEventsUsingGET
 
-> []map[string]interface{} GetEventsUsingGET(ctx, account, application, provider, region, serverGroupName)
+> []map[string]interface{} GetEventsUsingGET(ctx, account, application, serverGroupName).Provider(provider).Region(region).Execute()
 
 Retrieves a list of events for a server group
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
-**provider** | **string**| provider | 
-**region** | **string**| region | 
-**serverGroupName** | **string**| serverGroupName | 
+**account** | **string** | account | 
+**application** | **string** | application | 
+**serverGroupName** | **string** | serverGroupName | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetEventsUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **provider** | **string** | provider | 
+ **region** | **string** | region | 
+
 
 ### Return type
 

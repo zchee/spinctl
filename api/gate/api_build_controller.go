@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,20 +25,35 @@ var (
 // BuildControllerApiService BuildControllerApi service
 type BuildControllerApiService service
 
-// GetBuildMastersUsingGETOpts Optional parameters for the method 'GetBuildMastersUsingGET'
-type GetBuildMastersUsingGETOpts struct {
-	Type_ optional.String
+type apiGetBuildMastersUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *BuildControllerApiService
+	type_      *string
+}
+
+func (r apiGetBuildMastersUsingGETRequest) Type_(type_ string) apiGetBuildMastersUsingGETRequest {
+	r.type_ = &type_
+	return r
 }
 
 /*
 GetBuildMastersUsingGET Get build masters
 Deprecated, use the v3 endpoint instead
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetBuildMastersUsingGETOpts - Optional Parameters:
- * @param "Type_" (optional.String) -  type
-@return []map[string]interface{}
+@return apiGetBuildMastersUsingGETRequest
 */
-func (a *BuildControllerApiService) GetBuildMastersUsingGET(ctx _context.Context, localVarOptionals *GetBuildMastersUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) GetBuildMastersUsingGET(ctx _context.Context) apiGetBuildMastersUsingGETRequest {
+	return apiGetBuildMastersUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetBuildMastersUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -51,15 +63,19 @@ func (a *BuildControllerApiService) GetBuildMastersUsingGET(ctx _context.Context
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/builds"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.GetBuildMastersUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/builds"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Type_.IsSet() {
-		localVarQueryParams.Add("type", parameterToString(localVarOptionals.Type_.Value(), ""))
+	if r.type_ != nil {
+		localVarQueryParams.Add("type", parameterToString(*r.type_, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -78,12 +94,12 @@ func (a *BuildControllerApiService) GetBuildMastersUsingGET(ctx _context.Context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -101,19 +117,18 @@ func (a *BuildControllerApiService) GetBuildMastersUsingGET(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -123,6 +138,13 @@ func (a *BuildControllerApiService) GetBuildMastersUsingGET(ctx _context.Context
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetBuildUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
+	number      string
 }
 
 /*
@@ -131,9 +153,22 @@ Deprecated, use the v3 endpoint instead
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
  * @param number number
-@return map[string]map[string]interface{}
+@return apiGetBuildUsingGETRequest
 */
-func (a *BuildControllerApiService) GetBuildUsingGET(ctx _context.Context, buildMaster string, number string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) GetBuildUsingGET(ctx _context.Context, buildMaster string, number string) apiGetBuildUsingGETRequest {
+	return apiGetBuildUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+		number:      number,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetBuildUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -143,10 +178,14 @@ func (a *BuildControllerApiService) GetBuildUsingGET(ctx _context.Context, build
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/builds/{buildMaster}/build/{number}/**"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", number)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.GetBuildUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/builds/{buildMaster}/build/{number}/**"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", _neturl.QueryEscape(parameterToString(r.number, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -169,12 +208,12 @@ func (a *BuildControllerApiService) GetBuildUsingGET(ctx _context.Context, build
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -192,19 +231,18 @@ func (a *BuildControllerApiService) GetBuildUsingGET(ctx _context.Context, build
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -214,6 +252,12 @@ func (a *BuildControllerApiService) GetBuildUsingGET(ctx _context.Context, build
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetBuildsUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
 }
 
 /*
@@ -221,9 +265,21 @@ GetBuildsUsingGET Get builds for build master
 Deprecated, use the v3 endpoint instead
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
-@return []map[string]interface{}
+@return apiGetBuildsUsingGETRequest
 */
-func (a *BuildControllerApiService) GetBuildsUsingGET(ctx _context.Context, buildMaster string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) GetBuildsUsingGET(ctx _context.Context, buildMaster string) apiGetBuildsUsingGETRequest {
+	return apiGetBuildsUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetBuildsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -233,9 +289,13 @@ func (a *BuildControllerApiService) GetBuildsUsingGET(ctx _context.Context, buil
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/builds/{buildMaster}/builds/**"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.GetBuildsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/builds/{buildMaster}/builds/**"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -258,12 +318,12 @@ func (a *BuildControllerApiService) GetBuildsUsingGET(ctx _context.Context, buil
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -281,19 +341,18 @@ func (a *BuildControllerApiService) GetBuildsUsingGET(ctx _context.Context, buil
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -303,6 +362,12 @@ func (a *BuildControllerApiService) GetBuildsUsingGET(ctx _context.Context, buil
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetJobConfigUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
 }
 
 /*
@@ -310,9 +375,21 @@ GetJobConfigUsingGET Get job config
 Deprecated, use the v3 endpoint instead
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
-@return map[string]map[string]interface{}
+@return apiGetJobConfigUsingGETRequest
 */
-func (a *BuildControllerApiService) GetJobConfigUsingGET(ctx _context.Context, buildMaster string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) GetJobConfigUsingGET(ctx _context.Context, buildMaster string) apiGetJobConfigUsingGETRequest {
+	return apiGetJobConfigUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetJobConfigUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -322,9 +399,13 @@ func (a *BuildControllerApiService) GetJobConfigUsingGET(ctx _context.Context, b
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/builds/{buildMaster}/jobs/**"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.GetJobConfigUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/builds/{buildMaster}/jobs/**"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -347,12 +428,12 @@ func (a *BuildControllerApiService) GetJobConfigUsingGET(ctx _context.Context, b
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -370,19 +451,18 @@ func (a *BuildControllerApiService) GetJobConfigUsingGET(ctx _context.Context, b
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -392,6 +472,12 @@ func (a *BuildControllerApiService) GetJobConfigUsingGET(ctx _context.Context, b
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiGetJobsForBuildMasterUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
 }
 
 /*
@@ -399,9 +485,21 @@ GetJobsForBuildMasterUsingGET Get jobs for build master
 Deprecated, use the v3 endpoint instead
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
-@return []map[string]interface{}
+@return apiGetJobsForBuildMasterUsingGETRequest
 */
-func (a *BuildControllerApiService) GetJobsForBuildMasterUsingGET(ctx _context.Context, buildMaster string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) GetJobsForBuildMasterUsingGET(ctx _context.Context, buildMaster string) apiGetJobsForBuildMasterUsingGETRequest {
+	return apiGetJobsForBuildMasterUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetJobsForBuildMasterUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -411,9 +509,13 @@ func (a *BuildControllerApiService) GetJobsForBuildMasterUsingGET(ctx _context.C
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v2/builds/{buildMaster}/jobs"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.GetJobsForBuildMasterUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v2/builds/{buildMaster}/jobs"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -436,12 +538,12 @@ func (a *BuildControllerApiService) GetJobsForBuildMasterUsingGET(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -459,19 +561,18 @@ func (a *BuildControllerApiService) GetJobsForBuildMasterUsingGET(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -483,19 +584,34 @@ func (a *BuildControllerApiService) GetJobsForBuildMasterUsingGET(ctx _context.C
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// V3GetBuildMastersUsingGETOpts Optional parameters for the method 'V3GetBuildMastersUsingGET'
-type V3GetBuildMastersUsingGETOpts struct {
-	Type_ optional.String
+type apiV3GetBuildMastersUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *BuildControllerApiService
+	type_      *string
+}
+
+func (r apiV3GetBuildMastersUsingGETRequest) Type_(type_ string) apiV3GetBuildMastersUsingGETRequest {
+	r.type_ = &type_
+	return r
 }
 
 /*
 V3GetBuildMastersUsingGET Get build masters
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *V3GetBuildMastersUsingGETOpts - Optional Parameters:
- * @param "Type_" (optional.String) -  type
-@return []map[string]interface{}
+@return apiV3GetBuildMastersUsingGETRequest
 */
-func (a *BuildControllerApiService) V3GetBuildMastersUsingGET(ctx _context.Context, localVarOptionals *V3GetBuildMastersUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) V3GetBuildMastersUsingGET(ctx _context.Context) apiV3GetBuildMastersUsingGETRequest {
+	return apiV3GetBuildMastersUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiV3GetBuildMastersUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -505,15 +621,19 @@ func (a *BuildControllerApiService) V3GetBuildMastersUsingGET(ctx _context.Conte
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v3/builds"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.V3GetBuildMastersUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/builds"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Type_.IsSet() {
-		localVarQueryParams.Add("type", parameterToString(localVarOptionals.Type_.Value(), ""))
+	if r.type_ != nil {
+		localVarQueryParams.Add("type", parameterToString(*r.type_, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -532,12 +652,12 @@ func (a *BuildControllerApiService) V3GetBuildMastersUsingGET(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -555,19 +675,18 @@ func (a *BuildControllerApiService) V3GetBuildMastersUsingGET(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -577,17 +696,42 @@ func (a *BuildControllerApiService) V3GetBuildMastersUsingGET(ctx _context.Conte
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiV3GetBuildUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
+	job         *string
+	number      string
+}
+
+func (r apiV3GetBuildUsingGETRequest) Job(job string) apiV3GetBuildUsingGETRequest {
+	r.job = &job
+	return r
 }
 
 /*
 V3GetBuildUsingGET Get build for build master
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
- * @param job job
  * @param number number
-@return map[string]map[string]interface{}
+@return apiV3GetBuildUsingGETRequest
 */
-func (a *BuildControllerApiService) V3GetBuildUsingGET(ctx _context.Context, buildMaster string, job string, number string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) V3GetBuildUsingGET(ctx _context.Context, buildMaster string, number string) apiV3GetBuildUsingGETRequest {
+	return apiV3GetBuildUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+		number:      number,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiV3GetBuildUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -597,16 +741,24 @@ func (a *BuildControllerApiService) V3GetBuildUsingGET(ctx _context.Context, bui
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v3/builds/{buildMaster}/build/{number}"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", number)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.V3GetBuildUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/builds/{buildMaster}/build/{number}"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", _neturl.QueryEscape(parameterToString(r.number, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("job", parameterToString(job, ""))
+	if r.job == nil {
+		return localVarReturnValue, nil, reportError("job is required and must be specified")
+	}
+
+	localVarQueryParams.Add("job", parameterToString(*r.job, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -624,12 +776,12 @@ func (a *BuildControllerApiService) V3GetBuildUsingGET(ctx _context.Context, bui
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -647,19 +799,18 @@ func (a *BuildControllerApiService) V3GetBuildUsingGET(ctx _context.Context, bui
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -669,16 +820,39 @@ func (a *BuildControllerApiService) V3GetBuildUsingGET(ctx _context.Context, bui
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type apiV3GetBuildsUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
+	job         *string
+}
+
+func (r apiV3GetBuildsUsingGETRequest) Job(job string) apiV3GetBuildsUsingGETRequest {
+	r.job = &job
+	return r
 }
 
 /*
 V3GetBuildsUsingGET Get builds for build master
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
- * @param job job
-@return []map[string]interface{}
+@return apiV3GetBuildsUsingGETRequest
 */
-func (a *BuildControllerApiService) V3GetBuildsUsingGET(ctx _context.Context, buildMaster string, job string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) V3GetBuildsUsingGET(ctx _context.Context, buildMaster string) apiV3GetBuildsUsingGETRequest {
+	return apiV3GetBuildsUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiV3GetBuildsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -688,15 +862,23 @@ func (a *BuildControllerApiService) V3GetBuildsUsingGET(ctx _context.Context, bu
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v3/builds/{buildMaster}/builds"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.V3GetBuildsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/builds/{buildMaster}/builds"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("job", parameterToString(job, ""))
+	if r.job == nil {
+		return localVarReturnValue, nil, reportError("job is required and must be specified")
+	}
+
+	localVarQueryParams.Add("job", parameterToString(*r.job, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -714,12 +896,12 @@ func (a *BuildControllerApiService) V3GetBuildsUsingGET(ctx _context.Context, bu
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -737,19 +919,18 @@ func (a *BuildControllerApiService) V3GetBuildsUsingGET(ctx _context.Context, bu
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -761,14 +942,37 @@ func (a *BuildControllerApiService) V3GetBuildsUsingGET(ctx _context.Context, bu
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiV3GetJobConfigUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
+	job         *string
+}
+
+func (r apiV3GetJobConfigUsingGETRequest) Job(job string) apiV3GetJobConfigUsingGETRequest {
+	r.job = &job
+	return r
+}
+
 /*
 V3GetJobConfigUsingGET Get job config
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
- * @param job job
-@return map[string]map[string]interface{}
+@return apiV3GetJobConfigUsingGETRequest
 */
-func (a *BuildControllerApiService) V3GetJobConfigUsingGET(ctx _context.Context, buildMaster string, job string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) V3GetJobConfigUsingGET(ctx _context.Context, buildMaster string) apiV3GetJobConfigUsingGETRequest {
+	return apiV3GetJobConfigUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiV3GetJobConfigUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -778,15 +982,23 @@ func (a *BuildControllerApiService) V3GetJobConfigUsingGET(ctx _context.Context,
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v3/builds/{buildMaster}/job"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.V3GetJobConfigUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/builds/{buildMaster}/job"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("job", parameterToString(job, ""))
+	if r.job == nil {
+		return localVarReturnValue, nil, reportError("job is required and must be specified")
+	}
+
+	localVarQueryParams.Add("job", parameterToString(*r.job, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -804,12 +1016,12 @@ func (a *BuildControllerApiService) V3GetJobConfigUsingGET(ctx _context.Context,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -827,19 +1039,18 @@ func (a *BuildControllerApiService) V3GetJobConfigUsingGET(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -851,13 +1062,31 @@ func (a *BuildControllerApiService) V3GetJobConfigUsingGET(ctx _context.Context,
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type apiV3GetJobsForBuildMasterUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *BuildControllerApiService
+	buildMaster string
+}
+
 /*
 V3GetJobsForBuildMasterUsingGET Get jobs for build master
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param buildMaster buildMaster
-@return []map[string]interface{}
+@return apiV3GetJobsForBuildMasterUsingGETRequest
 */
-func (a *BuildControllerApiService) V3GetJobsForBuildMasterUsingGET(ctx _context.Context, buildMaster string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *BuildControllerApiService) V3GetJobsForBuildMasterUsingGET(ctx _context.Context, buildMaster string) apiV3GetJobsForBuildMasterUsingGETRequest {
+	return apiV3GetJobsForBuildMasterUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		buildMaster: buildMaster,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiV3GetJobsForBuildMasterUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -867,9 +1096,13 @@ func (a *BuildControllerApiService) V3GetJobsForBuildMasterUsingGET(ctx _context
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/v3/builds/{buildMaster}/jobs"
-	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", buildMaster)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BuildControllerApiService.V3GetJobsForBuildMasterUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/v3/builds/{buildMaster}/jobs"
+	localVarPath = strings.Replace(localVarPath, "{"+"buildMaster"+"}", _neturl.QueryEscape(parameterToString(r.buildMaster, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -892,12 +1125,12 @@ func (a *BuildControllerApiService) V3GetJobsForBuildMasterUsingGET(ctx _context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -915,19 +1148,18 @@ func (a *BuildControllerApiService) V3GetJobsForBuildMasterUsingGET(ctx _context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

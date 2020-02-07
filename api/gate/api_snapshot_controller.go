@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,14 +25,34 @@ var (
 // SnapshotControllerApiService SnapshotControllerApi service
 type SnapshotControllerApiService service
 
+type apiGetCurrentSnapshotUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *SnapshotControllerApiService
+	account     string
+	application string
+}
+
 /*
 GetCurrentSnapshotUsingGET Get current snapshot
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
  * @param application application
-@return map[string]map[string]interface{}
+@return apiGetCurrentSnapshotUsingGETRequest
 */
-func (a *SnapshotControllerApiService) GetCurrentSnapshotUsingGET(ctx _context.Context, account string, application string) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *SnapshotControllerApiService) GetCurrentSnapshotUsingGET(ctx _context.Context, account string, application string) apiGetCurrentSnapshotUsingGETRequest {
+	return apiGetCurrentSnapshotUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		account:     account,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetCurrentSnapshotUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -45,10 +62,14 @@ func (a *SnapshotControllerApiService) GetCurrentSnapshotUsingGET(ctx _context.C
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/snapshots/{account}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SnapshotControllerApiService.GetCurrentSnapshotUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/snapshots/{account}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -71,12 +92,12 @@ func (a *SnapshotControllerApiService) GetCurrentSnapshotUsingGET(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -94,19 +115,18 @@ func (a *SnapshotControllerApiService) GetCurrentSnapshotUsingGET(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -118,9 +138,17 @@ func (a *SnapshotControllerApiService) GetCurrentSnapshotUsingGET(ctx _context.C
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetSnapshotHistoryUsingGETOpts Optional parameters for the method 'GetSnapshotHistoryUsingGET'
-type GetSnapshotHistoryUsingGETOpts struct {
-	Limit optional.Int32
+type apiGetSnapshotHistoryUsingGETRequest struct {
+	ctx         _context.Context
+	apiService  *SnapshotControllerApiService
+	account     string
+	application string
+	limit       *int32
+}
+
+func (r apiGetSnapshotHistoryUsingGETRequest) Limit(limit int32) apiGetSnapshotHistoryUsingGETRequest {
+	r.limit = &limit
+	return r
 }
 
 /*
@@ -128,11 +156,22 @@ GetSnapshotHistoryUsingGET Get snapshot history
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
  * @param application application
- * @param optional nil or *GetSnapshotHistoryUsingGETOpts - Optional Parameters:
- * @param "Limit" (optional.Int32) -  limit
-@return []map[string]interface{}
+@return apiGetSnapshotHistoryUsingGETRequest
 */
-func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx _context.Context, account string, application string, localVarOptionals *GetSnapshotHistoryUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx _context.Context, account string, application string) apiGetSnapshotHistoryUsingGETRequest {
+	return apiGetSnapshotHistoryUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		account:     account,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetSnapshotHistoryUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -142,17 +181,21 @@ func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx _context.C
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/snapshots/{account}/history"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SnapshotControllerApiService.GetSnapshotHistoryUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/snapshots/{account}/history"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Limit.IsSet() {
-		localVarQueryParams.Add("limit", parameterToString(localVarOptionals.Limit.Value(), ""))
+	if r.limit != nil {
+		localVarQueryParams.Add("limit", parameterToString(*r.limit, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -171,12 +214,12 @@ func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx _context.C
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -194,19 +237,18 @@ func (a *SnapshotControllerApiService) GetSnapshotHistoryUsingGET(ctx _context.C
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

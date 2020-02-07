@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,12 +25,28 @@ var (
 // WebhookControllerApiService WebhookControllerApi service
 type WebhookControllerApiService service
 
+type apiPreconfiguredWebhooksUsingGETRequest struct {
+	ctx        _context.Context
+	apiService *WebhookControllerApiService
+}
+
 /*
 PreconfiguredWebhooksUsingGET Retrieve a list of preconfigured webhooks in Orca
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []map[string]interface{}
+@return apiPreconfiguredWebhooksUsingGETRequest
 */
-func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx _context.Context) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx _context.Context) apiPreconfiguredWebhooksUsingGETRequest {
+	return apiPreconfiguredWebhooksUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiPreconfiguredWebhooksUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -43,8 +56,12 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx _context
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/webhooks/preconfigured"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WebhookControllerApiService.PreconfiguredWebhooksUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/webhooks/preconfigured"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -67,12 +84,12 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx _context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -90,19 +107,18 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx _context
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -114,11 +130,29 @@ func (a *WebhookControllerApiService) PreconfiguredWebhooksUsingGET(ctx _context
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// WebhooksUsingPOSTOpts Optional parameters for the method 'WebhooksUsingPOST'
-type WebhooksUsingPOSTOpts struct {
-	Event         optional.Interface
-	XEventKey     optional.String
-	XHubSignature optional.String
+type apiWebhooksUsingPOSTRequest struct {
+	ctx           _context.Context
+	apiService    *WebhookControllerApiService
+	source        string
+	type_         string
+	event         *map[string]interface{}
+	xEventKey     *string
+	xHubSignature *string
+}
+
+func (r apiWebhooksUsingPOSTRequest) Event(event map[string]interface{}) apiWebhooksUsingPOSTRequest {
+	r.event = &event
+	return r
+}
+
+func (r apiWebhooksUsingPOSTRequest) XEventKey(xEventKey string) apiWebhooksUsingPOSTRequest {
+	r.xEventKey = &xEventKey
+	return r
+}
+
+func (r apiWebhooksUsingPOSTRequest) XHubSignature(xHubSignature string) apiWebhooksUsingPOSTRequest {
+	r.xHubSignature = &xHubSignature
+	return r
 }
 
 /*
@@ -126,13 +160,22 @@ WebhooksUsingPOST Endpoint for posting webhooks to Spinnaker's webhook service
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param source source
  * @param type_ type
- * @param optional nil or *WebhooksUsingPOSTOpts - Optional Parameters:
- * @param "Event" (optional.Interface) -  event
- * @param "XEventKey" (optional.String) -  X-Event-Key
- * @param "XHubSignature" (optional.String) -  X-Hub-Signature
-@return map[string]interface{}
+@return apiWebhooksUsingPOSTRequest
 */
-func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx _context.Context, source string, type_ string, localVarOptionals *WebhooksUsingPOSTOpts) (map[string]interface{}, *_nethttp.Response, error) {
+func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx _context.Context, source string, type_ string) apiWebhooksUsingPOSTRequest {
+	return apiWebhooksUsingPOSTRequest{
+		apiService: a,
+		ctx:        ctx,
+		source:     source,
+		type_:      type_,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]interface{}
+*/
+func (r apiWebhooksUsingPOSTRequest) Execute() (map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -142,10 +185,14 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx _context.Context, so
 		localVarReturnValue  map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/webhooks/{type}/{source}"
-	localVarPath = strings.Replace(localVarPath, "{"+"source"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", source)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"type"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", type_)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WebhookControllerApiService.WebhooksUsingPOST")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/webhooks/{type}/{source}"
+	localVarPath = strings.Replace(localVarPath, "{"+"source"+"}", _neturl.QueryEscape(parameterToString(r.source, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"type"+"}", _neturl.QueryEscape(parameterToString(r.type_, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -168,23 +215,20 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx _context.Context, so
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XEventKey.IsSet() {
-		localVarHeaderParams["X-Event-Key"] = parameterToString(localVarOptionals.XEventKey.Value(), "")
+	if r.xEventKey != nil {
+		localVarHeaderParams["X-Event-Key"] = parameterToString(*r.xEventKey, "")
 	}
-	if localVarOptionals != nil && localVarOptionals.XHubSignature.IsSet() {
-		localVarHeaderParams["X-Hub-Signature"] = parameterToString(localVarOptionals.XHubSignature.Value(), "")
+	if r.xHubSignature != nil {
+		localVarHeaderParams["X-Hub-Signature"] = parameterToString(*r.xHubSignature, "")
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Event.IsSet() {
-		localVarPostBody = localVarOptionals.Event.Value()
-	}
-
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.event
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -202,19 +246,18 @@ func (a *WebhookControllerApiService) WebhooksUsingPOST(ctx _context.Context, so
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

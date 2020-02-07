@@ -11,7 +11,6 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
@@ -26,17 +25,49 @@ var (
 // EcsServerGroupEventsControllerApiService EcsServerGroupEventsControllerApi service
 type EcsServerGroupEventsControllerApiService service
 
+type apiGetEventsUsingGETRequest struct {
+	ctx             _context.Context
+	apiService      *EcsServerGroupEventsControllerApiService
+	account         string
+	application     string
+	provider        *string
+	region          *string
+	serverGroupName string
+}
+
+func (r apiGetEventsUsingGETRequest) Provider(provider string) apiGetEventsUsingGETRequest {
+	r.provider = &provider
+	return r
+}
+
+func (r apiGetEventsUsingGETRequest) Region(region string) apiGetEventsUsingGETRequest {
+	r.region = &region
+	return r
+}
+
 /*
 GetEventsUsingGET Retrieves a list of events for a server group
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param account account
  * @param application application
- * @param provider provider
- * @param region region
  * @param serverGroupName serverGroupName
-@return []map[string]interface{}
+@return apiGetEventsUsingGETRequest
 */
-func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _context.Context, account string, application string, provider string, region string, serverGroupName string) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _context.Context, account string, application string, serverGroupName string) apiGetEventsUsingGETRequest {
+	return apiGetEventsUsingGETRequest{
+		apiService:      a,
+		ctx:             ctx,
+		account:         account,
+		application:     application,
+		serverGroupName: serverGroupName,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetEventsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -46,18 +77,30 @@ func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _contex
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/serverGroups/{account}/{serverGroupName}/events"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", serverGroupName)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EcsServerGroupEventsControllerApiService.GetEventsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/serverGroups/{account}/{serverGroupName}/events"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"serverGroupName"+"}", _neturl.QueryEscape(parameterToString(r.serverGroupName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	localVarQueryParams.Add("provider", parameterToString(provider, ""))
-	localVarQueryParams.Add("region", parameterToString(region, ""))
+	if r.provider == nil {
+		return localVarReturnValue, nil, reportError("provider is required and must be specified")
+	}
+
+	if r.region == nil {
+		return localVarReturnValue, nil, reportError("region is required and must be specified")
+	}
+
+	localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
+	localVarQueryParams.Add("region", parameterToString(*r.region, ""))
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -75,12 +118,12 @@ func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _contex
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -98,19 +141,18 @@ func (a *EcsServerGroupEventsControllerApiService) GetEventsUsingGET(ctx _contex
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

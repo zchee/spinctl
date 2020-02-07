@@ -3,7 +3,7 @@ info:
   contact: {}
   title: Spinnaker API
 servers:
-- url: //localhost:8084/
+- url: //localhost/
 tags:
 - description: Amazon Infrastructure Controller
   name: amazon-infrastructure-controller
@@ -65,10 +65,6 @@ tags:
   name: subnet-controller
 - description: Task Controller
   name: task-controller
-- description: V 2 Canary Config Controller
-  name: v-2-canary-config-controller
-- description: V 2 Canary Controller
-  name: v-2-canary-controller
 - description: V 2 Pipeline Templates Controller
   name: v-2-pipeline-templates-controller
 - description: Version Controller
@@ -88,22 +84,22 @@ paths:
         description: reorderPipelinesCommand
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Re-order pipelines
@@ -130,7 +126,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -139,13 +135,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of applications
@@ -192,7 +188,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -201,13 +197,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get job
@@ -246,7 +242,7 @@ paths:
           default: "false"
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -255,13 +251,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of server groups for a given application
@@ -308,19 +304,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a server group's details
@@ -344,7 +340,7 @@ paths:
           default: true
           type: boolean
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -353,13 +349,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve an application's details
@@ -382,7 +378,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -391,13 +387,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of cluster names for an application, grouped by account
@@ -426,7 +422,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -435,13 +431,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of clusters for an account
@@ -476,7 +472,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -485,13 +481,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a cluster's details
@@ -526,7 +522,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -535,13 +531,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of server groups for a cluster
@@ -582,7 +578,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -591,13 +587,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a server group's details
@@ -649,7 +645,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -658,13 +654,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of scaling activities for a server group
@@ -728,7 +724,7 @@ paths:
         schema:
           type: boolean
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -737,13 +733,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a server group that matches a target coordinate (e.g., newest,
@@ -785,7 +781,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -794,13 +790,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a cluster's loadbalancers
@@ -921,7 +917,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -930,13 +926,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Search for pipeline executions using a combination of criteria. The
@@ -956,7 +952,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -965,13 +961,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get application functions
@@ -996,7 +992,7 @@ paths:
           format: int32
           type: integer
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1005,13 +1001,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of an application's configuration revision history
@@ -1034,7 +1030,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1043,13 +1039,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of load balancers for a given application
@@ -1067,7 +1063,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1076,13 +1072,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of an application's pipeline configurations
@@ -1106,7 +1102,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1115,13 +1111,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a pipeline configuration
@@ -1156,22 +1152,22 @@ paths:
         description: trigger
         required: false
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/HttpEntity'
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Invoke pipeline config
@@ -1206,7 +1202,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1215,13 +1211,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of an application's pipeline executions
@@ -1244,7 +1240,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1253,16 +1249,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Cancel pipeline
@@ -1280,7 +1276,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1289,13 +1285,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of server group managers for an application
@@ -1337,7 +1333,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1346,13 +1342,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieves a list of events for a server group
@@ -1376,7 +1372,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1385,13 +1381,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get current snapshot
@@ -1422,7 +1418,7 @@ paths:
           format: int32
           type: integer
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1431,13 +1427,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get snapshot history
@@ -1455,7 +1451,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1464,13 +1460,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of an application's pipeline strategy configurations
@@ -1494,7 +1490,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1503,13 +1499,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a pipeline strategy configuration
@@ -1544,7 +1540,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1553,13 +1549,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of an application's tasks
@@ -1583,7 +1579,7 @@ paths:
         description: map
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1592,16 +1588,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Create task
@@ -1620,7 +1616,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1629,13 +1625,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get task
@@ -1653,7 +1649,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1662,16 +1658,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Cancel task
@@ -1700,7 +1696,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1709,13 +1705,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get task details
@@ -1750,7 +1746,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1758,13 +1754,13 @@ paths:
                   type: string
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the list of artifact versions by account and artifact names
@@ -1781,7 +1777,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1790,13 +1786,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the list of artifact accounts configured in Clouddriver.
@@ -1826,19 +1822,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the specified artifact version for an artifact provider and
@@ -1850,19 +1846,19 @@ paths:
       deprecated: false
       operationId: loggedOutUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: string
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get logged out message
@@ -1880,16 +1876,16 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Redirect to Deck
@@ -1900,19 +1896,19 @@ paths:
       deprecated: false
       operationId: syncUsingPOST
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Sync user roles
@@ -1923,19 +1919,19 @@ paths:
       deprecated: false
       operationId: userUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/User'
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get user
@@ -1946,7 +1942,7 @@ paths:
       deprecated: false
       operationId: getServiceAccountsUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -1955,13 +1951,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get service accounts
@@ -1985,19 +1981,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the logs for a given bake
@@ -2008,19 +2004,19 @@ paths:
       deprecated: false
       operationId: bakeOptionsUsingGET_1
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of available bakery base images, grouped by cloud provider
@@ -2038,19 +2034,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of available bakery base images for a given cloud provider
@@ -2074,7 +2070,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2083,13 +2079,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the list of pipeline names for a given team available to triggers
@@ -2119,7 +2115,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2128,13 +2124,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the list of job names for a given pipeline available to triggers
@@ -2164,7 +2160,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2173,13 +2169,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the list of resource names for a given pipeline available
@@ -2253,7 +2249,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2261,13 +2257,13 @@ paths:
                   $ref: '#/components/schemas/Account'
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of accounts
@@ -2346,19 +2342,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AccountDetails'
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve an account's details
@@ -2410,7 +2406,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2419,13 +2415,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieves an ad-hoc collection of executions based on a number of user-supplied
@@ -2449,19 +2445,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of firewalls, grouped by account, cloud provider, and
@@ -2491,19 +2487,19 @@ paths:
           default: aws
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of firewalls for a given account, grouped by region
@@ -2538,7 +2534,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2547,13 +2543,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of firewalls for a given account and region
@@ -2599,19 +2595,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a firewall's details
@@ -2638,7 +2634,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2647,13 +2643,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get functions
@@ -2693,7 +2689,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2702,13 +2698,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of images, filtered by cloud provider, region, and
@@ -2744,7 +2740,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2753,13 +2749,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Find tags
@@ -2800,7 +2796,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2809,13 +2805,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get image details
@@ -2826,7 +2822,7 @@ paths:
       deprecated: false
       operationId: instanceTypesUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2835,13 +2831,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get instance types
@@ -2876,19 +2872,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve an instance's details
@@ -2929,19 +2925,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve an instance's console output
@@ -2964,7 +2960,7 @@ paths:
           default: aws
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -2973,13 +2969,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of load balancers for a given cloud provider
@@ -3020,7 +3016,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3029,13 +3025,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a load balancer's details as a single element list for a given
@@ -3065,7 +3061,7 @@ paths:
           default: aws
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3074,13 +3070,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a load balancer for a given cloud provider
@@ -3097,7 +3093,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3106,13 +3102,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of networks, grouped by cloud provider
@@ -3135,7 +3131,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3144,13 +3140,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of networks for a given cloud provider
@@ -3161,7 +3157,7 @@ paths:
       deprecated: false
       operationId: getAllPipelineConfigsUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3170,13 +3166,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get all pipeline configs.
@@ -3194,19 +3190,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: string
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Convert a pipeline config to a pipeline template.
@@ -3231,7 +3227,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3240,13 +3236,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get pipeline config history.
@@ -3267,7 +3263,7 @@ paths:
           type: array
         style: form
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3276,13 +3272,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: List pipeline templates.
@@ -3299,10 +3295,10 @@ paths:
         description: pipelineTemplate
         required: true
       responses:
-        201:
+        "201":
           content: {}
           description: Created
-        202:
+        "202":
           content:
             '*/*':
               schema:
@@ -3311,13 +3307,13 @@ paths:
                   type: object
                 type: object
           description: Accepted
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Create a pipeline template.
@@ -3346,7 +3342,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3355,13 +3351,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Resolve a pipeline template.
@@ -3384,7 +3380,7 @@ paths:
         schema:
           type: string
       responses:
-        202:
+        "202":
           content:
             '*/*':
               schema:
@@ -3393,13 +3389,13 @@ paths:
                   type: object
                 type: object
           description: Accepted
-        204:
+        "204":
           content: {}
           description: No Content
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
       summary: Delete a pipeline template.
@@ -3416,7 +3412,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3425,13 +3421,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get a pipeline template.
@@ -3461,10 +3457,10 @@ paths:
         description: pipelineTemplate
         required: true
       responses:
-        201:
+        "201":
           content: {}
           description: Created
-        202:
+        "202":
           content:
             '*/*':
               schema:
@@ -3473,13 +3469,13 @@ paths:
                   type: object
                 type: object
           description: Accepted
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Update a pipeline template.
@@ -3503,7 +3499,7 @@ paths:
         schema:
           type: boolean
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3512,13 +3508,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: List all pipelines that implement a pipeline template
@@ -3536,19 +3532,19 @@ paths:
         description: pipeline
         required: true
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Save a pipeline definition
@@ -3567,19 +3563,19 @@ paths:
         description: renameCommand
         required: true
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Rename a pipeline definition
@@ -3598,22 +3594,22 @@ paths:
         description: map
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponseEntity'
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Initiate a pipeline execution
@@ -3645,22 +3641,22 @@ paths:
         description: trigger
         required: false
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/HttpEntity'
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Trigger a pipeline execution
@@ -3692,22 +3688,22 @@ paths:
         description: trigger
         required: false
       responses:
-        200:
+        "201":
+          content: {}
+          description: Created
+        "202":
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/HttpEntity'
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
+                type: object
+          description: Accepted
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Trigger a pipeline execution
@@ -3732,16 +3728,16 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        204:
+        "204":
           content: {}
           description: No Content
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
       summary: Delete a pipeline definition
@@ -3759,7 +3755,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3768,13 +3764,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        204:
+        "204":
           content: {}
           description: No Content
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
       summary: Delete a pipeline execution
@@ -3791,19 +3787,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a pipeline execution
@@ -3827,7 +3823,7 @@ paths:
         description: pipeline
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3836,16 +3832,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Update a pipeline definition
@@ -3875,63 +3871,25 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Cancel a pipeline execution
       tags:
       - pipeline-controller
   /pipelines/{id}/evaluateExpression:
-    delete:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionUsingDELETE
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression using the provided execution as context
-      tags:
-      - pipeline-controller
     get:
       deprecated: false
       operationId: evaluateExpressionForExecutionUsingGET
@@ -3949,7 +3907,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -3958,150 +3916,37 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
-      summary: Evaluate a pipeline expression using the provided execution as context
-      tags:
-      - pipeline-controller
-    head:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionUsingHEAD
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression using the provided execution as context
-      tags:
-      - pipeline-controller
-    options:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionUsingOPTIONS
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression using the provided execution as context
-      tags:
-      - pipeline-controller
-    patch:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionUsingPATCH
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
       summary: Evaluate a pipeline expression using the provided execution as context
       tags:
       - pipeline-controller
     post:
       deprecated: false
-      operationId: evaluateExpressionForExecutionUsingPOST
+      operationId: evaluateExpressionForExecutionViaPOSTUsingPOST
       parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
       - description: id
         in: path
         name: id
         required: true
         schema:
           type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        description: pipelineExpression
+        required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4110,39 +3955,58 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Evaluate a pipeline expression using the provided execution as context
       tags:
       - pipeline-controller
-    put:
+      x-codegen-request-body-name: pipelineExpression
+  /pipelines/{id}/evaluateVariables:
+    post:
       deprecated: false
-      operationId: evaluateExpressionForExecutionUsingPUT
+      operationId: evaluateVariablesUsingPOST
       parameters:
-      - description: expression
+      - allowEmptyValue: false
+        description: Execution id to run against
         in: query
-        name: expression
+        name: executionId
         required: true
         schema:
           type: string
-      - description: id
-        in: path
-        name: id
-        required: true
+      - allowEmptyValue: false
+        description: Comma separated list of requisite stage IDs for the evaluation
+          stage
+        in: query
+        name: requisiteStageRefIds
         schema:
           type: string
+      - allowEmptyValue: false
+        description: Version of SpEL evaluation logic to use (v3 or v4)
+        in: query
+        name: spelVersion
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/Map«string,string»'
+              type: array
+        description: List of variables/expressions to evaluate
+        required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4151,21 +4015,23 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
-      summary: Evaluate a pipeline expression using the provided execution as context
+      summary: Evaluate variables same as Evaluate Variables stage using the provided
+        execution as context
       tags:
       - pipeline-controller
+      x-codegen-request-body-name: expressions
   /pipelines/{id}/pause:
     put:
       deprecated: false
@@ -4178,19 +4044,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content: {}
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Pause a pipeline execution
@@ -4208,7 +4074,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4217,16 +4083,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Resume a pipeline execution
@@ -4257,7 +4123,7 @@ paths:
         description: context
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4266,13 +4132,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        204:
+        "204":
           content: {}
           description: No Content
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
       summary: Update a stage execution
@@ -4304,7 +4170,7 @@ paths:
         description: context
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4313,16 +4179,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Restart a stage execution
@@ -4330,51 +4196,6 @@ paths:
       - pipeline-controller
       x-codegen-request-body-name: context
   /pipelines/{id}/{stageId}/evaluateExpression:
-    delete:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionAtStageUsingDELETE
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: stageId
-        in: path
-        name: stageId
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression at a specific stage using the provided
-        execution as context
-      tags:
-      - pipeline-controller
     get:
       deprecated: false
       operationId: evaluateExpressionForExecutionAtStageUsingGET
@@ -4398,7 +4219,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4407,244 +4228,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Evaluate a pipeline expression at a specific stage using the provided
-        execution as context
-      tags:
-      - pipeline-controller
-    head:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionAtStageUsingHEAD
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: stageId
-        in: path
-        name: stageId
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression at a specific stage using the provided
-        execution as context
-      tags:
-      - pipeline-controller
-    options:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionAtStageUsingOPTIONS
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: stageId
-        in: path
-        name: stageId
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression at a specific stage using the provided
-        execution as context
-      tags:
-      - pipeline-controller
-    patch:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionAtStageUsingPATCH
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: stageId
-        in: path
-        name: stageId
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Evaluate a pipeline expression at a specific stage using the provided
-        execution as context
-      tags:
-      - pipeline-controller
-    post:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionAtStageUsingPOST
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: stageId
-        in: path
-        name: stageId
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Evaluate a pipeline expression at a specific stage using the provided
-        execution as context
-      tags:
-      - pipeline-controller
-    put:
-      deprecated: false
-      operationId: evaluateExpressionForExecutionAtStageUsingPUT
-      parameters:
-      - description: expression
-        in: query
-        name: expression
-        required: true
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      - description: stageId
-        in: path
-        name: stageId
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                additionalProperties:
-                  properties: {}
-                  type: object
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Evaluate a pipeline expression at a specific stage using the provided
@@ -4656,7 +4246,7 @@ paths:
       deprecated: false
       operationId: allUsingGET_3
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4665,13 +4255,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get all projects
@@ -4689,7 +4279,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4698,13 +4288,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get a project
@@ -4727,7 +4317,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4736,13 +4326,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get a project's clusters
@@ -4772,7 +4362,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4781,13 +4371,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get all pipelines for project
@@ -4798,7 +4388,7 @@ paths:
       deprecated: false
       operationId: allUsingGET_4
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4806,13 +4396,13 @@ paths:
                   $ref: '#/components/schemas/Map«string,string»'
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve the list of pub/sub subscriptions configured in Echo.
@@ -4865,7 +4455,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -4874,13 +4464,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Search infrastructure
@@ -4902,19 +4492,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of security groups, grouped by account, cloud provider,
@@ -4944,19 +4534,19 @@ paths:
           default: aws
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of security groups for a given account, grouped by
@@ -5003,19 +4593,19 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a security group's details
@@ -5026,7 +4616,7 @@ paths:
       deprecated: false
       operationId: subnetsUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5035,13 +4625,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get subnets
@@ -5064,7 +4654,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5073,13 +4663,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of subnets for a given cloud provider
@@ -5097,7 +4687,7 @@ paths:
         description: map
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5106,16 +4696,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Create task
@@ -5138,7 +4728,7 @@ paths:
           type: array
         style: form
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5147,16 +4737,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Cancel tasks
@@ -5174,7 +4764,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5183,13 +4773,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        204:
+        "204":
           content: {}
           description: No Content
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
       summary: Delete task
@@ -5206,7 +4796,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5215,13 +4805,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get task
@@ -5239,7 +4829,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5248,16 +4838,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Cancel task
@@ -5286,7 +4876,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5295,13 +4885,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get task details
@@ -5319,7 +4909,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5328,13 +4918,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get build masters
@@ -5359,7 +4949,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5368,13 +4958,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get build for build master
@@ -5393,7 +4983,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5402,13 +4992,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get builds for build master
@@ -5427,7 +5017,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5436,13 +5026,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get jobs for build master
@@ -5461,7 +5051,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -5470,582 +5060,18 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get job config
       tags:
       - build-controller
-  /v2/canaries/canary:
-    post:
-      deprecated: false
-      operationId: initiateCanaryWithConfigUsingPOST
-      parameters:
-      - description: application
-        in: query
-        name: application
-        schema:
-          type: string
-      - description: metricsAccountName
-        in: query
-        name: metricsAccountName
-        schema:
-          type: string
-      - description: parentPipelineExecutionId
-        in: query
-        name: parentPipelineExecutionId
-        schema:
-          type: string
-      - description: storageAccountName
-        in: query
-        name: storageAccountName
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-        description: adhocExecutionRequest
-        required: true
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Start a canary execution with the supplied canary config
-      tags:
-      - v-2-canary-controller
-      x-codegen-request-body-name: adhocExecutionRequest
-  /v2/canaries/canary/{canaryConfigId}:
-    post:
-      deprecated: false
-      operationId: initiateCanaryUsingPOST
-      parameters:
-      - description: application
-        in: query
-        name: application
-        schema:
-          type: string
-      - description: canaryConfigId
-        in: path
-        name: canaryConfigId
-        required: true
-        schema:
-          type: string
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
-        schema:
-          type: string
-      - description: metricsAccountName
-        in: query
-        name: metricsAccountName
-        schema:
-          type: string
-      - description: parentPipelineExecutionId
-        in: query
-        name: parentPipelineExecutionId
-        schema:
-          type: string
-      - description: storageAccountName
-        in: query
-        name: storageAccountName
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-        description: executionRequest
-        required: true
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Start a canary execution
-      tags:
-      - v-2-canary-controller
-      x-codegen-request-body-name: executionRequest
-  /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId}:
-    get:
-      deprecated: true
-      operationId: getCanaryResultUsingGET
-      parameters:
-      - description: canaryConfigId
-        in: path
-        name: canaryConfigId
-        required: true
-        schema:
-          type: string
-      - description: canaryExecutionId
-        in: path
-        name: canaryExecutionId
-        required: true
-        schema:
-          type: string
-      - description: storageAccountName
-        in: query
-        name: storageAccountName
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: (DEPRECATED) Retrieve a canary result
-      tags:
-      - v-2-canary-controller
-  /v2/canaries/canary/{canaryExecutionId}:
-    get:
-      deprecated: false
-      operationId: getCanaryResultUsingGET_1
-      parameters:
-      - description: canaryExecutionId
-        in: path
-        name: canaryExecutionId
-        required: true
-        schema:
-          type: string
-      - description: storageAccountName
-        in: query
-        name: storageAccountName
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a canary result
-      tags:
-      - v-2-canary-controller
-  /v2/canaries/credentials:
-    get:
-      deprecated: false
-      operationId: listCredentialsUsingGET
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                items:
-                  properties: {}
-                  type: object
-                type: array
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a list of configured Kayenta accounts
-      tags:
-      - v-2-canary-controller
-  /v2/canaries/judges:
-    get:
-      deprecated: false
-      operationId: listJudgesUsingGET
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                items:
-                  properties: {}
-                  type: object
-                type: array
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a list of all configured canary judges
-      tags:
-      - v-2-canary-controller
-  /v2/canaries/metadata/metricsService:
-    get:
-      deprecated: false
-      operationId: listMetricsServiceMetadataUsingGET
-      parameters:
-      - description: filter
-        in: query
-        name: filter
-        schema:
-          type: string
-      - description: metricsAccountName
-        in: query
-        name: metricsAccountName
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                items:
-                  properties: {}
-                  type: object
-                type: array
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a list of descriptors for use in populating the canary config
-        ui
-      tags:
-      - v-2-canary-controller
-  /v2/canaries/metricSetPairList/{metricSetPairListId}:
-    get:
-      deprecated: false
-      operationId: getMetricSetPairListUsingGET
-      parameters:
-      - description: metricSetPairListId
-        in: path
-        name: metricSetPairListId
-        required: true
-        schema:
-          type: string
-      - description: storageAccountName
-        in: query
-        name: storageAccountName
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                items:
-                  properties: {}
-                  type: object
-                type: array
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a metric set pair list
-      tags:
-      - v-2-canary-controller
-  /v2/canaries/{application}/executions:
-    get:
-      deprecated: false
-      operationId: getCanaryResultsByApplicationUsingGET
-      parameters:
-      - description: application
-        in: path
-        name: application
-        required: true
-        schema:
-          type: string
-      - description: limit
-        in: query
-        name: limit
-        required: true
-        schema:
-          format: int32
-          type: integer
-      - allowEmptyValue: false
-        description: 'Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED,
-          TERMINAL'
-        in: query
-        name: statuses
-        schema:
-          type: string
-      - description: storageAccountName
-        in: query
-        name: storageAccountName
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                items:
-                  properties: {}
-                  type: object
-                type: array
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a list of an application's canary results
-      tags:
-      - v-2-canary-controller
-  /v2/canaryConfig:
-    get:
-      deprecated: false
-      operationId: getCanaryConfigsUsingGET
-      parameters:
-      - description: application
-        in: query
-        name: application
-        schema:
-          type: string
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                items:
-                  properties: {}
-                  type: object
-                type: array
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a list of canary configurations
-      tags:
-      - v-2-canary-config-controller
-    post:
-      deprecated: false
-      operationId: createCanaryConfigUsingPOST
-      parameters:
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-        description: config
-        required: true
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Create a canary configuration
-      tags:
-      - v-2-canary-config-controller
-      x-codegen-request-body-name: config
-  /v2/canaryConfig/{id}:
-    delete:
-      deprecated: false
-      operationId: deleteCanaryConfigUsingDELETE
-      parameters:
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content: {}
-          description: OK
-        204:
-          content: {}
-          description: No Content
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-      summary: Delete a canary configuration
-      tags:
-      - v-2-canary-config-controller
-    get:
-      deprecated: false
-      operationId: getCanaryConfigUsingGET
-      parameters:
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Retrieve a canary configuration by id
-      tags:
-      - v-2-canary-config-controller
-    put:
-      deprecated: false
-      operationId: updateCanaryConfigUsingPUT
-      parameters:
-      - description: configurationAccountName
-        in: query
-        name: configurationAccountName
-        schema:
-          type: string
-      - description: id
-        in: path
-        name: id
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-        description: config
-        required: true
-      responses:
-        200:
-          content:
-            '*/*':
-              schema:
-                type: object
-          description: OK
-        201:
-          content: {}
-          description: Created
-        401:
-          content: {}
-          description: Unauthorized
-        403:
-          content: {}
-          description: Forbidden
-        404:
-          content: {}
-          description: Not Found
-      summary: Update a canary configuration
-      tags:
-      - v-2-canary-config-controller
-      x-codegen-request-body-name: config
   /v2/pipelineTemplates:
     get:
       deprecated: false
@@ -6061,7 +5087,7 @@ paths:
           type: array
         style: form
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6070,13 +5096,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: (ALPHA) List pipeline templates.
@@ -6100,10 +5126,10 @@ paths:
         description: pipelineTemplate
         required: true
       responses:
-        201:
+        "201":
           content: {}
           description: Created
-        202:
+        "202":
           content:
             '*/*':
               schema:
@@ -6112,13 +5138,13 @@ paths:
                   type: object
                 type: object
           description: Accepted
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: (ALPHA) Create a pipeline template.
@@ -6137,7 +5163,7 @@ paths:
         description: pipeline
         required: true
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6146,16 +5172,16 @@ paths:
                   type: object
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: (ALPHA) Plan a pipeline template configuration.
@@ -6192,10 +5218,10 @@ paths:
         description: pipelineTemplate
         required: true
       responses:
-        201:
+        "201":
           content: {}
           description: Created
-        202:
+        "202":
           content:
             '*/*':
               schema:
@@ -6204,19 +5230,52 @@ paths:
                   type: object
                 type: object
           description: Accepted
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: (ALPHA) Update a pipeline template.
       tags:
       - v-2-pipeline-templates-controller
       x-codegen-request-body-name: pipelineTemplate
+  /v2/pipelineTemplates/versions:
+    get:
+      deprecated: false
+      operationId: listVersionsUsingGET
+      parameters:
+      - description: scopes
+        explode: true
+        in: query
+        name: scopes
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: List pipeline templates with versions
+      tags:
+      - v-2-pipeline-templates-controller
   /v2/pipelineTemplates/{id}:
     delete:
       deprecated: false
@@ -6244,7 +5303,7 @@ paths:
         schema:
           type: string
       responses:
-        202:
+        "202":
           content:
             '*/*':
               schema:
@@ -6253,13 +5312,13 @@ paths:
                   type: object
                 type: object
           description: Accepted
-        204:
+        "204":
           content: {}
           description: No Content
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
       summary: Delete a pipeline template.
@@ -6286,7 +5345,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6295,13 +5354,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: (ALPHA) Get a pipeline template.
@@ -6319,7 +5378,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6328,13 +5387,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: (ALPHA) List all pipelines that implement a pipeline template
@@ -6351,7 +5410,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6360,13 +5419,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get build masters
@@ -6396,7 +5455,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6405,13 +5464,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get build for build master
@@ -6435,7 +5494,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6444,13 +5503,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get builds for build master
@@ -6474,7 +5533,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6483,13 +5542,13 @@ paths:
                   type: object
                 type: object
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get job config
@@ -6507,7 +5566,7 @@ paths:
         schema:
           type: string
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6516,13 +5575,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get jobs for build master
@@ -6533,19 +5592,19 @@ paths:
       deprecated: false
       operationId: getVersionUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Version'
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Fetch Gate's current version
@@ -6556,7 +5615,7 @@ paths:
       deprecated: true
       operationId: vpcsUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6565,13 +5624,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Get VPCs
@@ -6582,7 +5641,7 @@ paths:
       deprecated: false
       operationId: preconfiguredWebhooksUsingGET
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
@@ -6591,13 +5650,13 @@ paths:
                   type: object
                 type: array
           description: OK
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Retrieve a list of preconfigured webhooks in Orca
@@ -6638,22 +5697,22 @@ paths:
         description: event
         required: false
       responses:
-        200:
+        "200":
           content:
             '*/*':
               schema:
                 type: object
           description: OK
-        201:
+        "201":
           content: {}
           description: Created
-        401:
+        "401":
           content: {}
           description: Unauthorized
-        403:
+        "403":
           content: {}
           description: Forbidden
-        404:
+        "404":
           content: {}
           description: Not Found
       summary: Endpoint for posting webhooks to Spinnaker's webhook service

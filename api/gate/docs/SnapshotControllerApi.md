@@ -1,6 +1,6 @@
 # \SnapshotControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,18 +11,28 @@ Method | HTTP request | Description
 
 ## GetCurrentSnapshotUsingGET
 
-> map[string]map[string]interface{} GetCurrentSnapshotUsingGET(ctx, account, application)
+> map[string]map[string]interface{} GetCurrentSnapshotUsingGET(ctx, account, application).Execute()
 
 Get current snapshot
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
+**account** | **string** | account | 
+**application** | **string** | application | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCurrentSnapshotUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -44,30 +54,29 @@ No authorization required
 
 ## GetSnapshotHistoryUsingGET
 
-> []map[string]interface{} GetSnapshotHistoryUsingGET(ctx, account, application, optional)
+> []map[string]interface{} GetSnapshotHistoryUsingGET(ctx, account, application).Limit(limit).Execute()
 
 Get snapshot history
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**account** | **string**| account | 
-**application** | **string**| application | 
- **optional** | ***GetSnapshotHistoryUsingGETOpts** | optional parameters | nil if no parameters
+**account** | **string** | account | 
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSnapshotHistoryUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetSnapshotHistoryUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **limit** | **optional.Int32**| limit | [default to 20]
+ **limit** | **int32** | limit | [default to 20]
 
 ### Return type
 

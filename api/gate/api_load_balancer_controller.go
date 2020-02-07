@@ -11,13 +11,10 @@ package gate
 
 import (
 	_context "context"
-	"fmt"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,21 +25,40 @@ var (
 // LoadBalancerControllerApiService LoadBalancerControllerApi service
 type LoadBalancerControllerApiService service
 
-// GetAllUsingGETOpts Optional parameters for the method 'GetAllUsingGET'
-type GetAllUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiGetAllUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *LoadBalancerControllerApiService
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiGetAllUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetAllUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetAllUsingGETRequest) Provider(provider string) apiGetAllUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
 GetAllUsingGET Retrieve a list of load balancers for a given cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetAllUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return []map[string]interface{}
+@return apiGetAllUsingGETRequest
 */
-func (a *LoadBalancerControllerApiService) GetAllUsingGET(ctx _context.Context, localVarOptionals *GetAllUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *LoadBalancerControllerApiService) GetAllUsingGET(ctx _context.Context) apiGetAllUsingGETRequest {
+	return apiGetAllUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetAllUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -52,15 +68,19 @@ func (a *LoadBalancerControllerApiService) GetAllUsingGET(ctx _context.Context, 
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/loadBalancers"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "LoadBalancerControllerApiService.GetAllUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/loadBalancers"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -79,15 +99,15 @@ func (a *LoadBalancerControllerApiService) GetAllUsingGET(ctx _context.Context, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -105,19 +125,18 @@ func (a *LoadBalancerControllerApiService) GetAllUsingGET(ctx _context.Context, 
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -129,20 +148,37 @@ func (a *LoadBalancerControllerApiService) GetAllUsingGET(ctx _context.Context, 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetApplicationLoadBalancersUsingGETOpts Optional parameters for the method 'GetApplicationLoadBalancersUsingGET'
-type GetApplicationLoadBalancersUsingGETOpts struct {
-	XRateLimitApp optional.String
+type apiGetApplicationLoadBalancersUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *LoadBalancerControllerApiService
+	application   string
+	xRateLimitApp *string
+}
+
+func (r apiGetApplicationLoadBalancersUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetApplicationLoadBalancersUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
 }
 
 /*
 GetApplicationLoadBalancersUsingGET Retrieve a list of load balancers for a given application
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param application application
- * @param optional nil or *GetApplicationLoadBalancersUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
-@return []map[string]interface{}
+@return apiGetApplicationLoadBalancersUsingGETRequest
 */
-func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(ctx _context.Context, application string, localVarOptionals *GetApplicationLoadBalancersUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(ctx _context.Context, application string) apiGetApplicationLoadBalancersUsingGETRequest {
+	return apiGetApplicationLoadBalancersUsingGETRequest{
+		apiService:  a,
+		ctx:         ctx,
+		application: application,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetApplicationLoadBalancersUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -152,9 +188,13 @@ func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(c
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/applications/{application}/loadBalancers"
-	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", application)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "LoadBalancerControllerApiService.GetApplicationLoadBalancersUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/applications/{application}/loadBalancers"
+	localVarPath = strings.Replace(localVarPath, "{"+"application"+"}", _neturl.QueryEscape(parameterToString(r.application, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -177,15 +217,15 @@ func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(c
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -203,19 +243,18 @@ func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(c
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -227,10 +266,24 @@ func (a *LoadBalancerControllerApiService) GetApplicationLoadBalancersUsingGET(c
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetLoadBalancerDetailsUsingGETOpts Optional parameters for the method 'GetLoadBalancerDetailsUsingGET'
-type GetLoadBalancerDetailsUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiGetLoadBalancerDetailsUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *LoadBalancerControllerApiService
+	account       string
+	name          string
+	region        string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiGetLoadBalancerDetailsUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetLoadBalancerDetailsUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetLoadBalancerDetailsUsingGETRequest) Provider(provider string) apiGetLoadBalancerDetailsUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
@@ -239,12 +292,23 @@ GetLoadBalancerDetailsUsingGET Retrieve a load balancer's details as a single el
  * @param account account
  * @param name name
  * @param region region
- * @param optional nil or *GetLoadBalancerDetailsUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return []map[string]interface{}
+@return apiGetLoadBalancerDetailsUsingGETRequest
 */
-func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx _context.Context, account string, name string, region string, localVarOptionals *GetLoadBalancerDetailsUsingGETOpts) ([]map[string]interface{}, *_nethttp.Response, error) {
+func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx _context.Context, account string, name string, region string) apiGetLoadBalancerDetailsUsingGETRequest {
+	return apiGetLoadBalancerDetailsUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		account:    account,
+		name:       name,
+		region:     region,
+	}
+}
+
+/*
+Execute executes the request
+ @return []map[string]interface{}
+*/
+func (r apiGetLoadBalancerDetailsUsingGETRequest) Execute() ([]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -254,18 +318,22 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx _c
 		localVarReturnValue  []map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/loadBalancers/{account}/{region}/{name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", account)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", name)), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", region)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "LoadBalancerControllerApiService.GetLoadBalancerDetailsUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/loadBalancers/{account}/{region}/{name}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account"+"}", _neturl.QueryEscape(parameterToString(r.account, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(parameterToString(r.name, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"region"+"}", _neturl.QueryEscape(parameterToString(r.region, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -284,15 +352,15 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx _c
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -310,19 +378,18 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx _c
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v []map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -334,22 +401,43 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerDetailsUsingGET(ctx _c
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// GetLoadBalancerUsingGETOpts Optional parameters for the method 'GetLoadBalancerUsingGET'
-type GetLoadBalancerUsingGETOpts struct {
-	XRateLimitApp optional.String
-	Provider      optional.String
+type apiGetLoadBalancerUsingGETRequest struct {
+	ctx           _context.Context
+	apiService    *LoadBalancerControllerApiService
+	name          string
+	xRateLimitApp *string
+	provider      *string
+}
+
+func (r apiGetLoadBalancerUsingGETRequest) XRateLimitApp(xRateLimitApp string) apiGetLoadBalancerUsingGETRequest {
+	r.xRateLimitApp = &xRateLimitApp
+	return r
+}
+
+func (r apiGetLoadBalancerUsingGETRequest) Provider(provider string) apiGetLoadBalancerUsingGETRequest {
+	r.provider = &provider
+	return r
 }
 
 /*
 GetLoadBalancerUsingGET Retrieve a load balancer for a given cloud provider
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param name name
- * @param optional nil or *GetLoadBalancerUsingGETOpts - Optional Parameters:
- * @param "XRateLimitApp" (optional.String) -  X-RateLimit-App
- * @param "Provider" (optional.String) -  provider
-@return map[string]map[string]interface{}
+@return apiGetLoadBalancerUsingGETRequest
 */
-func (a *LoadBalancerControllerApiService) GetLoadBalancerUsingGET(ctx _context.Context, name string, localVarOptionals *GetLoadBalancerUsingGETOpts) (map[string]map[string]interface{}, *_nethttp.Response, error) {
+func (a *LoadBalancerControllerApiService) GetLoadBalancerUsingGET(ctx _context.Context, name string) apiGetLoadBalancerUsingGETRequest {
+	return apiGetLoadBalancerUsingGETRequest{
+		apiService: a,
+		ctx:        ctx,
+		name:       name,
+	}
+}
+
+/*
+Execute executes the request
+ @return map[string]map[string]interface{}
+*/
+func (r apiGetLoadBalancerUsingGETRequest) Execute() (map[string]map[string]interface{}, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -359,16 +447,20 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerUsingGET(ctx _context.
 		localVarReturnValue  map[string]map[string]interface{}
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/loadBalancers/{name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", name)), -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "LoadBalancerControllerApiService.GetLoadBalancerUsingGET")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/loadBalancers/{name}"
+	localVarPath = strings.Replace(localVarPath, "{"+"name"+"}", _neturl.QueryEscape(parameterToString(r.name, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.Provider.IsSet() {
-		localVarQueryParams.Add("provider", parameterToString(localVarOptionals.Provider.Value(), ""))
+	if r.provider != nil {
+		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -387,15 +479,15 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerUsingGET(ctx _context.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	if localVarOptionals != nil && localVarOptionals.XRateLimitApp.IsSet() {
-		localVarHeaderParams["X-RateLimit-App"] = parameterToString(localVarOptionals.XRateLimitApp.Value(), "")
+	if r.xRateLimitApp != nil {
+		localVarHeaderParams["X-RateLimit-App"] = parameterToString(*r.xRateLimitApp, "")
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -413,19 +505,18 @@ func (a *LoadBalancerControllerApiService) GetLoadBalancerUsingGET(ctx _context.
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
 			var v map[string]map[string]interface{}
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
-			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

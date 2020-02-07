@@ -1,6 +1,6 @@
 # \ApplicationControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -24,28 +24,27 @@ Method | HTTP request | Description
 
 ## CancelPipelineUsingPUT
 
-> map[string]map[string]interface{} CancelPipelineUsingPUT(ctx, id, optional)
+> map[string]map[string]interface{} CancelPipelineUsingPUT(ctx, id).Reason(reason).Execute()
 
 Cancel pipeline
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
- **optional** | ***CancelPipelineUsingPUTOpts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a CancelPipelineUsingPUTOpts struct
+Other parameters are passed through a pointer to a apiCancelPipelineUsingPUTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **reason** | **optional.String**| reason | 
+ **reason** | **string** | reason | 
 
 ### Return type
 
@@ -67,17 +66,26 @@ No authorization required
 
 ## CancelTaskUsingPUT
 
-> map[string]map[string]interface{} CancelTaskUsingPUT(ctx, id)
+> map[string]map[string]interface{} CancelTaskUsingPUT(ctx, id).Execute()
 
 Cancel task
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCancelTaskUsingPUTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -99,27 +107,23 @@ No authorization required
 
 ## GetAllApplicationsUsingGET
 
-> []map[string]interface{} GetAllApplicationsUsingGET(ctx, optional)
+> []map[string]interface{} GetAllApplicationsUsingGET(ctx).Account(account).Owner(owner).Execute()
 
 Retrieve a list of applications
 
-### Required Parameters
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAllApplicationsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***GetAllApplicationsUsingGETOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a GetAllApplicationsUsingGETOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **account** | **optional.String**| filters results to only include applications deployed in the specified account | 
- **owner** | **optional.String**| filteres results to only include applications owned by the specified email | 
+ **account** | **string** | filters results to only include applications deployed in the specified account | 
+ **owner** | **string** | filteres results to only include applications owned by the specified email | 
 
 ### Return type
 
@@ -141,28 +145,27 @@ No authorization required
 
 ## GetApplicationHistoryUsingGET
 
-> []map[string]interface{} GetApplicationHistoryUsingGET(ctx, application, optional)
+> []map[string]interface{} GetApplicationHistoryUsingGET(ctx, application).Limit(limit).Execute()
 
 Retrieve a list of an application's configuration revision history
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
- **optional** | ***GetApplicationHistoryUsingGETOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetApplicationHistoryUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetApplicationHistoryUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **limit** | **optional.Int32**| limit | [default to 20]
+ **limit** | **int32** | limit | [default to 20]
 
 ### Return type
 
@@ -184,28 +187,27 @@ No authorization required
 
 ## GetApplicationUsingGET
 
-> map[string]map[string]interface{} GetApplicationUsingGET(ctx, application, optional)
+> map[string]map[string]interface{} GetApplicationUsingGET(ctx, application).Expand(expand).Execute()
 
 Retrieve an application's details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
- **optional** | ***GetApplicationUsingGETOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetApplicationUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetApplicationUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **expand** | **optional.Bool**| expand | [default to true]
+ **expand** | **bool** | expand | [default to true]
 
 ### Return type
 
@@ -227,18 +229,28 @@ No authorization required
 
 ## GetPipelineConfigUsingGET
 
-> map[string]map[string]interface{} GetPipelineConfigUsingGET(ctx, application, pipelineName)
+> map[string]map[string]interface{} GetPipelineConfigUsingGET(ctx, application, pipelineName).Execute()
 
 Retrieve a pipeline configuration
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
-**pipelineName** | **string**| pipelineName | 
+**application** | **string** | application | 
+**pipelineName** | **string** | pipelineName | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPipelineConfigUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -260,17 +272,26 @@ No authorization required
 
 ## GetPipelineConfigsForApplicationUsingGET
 
-> []map[string]interface{} GetPipelineConfigsForApplicationUsingGET(ctx, application)
+> []map[string]interface{} GetPipelineConfigsForApplicationUsingGET(ctx, application).Execute()
 
 Retrieve a list of an application's pipeline configurations
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
+**application** | **string** | application | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPipelineConfigsForApplicationUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -292,30 +313,29 @@ No authorization required
 
 ## GetPipelinesUsingGET
 
-> []map[string]interface{} GetPipelinesUsingGET(ctx, application, optional)
+> []map[string]interface{} GetPipelinesUsingGET(ctx, application).Expand(expand).Limit(limit).Statuses(statuses).Execute()
 
 Retrieve a list of an application's pipeline executions
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
- **optional** | ***GetPipelinesUsingGETOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetPipelinesUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetPipelinesUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **expand** | **optional.Bool**| expand | 
- **limit** | **optional.Int32**| limit | 
- **statuses** | **optional.String**| statuses | 
+ **expand** | **bool** | expand | 
+ **limit** | **int32** | limit | 
+ **statuses** | **string** | statuses | 
 
 ### Return type
 
@@ -337,18 +357,28 @@ No authorization required
 
 ## GetStrategyConfigUsingGET
 
-> map[string]map[string]interface{} GetStrategyConfigUsingGET(ctx, application, strategyName)
+> map[string]map[string]interface{} GetStrategyConfigUsingGET(ctx, application, strategyName).Execute()
 
 Retrieve a pipeline strategy configuration
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
-**strategyName** | **string**| strategyName | 
+**application** | **string** | application | 
+**strategyName** | **string** | strategyName | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetStrategyConfigUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -370,17 +400,26 @@ No authorization required
 
 ## GetStrategyConfigsForApplicationUsingGET
 
-> []map[string]interface{} GetStrategyConfigsForApplicationUsingGET(ctx, application)
+> []map[string]interface{} GetStrategyConfigsForApplicationUsingGET(ctx, application).Execute()
 
 Retrieve a list of an application's pipeline strategy configurations
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
+**application** | **string** | application | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetStrategyConfigsForApplicationUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -402,30 +441,29 @@ No authorization required
 
 ## GetTaskDetailsUsingGET
 
-> map[string]map[string]interface{} GetTaskDetailsUsingGET(ctx, id, taskDetailsId, optional)
+> map[string]map[string]interface{} GetTaskDetailsUsingGET(ctx, id, taskDetailsId).XRateLimitApp(xRateLimitApp).Execute()
 
 Get task details
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
-**taskDetailsId** | **string**| taskDetailsId | 
- **optional** | ***GetTaskDetailsUsingGETOpts** | optional parameters | nil if no parameters
+**id** | **string** | id | 
+**taskDetailsId** | **string** | taskDetailsId | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetTaskDetailsUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetTaskDetailsUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **xRateLimitApp** | **optional.String**| X-RateLimit-App | 
+ **xRateLimitApp** | **string** | X-RateLimit-App | 
 
 ### Return type
 
@@ -447,17 +485,26 @@ No authorization required
 
 ## GetTaskUsingGET
 
-> map[string]map[string]interface{} GetTaskUsingGET(ctx, id)
+> map[string]map[string]interface{} GetTaskUsingGET(ctx, id).Execute()
 
 Get task
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**id** | **string**| id | 
+**id** | **string** | id | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTaskUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -479,30 +526,29 @@ No authorization required
 
 ## GetTasksUsingGET
 
-> []map[string]interface{} GetTasksUsingGET(ctx, application, optional)
+> []map[string]interface{} GetTasksUsingGET(ctx, application).Limit(limit).Page(page).Statuses(statuses).Execute()
 
 Retrieve a list of an application's tasks
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
- **optional** | ***GetTasksUsingGETOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetTasksUsingGETOpts struct
+Other parameters are passed through a pointer to a apiGetTasksUsingGETRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **limit** | **optional.Int32**| limit | 
- **page** | **optional.Int32**| page | 
- **statuses** | **optional.String**| statuses | 
+ **limit** | **int32** | limit | 
+ **page** | **int32** | page | 
+ **statuses** | **string** | statuses | 
 
 ### Return type
 
@@ -524,31 +570,30 @@ No authorization required
 
 ## InvokePipelineConfigUsingPOST
 
-> HttpEntity InvokePipelineConfigUsingPOST(ctx, application, pipelineName, optional)
+> HttpEntity InvokePipelineConfigUsingPOST(ctx, application, pipelineName).Trigger(trigger).User(user).Execute()
 
 Invoke pipeline config
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
-**pipelineName** | **string**| pipelineName | 
- **optional** | ***InvokePipelineConfigUsingPOSTOpts** | optional parameters | nil if no parameters
+**application** | **string** | application | 
+**pipelineName** | **string** | pipelineName | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a InvokePipelineConfigUsingPOSTOpts struct
+Other parameters are passed through a pointer to a apiInvokePipelineConfigUsingPOSTRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **trigger** | **optional.Interface**| trigger | 
- **user** | **optional.String**| user | 
+ **trigger** | **map[string]interface{}** | trigger | 
+ **user** | **string** | user | 
 
 ### Return type
 
@@ -570,18 +615,27 @@ No authorization required
 
 ## TaskUsingPOST
 
-> map[string]map[string]interface{} TaskUsingPOST(ctx, map_, application)
+> map[string]map[string]interface{} TaskUsingPOST(ctx, application).Map_(map_).Execute()
 
 Create task
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**map_** | **map[string]interface{}**| map | 
-**application** | **string**| application | 
+**application** | **string** | application | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiTaskUsingPOSTRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **map_** | **map[string]interface{}** | map | 
+
 
 ### Return type
 

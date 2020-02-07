@@ -1,6 +1,6 @@
 # \ServerGroupManagerControllerApi
 
-All URIs are relative to *http://localhost:8084*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -10,17 +10,26 @@ Method | HTTP request | Description
 
 ## GetServerGroupManagersForApplicationUsingGET
 
-> []map[string]interface{} GetServerGroupManagersForApplicationUsingGET(ctx, application)
+> []map[string]interface{} GetServerGroupManagersForApplicationUsingGET(ctx, application).Execute()
 
 Retrieve a list of server group managers for an application
 
-### Required Parameters
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**application** | **string**| application | 
+**application** | **string** | application | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetServerGroupManagersForApplicationUsingGETRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
