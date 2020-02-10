@@ -1,0 +1,6606 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  title: Spinnaker API
+  version: 1.18.2
+servers:
+- url: //localhost/
+tags:
+- description: Amazon Infrastructure Controller
+  name: amazon-infrastructure-controller
+- description: Application Controller
+  name: application-controller
+- description: Artifact Controller
+  name: artifact-controller
+- description: Auth Controller
+  name: auth-controller
+- description: Bake Controller
+  name: bake-controller
+- description: Build Controller
+  name: build-controller
+- description: Cluster Controller
+  name: cluster-controller
+- description: Concourse Controller
+  name: concourse-controller
+- description: Credentials Controller
+  name: credentials-controller
+- description: Ecs Server Group Events Controller
+  name: ecs-server-group-events-controller
+- description: Executions Controller
+  name: executions-controller
+- description: Firewall Controller
+  name: firewall-controller
+- description: Image Controller
+  name: image-controller
+- description: Instance Controller
+  name: instance-controller
+- description: Job Controller
+  name: job-controller
+- description: Load Balancer Controller
+  name: load-balancer-controller
+- description: Network Controller
+  name: network-controller
+- description: Pipeline Config Controller
+  name: pipeline-config-controller
+- description: Pipeline Controller
+  name: pipeline-controller
+- description: Pipeline Templates Controller
+  name: pipeline-templates-controller
+- description: Project Controller
+  name: project-controller
+- description: Pubsub Subscription Controller
+  name: pubsub-subscription-controller
+- description: Reorder Pipelines Controller
+  name: reorder-pipelines-controller
+- description: Search Controller
+  name: search-controller
+- description: Security Group Controller
+  name: security-group-controller
+- description: Server Group Controller
+  name: server-group-controller
+- description: Server Group Manager Controller
+  name: server-group-manager-controller
+- description: Snapshot Controller
+  name: snapshot-controller
+- description: Subnet Controller
+  name: subnet-controller
+- description: Task Controller
+  name: task-controller
+- description: V 2 Canary Config Controller
+  name: v-2-canary-config-controller
+- description: V 2 Canary Controller
+  name: v-2-canary-controller
+- description: V 2 Pipeline Templates Controller
+  name: v-2-pipeline-templates-controller
+- description: Version Controller
+  name: version-controller
+- description: Webhook Controller
+  name: webhook-controller
+paths:
+  /actions/pipelines/reorder:
+    post:
+      deprecated: false
+      operationId: reorderPipelines
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReorderPipelinesCommand'
+        description: reorderPipelinesCommand
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Re-order pipelines
+      tags:
+      - reorder-pipelines-controller
+      x-codegen-request-body-name: reorderPipelinesCommand
+  /applications:
+    get:
+      deprecated: false
+      operationId: listAllApplications
+      parameters:
+      - allowEmptyValue: false
+        description: filters results to only include applications deployed in the
+          specified account
+        in: query
+        name: account
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: filteres results to only include applications owned by the specified
+          email
+        in: query
+        name: owner
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of applications
+      tags:
+      - application-controller
+  /applications/{applicationName}/jobs/{account}/{region}/{name}:
+    get:
+      deprecated: false
+      operationId: getJob
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: applicationName
+        in: path
+        name: applicationName
+        required: true
+        schema:
+          type: string
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          default: "false"
+          type: string
+      - description: name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get job
+      tags:
+      - job-controller
+  /applications/{applicationName}/serverGroups:
+    get:
+      deprecated: false
+      operationId: listServerGroupsForApplication
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: applicationName
+        in: path
+        name: applicationName
+        required: true
+        schema:
+          type: string
+      - description: cloudProvider
+        in: query
+        name: cloudProvider
+        schema:
+          type: string
+      - description: clusters
+        in: query
+        name: clusters
+        schema:
+          type: string
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          default: "false"
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of server groups for a given application
+      tags:
+      - server-group-controller
+  /applications/{applicationName}/serverGroups/{account}/{region}/{serverGroupName}:
+    get:
+      deprecated: false
+      operationId: getServerGroupDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: applicationName
+        in: path
+        name: applicationName
+        required: true
+        schema:
+          type: string
+      - description: includeDetails
+        in: query
+        name: includeDetails
+        schema:
+          default: "true"
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      - description: serverGroupName
+        in: path
+        name: serverGroupName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a server group's details
+      tags:
+      - server-group-controller
+  /applications/{application}:
+    get:
+      deprecated: false
+      operationId: getApplication
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          default: true
+          type: boolean
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve an application's details
+      tags:
+      - application-controller
+  /applications/{application}/clusters:
+    get:
+      deprecated: false
+      operationId: listClusters
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of cluster names for an application, grouped by account
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}:
+    get:
+      deprecated: false
+      operationId: listClustersByAccount
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of clusters for an account
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}/{clusterName}:
+    get:
+      deprecated: false
+      operationId: getClustersDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a cluster's details
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}/{clusterName}/serverGroups:
+    get:
+      deprecated: false
+      operationId: listServerGroups
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of server groups for a cluster
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}:
+    get:
+      deprecated: false
+      operationId: getServerGroups
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      - description: serverGroupName
+        in: path
+        name: serverGroupName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a server group's details
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}/{clusterName}/serverGroups/{serverGroupName}/scalingActivities:
+    get:
+      deprecated: false
+      operationId: listScalingActivities
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: query
+        name: region
+        schema:
+          type: string
+      - description: serverGroupName
+        in: path
+        name: serverGroupName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of scaling activities for a server group
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}/{clusterName}/{cloudProvider}/{scope}/serverGroups/target/{target}:
+    get:
+      deprecated: false
+      description: '`scope` is either a zone or a region'
+      operationId: getTargetServerGroup
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: cloudProvider
+        in: path
+        name: cloudProvider
+        required: true
+        schema:
+          type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      - description: onlyEnabled
+        in: query
+        name: onlyEnabled
+        schema:
+          type: boolean
+      - description: scope
+        in: path
+        name: scope
+        required: true
+        schema:
+          type: string
+      - description: target
+        in: path
+        name: target
+        required: true
+        schema:
+          type: string
+      - description: validateOldest
+        in: query
+        name: validateOldest
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a server group that matches a target coordinate (e.g., newest,
+        ancestor) relative to a cluster
+      tags:
+      - cluster-controller
+  /applications/{application}/clusters/{account}/{clusterName}/{type}/loadBalancers:
+    get:
+      deprecated: false
+      operationId: getClusterLoadBalancers
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: clusterName
+        in: path
+        name: clusterName
+        required: true
+        schema:
+          type: string
+      - description: type
+        in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a cluster's loadbalancers
+      tags:
+      - cluster-controller
+  /applications/{application}/executions/search:
+    get:
+      deprecated: false
+      operationId: searchForPipelineExecutionsByTrigger
+      parameters:
+      - description: Only includes executions that are part of this application. If
+          this value is "*", results will include executions of all applications.
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Only includes executions that were triggered by a trigger with
+          this eventId.
+        in: query
+        name: eventId
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Expands each execution object in the resulting list. If this
+          value is missing, it is defaulted to false.
+        example: false
+        in: query
+        name: expand
+        schema:
+          default: false
+          type: boolean
+      - allowEmptyValue: false
+        description: Only includes executions that with this pipeline name.
+        in: query
+        name: pipelineName
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Reverses the resulting list before it is paginated. If this value
+          is missing, it is defaulted to false.
+        example: false
+        in: query
+        name: reverse
+        schema:
+          default: false
+          type: boolean
+      - allowEmptyValue: false
+        description: Sets the size of the resulting list for pagination. This value
+          must be > 0. If this value is missing, it is defaulted to 10.
+        in: query
+        name: size
+        schema:
+          default: 10
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: Sets the first item of the resulting list for pagination. The
+          list is 0-indexed. This value must be >= 0. If this value is missing, it
+          is defaulted to 0.
+        in: query
+        name: startIndex
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: 'Only includes executions with a status that is equal to a status
+          provided in this field. The list of statuses should be given as a comma-delimited
+          string. If this value is missing, includes executions of all statuses. Allowed
+          statuses are: NOT_STARTED, RUNNING, PAUSED, SUSPENDED, SUCCEEDED, FAILED_CONTINUE,
+          TERMINAL, CANCELED, REDIRECT, STOPPED, SKIPPED, BUFFERED.'
+        in: query
+        name: statuses
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: |-
+          Only includes executions that were triggered by a trigger that matches the subset of fields provided by this value. This value should be a base64-encoded string of a JSON representation of a trigger object. The comparison succeeds if the execution trigger contains all the fields of the input trigger, the fields are of the same type, and each value of the field "matches". The term "matches" is specific for each field's type:
+          - For Strings: A String value in the execution's trigger matches the input trigger's String value if the former equals the latter (case-insensitive) OR if the former matches the latter as a regular expression.
+          - For Maps: A Map value in the execution's trigger matches the input trigger's Map value if the former contains all keys of the latter and their values match.
+          - For Collections: A Collection value in the execution's trigger matches the input trigger's Collection value if the former has a unique element that matches each element of the latter.
+          - Every other value is compared using the Java "equals" method (Groovy "==" operator)
+        in: query
+        name: trigger
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Only includes executions that were built at or before the given
+          time, represented as a Unix timestamp in ms (UTC). This value must be <=
+          9223372036854775807 (Long.MAX_VALUE) and >= the value of [triggerTimeStartBoundary],
+          if provided. If this value is missing, it is defaulted to 9223372036854775807.
+        in: query
+        name: triggerTimeEndBoundary
+        schema:
+          default: 9223372036854775807
+          format: int64
+          type: integer
+      - allowEmptyValue: false
+        description: Only includes executions that were built at or after the given
+          time, represented as a Unix timestamp in ms (UTC). This value must be >=
+          0 and <= the value of [triggerTimeEndBoundary], if provided. If this value
+          is missing, it is defaulted to 0.
+        in: query
+        name: triggerTimeStartBoundary
+        schema:
+          default: 0
+          format: int64
+          type: integer
+      - allowEmptyValue: false
+        description: Only includes executions that were triggered by a trigger with
+          a type that is equal to a type provided in this field. The list of trigger
+          types should be a comma-delimited string. If this value is missing, results
+          will includes executions of all trigger types.
+        in: query
+        name: triggerTypes
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Search for pipeline executions using a combination of criteria. The
+        returned list is sorted by buildTime (trigger time) in reverse order so that
+        newer executions are first in the list.
+      tags:
+      - executions-controller
+  /applications/{application}/functions:
+    get:
+      deprecated: false
+      operationId: applicationFunctions
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get application functions
+      tags:
+      - amazon-infrastructure-controller
+  /applications/{application}/history:
+    get:
+      deprecated: false
+      operationId: listApplicationHistory
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 20
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's configuration revision history
+      tags:
+      - application-controller
+  /applications/{application}/loadBalancers:
+    get:
+      deprecated: false
+      operationId: listApplicationLoadBalancers
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of load balancers for a given application
+      tags:
+      - load-balancer-controller
+  /applications/{application}/pipelineConfigs:
+    get:
+      deprecated: false
+      operationId: listPipelineConfigsForApplication
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's pipeline configurations
+      tags:
+      - application-controller
+  /applications/{application}/pipelineConfigs/{pipelineName}:
+    get:
+      deprecated: false
+      operationId: getPipelineConfig
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: pipelineName
+        in: path
+        name: pipelineName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a pipeline configuration
+      tags:
+      - application-controller
+    post:
+      deprecated: true
+      operationId: invokePipelineConfig
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: pipelineName
+        in: path
+        name: pipelineName
+        required: true
+        schema:
+          type: string
+      - description: user
+        in: query
+        name: user
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: trigger
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HttpEntity'
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Invoke pipeline config
+      tags:
+      - application-controller
+      x-codegen-request-body-name: trigger
+  /applications/{application}/pipelines:
+    get:
+      deprecated: false
+      operationId: listApplicationPipelines
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          type: boolean
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - description: statuses
+        in: query
+        name: statuses
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's pipeline executions
+      tags:
+      - application-controller
+  /applications/{application}/pipelines/{id}/cancel:
+    put:
+      deprecated: true
+      operationId: cancelPipeline
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: reason
+        in: query
+        name: reason
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Cancel pipeline
+      tags:
+      - application-controller
+  /applications/{application}/serverGroupManagers:
+    get:
+      deprecated: false
+      operationId: listServerGroupManagersForApplication
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of server group managers for an application
+      tags:
+      - server-group-manager-controller
+  /applications/{application}/serverGroups/{account}/{serverGroupName}/events:
+    get:
+      deprecated: false
+      operationId: listEvents
+      parameters:
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        required: true
+        schema:
+          type: string
+      - description: region
+        in: query
+        name: region
+        required: true
+        schema:
+          type: string
+      - description: serverGroupName
+        in: path
+        name: serverGroupName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieves a list of events for a server group
+      tags:
+      - ecs-server-group-events-controller
+  /applications/{application}/snapshots/{account}:
+    get:
+      deprecated: false
+      operationId: getCurrentSnapshot
+      parameters:
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get current snapshot
+      tags:
+      - snapshot-controller
+  /applications/{application}/snapshots/{account}/history:
+    get:
+      deprecated: false
+      operationId: getSnapshotHistory
+      parameters:
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 20
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get snapshot history
+      tags:
+      - snapshot-controller
+  /applications/{application}/strategyConfigs:
+    get:
+      deprecated: false
+      operationId: listStrategyConfigsForApplication
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's pipeline strategy configurations
+      tags:
+      - application-controller
+  /applications/{application}/strategyConfigs/{strategyName}:
+    get:
+      deprecated: false
+      operationId: getStrategyConfig
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: strategyName
+        in: path
+        name: strategyName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a pipeline strategy configuration
+      tags:
+      - application-controller
+  /applications/{application}/tasks:
+    get:
+      deprecated: false
+      operationId: listTasks
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - description: page
+        in: query
+        name: page
+        schema:
+          format: int32
+          type: integer
+      - description: statuses
+        in: query
+        name: statuses
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's tasks
+      tags:
+      - application-controller
+    post:
+      deprecated: true
+      operationId: CreateApplicationTask
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: map
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Create task
+      tags:
+      - application-controller
+      x-codegen-request-body-name: map
+  /applications/{application}/tasks/{id}:
+    get:
+      deprecated: true
+      operationId: getApplicationTask
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get task
+      tags:
+      - application-controller
+  /applications/{application}/tasks/{id}/cancel:
+    put:
+      deprecated: true
+      operationId: cancelApplicationTask
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Cancel task
+      tags:
+      - application-controller
+  /applications/{application}/tasks/{id}/details/{taskDetailsId}:
+    get:
+      deprecated: true
+      operationId: getApplicationTaskDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: taskDetailsId
+        in: path
+        name: taskDetailsId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get task details
+      tags:
+      - application-controller
+  /artifacts/account/{accountName}/versions:
+    get:
+      deprecated: false
+      operationId: artifactVersions
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: accountName
+        in: path
+        name: accountName
+        required: true
+        schema:
+          type: string
+      - description: artifactName
+        in: query
+        name: artifactName
+        required: true
+        schema:
+          type: string
+      - description: type
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  type: string
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the list of artifact versions by account and artifact names
+      tags:
+      - artifact-controller
+  /artifacts/credentials:
+    get:
+      deprecated: false
+      operationId: all
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the list of artifact accounts configured in Clouddriver.
+      tags:
+      - artifact-controller
+  /artifacts/{provider}/{packageName}/{version}:
+    get:
+      deprecated: false
+      operationId: getArtifact
+      parameters:
+      - description: packageName
+        in: path
+        name: packageName
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+      - description: version
+        in: path
+        name: version
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the specified artifact version for an artifact provider and
+        package name
+      tags:
+      - artifact-controller
+  /auth/loggedOut:
+    get:
+      deprecated: false
+      operationId: loggedOut
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get logged out message
+      tags:
+      - auth-controller
+  /auth/redirect:
+    get:
+      deprecated: false
+      operationId: redirect
+      parameters:
+      - description: to
+        in: query
+        name: to
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Redirect to Deck
+      tags:
+      - auth-controller
+  /auth/roles/sync:
+    post:
+      deprecated: false
+      operationId: sync
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Sync user roles
+      tags:
+      - auth-controller
+  /auth/user:
+    get:
+      deprecated: false
+      operationId: user
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get user
+      tags:
+      - auth-controller
+  /auth/user/serviceAccounts:
+    get:
+      deprecated: false
+      operationId: getServiceAccounts
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get service accounts
+      tags:
+      - auth-controller
+  /bakery/logs/{region}/{statusId}:
+    get:
+      deprecated: false
+      operationId: lookupLogs
+      parameters:
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      - description: statusId
+        in: path
+        name: statusId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the logs for a given bake
+      tags:
+      - bake-controller
+  /bakery/options:
+    get:
+      deprecated: false
+      operationId: listBakeOptions
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of available bakery base images, grouped by cloud provider
+      tags:
+      - bake-controller
+  /bakery/options/{cloudProvider}:
+    get:
+      deprecated: false
+      operationId: listBakeOptionsByCloudProvider
+      parameters:
+      - description: cloudProvider
+        in: path
+        name: cloudProvider
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of available bakery base images for a given cloud provider
+      tags:
+      - bake-controller
+  /concourse/{buildMaster}/teams/{team}/pipelines:
+    get:
+      deprecated: false
+      operationId: listPipelines
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: team
+        in: path
+        name: team
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the list of pipeline names for a given team available to triggers
+      tags:
+      - concourse-controller
+  /concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/jobs:
+    get:
+      deprecated: false
+      operationId: jobs
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: pipeline
+        in: path
+        name: pipeline
+        required: true
+        schema:
+          type: string
+      - description: team
+        in: path
+        name: team
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the list of job names for a given pipeline available to triggers
+      tags:
+      - concourse-controller
+  /concourse/{buildMaster}/teams/{team}/pipelines/{pipeline}/resources:
+    get:
+      deprecated: false
+      operationId: resources
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: pipeline
+        in: path
+        name: pipeline
+        required: true
+        schema:
+          type: string
+      - description: team
+        in: path
+        name: team
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the list of resource names for a given pipeline available
+        to the Concourse stage
+      tags:
+      - concourse-controller
+  /credentials:
+    get:
+      deprecated: false
+      operationId: listAccounts
+      parameters:
+      - in: query
+        name: accountNonExpired
+        schema:
+          type: boolean
+      - in: query
+        name: accountNonLocked
+        schema:
+          type: boolean
+      - explode: true
+        in: query
+        name: allowedAccounts
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: authorities[0].authority
+        schema:
+          type: string
+      - in: query
+        name: credentialsNonExpired
+        schema:
+          type: boolean
+      - in: query
+        name: email
+        schema:
+          type: string
+      - in: query
+        name: enabled
+        schema:
+          type: boolean
+      - description: expand
+        in: query
+        name: expand
+        schema:
+          type: boolean
+      - in: query
+        name: firstName
+        schema:
+          type: string
+      - in: query
+        name: lastName
+        schema:
+          type: string
+      - in: query
+        name: password
+        schema:
+          type: string
+      - explode: true
+        in: query
+        name: roles
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: username
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/Account'
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of accounts
+      tags:
+      - credentials-controller
+  /credentials/{account}:
+    get:
+      deprecated: false
+      operationId: getAccount
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: accountNonExpired
+        schema:
+          type: boolean
+      - in: query
+        name: accountNonLocked
+        schema:
+          type: boolean
+      - explode: true
+        in: query
+        name: allowedAccounts
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: authorities[0].authority
+        schema:
+          type: string
+      - in: query
+        name: credentialsNonExpired
+        schema:
+          type: boolean
+      - in: query
+        name: email
+        schema:
+          type: string
+      - in: query
+        name: enabled
+        schema:
+          type: boolean
+      - in: query
+        name: firstName
+        schema:
+          type: string
+      - in: query
+        name: lastName
+        schema:
+          type: string
+      - in: query
+        name: password
+        schema:
+          type: string
+      - explode: true
+        in: query
+        name: roles
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - in: query
+        name: username
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountDetails'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve an account's details
+      tags:
+      - credentials-controller
+  /executions:
+    get:
+      deprecated: false
+      operationId: getLatestExecutionsByConfigIds
+      parameters:
+      - allowEmptyValue: false
+        description: A comma-separated list of executions to retrieve. Either this
+          OR pipelineConfigIds must be supplied, but not both.
+        in: query
+        name: executionIds
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Expands each execution object in the resulting list. If this
+          value is missing, it is defaulted to true.
+        in: query
+        name: expand
+        schema:
+          default: true
+          type: boolean
+      - allowEmptyValue: false
+        description: The number of executions to return per pipeline configuration.
+          Ignored if executionIds parameter is supplied. If this value is missing,
+          it is defaulted to 1.
+        in: query
+        name: limit
+        schema:
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: A comma-separated list of pipeline configuration IDs to retrieve
+          recent executions for. Either this OR pipelineConfigIds must be supplied,
+          but not both.
+        in: query
+        name: pipelineConfigIds
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: A comma-separated list of execution statuses to filter by. Ignored
+          if executionIds parameter is supplied. If this value is missing, it is defaulted
+          to all statuses.
+        in: query
+        name: statuses
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieves an ad-hoc collection of executions based on a number of user-supplied
+        parameters. Either executionIds or pipelineConfigIds must be supplied in order
+        to return any results. If both are supplied, an exception will be thrown.
+      tags:
+      - executions-controller
+  /firewalls:
+    get:
+      deprecated: false
+      operationId: listFirewalls
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: id
+        in: query
+        name: id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of firewalls, grouped by account, cloud provider, and
+        region
+      tags:
+      - firewall-controller
+  /firewalls/{account}:
+    get:
+      deprecated: false
+      operationId: listFirewallsByAccount
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of firewalls for a given account, grouped by region
+      tags:
+      - firewall-controller
+  /firewalls/{account}/{region}:
+    get:
+      deprecated: false
+      operationId: listFirewallsByAccountAndRegion
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of firewalls for a given account and region
+      tags:
+      - firewall-controller
+  /firewalls/{account}/{region}/{name}:
+    get:
+      deprecated: false
+      operationId: getFirewallsSecurityGroup
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      - description: vpcId
+        in: query
+        name: vpcId
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a firewall's details
+      tags:
+      - firewall-controller
+  /functions:
+    get:
+      deprecated: false
+      operationId: functions
+      parameters:
+      - description: account
+        in: query
+        name: account
+        schema:
+          type: string
+      - description: functionName
+        in: query
+        name: functionName
+        schema:
+          type: string
+      - description: region
+        in: query
+        name: region
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get functions
+      tags:
+      - amazon-infrastructure-controller
+  /images/find:
+    get:
+      deprecated: false
+      description: The query parameter `q` filters the list of images by image name
+      operationId: findImages
+      parameters:
+      - description: account
+        in: query
+        name: account
+        schema:
+          type: string
+      - description: count
+        in: query
+        name: count
+        schema:
+          format: int32
+          type: integer
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: q
+        in: query
+        name: q
+        schema:
+          type: string
+      - description: region
+        in: query
+        name: region
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of images, filtered by cloud provider, region, and
+        account
+      tags:
+      - image-controller
+  /images/tags:
+    get:
+      deprecated: false
+      operationId: findTags
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: query
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: repository
+        in: query
+        name: repository
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Find tags
+      tags:
+      - image-controller
+  /images/{account}/{region}/{imageId}:
+    get:
+      deprecated: false
+      operationId: getImageDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: imageId
+        in: path
+        name: imageId
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get image details
+      tags:
+      - image-controller
+  /instanceTypes:
+    get:
+      deprecated: false
+      operationId: instanceTypes
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get instance types
+      tags:
+      - amazon-infrastructure-controller
+  /instances/{account}/{region}/{instanceId}:
+    get:
+      deprecated: false
+      operationId: getInstanceDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: instanceId
+        in: path
+        name: instanceId
+        required: true
+        schema:
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve an instance's details
+      tags:
+      - instance-controller
+  /instances/{account}/{region}/{instanceId}/console:
+    get:
+      deprecated: false
+      operationId: getConsoleOutput
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: instanceId
+        in: path
+        name: instanceId
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve an instance's console output
+      tags:
+      - instance-controller
+  /loadBalancers:
+    get:
+      deprecated: false
+      operationId: listAllLoadBalancers
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of load balancers for a given cloud provider
+      tags:
+      - load-balancer-controller
+  /loadBalancers/{account}/{region}/{name}:
+    get:
+      deprecated: false
+      operationId: getLoadBalancerDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a load balancer's details as a single element list for a given
+        account, region, cloud provider and load balancer name
+      tags:
+      - load-balancer-controller
+  /loadBalancers/{name}:
+    get:
+      deprecated: false
+      operationId: getLoadBalancer
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a load balancer for a given cloud provider
+      tags:
+      - load-balancer-controller
+  /networks:
+    get:
+      deprecated: false
+      operationId: listNetworks
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of networks, grouped by cloud provider
+      tags:
+      - network-controller
+  /networks/{cloudProvider}:
+    get:
+      deprecated: false
+      operationId: listNetworksByCloudProvider
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: cloudProvider
+        in: path
+        name: cloudProvider
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of networks for a given cloud provider
+      tags:
+      - network-controller
+  /pipelineConfigs:
+    get:
+      deprecated: false
+      operationId: getAllPipelineConfigs
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get all pipeline configs.
+      tags:
+      - pipeline-config-controller
+  /pipelineConfigs/{pipelineConfigId}/convertToTemplate:
+    get:
+      deprecated: false
+      operationId: convertPipelineConfigToPipelineTemplate
+      parameters:
+      - description: pipelineConfigId
+        in: path
+        name: pipelineConfigId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Convert a pipeline config to a pipeline template.
+      tags:
+      - pipeline-config-controller
+  /pipelineConfigs/{pipelineConfigId}/history:
+    get:
+      deprecated: false
+      operationId: getPipelineConfigHistory
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 20
+          format: int32
+          type: integer
+      - description: pipelineConfigId
+        in: path
+        name: pipelineConfigId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get pipeline config history.
+      tags:
+      - pipeline-config-controller
+  /pipelineTemplates:
+    get:
+      deprecated: false
+      operationId: listPipelineTemplates
+      parameters:
+      - description: scopes
+        explode: true
+        in: query
+        name: scopes
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: List pipeline templates.
+      tags:
+      - pipeline-templates-controller
+    post:
+      deprecated: false
+      operationId: createPipelineTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipelineTemplate
+        required: true
+      responses:
+        "201":
+          content: {}
+          description: Created
+        "202":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: Accepted
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Create a pipeline template.
+      tags:
+      - pipeline-templates-controller
+      x-codegen-request-body-name: pipelineTemplate
+  /pipelineTemplates/resolve:
+    get:
+      deprecated: false
+      operationId: resolveTemplates
+      parameters:
+      - description: executionId
+        in: query
+        name: executionId
+        schema:
+          type: string
+      - description: pipelineConfigId
+        in: query
+        name: pipelineConfigId
+        schema:
+          type: string
+      - description: source
+        in: query
+        name: source
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Resolve a pipeline template.
+      tags:
+      - pipeline-templates-controller
+  /pipelineTemplates/{id}:
+    delete:
+      deprecated: false
+      operationId: deletePipelineTemplate
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "202":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: Accepted
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete a pipeline template.
+      tags:
+      - pipeline-templates-controller
+    get:
+      deprecated: false
+      operationId: getPipelineTemplate
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get a pipeline template.
+      tags:
+      - pipeline-templates-controller
+    post:
+      deprecated: false
+      operationId: updatePipelineTemplate
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: skipPlanDependents
+        in: query
+        name: skipPlanDependents
+        schema:
+          default: false
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipelineTemplate
+        required: true
+      responses:
+        "201":
+          content: {}
+          description: Created
+        "202":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: Accepted
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Update a pipeline template.
+      tags:
+      - pipeline-templates-controller
+      x-codegen-request-body-name: pipelineTemplate
+  /pipelineTemplates/{id}/dependents:
+    get:
+      deprecated: false
+      operationId: listPipelineTemplateDependents
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: recursive
+        in: query
+        name: recursive
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: List all pipelines that implement a pipeline template
+      tags:
+      - pipeline-templates-controller
+  /pipelines:
+    post:
+      deprecated: false
+      operationId: savePipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipeline
+        required: true
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Save a pipeline definition
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: pipeline
+  /pipelines/move:
+    post:
+      deprecated: false
+      operationId: renamePipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: renameCommand
+        required: true
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Rename a pipeline definition
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: renameCommand
+  /pipelines/start:
+    post:
+      deprecated: false
+      operationId: start
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: map
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponseEntity'
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Initiate a pipeline execution
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: map
+  /pipelines/v2/{application}/{pipelineNameOrId}:
+    post:
+      deprecated: false
+      operationId: invokePipelineConfigViaEcho
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: pipelineNameOrId
+        in: path
+        name: pipelineNameOrId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: trigger
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HttpEntity'
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Trigger a pipeline execution
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: trigger
+  /pipelines/{application}/{pipelineName}:
+    delete:
+      deprecated: false
+      operationId: deletePipelineDefinition
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: pipelineName
+        in: path
+        name: pipelineName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete a pipeline definition
+      tags:
+      - pipeline-controller
+    post:
+      deprecated: false
+      operationId: triggerPipeline
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: pipelineName
+        in: path
+        name: pipelineName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: trigger
+        required: false
+      responses:
+        "201":
+          content: {}
+          description: Created
+        "202":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: Accepted
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Trigger a pipeline execution
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: trigger
+  /pipelines/{id}:
+    delete:
+      deprecated: false
+      operationId: deletePipelineExecution
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete a pipeline execution
+      tags:
+      - pipeline-controller
+    get:
+      deprecated: false
+      operationId: getPipeline
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a pipeline execution
+      tags:
+      - pipeline-controller
+    put:
+      deprecated: false
+      operationId: updatePipeline
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipeline
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Update a pipeline definition
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: pipeline
+  /pipelines/{id}/cancel:
+    put:
+      deprecated: false
+      operationId: cancelPipelineExecution
+      parameters:
+      - description: force
+        in: query
+        name: force
+        schema:
+          default: false
+          type: boolean
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: reason
+        in: query
+        name: reason
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Cancel a pipeline execution
+      tags:
+      - pipeline-controller
+  /pipelines/{id}/evaluateExpression:
+    get:
+      deprecated: false
+      operationId: evaluateExpressionForExecution
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Evaluate a pipeline expression using the provided execution as context
+      tags:
+      - pipeline-controller
+    post:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionViaPOST
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipelineExpression
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Evaluate a pipeline expression using the provided execution as context
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: pipelineExpression
+  /pipelines/{id}/evaluateVariables:
+    post:
+      deprecated: false
+      operationId: evaluateVariables
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Execution id to run against
+        in: query
+        name: executionId
+        required: true
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Comma separated list of requisite stage IDs for the evaluation
+          stage
+        in: query
+        name: requisiteStageRefIds
+        schema:
+          type: string
+      - allowEmptyValue: false
+        description: Version of SpEL evaluation logic to use (v3 or v4)
+        in: query
+        name: spelVersion
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/MapStringString'
+              type: array
+        description: List of variables/expressions to evaluate
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Evaluate variables same as Evaluate Variables stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: expressions
+  /pipelines/{id}/pause:
+    put:
+      deprecated: false
+      operationId: pausePipeline
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Pause a pipeline execution
+      tags:
+      - pipeline-controller
+  /pipelines/{id}/resume:
+    put:
+      deprecated: false
+      operationId: resumePipeline
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Resume a pipeline execution
+      tags:
+      - pipeline-controller
+  /pipelines/{id}/stages/{stageId}:
+    patch:
+      deprecated: false
+      operationId: updateStage
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: context
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Update a stage execution
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: context
+  /pipelines/{id}/stages/{stageId}/restart:
+    put:
+      deprecated: false
+      operationId: restartStage
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: context
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Restart a stage execution
+      tags:
+      - pipeline-controller
+      x-codegen-request-body-name: context
+  /pipelines/{id}/{stageId}/evaluateExpression:
+    get:
+      deprecated: false
+      operationId: evaluateExpressionForExecutionAtStage
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: stageId
+        in: path
+        name: stageId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Evaluate a pipeline expression at a specific stage using the provided
+        execution as context
+      tags:
+      - pipeline-controller
+  /projects:
+    get:
+      deprecated: false
+      operationId: allProjects
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get all projects
+      tags:
+      - project-controller
+  /projects/{id}:
+    get:
+      deprecated: false
+      operationId: getProject
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get a project
+      tags:
+      - project-controller
+  /projects/{id}/clusters:
+    get:
+      deprecated: false
+      operationId: getClusters
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get a project's clusters
+      tags:
+      - project-controller
+  /projects/{id}/pipelines:
+    get:
+      deprecated: false
+      operationId: allPipelinesForProject
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          default: 5
+          format: int32
+          type: integer
+      - description: statuses
+        in: query
+        name: statuses
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get all pipelines for project
+      tags:
+      - project-controller
+  /pubsub/subscriptions:
+    get:
+      deprecated: false
+      operationId: listPubSubSubscriptions
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/MapStringString'
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve the list of pub/sub subscriptions configured in Echo.
+      tags:
+      - pubsub-subscription-controller
+  /search:
+    get:
+      deprecated: false
+      operationId: search
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: allowShortQuery
+        in: query
+        name: allowShortQuery
+        schema:
+          default: false
+          type: boolean
+      - description: page
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int32
+          type: integer
+      - description: pageSize
+        in: query
+        name: pageSize
+        schema:
+          default: 10000
+          format: int32
+          type: integer
+      - description: platform
+        in: query
+        name: platform
+        schema:
+          type: string
+      - description: q
+        in: query
+        name: q
+        schema:
+          type: string
+      - description: type
+        in: query
+        name: type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Search infrastructure
+      tags:
+      - search-controller
+  /securityGroups:
+    get:
+      deprecated: false
+      operationId: listSecurityGroups
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: id
+        in: query
+        name: id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of security groups, grouped by account, cloud provider,
+        and region
+      tags:
+      - security-group-controller
+  /securityGroups/{account}:
+    get:
+      deprecated: false
+      operationId: listSecurityGroupsByAccount
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of security groups for a given account, grouped by
+        region
+      tags:
+      - security-group-controller
+  /securityGroups/{account}/{region}/{name}:
+    get:
+      deprecated: false
+      operationId: getSecurityGroup
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: account
+        in: path
+        name: account
+        required: true
+        schema:
+          type: string
+      - description: name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: provider
+        in: query
+        name: provider
+        schema:
+          default: aws
+          type: string
+      - description: region
+        in: path
+        name: region
+        required: true
+        schema:
+          type: string
+      - description: vpcId
+        in: query
+        name: vpcId
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a security group's details
+      tags:
+      - security-group-controller
+  /subnets:
+    get:
+      deprecated: false
+      operationId: subnets
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get subnets
+      tags:
+      - amazon-infrastructure-controller
+  /subnets/{cloudProvider}:
+    get:
+      deprecated: false
+      operationId: listSubnetsByCloudProvider
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: cloudProvider
+        in: path
+        name: cloudProvider
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of subnets for a given cloud provider
+      tags:
+      - subnet-controller
+  /tasks:
+    post:
+      deprecated: false
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: map
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Create task
+      tags:
+      - task-controller
+      x-codegen-request-body-name: map
+  /tasks/cancel:
+    put:
+      deprecated: false
+      operationId: cancelTasks
+      parameters:
+      - description: ids
+        explode: true
+        in: query
+        name: ids
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Cancel tasks
+      tags:
+      - task-controller
+  /tasks/{id}:
+    delete:
+      deprecated: false
+      operationId: deleteTask
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete task
+      tags:
+      - task-controller
+    get:
+      deprecated: false
+      operationId: getTask
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get task
+      tags:
+      - task-controller
+  /tasks/{id}/cancel:
+    put:
+      deprecated: false
+      operationId: cancelTask
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Cancel task
+      tags:
+      - task-controller
+  /tasks/{id}/details/{taskDetailsId}:
+    get:
+      deprecated: false
+      operationId: getTaskDetails
+      parameters:
+      - description: X-RateLimit-App
+        in: header
+        name: X-RateLimit-App
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: taskDetailsId
+        in: path
+        name: taskDetailsId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get task details
+      tags:
+      - task-controller
+  /v2/builds:
+    get:
+      deprecated: false
+      description: Deprecated, use the v3 endpoint instead
+      operationId: getBuildMasters
+      parameters:
+      - description: type
+        in: query
+        name: type
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get build masters
+      tags:
+      - build-controller
+  /v2/builds/{buildMaster}/build/{number}/**:
+    get:
+      deprecated: false
+      description: Deprecated, use the v3 endpoint instead
+      operationId: getBuild
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: number
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get build for build master
+      tags:
+      - build-controller
+  /v2/builds/{buildMaster}/builds/**:
+    get:
+      deprecated: false
+      description: Deprecated, use the v3 endpoint instead
+      operationId: getBuilds
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get builds for build master
+      tags:
+      - build-controller
+  /v2/builds/{buildMaster}/jobs:
+    get:
+      deprecated: false
+      description: Deprecated, use the v3 endpoint instead
+      operationId: getJobsForBuildMaster
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get jobs for build master
+      tags:
+      - build-controller
+  /v2/builds/{buildMaster}/jobs/**:
+    get:
+      deprecated: false
+      description: Deprecated, use the v3 endpoint instead
+      operationId: getJobConfig
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get job config
+      tags:
+      - build-controller
+  /v2/canaries/canary:
+    post:
+      deprecated: false
+      operationId: initiateCanaryWithConfig
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      - description: parentPipelineExecutionId
+        in: query
+        name: parentPipelineExecutionId
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: adhocExecutionRequest
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Start a canary execution with the supplied canary config
+      tags:
+      - v-2-canary-controller
+      x-codegen-request-body-name: adhocExecutionRequest
+  /v2/canaries/canary/{canaryConfigIdOrExecutionId}:
+    get:
+      deprecated: false
+      operationId: getCanaryResult
+      parameters:
+      - description: canaryConfigId or canaryExecutionId. In get request, should canaryExecutionId.
+          In post request, should canaryConfigId
+        in: path
+        name: canaryConfigIdOrExecutionId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a canary result
+      tags:
+      - v-2-canary-controller
+    post:
+      deprecated: false
+      operationId: initiateCanary
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: canaryConfigId or canaryExecutionId. In get request, should canaryExecutionId.
+          In post request, should canaryConfigId
+        in: path
+        name: canaryConfigIdOrExecutionId
+        required: true
+        schema:
+          type: string
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      - description: parentPipelineExecutionId
+        in: query
+        name: parentPipelineExecutionId
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: executionRequest
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Start a canary execution
+      tags:
+      - v-2-canary-controller
+      x-codegen-request-body-name: executionRequest
+  /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId}:
+    get:
+      deprecated: true
+      operationId: getCanaryResultDeprecated
+      parameters:
+      - description: canaryConfigId
+        in: path
+        name: canaryConfigId
+        required: true
+        schema:
+          type: string
+      - description: canaryExecutionId
+        in: path
+        name: canaryExecutionId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (DEPRECATED) Retrieve a canary result
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/credentials:
+    get:
+      deprecated: false
+      operationId: listCredentials
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of configured Kayenta accounts
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/judges:
+    get:
+      deprecated: false
+      operationId: listJudges
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of all configured canary judges
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/metadata/metricsService:
+    get:
+      deprecated: false
+      operationId: listMetricsServiceMetadata
+      parameters:
+      - description: filter
+        in: query
+        name: filter
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of descriptors for use in populating the canary config
+        ui
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/metricSetPairList/{metricSetPairListId}:
+    get:
+      deprecated: false
+      operationId: getMetricSetPairList
+      parameters:
+      - description: metricSetPairListId
+        in: path
+        name: metricSetPairListId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a metric set pair list
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/{application}/executions:
+    get:
+      deprecated: false
+      operationId: listCanaryResultsByApplication
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: 'Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED,
+          TERMINAL'
+        in: query
+        name: statuses
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's canary results
+      tags:
+      - v-2-canary-controller
+  /v2/canaryConfig:
+    get:
+      deprecated: false
+      operationId: listCanaryConfigs
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of canary configurations
+      tags:
+      - v-2-canary-config-controller
+    post:
+      deprecated: false
+      operationId: createCanaryConfig
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: config
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Create a canary configuration
+      tags:
+      - v-2-canary-config-controller
+      x-codegen-request-body-name: config
+  /v2/canaryConfig/{id}:
+    delete:
+      deprecated: false
+      operationId: deleteCanaryConfig
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete a canary configuration
+      tags:
+      - v-2-canary-config-controller
+    get:
+      deprecated: false
+      operationId: getCanaryConfig
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a canary configuration by id
+      tags:
+      - v-2-canary-config-controller
+    put:
+      deprecated: false
+      operationId: updateCanaryConfig
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: config
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Update a canary configuration
+      tags:
+      - v-2-canary-config-controller
+      x-codegen-request-body-name: config
+  /v2/pipelineTemplates:
+    get:
+      deprecated: false
+      operationId: listPipelineTemplatesV2
+      parameters:
+      - description: scopes
+        explode: true
+        in: query
+        name: scopes
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (ALPHA) List pipeline templates.
+      tags:
+      - v-2-pipeline-templates-controller
+  /v2/pipelineTemplates/create:
+    post:
+      deprecated: false
+      operationId: createPipelineTemplateV2
+      parameters:
+      - description: tag
+        in: query
+        name: tag
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipelineTemplate
+        required: true
+      responses:
+        "201":
+          content: {}
+          description: Created
+        "202":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: Accepted
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (ALPHA) Create a pipeline template.
+      tags:
+      - v-2-pipeline-templates-controller
+      x-codegen-request-body-name: pipelineTemplate
+  /v2/pipelineTemplates/plan:
+    post:
+      deprecated: false
+      operationId: plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipeline
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (ALPHA) Plan a pipeline template configuration.
+      tags:
+      - v-2-pipeline-templates-controller
+      x-codegen-request-body-name: pipeline
+  /v2/pipelineTemplates/update/{id}:
+    post:
+      deprecated: false
+      operationId: updatePipelineTemplateV2
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: skipPlanDependents
+        in: query
+        name: skipPlanDependents
+        schema:
+          default: false
+          type: boolean
+      - description: tag
+        in: query
+        name: tag
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: pipelineTemplate
+        required: true
+      responses:
+        "201":
+          content: {}
+          description: Created
+        "202":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: Accepted
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (ALPHA) Update a pipeline template.
+      tags:
+      - v-2-pipeline-templates-controller
+      x-codegen-request-body-name: pipelineTemplate
+  /v2/pipelineTemplates/versions:
+    get:
+      deprecated: false
+      operationId: listVersions
+      parameters:
+      - description: scopes
+        explode: true
+        in: query
+        name: scopes
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: List pipeline templates with versions
+      tags:
+      - v-2-pipeline-templates-controller
+  /v2/pipelineTemplates/{id}:
+    delete:
+      deprecated: false
+      operationId: deletePipelineTemplateV2
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: digest
+        in: query
+        name: digest
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: tag
+        in: query
+        name: tag
+        schema:
+          type: string
+      responses:
+        "202":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: Accepted
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete a pipeline template.
+      tags:
+      - v-2-pipeline-templates-controller
+    get:
+      deprecated: false
+      operationId: getPipelineTemplateV2
+      parameters:
+      - description: digest
+        in: query
+        name: digest
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: tag
+        in: query
+        name: tag
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (ALPHA) Get a pipeline template.
+      tags:
+      - v-2-pipeline-templates-controller
+  /v2/pipelineTemplates/{id}/dependents:
+    get:
+      deprecated: false
+      operationId: listPipelineTemplateDependentsV2
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (ALPHA) List all pipelines that implement a pipeline template
+      tags:
+      - v-2-pipeline-templates-controller
+  /v3/builds:
+    get:
+      deprecated: false
+      operationId: v3GetBuildMasters
+      parameters:
+      - description: type
+        in: query
+        name: type
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get build masters
+      tags:
+      - build-controller
+  /v3/builds/{buildMaster}/build/{number}:
+    get:
+      deprecated: false
+      operationId: v3GetBuild
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: job
+        in: query
+        name: job
+        required: true
+        schema:
+          type: string
+      - description: number
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get build for build master
+      tags:
+      - build-controller
+  /v3/builds/{buildMaster}/builds:
+    get:
+      deprecated: false
+      operationId: v3GetBuilds
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: job
+        in: query
+        name: job
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get builds for build master
+      tags:
+      - build-controller
+  /v3/builds/{buildMaster}/job:
+    get:
+      deprecated: false
+      operationId: v3GetJobConfig
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      - description: job
+        in: query
+        name: job
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                additionalProperties:
+                  properties: {}
+                  type: object
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get job config
+      tags:
+      - build-controller
+  /v3/builds/{buildMaster}/jobs:
+    get:
+      deprecated: false
+      operationId: v3GetJobsForBuildMaster
+      parameters:
+      - description: buildMaster
+        in: path
+        name: buildMaster
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get jobs for build master
+      tags:
+      - build-controller
+  /version:
+    get:
+      deprecated: false
+      operationId: getVersion
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Version'
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Fetch Gate's current version
+      tags:
+      - version-controller
+  /vpcs:
+    get:
+      deprecated: true
+      operationId: vpcs
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Get VPCs
+      tags:
+      - amazon-infrastructure-controller
+  /webhooks/preconfigured:
+    get:
+      deprecated: false
+      operationId: listPreconfiguredWebhooks
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of preconfigured webhooks in Orca
+      tags:
+      - webhook-controller
+  /webhooks/{type}/{source}:
+    post:
+      deprecated: false
+      operationId: webhooks
+      parameters:
+      - description: X-Event-Key
+        in: header
+        name: X-Event-Key
+        schema:
+          type: string
+      - description: X-Hub-Signature
+        in: header
+        name: X-Hub-Signature
+        schema:
+          type: string
+      - description: source
+        in: path
+        name: source
+        required: true
+        schema:
+          type: string
+      - description: type
+        in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: event
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Endpoint for posting webhooks to Spinnaker's webhook service
+      tags:
+      - webhook-controller
+      x-codegen-request-body-name: event
+components:
+  schemas:
+    Account:
+      example:
+        accountId: accountId
+        providerVersion: providerVersion
+        permissions:
+          key:
+          - permissions
+          - permissions
+        name: name
+        skin: skin
+        type: type
+        requiredGroupMembership:
+        - requiredGroupMembership
+        - requiredGroupMembership
+      properties:
+        accountId:
+          type: string
+        name:
+          type: string
+        permissions:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+        providerVersion:
+          type: string
+        requiredGroupMembership:
+          items:
+            type: string
+          type: array
+        skin:
+          type: string
+        type:
+          type: string
+      title: Account
+      type: object
+    AccountDetails:
+      example:
+        accountId: accountId
+        environment: environment
+        providerVersion: providerVersion
+        permissions:
+          key:
+          - permissions
+          - permissions
+        accountType: accountType
+        cloudProvider: cloudProvider
+        name: name
+        skin: skin
+        challengeDestructiveActions: true
+        type: type
+        primaryAccount: true
+        requiredGroupMembership:
+        - requiredGroupMembership
+        - requiredGroupMembership
+      properties:
+        accountId:
+          type: string
+        accountType:
+          type: string
+        challengeDestructiveActions:
+          type: boolean
+        cloudProvider:
+          type: string
+        environment:
+          type: string
+        name:
+          type: string
+        permissions:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+        primaryAccount:
+          type: boolean
+        providerVersion:
+          type: string
+        requiredGroupMembership:
+          items:
+            type: string
+          type: array
+        skin:
+          type: string
+        type:
+          type: string
+      title: AccountDetails
+      type: object
+    GrantedAuthority:
+      example:
+        authority: authority
+      properties:
+        authority:
+          type: string
+      title: GrantedAuthority
+      type: object
+    HashMapStringObject:
+      additionalProperties:
+        properties: {}
+        type: object
+      title: HashMapStringObject
+      type: object
+    HttpEntity:
+      example:
+        body: '{}'
+      properties:
+        body:
+          properties: {}
+          type: object
+      title: HttpEntity
+      type: object
+    MapStringString:
+      additionalProperties:
+        type: string
+      title: MapStringString
+      type: object
+    PipelineTemplateDependent:
+      properties:
+        application:
+          type: string
+        pipelineConfigId:
+          type: string
+        pipelineName:
+          type: string
+      title: PipelineTemplateDependent
+      type: object
+    ReorderPipelinesCommand:
+      example:
+        idsToIndices:
+          key: 0
+        application: application
+      properties:
+        application:
+          type: string
+        idsToIndices:
+          additionalProperties:
+            format: int32
+            type: integer
+          type: object
+      title: ReorderPipelinesCommand
+      type: object
+    ResponseEntity:
+      example:
+        statusCodeValue: 0
+        body: '{}'
+        statusCode: 100 CONTINUE
+      properties:
+        body:
+          properties: {}
+          type: object
+        statusCode:
+          enum:
+          - 100 CONTINUE
+          - 101 SWITCHING_PROTOCOLS
+          - 102 PROCESSING
+          - 103 CHECKPOINT
+          - 200 OK
+          - 201 CREATED
+          - 202 ACCEPTED
+          - 203 NON_AUTHORITATIVE_INFORMATION
+          - 204 NO_CONTENT
+          - 205 RESET_CONTENT
+          - 206 PARTIAL_CONTENT
+          - 207 MULTI_STATUS
+          - 208 ALREADY_REPORTED
+          - 226 IM_USED
+          - 300 MULTIPLE_CHOICES
+          - 301 MOVED_PERMANENTLY
+          - 302 FOUND
+          - 302 MOVED_TEMPORARILY
+          - 303 SEE_OTHER
+          - 304 NOT_MODIFIED
+          - 305 USE_PROXY
+          - 307 TEMPORARY_REDIRECT
+          - 308 PERMANENT_REDIRECT
+          - 400 BAD_REQUEST
+          - 401 UNAUTHORIZED
+          - 402 PAYMENT_REQUIRED
+          - 403 FORBIDDEN
+          - 404 NOT_FOUND
+          - 405 METHOD_NOT_ALLOWED
+          - 406 NOT_ACCEPTABLE
+          - 407 PROXY_AUTHENTICATION_REQUIRED
+          - 408 REQUEST_TIMEOUT
+          - 409 CONFLICT
+          - 410 GONE
+          - 411 LENGTH_REQUIRED
+          - 412 PRECONDITION_FAILED
+          - 413 PAYLOAD_TOO_LARGE
+          - 413 REQUEST_ENTITY_TOO_LARGE
+          - 414 URI_TOO_LONG
+          - 414 REQUEST_URI_TOO_LONG
+          - 415 UNSUPPORTED_MEDIA_TYPE
+          - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+          - 417 EXPECTATION_FAILED
+          - 418 I_AM_A_TEAPOT
+          - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+          - 420 METHOD_FAILURE
+          - 421 DESTINATION_LOCKED
+          - 422 UNPROCESSABLE_ENTITY
+          - 423 LOCKED
+          - 424 FAILED_DEPENDENCY
+          - 426 UPGRADE_REQUIRED
+          - 428 PRECONDITION_REQUIRED
+          - 429 TOO_MANY_REQUESTS
+          - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+          - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+          - 500 INTERNAL_SERVER_ERROR
+          - 501 NOT_IMPLEMENTED
+          - 502 BAD_GATEWAY
+          - 503 SERVICE_UNAVAILABLE
+          - 504 GATEWAY_TIMEOUT
+          - 505 HTTP_VERSION_NOT_SUPPORTED
+          - 506 VARIANT_ALSO_NEGOTIATES
+          - 507 INSUFFICIENT_STORAGE
+          - 508 LOOP_DETECTED
+          - 509 BANDWIDTH_LIMIT_EXCEEDED
+          - 510 NOT_EXTENDED
+          - 511 NETWORK_AUTHENTICATION_REQUIRED
+          type: string
+        statusCodeValue:
+          format: int32
+          type: integer
+      title: ResponseEntity
+      type: object
+    User:
+      example:
+        firstName: firstName
+        lastName: lastName
+        allowedAccounts:
+        - allowedAccounts
+        - allowedAccounts
+        credentialsNonExpired: true
+        roles:
+        - roles
+        - roles
+        accountNonExpired: true
+        authorities:
+        - authority: authority
+        - authority: authority
+        email: email
+        enabled: true
+        accountNonLocked: true
+        username: username
+      properties:
+        accountNonExpired:
+          type: boolean
+        accountNonLocked:
+          type: boolean
+        allowedAccounts:
+          items:
+            type: string
+          type: array
+        authorities:
+          items:
+            $ref: '#/components/schemas/GrantedAuthority'
+          type: array
+        credentialsNonExpired:
+          type: boolean
+        email:
+          type: string
+        enabled:
+          type: boolean
+        firstName:
+          type: string
+        lastName:
+          type: string
+        roles:
+          items:
+            type: string
+          type: array
+        username:
+          type: string
+      title: User
+      type: object
+    Version:
+      example:
+        version: version
+      properties:
+        version:
+          type: string
+      title: Version
+      type: object

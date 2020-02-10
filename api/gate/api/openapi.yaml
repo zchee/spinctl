@@ -2,6 +2,7 @@ openapi: 3.0.1
 info:
   contact: {}
   title: Spinnaker API
+  version: 1.18.2
 servers:
 - url: //localhost/
 tags:
@@ -65,6 +66,10 @@ tags:
   name: subnet-controller
 - description: Task Controller
   name: task-controller
+- description: V 2 Canary Config Controller
+  name: v-2-canary-config-controller
+- description: V 2 Canary Controller
+  name: v-2-canary-controller
 - description: V 2 Pipeline Templates Controller
   name: v-2-pipeline-templates-controller
 - description: Version Controller
@@ -3930,7 +3935,7 @@ paths:
       - pipeline-controller
     post:
       deprecated: false
-      operationId: evaluateExpressionForExecutionViaPOSTUsingPOST
+      operationId: evaluateExpressionForExecutionViaPOSTUsingPOST_1
       parameters:
       - description: id
         in: path
@@ -3940,9 +3945,9 @@ paths:
           type: string
       requestBody:
         content:
-          text/plain:
+          application/json:
             schema:
-              type: string
+              type: object
         description: pipelineExpression
         required: true
       responses:
@@ -4001,7 +4006,7 @@ paths:
           application/json:
             schema:
               items:
-                $ref: '#/components/schemas/Map«string,string»'
+                $ref: '#/components/schemas/MapStringString'
               type: array
         description: List of variables/expressions to evaluate
         required: true
@@ -4393,7 +4398,7 @@ paths:
             '*/*':
               schema:
                 items:
-                  $ref: '#/components/schemas/Map«string,string»'
+                  $ref: '#/components/schemas/MapStringString'
                 type: array
           description: OK
         "401":
@@ -5072,6 +5077,570 @@ paths:
       summary: Get job config
       tags:
       - build-controller
+  /v2/canaries/canary:
+    post:
+      deprecated: false
+      operationId: initiateCanaryWithConfigUsingPOST
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      - description: parentPipelineExecutionId
+        in: query
+        name: parentPipelineExecutionId
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: adhocExecutionRequest
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Start a canary execution with the supplied canary config
+      tags:
+      - v-2-canary-controller
+      x-codegen-request-body-name: adhocExecutionRequest
+  /v2/canaries/canary/{canaryConfigId}:
+    post:
+      deprecated: false
+      operationId: initiateCanaryUsingPOST
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: canaryConfigId
+        in: path
+        name: canaryConfigId
+        required: true
+        schema:
+          type: string
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      - description: parentPipelineExecutionId
+        in: query
+        name: parentPipelineExecutionId
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: executionRequest
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Start a canary execution
+      tags:
+      - v-2-canary-controller
+      x-codegen-request-body-name: executionRequest
+  /v2/canaries/canary/{canaryConfigId}/{canaryExecutionId}:
+    get:
+      deprecated: true
+      operationId: getCanaryResultUsingGET
+      parameters:
+      - description: canaryConfigId
+        in: path
+        name: canaryConfigId
+        required: true
+        schema:
+          type: string
+      - description: canaryExecutionId
+        in: path
+        name: canaryExecutionId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: (DEPRECATED) Retrieve a canary result
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/canary/{canaryExecutionId}:
+    get:
+      deprecated: false
+      operationId: getCanaryResultUsingGET_1
+      parameters:
+      - description: canaryExecutionId
+        in: path
+        name: canaryExecutionId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a canary result
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/credentials:
+    get:
+      deprecated: false
+      operationId: listCredentialsUsingGET
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of configured Kayenta accounts
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/judges:
+    get:
+      deprecated: false
+      operationId: listJudgesUsingGET
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of all configured canary judges
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/metadata/metricsService:
+    get:
+      deprecated: false
+      operationId: listMetricsServiceMetadataUsingGET
+      parameters:
+      - description: filter
+        in: query
+        name: filter
+        schema:
+          type: string
+      - description: metricsAccountName
+        in: query
+        name: metricsAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of descriptors for use in populating the canary config
+        ui
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/metricSetPairList/{metricSetPairListId}:
+    get:
+      deprecated: false
+      operationId: getMetricSetPairListUsingGET
+      parameters:
+      - description: metricSetPairListId
+        in: path
+        name: metricSetPairListId
+        required: true
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a metric set pair list
+      tags:
+      - v-2-canary-controller
+  /v2/canaries/{application}/executions:
+    get:
+      deprecated: false
+      operationId: getCanaryResultsByApplicationUsingGET
+      parameters:
+      - description: application
+        in: path
+        name: application
+        required: true
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - allowEmptyValue: false
+        description: 'Comma-separated list of statuses, e.g.: RUNNING, SUCCEEDED,
+          TERMINAL'
+        in: query
+        name: statuses
+        schema:
+          type: string
+      - description: storageAccountName
+        in: query
+        name: storageAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of an application's canary results
+      tags:
+      - v-2-canary-controller
+  /v2/canaryConfig:
+    get:
+      deprecated: false
+      operationId: getCanaryConfigsUsingGET
+      parameters:
+      - description: application
+        in: query
+        name: application
+        schema:
+          type: string
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  properties: {}
+                  type: object
+                type: array
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a list of canary configurations
+      tags:
+      - v-2-canary-config-controller
+    post:
+      deprecated: false
+      operationId: createCanaryConfigUsingPOST
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: config
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Create a canary configuration
+      tags:
+      - v-2-canary-config-controller
+      x-codegen-request-body-name: config
+  /v2/canaryConfig/{id}:
+    delete:
+      deprecated: false
+      operationId: deleteCanaryConfigUsingDELETE
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content: {}
+          description: OK
+        "204":
+          content: {}
+          description: No Content
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+      summary: Delete a canary configuration
+      tags:
+      - v-2-canary-config-controller
+    get:
+      deprecated: false
+      operationId: getCanaryConfigUsingGET
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Retrieve a canary configuration by id
+      tags:
+      - v-2-canary-config-controller
+    put:
+      deprecated: false
+      operationId: updateCanaryConfigUsingPUT
+      parameters:
+      - description: configurationAccountName
+        in: query
+        name: configurationAccountName
+        schema:
+          type: string
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: config
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: OK
+        "201":
+          content: {}
+          description: Created
+        "401":
+          content: {}
+          description: Unauthorized
+        "403":
+          content: {}
+          description: Forbidden
+        "404":
+          content: {}
+          description: Not Found
+      summary: Update a canary configuration
+      tags:
+      - v-2-canary-config-controller
+      x-codegen-request-body-name: config
   /v2/pipelineTemplates:
     get:
       deprecated: false
@@ -5818,11 +6387,11 @@ components:
           type: string
       title: GrantedAuthority
       type: object
-    HashMap«string,object»:
+    HashMapStringObject:
       additionalProperties:
         properties: {}
         type: object
-      title: HashMap«string,object»
+      title: HashMapStringObject
       type: object
     HttpEntity:
       example:
@@ -5833,10 +6402,10 @@ components:
           type: object
       title: HttpEntity
       type: object
-    Map«string,string»:
+    MapStringString:
       additionalProperties:
         type: string
-      title: Map«string,string»
+      title: MapStringString
       type: object
     PipelineTemplateDependent:
       properties:

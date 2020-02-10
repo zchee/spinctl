@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**DeletePipelineUsingDELETE1**](PipelineControllerApi.md#DeletePipelineUsingDELETE1) | **Delete** /pipelines/{id} | Delete a pipeline execution
 [**EvaluateExpressionForExecutionAtStageUsingGET**](PipelineControllerApi.md#EvaluateExpressionForExecutionAtStageUsingGET) | **Get** /pipelines/{id}/{stageId}/evaluateExpression | Evaluate a pipeline expression at a specific stage using the provided execution as context
 [**EvaluateExpressionForExecutionUsingGET**](PipelineControllerApi.md#EvaluateExpressionForExecutionUsingGET) | **Get** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
-[**EvaluateExpressionForExecutionViaPOSTUsingPOST**](PipelineControllerApi.md#EvaluateExpressionForExecutionViaPOSTUsingPOST) | **Post** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
+[**EvaluateExpressionForExecutionViaPOSTUsingPOST1**](PipelineControllerApi.md#EvaluateExpressionForExecutionViaPOSTUsingPOST1) | **Post** /pipelines/{id}/evaluateExpression | Evaluate a pipeline expression using the provided execution as context
 [**EvaluateVariablesUsingPOST**](PipelineControllerApi.md#EvaluateVariablesUsingPOST) | **Post** /pipelines/{id}/evaluateVariables | Evaluate variables same as Evaluate Variables stage using the provided execution as context
 [**GetPipelineUsingGET**](PipelineControllerApi.md#GetPipelineUsingGET) | **Get** /pipelines/{id} | Retrieve a pipeline execution
 [**InvokePipelineConfigUsingPOST1**](PipelineControllerApi.md#InvokePipelineConfigUsingPOST1) | **Post** /pipelines/{application}/{pipelineNameOrId} | Trigger a pipeline execution
@@ -238,9 +238,9 @@ No authorization required
 [[Back to README]](../README.md)
 
 
-## EvaluateExpressionForExecutionViaPOSTUsingPOST
+## EvaluateExpressionForExecutionViaPOSTUsingPOST1
 
-> map[string]map[string]interface{} EvaluateExpressionForExecutionViaPOSTUsingPOST(ctx, id).PipelineExpression(pipelineExpression).Execute()
+> map[string]map[string]interface{} EvaluateExpressionForExecutionViaPOSTUsingPOST1(ctx, id).PipelineExpression(pipelineExpression).Execute()
 
 Evaluate a pipeline expression using the provided execution as context
 
@@ -254,12 +254,12 @@ Name | Type | Description  | Notes
 
 ### Other Parameters
 
-Other parameters are passed through a pointer to a apiEvaluateExpressionForExecutionViaPOSTUsingPOSTRequest struct via the builder pattern
+Other parameters are passed through a pointer to a apiEvaluateExpressionForExecutionViaPOSTUsingPOST1Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pipelineExpression** | **string** | pipelineExpression | 
+ **pipelineExpression** | **map[string]interface{}** | pipelineExpression | 
 
 
 ### Return type
@@ -272,7 +272,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: text/plain
+- **Content-Type**: application/json
 - **Accept**: */*
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
