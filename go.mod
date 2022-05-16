@@ -6,7 +6,6 @@ require (
 	cloud.google.com/go v0.51.0
 	contrib.go.opencensus.io/exporter/stackdriver v0.12.5
 	github.com/antihax/optional v1.0.0
-	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.4.0
 	github.com/googleapis/gnostic v0.3.2-0.20200106192335-99384834bf8c // indirect
 	github.com/imdario/mergo v0.3.9-0.20200120102109-4c8d33afe3b2 // indirect
@@ -26,9 +25,8 @@ require (
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/tools v0.0.0-20200121042740-dbc83e6dc05e // indirect
 	google.golang.org/api v0.15.0
-	google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24
-	google.golang.org/protobuf v0.0.0-20190914210843-3c4ab8c6f158
-	gopkg.in/yaml.v2 v2.2.7
+	google.golang.org/genproto v0.0.0-20200117163144-32f20d992d24 // indirect
+	gopkg.in/yaml.v2 v2.2.8
 	k8s.io/cli-runtime v0.17.1
 	k8s.io/client-go v11.0.0+incompatible
 	sigs.k8s.io/yaml v1.1.0
